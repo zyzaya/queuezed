@@ -1,0 +1,2 @@
+class SrsBox < ApplicationRecord
+end
