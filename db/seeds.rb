@@ -21,4 +21,22 @@ quiz1 = user.quizzes.new(name: 'Language')
   quiz1.srs_boxes << srs
 end
 user.quizzes << quiz1
+
+quiz2 = user.quizzes.new(name: 'HP')
+0.upto(10) do
+  content = Faker::Movies::HarryPotter.character
+  q = Question.new(content: content)
+  3.upto(rand(3..6)) do |n|
+    correct = content.slice(0, n)
+    answer = Answer.new(content: "First #{"#{n} " if n > 1}character#{'s' if n > 1}")
+    answer.answer_variants.new(content: correct)
+    answer.answer_variants.new(content: correct.upcase)
+    answer.answer_variants.new(content: correct.downcase)
+    q.answers << answer
+  end
+  srs = SrsBox.new(rank: 1)
+  srs.questions << q
+  quiz2.srs_boxes << srs
+end
+
 user.save
