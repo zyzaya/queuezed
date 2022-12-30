@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2022_12_30_193356) do
+ActiveRecord::Schema[7.0].define(version: 2022_12_30_193955) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -27,6 +27,15 @@ ActiveRecord::Schema[7.0].define(version: 2022_12_30_193356) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["question_id"], name: "index_answers_on_question_id"
+  end
+
+  create_table "question_histories", force: :cascade do |t|
+    t.integer "times_taken"
+    t.integer "times_correct"
+    t.bigint "question_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["question_id"], name: "index_question_histories_on_question_id"
   end
 
   create_table "questions", force: :cascade do |t|
@@ -83,6 +92,7 @@ ActiveRecord::Schema[7.0].define(version: 2022_12_30_193356) do
 
   add_foreign_key "answer_variants", "answers"
   add_foreign_key "answers", "questions"
+  add_foreign_key "question_histories", "questions"
   add_foreign_key "questions", "srs_boxes"
   add_foreign_key "quizzes", "users"
   add_foreign_key "srs_boxes", "quizzes"
