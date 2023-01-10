@@ -1,0 +1,11 @@
+body {
+  background-color: var(--main-bg-color);
+}
+
+.devise_title {
+  color: rgb(8, 71, 137);
+}
+
+.field {
+  background-color: aqua;
+}

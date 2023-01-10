@@ -13,3 +13,6 @@
  *= require_tree .
  *= require_self
  */
+:root {
+  --main-bg-color: rgb(235, 242, 250);
+}
