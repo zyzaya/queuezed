@@ -15,4 +15,11 @@
  */
 :root {
   --main-bg-color: rgb(235, 242, 250);
+  --secondary-bg-color: rgb(8, 71, 137);
+  --secondary-bg-color-dark: rgb(0, 44, 91);
+  --tertiary-bg-color: rgb(66, 122, 161);
+  --tertiary-bg-color-dark: rgb(47, 103, 142);
+  --interact-color: rgb(135, 190, 0);
+  --main-text-color: white;
+  --secondary-text-color: rgb(75, 75, 75);
 }
