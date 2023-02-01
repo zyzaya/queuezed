@@ -6,6 +6,9 @@
                  resource: resource.class.model_name.human.downcase)
        %>
     </h2>
+    <div>
+      <%= "#{resource.errors}" %>  
+    </div>
     <ul>
       <% resource.errors.full_messages.each do |message| %>
         <li><%= message %></li>

@@ -16,6 +16,22 @@
   grid-template-rows: min-content min-content;
 }
 
+.devise_field > .field_with_errors {
+  display: grid;
+}
+
+.devise_field > .field_with_errors > .devise_text_input {
+  border-radius: 10px 10px 0 0;
+}
+
+.devise_errors {
+  background-color: red;
+  color: var(--main-text-color);
+  padding: 5px 5px;
+  border-radius: 0 0 10px 10px;
+  text-align: center;
+}
+
 .devise_remember {
   padding-top: 7px;
 }
@@ -26,10 +42,6 @@
   padding: 0 4px;
   height: 32px;
   border-radius: 10px;
-}
-
-.devise_text_input:invalid {
-  border-color: red;
 }
 
 .devise_label {
