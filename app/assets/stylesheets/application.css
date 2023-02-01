@@ -28,3 +28,10 @@
   padding: 0px;
   margin: 0px;
 }
+
+body {
+  background-color: var(--main-bg-color);
+  height: 100vh;
+  display: grid;
+  grid-template-rows: min-content min-content 1fr 64px;
+}
