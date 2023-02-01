@@ -12,6 +12,8 @@
 
 .devise_field {
   padding-top: 7px;
+  display: grid;
+  grid-template-rows: min-content min-content;
 }
 
 .devise_text_input {
