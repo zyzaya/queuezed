@@ -16,6 +16,10 @@
   grid-template-rows: min-content min-content;
 }
 
+.devise_remember {
+  padding-top: 7px;
+}
+
 .devise_text_input {
   background-color: var(--main-bg-color);
   border: 2px solid black;

@@ -3,17 +3,17 @@
   <div class="devise_form">
     <%= form_for(resource, as: resource_name, url: session_path(resource_name), data: { turbo:false }) do |f| %>
       <div class="devise_field">
-        <%= f.label :email, 'Email:', class: 'devise_label' %><br />
+        <%= f.label :email, 'Email:', class: 'devise_label' %>
         <%= f.email_field :email, autofocus: true, autocomplete: "email", class: 'devise_text_input' %>
       </div>
 
       <div class="devise_field">
-        <%= f.label :password, 'Password:', class: 'devise_label' %><br />
+        <%= f.label :password, 'Password:', class: 'devise_label' %>
         <%= f.password_field :password, autocomplete: "current-password", class: 'devise_text_input' %>
       </div>
 
       <% if devise_mapping.rememberable? %>
-        <div class="field">
+        <div class="devise_remember">
           <%= f.label :remember_me, 'Remember me?', class:'devise_label' %>
           <%= f.check_box :remember_me %>
         </div>
