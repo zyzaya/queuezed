@@ -1,31 +1,31 @@
-<div class="info">
-  <h1 class="title">queuezed</h1>
-  <div class="input">
+<div class="devise_info">
+  <h1 class="devise_title">queuezed</h1>
+  <div class="devise_form">
     <%= form_for(resource, as: resource_name, url: session_path(resource_name), data: { turbo:false }) do |f| %>
-      <div class="field">
-        <%= f.label :email, 'Email:', class: 'text_input_label' %><br />
-        <%= f.email_field :email, autofocus: true, autocomplete: "email", class: 'text_input' %>
+      <div class="devise_field">
+        <%= f.label :email, 'Email:', class: 'devise_label' %><br />
+        <%= f.email_field :email, autofocus: true, autocomplete: "email", class: 'devise_text_input' %>
       </div>
 
-      <div class="field">
-        <%= f.label :password, 'Password:', class: 'text_input_label' %><br />
-        <%= f.password_field :password, autocomplete: "current-password", class: 'text_input' %>
+      <div class="devise_field">
+        <%= f.label :password, 'Password:', class: 'devise_label' %><br />
+        <%= f.password_field :password, autocomplete: "current-password", class: 'devise_text_input' %>
       </div>
 
       <% if devise_mapping.rememberable? %>
         <div class="field">
-          <%= f.label :remember_me, 'Remember me?', class:'text_input_label' %>
+          <%= f.label :remember_me, 'Remember me?', class:'devise_label' %>
           <%= f.check_box :remember_me %>
         </div>
       <% end %>
 
-      <div class="actions">
-        <%= f.submit "Log In", class: 'submit' %>
+      <div class="devise_actions">
+        <%= f.submit "Log In", class: 'devise_submit' %>
       </div>
     <% end %>
-    <div class="links">
-      <%= link_to "Forgot your password?", new_password_path(resource_name), data: { turbo:false }, class: 'forgot' %>
-      <%= link_to "Sign Up", new_registration_path(resource_name), data: { turbo: false}, class: 'sign_up' %>
+    <div class="devise_links">
+      <%= link_to "Forgot your password?", new_password_path(resource_name), data: { turbo:false }, class: 'devise_forgot' %>
+      <%= link_to "Sign Up", new_registration_path(resource_name), data: { turbo: false}, class: 'devise_sign_up' %>
     </div>
   </div>
 </div>
