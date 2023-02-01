@@ -1,6 +1,9 @@
 <div class="devise_info">
   <h1 class="devise_title">queuezed</h1>
   <div class="devise_form">
+    <% if flash[:alert] %>
+      <p class="alert"><%= alert %></p>
+    <% end %>
     <%= form_for(resource, as: resource_name, url: session_path(resource_name), data: { turbo:false }) do |f| %>
       <div class="devise_field">
         <%= f.label :email, 'Email:', class: 'devise_label' %>

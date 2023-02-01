@@ -33,5 +33,17 @@ body {
   background-color: var(--main-bg-color);
   height: 100vh;
   display: grid;
-  grid-template-rows: min-content min-content 1fr 64px;
+  grid-template-rows: min-content 1fr 64px;
+}
+
+.alert {
+  background-color: red;
+  color: var(--main-text-color);
+  padding: 5px 10px;
+}
+
+.notice {
+  background-color: var(--secondary-bg-color);
+  color: var(--main-text-color);
+  padding: 5px 10px;
 }

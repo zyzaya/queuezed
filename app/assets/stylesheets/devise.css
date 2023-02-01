@@ -28,6 +28,10 @@
   border-radius: 10px;
 }
 
+.devise_text_input:invalid {
+  border-color: red;
+}
+
 .devise_label {
   color: var(--secondary-text-color);
   margin-left: 2px;
@@ -54,11 +58,11 @@
   grid-template-columns: 1fr;
 }
 
-.forgot {
+.devise_forgot {
   color: var(--secondary-text-color);
 }
 
-.devise_sign_up {
+.devise_sign_up, .devise_log_in {
   color: black;
   border-bottom: 1px solid var(--secondary-text-color);
   text-decoration: none;

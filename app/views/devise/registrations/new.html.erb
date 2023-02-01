@@ -23,6 +23,9 @@
       <div class="devise_actions">
         <%= f.submit "Sign up", class: 'devise_submit' %>
       </div>
-    <% end %>  
+    <% end %>
+    <div class="devise_links">
+      <%= link_to "Log in", new_session_path(resource_name), data: { turbo:false }, class: 'devise_log_in' %>
+    </div>
   </div>
 </div>
