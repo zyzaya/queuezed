@@ -6,6 +6,7 @@
   border-color: var(--interact-color);
   cursor: pointer;
   padding: 3px 7px;
+  white-space: nowrap;
 }
 
 .button:hover {

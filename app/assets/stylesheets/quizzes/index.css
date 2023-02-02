@@ -1,3 +1,38 @@
 .quizzes_index_container {
-  border: 1px solid black;
+  max-width: 320px;
+  margin: auto;
+  display: grid;
+  grid-template-columns: repeat(auto, min-content);
+  row-gap: 20px;
+}
+
+.quizzes_quiz {
+  background-color: var(--secondary-bg-color);
+  margin-top: 20px;
+  padding: 5px;
+  border-radius: 10px;
+  display: grid;
+  grid-template-rows: 1fr 1fr 1fr;
+}
+
+.quizzes_quiz_top {
+  display: grid;
+  grid-template-columns: 1fr min-content;
+  column-gap: 5px;
+}
+
+.quizzes_quiz_title {
+  color: var(--main-text-color);
+}
+
+.quizzes_quiz_bottom {
+  grid-area: -2 / 1 / -1 / -1;
+  display: grid;
+  grid-template-columns: min-content min-content;
+  justify-content: right;
+  column-gap: 5px;
+}
+
+.quizzes_quiz button {
+  border-radius: 3px;
 }
