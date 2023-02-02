@@ -1,6 +1,8 @@
 <div>
   <%= render 'shared/header' %>
-  <% @quizzes.each do |q| %>
-    <div><%= q.name %></div>
-  <% end %>
+  <div class="quizzes_index_container">
+    <% @quizzes.each do |q| %>
+      <%= render 'quizzes/quiz', quiz: q %>
+    <% end %>
+  </div>
 </div>
