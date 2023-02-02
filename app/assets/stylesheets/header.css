@@ -2,3 +2,21 @@
   background-color: var(--secondary-bg-color);
   width: 100%;
 }
+
+.header_buttons {
+  display: grid;
+  grid-template-columns: 1fr min-content min-content;
+  align-items: center;
+}
+
+.header_buttons button, .header_buttons form {
+  white-space: nowrap;
+  margin: 0 3px;
+  font-size: 16px;
+}
+
+.header_title {
+  color: var(--main-text-color);
+  text-align: center;
+  margin-bottom: 5px;
+}
