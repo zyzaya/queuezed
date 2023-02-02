@@ -1,7 +1,3 @@
-<div class="header">
-  <button class="settings">Settings</button>
-  <%= button_to "Sign out", destroy_user_session_path, method: :delete %>
-</div>
 <div>
   <% @quizzes.each do |q| %>
     <div><%= q.name %></div>
