@@ -3,10 +3,16 @@
   width: 100%;
 }
 
+.header_info {
+  display: grid;
+  grid-template-columns: 1fr 2fr 1fr;
+}
+
 .header_buttons {
   display: grid;
-  grid-template-columns: 1fr min-content min-content;
+  grid-template-columns: min-content min-content;
   align-items: center;
+  justify-content: right;
 }
 
 .header_buttons button, .header_buttons form {
