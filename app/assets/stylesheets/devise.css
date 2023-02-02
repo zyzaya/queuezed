@@ -54,10 +54,20 @@
   color: var(--main-text-color);
   border: none;
   border-radius: 10px;
+  border-color: var(--interact-color);
   font-size: 18px;
   margin: 7px 0;
   width: 100%;
   height: 32px;
+  cursor: pointer;
+}
+
+.devise_submit:hover {
+  border-style: none outset outset none;
+}
+
+.devise_submit:active {
+  border-style: inset none none inset;
 }
 
 .devise_links {
