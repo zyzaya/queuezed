@@ -1,0 +1,20 @@
+<div class="quizzes_edit">
+  <h1><%= @quiz.name %></h1><br>
+  <span>Created at: </span><span><%= @quiz.created_at %></span>
+  <h2>Questions</h2>
+  <ul>
+    <% @quiz.questions.each do |question| %>
+      <li>
+        <h3><%= question.content %></h3>
+        <ul>
+          <% question.answers.each do |answer| %>
+            <li>
+              <span><%= answer.content %>:</span>
+              <%= answer.answer_variants.pluck(:content).join(', ') %>
+            </li>
+          <% end %>
+        </ul>
+      </li>
+    <% end %>
+  </ul>
+</div>

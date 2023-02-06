@@ -5,8 +5,9 @@ class QuizzesController < ApplicationController
     @quizzes = current_user.quizzes
   end
 
-  private
-  def comment_params
-    
+  def edit
+    @quiz = Quiz.find(params[:id])
   end
+
+  private
 end
