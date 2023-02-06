@@ -10,13 +10,22 @@
   text-align: center;
 }
 
-.quiz_practice_answers_container {
-  width: min-content;
-  margin: auto;
+.quiz_practice_form {
+  display: flex;
+  justify-content: center;
+}
+
+.quiz_practice_form form {
+  display: flex;
+  flex-direction: column;
+  row-gap: 10px;
+  justify-content: center;
 }
 
 .quiz_practice_answer_input {
   background-color: var(--tertiary-bg-color);
+  color: var(--main-text-color);
+  font-size: large;
   border: 3px solid var(--secondary-bg-color);
   padding: 0 4px;
   height: 32px;
