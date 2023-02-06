@@ -1,3 +1,16 @@
+.quizzes_index {
+  display: grid;
+  grid-template-rows: min-content min-content 1fr;
+}
+
+.quizzes_new {
+  height: 64px;
+  font-size: 32px;
+  margin: 20px 16px 0 16px;
+  width: min-content;
+  justify-self: center;
+}
+
 .quizzes_index_container {
   margin: auto;
   display: flex;
@@ -42,10 +55,4 @@
 
 .quizzes_quiz_review {
   grid-area: -2 / -2 / -1 / -1;
-}
-
-.quizzes_new_container {
-  height: 64px;
-  font-size: 32px;
-  margin: 0 16px;
 }

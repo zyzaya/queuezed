@@ -1,9 +1,9 @@
-<div>
+<div class="quizzes_index">
   <%= render 'shared/header' %>
+  <button class="quizzes_new button">New Quiz</button>
   <div class="quizzes_index_container">
     <% @quizzes.each do |q| %>
       <%= render 'quizzes/quiz', quiz: q %>
     <% end %>
-    <button class="quizzes_new_container button">New Quiz</button>
   </div>
 </div>
