@@ -1,6 +1,6 @@
 <div class="quizzes_quiz">
   <h2 class="quizzes_quiz_title"><%= quiz.name %></h2>
-  <button class="quizzes_quiz_edit button">Edit 🖉</button>
+  <%= link_to 'Edit 🖉', edit_quiz_path(quiz.id), class: 'quizzes_quiz_edit button' %>
   <button class="quizzes_quiz_difficult button">Difficult</button>
   <button class="quizzes_quiz_review button">Review</button>
 </div>

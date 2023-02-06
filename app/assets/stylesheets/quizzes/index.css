@@ -41,7 +41,7 @@
   grid-area: 1 / 1 / 3 / -2;
 }
 
-.quizzes_quiz button {
+.quizzes_quiz button, .quizzes_quiz a {
   border-radius: 3px;
 }
 
