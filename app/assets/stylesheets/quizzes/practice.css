@@ -8,6 +8,7 @@
 
 .quiz_practice_question_content {
   text-align: center;
+  color: var(--secondary-bg-color);
 }
 
 .quiz_practice_form {
@@ -20,6 +21,12 @@
   flex-direction: column;
   row-gap: 10px;
   justify-content: center;
+}
+
+.quiz_practice_answer_content {
+  color: var(--secondary-bg-color-dark);
+  font-size: large;
+  text-align: center;
 }
 
 .quiz_practice_answer_input {
