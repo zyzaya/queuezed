@@ -1,4 +1,6 @@
 <div class="quizzes_edit">
+  <%= render 'shared/header' %>
+  <%= link_to '<- Return to all Quizzes', quizzes_path, class: 'button' %>
   <h1><%= @quiz.name %></h1><br>
   <span>Created at: </span><span><%= @quiz.created_at %></span>
   <h2>Questions</h2>
