@@ -22,7 +22,7 @@ quiz1 = user.quizzes.new(name: 'Language')
 end
 user.quizzes << quiz1
 
-quiz2 = user.quizzes.new(name: 'HP')
+quiz2 = user.quizzes.new(name: 'Harry Potter')
 0.upto(10) do
   content = Faker::Movies::HarryPotter.character
   q = Question.new(content: content)
@@ -37,6 +37,12 @@ quiz2 = user.quizzes.new(name: 'HP')
   srs = SrsBox.new(rank: 1)
   srs.questions << q
   quiz2.srs_boxes << srs
+end
+
+quiz3 = user.quizzes.new(name: 'This is a quiz with an extremely long name to test how the web layout looks like')
+
+0.upto(10) do |n|
+  user.quizzes.new(name: "quiz ##{n}")
 end
 
 user.save
