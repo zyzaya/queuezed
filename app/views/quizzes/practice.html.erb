@@ -1,6 +1,14 @@
 <div class="quiz_practice">
   <%= render 'shared/header' %>
-  <%= "Practicing quiz #{@quiz.name}" %><br>
-  <%= "qs: #{@questions.to_s}" %><br>
-  <%= "fiurst: #{@current}" %><br>
+  <div class="quiz_practice_progress_bar"></div>
+  <div class="quiz_practice_info">
+    <h1 class="quiz_practice_question_content">Q. <%= @current.content %></h1>
+    <div class="quiz_practice_answers_container">
+      <% @current.answers.each do |answer| %>
+        <div class="quiz_practice_answer_content"><%= answer.content %></div>
+        <input type=text class="quiz_practice_answer_input" name="answer" />
+      <% end %>
+      <button class="quiz_practice_answer_next button">Next</button>
+    </div>
+  </div>
 </div>

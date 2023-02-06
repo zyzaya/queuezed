@@ -1,0 +1,30 @@
+.quiz_practice_progress_bar {
+  background-color: var(--tertiary-bg-color);
+  width: 80%;
+  height: 32px;
+  margin: 16px auto;
+  border-radius: 10px;
+}
+
+.quiz_practice_question_content {
+  text-align: center;
+}
+
+.quiz_practice_answers_container {
+  width: min-content;
+  margin: auto;
+}
+
+.quiz_practice_answer_input {
+  background-color: var(--tertiary-bg-color);
+  border: 3px solid var(--secondary-bg-color);
+  padding: 0 4px;
+  height: 32px;
+  border-radius: 10px;
+}
+
+.quiz_practice_answer_next {
+  font-size: 32px;
+  width: min-content;
+  margin: auto;
+}
