@@ -1,46 +1,46 @@
-.quiz_practice_progress_bar {
+.practice_progress_bar {
   background-color: var(--tertiary-bg-color);
   height: 32px;
   margin: 16px;
   border-radius: 10px;
 }
 
-.quiz_practice_question_content {
+.practice_question_content {
   text-align: center;
   color: var(--secondary-bg-color);
 }
 
-.quiz_practice_form {
+.practice_form {
   display: grid;
   justify-items: stretch;
   padding: 16px;
 }
 
-.quiz_practice_form form {
+.practice_form form {
   display: flex;
   flex-direction: column;
   row-gap: 15px;
 }
 
-.quiz_practice_answer_container {
+.practice_answer_container {
   display: grid;
   grid-template-rows: min-content min-content;
   row-gap: 5px;
 }
 
-.quiz_practice_answer_content {
+.practice_answer_content {
   font-size: 20px;
   text-align: center;
 }
 
-.quiz_practice_answer_input {
+.practice_answer_input {
   font-size: large;
   padding: 0 4px;
   height: 32px;
   text-align: center;
 }
 
-.quiz_practice_answer_next {
+.practice_answer_next {
   font-size: 32px;
   width: min-content;
   margin: auto;
