@@ -7,7 +7,7 @@
       <% @current.answers.each do |answer| %>
         <div class="quiz_practice_answer_container">
           <%= form.label "#{answer.content}:", class: "quiz_practice_answer_content" %>
-          <%= form.text_field "#{answer.content}", class: "quiz_practice_answer_input" %>
+          <%= form.text_field "#{answer.content}", autocomplete: 'off', class: "quiz_practice_answer_input" %>
         </div>
       <% end %>
       <%= form.submit "Next", class: "quiz_practice_answer_next button" %>
