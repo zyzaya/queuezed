@@ -9,7 +9,7 @@ class PracticeSessionsController < ApplicationController
     end
     @quiz.practice_session = new_session
     @current = @quiz.practice_session.practice_questions.find_by(index: 0).question
-    redirect_to "/quizzes/#{params[:id]}/answer_histories/new"
+    # redirect_to "/quizzes/#{params[:id]}/answer_histories/new"
   end
 
 
