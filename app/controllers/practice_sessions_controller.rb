@@ -9,6 +9,20 @@ class PracticeSessionsController < ApplicationController
     end
     @quiz.practice_session = new_session
     @current = @quiz.practice_session.practice_questions.find_by(index: 0).question
+    redirect_to "/quizzes/#{params[:id]}/answer_histories/new"
+  end
+
+
+  def answer
+    # post answer info to db
+    # cycle practice_session current
+    puts params
+    render 'practice_sessions/immediate_feedback'
+  end
+
+  def show
+    @quiz = Quiz.find(params[:id])
+
   end
   private
 end

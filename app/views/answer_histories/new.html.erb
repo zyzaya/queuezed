@@ -1,0 +1,18 @@
+<div class="practice">
+  <%= render 'shared/header' %>
+  <div class="practice_progress_bar"></div>
+  <%= turbo_frame_tag "answer_frame" do %>
+    <div class="practice_form" id="practice_form">
+      <%= form_with do |form| %>
+        <h1 class="practice_question_content">Q. <%= @current.content %></h1>
+        <% @current.answers.each do |answer| %>
+          <div class="practice_answer_container">
+            <%= form.label "#{answer.content}:", class: "practice_answer_content" %>
+            <%= form.text_field "#{answer.content}", autocomplete: 'off', class: "practice_answer_input" %>
+          </div>
+        <% end %>
+        <%= form.submit "Next", class: "practice_answer_next button" %>
+      <% end %>
+    </div>
+  <% end %>
+</div>

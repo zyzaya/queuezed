@@ -3,7 +3,9 @@ Rails.application.routes.draw do
   resources :quizzes
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
   get '/quizzes/:id/practice', to: 'practice_sessions#new'
-  
+  get '/quizzes/:id/answer_histories/new', to: 'answer_histories#new'
+  post '/quizzes/:id/answer_histories/new', to: 'answer_histories#create'
+
   # Defines the root path route ("/")
   devise_scope :user do
     authenticated do
