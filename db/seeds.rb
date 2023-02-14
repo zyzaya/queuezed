@@ -20,26 +20,34 @@ srs1 = SrsBox.new(rank: 1)
   q = Question.new(content: "Reverse of: #{content}")
   q.answers << a
   srs1.questions << q
-  quiz1.srs_boxes << srs1
+  
 end
+quiz1.srs_boxes << srs1
 user.quizzes << quiz1
 
-# quiz2 = user.quizzes.new(name: 'Harry Potter')
-# 0.upto(10) do
-#   content = Faker::Movies::HarryPotter.character
-#   # q = Question.new(content: content)
-#   3.upto(rand(3..6)) do |n|
-#     correct = content.slice(0, n)
-#     answer = Answer.new(content: "First #{"#{n} " if n > 1}character#{'s' if n > 1}")
-#     answer.answer_variants.new(content: correct)
-#     answer.answer_variants.new(content: correct.upcase)
-#     answer.answer_variants.new(content: correct.downcase)
-#     q.answers << answer
-#   end
-#   srs = SrsBox.new(rank: 1)
-#   srs.questions << q
-#   quiz2.srs_boxes << srs
-# end
+quiz2 = user.quizzes.new(name: 'Harry Potter')
+srs2 = SrsBox.new(rank: 1)
+0.upto(10) do
+  content = Faker::Movies::HarryPotter.character
+  related = []
+  3.upto(rand(3..6)) do |n|
+    q = Question.new(content: "First #{"#{n} " if n > 1}character#{'s' if n > 1} of #{content}")
+    correct = content.slice(0, n)
+    answer = Answer.new
+    answer.answer_variants.new(content: correct)
+    answer.answer_variants.new(content: correct.upcase)
+    answer.answer_variants.new(content: correct.downcase)
+    q.answers << answer
+    srs2.questions << q
+    related << q
+  end
+  related.each do |q|
+    related.each do |r|
+      q.relations << r unless q == r
+    end
+  end
+end
+quiz2.srs_boxes << srs2
 
 quiz3 = user.quizzes.new(name: 'This is a quiz with an extremely long name to test how the web layout looks like')
 
