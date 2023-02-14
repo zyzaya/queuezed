@@ -3,9 +3,9 @@ class PracticeSessionsController < ApplicationController
     @quiz = Quiz.find(params[:id])
     session = @quiz.practice_session
     session.destroy unless session.nil?
-    new_session = PracticeSession.new(current_index: 0)
+    new_session = PracticeSession.new
     @quiz.questions.shuffle.each.with_index do |question, i|
-      new_session.practice_questions << PracticeQuestion.new(question_id: question.id, index: i)
+      new_session.practice_questions << PracticeQuestion.new(question_id: question.id, index: i, taken: false)
     end
     @quiz.practice_session = new_session
     @current = @quiz.practice_session.practice_questions.find_by(index: 0).question
@@ -16,6 +16,7 @@ class PracticeSessionsController < ApplicationController
   def answer
     # post answer info to db
     # cycle practice_session current
+    # @quiz.practice_sesson.practice_questions.order(:index).find_by(taken: false)
     puts params
     render 'practice_sessions/immediate_feedback'
   end
