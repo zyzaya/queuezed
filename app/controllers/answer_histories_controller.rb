@@ -12,11 +12,15 @@ class AnswerHistoriesController < ApplicationController
       @practice_session.answer_histories.new(answer_id: i, given: g)
     end
     @practice_session.save
-    # immediate_feedback
-    # cycle current
-    @practice_session.practice_questions.first.destroy
     @current = @practice_session.practice_questions.first.question
-    puts @current
+    # immediate_feedback
+    # for q and each related q
+    # q text
+    #  given answer | correct answer variants
+    # cycle current
+    # @practice_session.practice_questions.first.destroy # this also needs to remove question relations
+    # @current = @practice_session.practice_questions.first.question
+    # puts @current
     respond_to do |format|
       format.turbo_stream { }
       format.html { }

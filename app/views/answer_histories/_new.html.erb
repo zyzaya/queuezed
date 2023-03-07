@@ -3,7 +3,7 @@
     <%= form_with url: "/quizzes/#{quiz.id}/#{@practice_session.id}/answer_histories/new" do |form| %>
       <%= render 'answer_histories/single_question', form: form, question: @current %>
       <% @current.relations.each do |r| %>
-        <%= render 'answer_histories/single_question', form: form, question: r%>
+        <%= render 'answer_histories/single_question', form: form, question: r %>
       <% end %>
       <%= form.submit "Next", class: "practice_answer_next button" %>
     <% end %>

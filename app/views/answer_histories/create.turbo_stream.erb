@@ -1,7 +1,9 @@
 <turbo-stream action="replace" target="practice_form">
   <template>
     <div class="immediate_feedback">
-      <h1 class="practice_question_contnet">Q. <%= @current.content %></h1>
+      <% ([@current] + @current.relations).each do |r| %>
+        <%= render 'answer_histories/single_question_feedback', question: r, practice_session: @practice_session %>
+      <% end %>
     </div>
   </template>
 </turbo-stream>
