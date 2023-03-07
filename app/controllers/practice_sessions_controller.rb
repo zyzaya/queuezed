@@ -1,12 +1,12 @@
 class PracticeSessionsController < ApplicationController
   def new
     @quiz = Quiz.find(params[:id])
-    session = @quiz.practice_sessions.new
+    @practice_session = @quiz.practice_sessions.new
     @quiz.questions.shuffle.each.with_index do |question|
-      session.practice_questions << PracticeQuestion.new(question_id: question.id)
+      @practice_session.practice_questions << PracticeQuestion.new(question_id: question.id)
     end
-    session.save
-    @current = session.practice_questions.first.question
+    @practice_session.save
+    @current = @practice_session.practice_questions.first.question
     # redirect_to "/quizzes/#{params[:id]}/answer_histories/new"
   end
 

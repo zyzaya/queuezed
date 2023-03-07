@@ -4,8 +4,8 @@ Rails.application.routes.draw do
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
   get '/quizzes/:id/practice', to: 'practice_sessions#new'
   # get '/quizzes/:id/practice/:session_id', to: 'practice_sessions#edit'
-  get '/quizzes/:id/answer_histories/new', to: 'answer_histories#new'
-  post '/quizzes/:id/answer_histories/new', to: 'answer_histories#create'
+  get '/quizzes/:id/:practice_session_id/answer_histories/new', to: 'answer_histories#new'
+  post '/quizzes/:id/:practice_session_id/answer_histories/new', to: 'answer_histories#create'
 
   # Defines the root path route ("/")
   devise_scope :user do

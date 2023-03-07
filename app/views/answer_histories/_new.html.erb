@@ -1,6 +1,6 @@
 <%= turbo_frame_tag "answer_frame" do %>
   <div class="practice_form" id="practice_form">
-    <%= form_with url: "/quizzes/#{quiz.id}/answer_histories/new" do |form| %>
+    <%= form_with url: "/quizzes/#{quiz.id}/#{@practice_session.id}/answer_histories/new" do |form| %>
       <%= render 'answer_histories/single_question', form: form, question: @current %>
       <% @current.relations.each do |r| %>
         <%= render 'answer_histories/single_question', form: form, question: r%>
