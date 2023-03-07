@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_03_07_203847) do
+ActiveRecord::Schema[7.0].define(version: 2023_03_07_204224) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -19,7 +19,9 @@ ActiveRecord::Schema[7.0].define(version: 2023_03_07_203847) do
     t.bigint "answer_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.bigint "practice_session_id"
     t.index ["answer_id"], name: "index_answer_histories_on_answer_id"
+    t.index ["practice_session_id"], name: "index_answer_histories_on_practice_session_id"
   end
 
   create_table "answer_variants", force: :cascade do |t|
@@ -122,6 +124,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_03_07_203847) do
   end
 
   add_foreign_key "answer_histories", "answers"
+  add_foreign_key "answer_histories", "practice_sessions"
   add_foreign_key "answer_variants", "answers"
   add_foreign_key "answers", "questions"
   add_foreign_key "practice_questions", "practice_sessions"
