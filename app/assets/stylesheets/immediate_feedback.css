@@ -40,3 +40,9 @@
 .practice_answer_feedback_container.incorrect > .practice_answer_symbol {
   background-color: var(--invalid-color);
 }
+
+.immediate_feedback_next {
+  font-size: 32px;
+  width: min-content;
+  margin: auto;
+}

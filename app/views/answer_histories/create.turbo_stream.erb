@@ -4,6 +4,7 @@
       <% ([@current] + @current.relations).each do |r| %>
         <%= render 'answer_histories/single_question_feedback', question: r, practice_session: @practice_session %>
       <% end %>
+      <%= link_to 'Next', '', class: 'immediate_feedback_next button' %>
     </div>
   </template>
 </turbo-stream>
