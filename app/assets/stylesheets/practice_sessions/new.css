@@ -49,18 +49,36 @@
 .practice_answer_feedback_container {
   display: grid;
   justify-content: center;
-  grid-template-columns: 1fr 1fr;
-  column-gap: 5px;
+  grid-template-columns: 1fr min-content 1fr;
 }
 
-.practice_answer_container > .practice_answer_input {
-  disable
+.practice_answer_feedback_container > .practice_answer_input {
+  outline: none;
 }
 
-.practice_answer_feedback.given {
-  justify-self: end;
+.practice_answer_symbol {
+  font-size: 26px;
+  width: 32px;
+  height: 32px;
+  text-align: center;
+  color: var(--main-text-color);
+  align-self: center;
 }
 
-.practice_answer_feedback.correct {
-  justify-self: start;
+.practice_answer_feedback_container.correct > input:disabled {
+  border: 1px solid green;
+}
+
+.practice_answer_feedback_container.correct > .practice_answer_symbol {
+  background-color: green;
+}
+
+.practice_answer_feedback_container.incorrect > input:disabled {
+  border: 1px solid var(--invalid-color);
+  background-color: white;
+  color: black;
+}
+
+.practice_answer_feedback_container.incorrect > .practice_answer_symbol {
+  background-color: var(--invalid-color);
 }
