@@ -1,11 +1,9 @@
 <div class="question">
   <h1 class="practice_question_content">Q. <%= question.content %></h1>
   <% question.answers.each do |answer| %>
-    <div class="practice_answer_container">
-      <ol>
-        <li><%= practice_session.answer_histories.find_by(answer_id: answer.id).given %></li>
-        <li><%= answer.answer_variants.pluck(:content).join(" / ") %></li>
-      </ol>
+    <div class="practice_answer_feedback_container">
+      <input class="practice_answer_input given" type="text" value=<%= practice_session.answer_histories.find_by(answer_id: answer.id).given %>>
+      <input class="practice_answer_input correct" type="text" value=<%= answer.answer_variants.pluck(:content).join(" / ") %>>
     </div>  
   <% end %>
 </div>

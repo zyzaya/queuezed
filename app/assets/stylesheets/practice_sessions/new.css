@@ -45,3 +45,18 @@
   width: min-content;
   margin: auto;
 }
+
+.practice_answer_feedback_container {
+  display: grid;
+  justify-content: center;
+  grid-template-columns: 1fr 1fr;
+  column-gap: 5px;
+}
+
+.practice_answer_feedback.given {
+  justify-self: end;
+}
+
+.practice_answer_feedback.correct {
+  justify-self: start;
+}
