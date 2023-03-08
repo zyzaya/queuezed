@@ -46,10 +46,15 @@
   margin: auto;
 }
 
+.immediate_feedback {
+  display: grid;
+  row-gap: 15px;
+}
+
 .practice_answer_feedback_container {
   display: grid;
   justify-content: center;
-  grid-template-columns: 1fr min-content 1fr;
+  grid-template-columns: min-content min-content min-content;
 }
 
 .practice_answer_feedback_container > .practice_answer_input {
@@ -59,7 +64,7 @@
 .practice_answer_symbol {
   font-size: 26px;
   width: 32px;
-  height: 32px;
+  height: 100%;
   text-align: center;
   color: var(--main-text-color);
   align-self: center;
@@ -71,6 +76,7 @@
 
 .practice_answer_feedback_container.correct > .practice_answer_symbol {
   background-color: green;
+  border-radius:  0 10px 10px 0;
 }
 
 .practice_answer_feedback_container.incorrect > input:disabled {
