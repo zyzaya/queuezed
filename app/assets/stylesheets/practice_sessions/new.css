@@ -53,6 +53,10 @@
   column-gap: 5px;
 }
 
+.practice_answer_container > .practice_answer_input {
+  disable
+}
+
 .practice_answer_feedback.given {
   justify-self: end;
 }
