@@ -1,7 +1,12 @@
 class AnswerHistoriesController < ApplicationController
   def new
     @quiz = Quiz.find(params[:id])
-    @current = @quiz.practice_session.practice_questions.find_by(index: 0).question
+    @practice_session = @quiz.practice_sessions.find(params[:practice_session_id])
+    @current = @practice_session.practice_questions.second.question
+    respond_to do |format|
+      format.turbo_stream { }
+      format.html { }
+    end
   end
 
   def create

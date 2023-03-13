@@ -2,6 +2,8 @@
   <%= render 'shared/header' %>
   <div class="practice_progress_bar"></div>
   <%= turbo_frame_tag "answer_frame" do %>
-    <%= render 'answer_histories/new', quiz: @quiz %>
+    <div id="input">
+      <%= render 'answer_histories/new', quiz: @quiz %>
+    </div>
   <% end %>
 </div>
