@@ -26,10 +26,6 @@ class AnswerHistoriesController < ApplicationController
     # @practice_session.practice_questions.first.destroy # this also needs to remove question relations
     # @current = @practice_session.practice_questions.first.question
     # puts @current
-    respond_to do |format|
-      format.turbo_stream { }
-      format.html { }
-    end
   end
   private
 end
