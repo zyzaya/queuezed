@@ -9,6 +9,7 @@ class PracticeSessionsController < ApplicationController
         ids << question.id
       end
     end
+    @practice_session.length = ids.length
     @practice_session.save
     @current = @practice_session.practice_questions.first.question
   end

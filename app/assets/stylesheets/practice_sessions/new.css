@@ -1,5 +1,8 @@
 .practice_progress_bar {
   background-color: var(--tertiary-bg-color);
+  color: var(--main-text-color);
+  text-align: center;
+  font-size: x-large;
   height: 32px;
   margin: 16px;
   border-radius: 10px;

@@ -1,6 +1,6 @@
 <div class="practice">
   <%= render 'shared/header' %>
-  <div class="pratice_progress_bar"></div>
+  <%= render 'practice_sessions/progress', practice_session: @practice_session %>
   <div class="immediate_feedback" id="input">
     <% ([@current] + @current.relations).each do |r| %>
       <%= render 'answer_histories/single_question_feedback', question: r, practice_session: @practice_session %>
