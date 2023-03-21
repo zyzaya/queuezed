@@ -3,7 +3,7 @@ class AnswerHistoriesController < ApplicationController
     @quiz = Quiz.find(params[:id])
     @practice_session = @quiz.practice_sessions.find(params[:practice_session_id])
     @current = @practice_session.practice_questions.second.question
-    @practice_session.practice_questions.first.destroy
+    @practice_session.practice_questions.first.destroy # destroy related
   end
 
   def create
