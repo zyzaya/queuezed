@@ -2,8 +2,13 @@ class AnswerHistoriesController < ApplicationController
   def new
     @quiz = Quiz.find(params[:id])
     @practice_session = @quiz.practice_sessions.find(params[:practice_session_id])
-    @current = @practice_session.practice_questions.second.question
-    @practice_session.practice_questions.first.destroy # destroy related
+    if @practice_session.practice_questions.count == 1
+      render 'practice_sessions/feedback'
+    else
+      @current = @practice_session.practice_questions.second.question
+      @practice_session.practice_questions.first.destroy
+    end
+    
   end
 
   def create
