@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_03_07_211827) do
+ActiveRecord::Schema[7.0].define(version: 2023_03_21_191923) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -52,6 +52,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_03_07_211827) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.bigint "quiz_id"
+    t.integer "length"
     t.index ["quiz_id"], name: "index_practice_sessions_on_quiz_id"
   end
 
