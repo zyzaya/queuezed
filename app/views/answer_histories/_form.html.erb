@@ -1,9 +1,12 @@
-<div class="practice_form" id="input">
-  <%= form_with url: "/quizzes/#{quiz.id}/#{practice_session.id}/answer_histories/new", data: {turbo: false} do |form| %>
-    <%= render 'answer_histories/single_question', form: form, question: current %>
-    <% current.relations.each do |r| %>
-      <%= render 'answer_histories/single_question', form: form, question: r %>
+<turbo-frame id="input">
+  <%= render 'practice_sessions/progress', practice_session: @practice_session %>
+  <div class="practice_form">
+    <%= form_with url: "/quizzes/#{quiz.id}/#{practice_session.id}/answer_histories/new" do |form| %>
+      <%= render 'answer_histories/single_question', form: form, question: current %>
+      <% current.relations.each do |r| %>
+        <%= render 'answer_histories/single_question', form: form, question: r %>
+      <% end %>
+      <%= form.submit "Next", class: "practice_answer_next button" %>
     <% end %>
-    <%= form.submit "Next", class: "practice_answer_next button" %>
-  <% end %>
-</div>
+  </div>
+</turbo-frame>

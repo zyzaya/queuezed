@@ -8,7 +8,6 @@ class AnswerHistoriesController < ApplicationController
       @current = @practice_session.practice_questions.second.question
       @practice_session.practice_questions.first.destroy
     end
-    
   end
 
   def create
