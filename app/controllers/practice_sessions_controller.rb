@@ -12,6 +12,7 @@ class PracticeSessionsController < ApplicationController
     @practice_session.length = ids.length
     @practice_session.save
     @current = @practice_session.practice_questions.first.question
+    render 'answer_histories/new'
   end
 
   def show
