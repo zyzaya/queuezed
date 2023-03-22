@@ -1,7 +1,7 @@
 class PracticeSessionsController < ApplicationController
   def new
     @quiz = Quiz.find(params[:id])
-    @practice_session = @quiz.practice_sessions.new
+    @practice_session = @quiz.practice_sessions.new(current: 0)
     ids = []
     @quiz.questions.shuffle.each.with_index do |question|
       if (question.relations.pluck(:id) & ids).empty?
