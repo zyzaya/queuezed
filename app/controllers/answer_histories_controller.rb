@@ -4,9 +4,11 @@ class AnswerHistoriesController < ApplicationController
     @practice_session = @quiz.practice_sessions.find(params[:practice_session_id])
     @practice_session.current += 1
     @practice_session.save
-    @current = @practice_session.practice_questions.order(:id).offset(@practice_session.current).first.question
+    current_practice_questions = @practice_session.practice_questions.order(:id).offset(@practice_session.current).first
     if @current.nil?
       render 'practice_sessions/feedback'
+    else
+      @current
     end
   end
 
