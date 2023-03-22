@@ -1,0 +1,42 @@
+.practice {
+  display: grid;
+  grid-template-rows: min-content 1fr;
+}
+
+.feedback {
+  justify-self: center;
+  background-color: var(--secondary-bg-color);
+  display: grid;
+  grid-template-rows: min-content 1fr;
+  column-gap: 16px;
+  row-gap: 32px;
+  width: 100%;
+  max-width: 800px;
+  margin: 8px;
+  border-radius: 10px;
+}
+
+.feedback_quiz_info {
+  color: var(--main-text-color);
+  text-align: center;
+  display: grid;
+  grid-template-rows: 1fr 1fr;
+  border-bottom: 3px solid var(--secondary-bg-color-dark);
+}
+
+.feedback_quiz_title {
+  font-size: xx-large;
+}
+
+.feedback_questions {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  column-gap: 8px;
+  margin: 5px;
+}
+
+.feedback_questions div {
+  background-color: var(--tertiary-bg-color);
+  color: var(--main-text-color);
+  border-radius: 10px;
+}
