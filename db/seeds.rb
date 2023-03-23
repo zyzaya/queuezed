@@ -33,11 +33,14 @@ srs2 = SrsBox.new(rank: 1)
   3.upto(rand(3..6)) do |n|
     q = Question.new(content: "First #{"#{n} " if n > 1}character#{'s' if n > 1} of #{content}")
     correct = content.slice(0, n)
-    answer = Answer.new
-    answer.answer_variants.new(content: correct)
-    answer.answer_variants.new(content: correct.upcase)
-    answer.answer_variants.new(content: correct.downcase)
-    q.answers << answer
+    0.upto(rand(0..1)) do
+      answer = Answer.new
+      answer.answer_variants.new(content: correct)
+      answer.answer_variants.new(content: correct.upcase)
+      answer.answer_variants.new(content: correct.downcase)
+      q.answers << answer
+    end
+    
     srs2.questions << q
     related << q
   end
