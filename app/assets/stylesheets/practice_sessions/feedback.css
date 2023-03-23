@@ -28,15 +28,37 @@
   font-size: xx-large;
 }
 
-.feedback_questions {
+.feedback_info {
   display: grid;
   grid-template-columns: 1fr 1fr;
   column-gap: 8px;
   margin: 5px;
 }
 
-.feedback_questions div {
+.feedback_info > div {
   background-color: var(--tertiary-bg-color);
   color: var(--main-text-color);
+}
+
+.feedback_list {
+  display: flex;
+  flex-direction: column;
+}
+
+.feedback_list_header {
+  font-size: large;
+  border-bottom: 4px solid var(--secondary-bg-color-dark);
+  border-radius: 0;
+  padding: 4px;
+  margin: 0 4px;
+}
+
+.feedback_list_row {
+  padding: 6px 4px;
+  margin: 0 4px;
   border-radius: 10px;
+}
+
+.feedback_list_questions > div:nth-child(odd) {
+  background-color: var(--tertiary-bg-color-dark);
 }
