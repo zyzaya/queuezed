@@ -7,16 +7,20 @@
     <div class="feedback_correct">x/y or n% correct</div>
   </div>
   <div class="feedback_info">
-    <div class="feedback_list">
-      <div class="feedback_list_header">
-        Question
-      </div>
-      <div class="feedback_list_questions">
-        <% @practice_session.practice_questions.each do |pq| %>
-          <div class="feedback_list_row"><%= pq.question.content %></div>
-        <% end %>
-      </div>
-    </div>
+    <table class="feedback_list">
+      <tr class="feedback_list_header">
+        <th>Question</th>
+        <th>Streak</th>
+        <th>Best Streak</th>
+      <tr>
+      <% @practice_session.practice_questions.each do |pq| %>
+        <tr class="feedback_list_row">
+          <td><%= pq.question.content %></td>
+          <td><%= pq.question.current_streak.to_s %></td>
+          <td><%= pq.question.longest_streak.to_s %></td>
+        </tr>
+      <% end %>
+    </table>
     <div class="feedback_detail">
       deetail
     </div>

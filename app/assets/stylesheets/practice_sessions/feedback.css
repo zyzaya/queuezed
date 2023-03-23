@@ -35,14 +35,15 @@
   margin: 5px;
 }
 
-.feedback_info > div {
+.feedback_list, .feedback_detail {
   background-color: var(--tertiary-bg-color);
   color: var(--main-text-color);
 }
 
 .feedback_list {
-  display: flex;
-  flex-direction: column;
+  table-layout: fixed;
+  width: 100%;
+  height: min-content
 }
 
 .feedback_list_header {
@@ -53,12 +54,22 @@
   margin: 0 4px;
 }
 
+.feedback_list_header > td {
+  white-space: nowrap;
+}
+
 .feedback_list_row {
   padding: 6px 4px;
   margin: 0 4px;
   border-radius: 10px;
 }
 
-.feedback_list_questions > div:nth-child(odd) {
+.feedback_list_row > td {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.feedback_list_row:nth-child(odd) {
   background-color: var(--tertiary-bg-color-dark);
 }
