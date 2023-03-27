@@ -42,8 +42,11 @@
 
 .feedback_list {
   table-layout: fixed;
+  border-collapse: collapse;
   width: 100%;
-  height: min-content
+  height: min-content;
+  border-radius: 10px;
+  padding: 3px;
 }
 
 .feedback_list_header {
@@ -58,18 +61,20 @@
   white-space: nowrap;
 }
 
-.feedback_list_row {
-  padding: 6px 4px;
-  margin: 0 4px;
-  border-radius: 10px;
-}
-
-.feedback_list_row > td {
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
+.feedback_list_row:hover {
+  border: 2px solid var(--secondary-bg-color-dark);
 }
 
 .feedback_list_row:nth-child(odd) {
   background-color: var(--tertiary-bg-color-dark);
+}
+
+.feedback_list_row_select, .feedback_list_row_select:visited {
+  display: block;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  color: var(--main-text-color);
+  text-decoration: none;
+  padding: 8px 3px;
 }
