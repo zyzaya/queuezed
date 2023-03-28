@@ -6,7 +6,7 @@
     <div class="feedback_quiz_title">Quiz Title</div>
     <div class="feedback_correct">x/y or n% correct</div>
   </div>
-  <div class="feedback_info">  
+  <div class="feedback_info"> 
     <table class="feedback_list">
       <tr class="feedback_list_header">
         <th>Question</th>
@@ -14,16 +14,17 @@
         <th>Best Streak</th>
       <tr>
       <% @practice_session.practice_questions.each do |pq| %>
+        <% link = "/quizzes/#{@quiz.id}/#{@practice_session.id}/practice_questions/#{pq.id}"%>
         <tr class="feedback_list_row">
-          <td><%= link_to "#{pq.question.content}", "", class: "feedback_list_row_select" %></td>
-          <td><%= link_to "#{pq.question.current_streak.to_s}0", "", class: "feedback_list_row_select" %></td>
-          <td><%= link_to "#{pq.question.longest_streak.to_s}0", "", class: "feedback_list_row_select" %></td>
+          <td><%= link_to "#{pq.question.content}", link, class: "feedback_list_row_select", data: {"turbo-frame" => "feedback_detail"} %></td>
+          <td><%= link_to "#{pq.question.current_streak.to_s}0", link, class: "feedback_list_row_select", data: {"turbo-frame" => "feedback_detail"} %></td>
+          <td><%= link_to "#{pq.question.longest_streak.to_s}0", link, class: "feedback_list_row_select", data: {"turbo-frame" => "feedback_detail"} %></td>
         </tr>
       <% end %>
     </table>
-    <div class="feedback_detail">
+    <turbo-frame class="feedback_detail" id="feedback_detail" >
       deetail
-    </div>
+    </turbo-frame>
   </div>
   
  </div>
