@@ -1,6 +1,5 @@
 <div class="practice">
  <%= render 'shared/header' %>
- <%# <%= "You've completed #{@practice_session.length} questions from the quiz, \"#{@quiz.name}\"" %>
  <div class="feedback">
   <div class="feedback_quiz_info">
     <div class="feedback_quiz_title">Quiz Title</div>
@@ -26,6 +25,6 @@
       deetail
     </turbo-frame>
   </div>
-  
  </div>
 </div>
+<%= stylesheet_link_tag "practice_sessions/feedback", "data-turbo-track": "reload" %>
