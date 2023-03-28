@@ -13,7 +13,7 @@
         <th>Best Streak</th>
       <tr>
       <% @practice_session.practice_questions.each do |pq| %>
-        <% link = "/quizzes/#{@quiz.id}/#{@practice_session.id}/practice_questions/#{pq.id}"%>
+        <% link = "/quizzes/#{@quiz.id}/practice/#{@practice_session.id}/questions/#{pq.id}"%>
         <tr class="list_row">
           <td><%= link_to "#{pq.question.content}", link, data: {"turbo-frame" => "feedback_detail"} %></td>
           <td><%= link_to "#{pq.question.current_streak.to_s}0", link, data: {"turbo-frame" => "feedback_detail"} %></td>
