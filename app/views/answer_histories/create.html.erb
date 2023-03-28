@@ -4,6 +4,6 @@
     <% ([@current] + @current.relations).each do |r| %>
       <%= render 'answer_histories/single_question_feedback', question: r, practice_session: @practice_session %>
     <% end %>
-    <%= link_to 'Next', "/quizzes/#{@quiz.id}/#{@practice_session.id}/answer_histories/new", class: 'immediate_feedback_next button' %>
+    <%= link_to 'Next', "/quizzes/#{@quiz.id}/practice/#{@practice_session.id}/answers/new", class: 'immediate_feedback_next button' %>
   </div>
 </turbo-frame>
