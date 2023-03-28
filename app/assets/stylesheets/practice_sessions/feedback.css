@@ -16,7 +16,7 @@
   border-radius: 10px;
 }
 
-.feedback_quiz_info {
+.quiz_info {
   color: var(--main-text-color);
   text-align: center;
   display: grid;
@@ -24,7 +24,7 @@
   border-bottom: 3px solid var(--secondary-bg-color-dark);
 }
 
-.feedback_quiz_title {
+.quiz_title {
   font-size: xx-large;
 }
 
@@ -35,12 +35,12 @@
   margin: 5px;
 }
 
-.feedback_list, .feedback_detail {
+.question_list, .question_detail {
   background-color: var(--tertiary-bg-color);
   color: var(--main-text-color);
 }
 
-.feedback_list {
+.question_list {
   table-layout: fixed;
   border-collapse: collapse;
   width: 100%;
@@ -49,7 +49,7 @@
   padding: 3px;
 }
 
-.feedback_list_header {
+.list_header {
   font-size: large;
   border-bottom: 4px solid var(--secondary-bg-color-dark);
   border-radius: 0;
@@ -61,15 +61,15 @@
   white-space: nowrap;
 }
 
-.feedback_list_row:hover {
+.list_row:hover {
   border: 2px solid var(--secondary-bg-color-dark);
 }
 
-.feedback_list_row:nth-child(odd) {
+.list_row:nth-child(odd) {
   background-color: var(--tertiary-bg-color-dark);
 }
 
-.feedback_list_row_select, .feedback_list_row_select:visited {
+.list_row > td > a, .list_row > td > a:visited {
   display: block;
   white-space: nowrap;
   overflow: hidden;
