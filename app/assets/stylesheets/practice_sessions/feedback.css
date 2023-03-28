@@ -36,7 +36,7 @@
 }
 
 .question_list, .question_detail {
-  background-color: var(--tertiary-bg-color);
+  background-color: var(--tertiary-bg-color-dark);
   color: var(--main-text-color);
 }
 
@@ -66,7 +66,7 @@
 }
 
 .list_row:nth-child(odd) {
-  background-color: var(--tertiary-bg-color-dark);
+  background-color: var(--tertiary-bg-color);
 }
 
 .list_row > td > a, .list_row > td > a:visited {
@@ -77,4 +77,56 @@
   color: var(--main-text-color);
   text-decoration: none;
   padding: 8px 3px;
+}
+
+.question_detail {
+  display: flex;
+  flex-direction: column;
+}
+
+.question_content {
+  text-align: center;
+  color: var(--main-text-color);
+  font-size: large;
+}
+
+.feedback_container {
+  margin: 10px 0;
+  display: grid;
+  justify-content: center;
+  grid-template-columns: repeat(3, min-content);
+}
+
+.answer_input {
+  height: 24px;
+  text-align: center;
+  color: var(--main-text-color);
+  background-color: var(--tertiary-bg-color);
+}
+
+
+.answer_symbol {
+  font-size: 18px;
+  width: 16px;
+  height: 100%;
+  text-align: center;
+  color: var(--main-text-color);
+  align-self: center;
+}
+
+.feedback_container.correct > input:disabled {
+  border: 1px solid var(--valid-color);
+}
+
+.feedback_container.correct > .answer_symbol {
+  background-color: var(--valid-color);
+  border-radius: 0 10px 10px 0;
+}
+
+.feedback_container.incorrect > input:disabled {
+  border: 1px solid var(--invalid-color);
+}
+
+.feedback_container.incorrect > .answer_symbol {
+  background-color: var(--invalid-color);
 }

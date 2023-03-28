@@ -23,6 +23,7 @@
   --main-text-color: white;
   --secondary-text-color: rgb(75, 75, 75);
   --invalid-color: rgb(134, 27, 27);
+  --valid-color: rgb(116, 175, 48);
 }
 
 * {
