@@ -1,8 +1,8 @@
 <div class="question">
-  <h1 class="practice_question_content">Q. <%= question.content %></h1>
+  <h1 class="question_content">Q. <%= question.content %></h1>
   <% question.answers.each do |answer| %>
-    <div class="practice_answer_container">
-      <%= form.text_field "given[#{answer.id}]", autocomplete: 'off', class: "practice_answer_input" %>
+    <div class="answer_container">
+      <%= form.text_field "given[#{answer.id}]", autocomplete: 'off', class: "answer_input" %>
     </div>  
   <% end %>
 </div>

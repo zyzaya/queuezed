@@ -6,7 +6,7 @@
       <% current.relations.each do |r| %>
         <%= render 'answer_histories/single_question', form: form, question: r %>
       <% end %>
-      <%= form.submit "Next", class: "practice_answer_next button" %>
+      <%= form.submit "Next", class: "answer_next button" %>
     <% end %>
   </div>
 </turbo-frame>

@@ -8,7 +8,7 @@
   border-radius: 10px;
 }
 
-.practice_question_content {
+.question_content {
   text-align: center;
   color: var(--secondary-bg-color);
 }
@@ -25,7 +25,7 @@
   row-gap: 15px;
 }
 
-.practice_answer_container {
+.answer_container {
   display: grid;
   grid-template-rows: min-content min-content;
   row-gap: 5px;
@@ -36,14 +36,14 @@
   text-align: center;
 }
 
-.practice_answer_input {
+.answer_input {
   font-size: large;
   padding: 0 4px;
   height: 32px;
   text-align: center;
 }
 
-.practice_answer_next {
+.answer_next {
   font-size: 32px;
   width: min-content;
   margin: auto;
@@ -54,17 +54,17 @@
   row-gap: 15px;
 }
 
-.practice_answer_feedback_container {
+.feedback_container {
   display: grid;
   justify-content: center;
   grid-template-columns: min-content min-content min-content;
 }
 
-.practice_answer_feedback_container > .practice_answer_input {
+.feedback_container > .answer_input {
   outline: none;
 }
 
-.practice_answer_symbol {
+.answer_symbol {
   font-size: 26px;
   width: 32px;
   height: 100%;
@@ -73,22 +73,22 @@
   align-self: center;
 }
 
-.practice_answer_feedback_container.correct > input:disabled {
+.feedback_container.correct > input:disabled {
   border: 1px solid green;
 }
 
-.practice_answer_feedback_container.correct > .practice_answer_symbol {
+.feedback_container.correct > .answer_symbol {
   background-color: green;
   border-radius:  0 10px 10px 0;
 }
 
-.practice_answer_feedback_container.incorrect > input:disabled {
+.feedback_container.incorrect > input:disabled {
   border: 1px solid var(--invalid-color);
   background-color: white;
   color: black;
 }
 
-.practice_answer_feedback_container.incorrect > .practice_answer_symbol {
+.feedback_container.incorrect > .answer_symbol {
   background-color: var(--invalid-color);
 }
 

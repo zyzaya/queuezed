@@ -1,16 +1,16 @@
 <div class="question">
-  <h1 class="practice_question_content">Q. <%= question.content %></h1>
+  <h1 class="question_content">Q. <%= question.content %></h1>
   <% question.answers.each do |answer| %>
     <% 
       history = practice_session.answer_histories.find_by(answer_id: answer.id) 
       variants = answer.answer_variants.pluck(:content)
       correct = variants.include?(history.given)
     %>
-    <div class="practice_answer_feedback_container <%= correct ? "correct" : "incorrect" %>">
-      <input class="practice_answer_input" type="text" value="<%= history.given %>" disabled>
-      <div class="practice_answer_symbol"><%= correct ? "✓" : "x" %></div>
+    <div class="feedback_container <%= correct ? "correct" : "incorrect" %>">
+      <input class="answer_input" type="text" value="<%= history.given %>" disabled>
+      <div class="answer_symbol"><%= correct ? "✓" : "x" %></div>
       <% unless correct %>
-        <input class="practice_answer_input" type="text" value="<%= variants.join(" / ") %>" disabled>
+        <input class="answer_input" type="text" value="<%= variants.join(" / ") %>" disabled>
       <% end %>
     </div>  
   <% end %>
