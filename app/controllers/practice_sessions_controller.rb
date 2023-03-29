@@ -3,7 +3,7 @@ class PracticeSessionsController < ApplicationController
     @quiz = Quiz.find(params[:id])
     @practice_session = @quiz.practice_sessions.new(current: 0)
     ids = []
-    @quiz.questions.shuffle.each.with_index do |question|
+    @quiz.questions.includes(:relations).shuffle.each.with_index do |question|
       if (question.relations.pluck(:id) & ids).empty?
         @practice_session.practice_questions << PracticeQuestion.new(question_id: question.id)
         ids << question.id

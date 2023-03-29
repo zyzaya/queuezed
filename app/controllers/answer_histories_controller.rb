@@ -14,7 +14,7 @@ class AnswerHistoriesController < ApplicationController
 
   def create
     @quiz = Quiz.find(params[:quiz_id])
-    @practice_session = PracticeSession.find(params[:session_id])
+    @practice_session = PracticeSession.includes(:answer_histories, :practice_questions).find(params[:session_id])
     params[:given].each do |i, g|
       @practice_session.answer_histories.new(answer_id: i, given: g)
     end
