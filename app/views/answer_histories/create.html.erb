@@ -1,8 +1,8 @@
 <turbo-frame class="immediate_feedback" id="input">
   <%= render 'practice_sessions/progress', practice_session: @practice_session %>
   <div class="immediate_feedback">
-    <% ([@current] + @current.relations).each do |r| %>
-      <%= render 'answer_histories/single_question_feedback', question: r, practice_session: @practice_session %>
+    <% @questions.each do |q| %>
+      <%= render 'answer_histories/single_question_feedback', question: q, practice_session: @practice_session %>
     <% end %>
     <%= link_to 'Next', "/quizzes/#{@quiz.id}/practice/#{@practice_session.id}/answers/new", class: 'immediate_feedback_next button' %>
   </div>
