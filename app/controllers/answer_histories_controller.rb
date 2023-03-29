@@ -5,6 +5,8 @@ class AnswerHistoriesController < ApplicationController
     @practice_session.current += 1
     @practice_session.save
     if @practice_session.current > @practice_session.length - 1
+      question_ids = @practice_session.order.map { |q| q.filter { |e| !e.nil? }.first }
+      @questions = Question.where(id: question_ids)
       render 'practice_sessions/feedback'
     else
       current_question_ids = @practice_session.order[@practice_session.current].filter { |e| !e.nil? }

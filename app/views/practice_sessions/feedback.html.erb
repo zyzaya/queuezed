@@ -12,12 +12,12 @@
         <th>Streak</th>
         <th>Best Streak</th>
       <tr>
-      <% @practice_session.practice_questions.each do |pq| %>
-        <% link = "/quizzes/#{@quiz.id}/practice/#{@practice_session.id}/questions/#{pq.id}"%>
+      <% @questions.each do |q| %>
+        <% link = "/quizzes/#{@quiz.id}/practice/#{@practice_session.id}/questions/#{q.id}"%>
         <tr class="list_row">
-          <td><%= link_to "#{pq.question.content}", link, data: {"turbo-frame" => "feedback_detail"} %></td>
-          <td><%= link_to "#{pq.question.current_streak.to_s}0", link, data: {"turbo-frame" => "feedback_detail"} %></td>
-          <td><%= link_to "#{pq.question.longest_streak.to_s}0", link, data: {"turbo-frame" => "feedback_detail"} %></td>
+          <td><%= link_to "#{q.content}", link, data: {"turbo-frame" => "feedback_detail"} %></td>
+          <td><%= link_to "#{q.current_streak.to_s}0", link, data: {"turbo-frame" => "feedback_detail"} %></td>
+          <td><%= link_to "#{q.longest_streak.to_s}0", link, data: {"turbo-frame" => "feedback_detail"} %></td>
         </tr>
       <% end %>
     </table>
