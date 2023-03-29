@@ -1,5 +1,5 @@
 <div class="practice">
   <%= render 'shared/header' %>
-  <%= render 'answer_histories/form', quiz: @quiz, practice_session: @practice_session, current: @current %>
+  <%= render 'answer_histories/form', quiz: @quiz, practice_session: @practice_session, questions: @questions %>
 </div>
 <%= stylesheet_link_tag "practice_sessions/new", "data-turbo-track": "reload" %>

@@ -1,17 +1,20 @@
 class PracticeSessionsController < ApplicationController
   def new
     @quiz = Quiz.find(params[:id])
-    @practice_session = @quiz.practice_sessions.new(current: 0)
     ids = []
+    order = []
     @quiz.questions.includes(:relations).shuffle.each.with_index do |question|
-      if (question.relations.pluck(:id) & ids).empty?
-        @practice_session.practice_questions << PracticeQuestion.new(question_id: question.id)
-        ids << question.id
+      unless ids.include?(question.id)
+        q_ids = [question.id] + question.relations.pluck(:id)
+        order << q_ids
+        ids += q_ids
       end
     end
-    @practice_session.length = ids.length
-    @practice_session.save
-    @current = @practice_session.practice_questions.first.question
+    max = order.max { |a, b| a.length <=> b.length }.length
+    order.map { |e| e.fill(nil, e.length, max - e.length) }
+    @practice_session = @quiz.practice_sessions.create(current: 0, length: order.length, order: order)
+    current_question_ids = @practice_session.order[0].filter { |e| !e.nil? }
+    @questions = Question.includes(:answers).where(id: current_question_ids)
   end
 
   def show
