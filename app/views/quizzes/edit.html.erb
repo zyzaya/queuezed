@@ -1,22 +1,36 @@
 <div class="quizzes_edit">
   <%= render 'shared/header' %>
-  <%= link_to '<- Return to all Quizzes', quizzes_path, class: 'button' %>
-  <h1><%= @quiz.name %></h1><br>
-  <span>Created at: </span><span><%= @quiz.created_at %></span>
-  <h2>Questions</h2>
-  <ul>
-    <% @quiz.questions.each do |question| %>
-      <li>
-        <h3><%= question.content %></h3>
-        <ul>
-          <% question.answers.each do |answer| %>
-            <li>
-              <span><%= answer.content %>:</span>
-              <%= answer.answer_variants.pluck(:content).join(', ') %>
-            </li>
-          <% end %>
-        </ul>
-      </li>
-    <% end %>
-  </ul>
+  <div class="edit">
+    <div class="quiz_info">
+      <h1 class="quiz_title"><%= @quiz.name %></h1>
+      <div class="question_count"><%= @quiz.questions.count %> questions</div>
+    </div>
+    <div class="toolbar">
+      <a class="button">undo</a>
+      <a class="button">redo</a>
+      <a class="button">new q</a>
+      <a class="button">save</a>
+    </div>
+    <div class="edit_frame">
+      <table class="question_list">
+        <tr class="list_header">
+          <th>Question</th>
+          <th>Streak</th>
+          <th>Best Streak</th>
+        </tr>
+        <% @quiz.questions.each do |q| %>
+          <% link = "" %>
+          <tr class="list_row">
+            <td><%= link_to "#{q.content}", link, data: {"turbo-frame" => "edit_detail"} %></td>
+            <td><%= link_to "#{q.current_streak.to_s}0", link, data: {"turbo-frame" => "edit_detail"} %></td>
+            <td><%= link_to "#{q.longest_streak.to_s}0", link, data: {"turbo-frame" => "edit_detail"} %></td>
+          </tr>
+        <% end %>
+      </table>
+      <div class="question_detail" id="edit_detail" >
+        deeetail
+      </div>
+    </div>
+  </div>
 </div>
+<%= stylesheet_link_tag "quizzes/edit", "data-turbo-track": "reload" %>
