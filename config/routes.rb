@@ -9,6 +9,7 @@ Rails.application.routes.draw do
   get '/quizzes/:id/:practice_session_id/practice_questions/:practice_question_id', to: 'practice_questions#show'
 
   get '/quizzes/:quiz_id/practice/:session_id/questions/:question_id', to: 'practice_questions#show'
+  get '/quizzes/:quiz_id/edit/questions/:question_id', to: 'questions#edit'
   # Defines the root path route ("/")
   devise_scope :user do
     authenticated do

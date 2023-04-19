@@ -19,7 +19,7 @@
           <th>Best Streak</th>
         </tr>
         <% @quiz.questions.each do |q| %>
-          <% link = "" %>
+          <% link = "/quizzes/#{@quiz.id}/edit/questions/#{q.id}" %>
           <tr class="list_row">
             <td><%= link_to "#{q.content}", link, data: {"turbo-frame" => "edit_detail"} %></td>
             <td><%= link_to "#{q.current_streak.to_s}0", link, data: {"turbo-frame" => "edit_detail"} %></td>
@@ -27,9 +27,9 @@
           </tr>
         <% end %>
       </table>
-      <div class="question_detail" id="edit_detail" >
+      <turbo-frame class="question_detail" id="edit_detail" >
         deeetail
-      </div>
+      </turbo-frame>
     </div>
   </div>
 </div>

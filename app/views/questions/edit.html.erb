@@ -1,0 +1,16 @@
+<turbo-frame id="edit_detail">
+  <div class="question_tags">
+    <div>Tags</div>
+    <a class="button add_tag">ADD</a>
+  </div>
+  <hr>
+  <%= render 'questions/single_question_edit', question: @question %>
+  <hr>
+  <div class="related_questions_header">Related Questions</div>
+  <hr>
+  <% @question.relations.each do |q| %>
+    <%= render 'questions/single_question_edit', question: q %>
+    <hr>
+  <% end %>
+  </div>
+</turbo-frame>
