@@ -9,5 +9,9 @@ class QuizzesController < ApplicationController
     @quiz = Quiz.find(params[:id])
   end
 
+  def update
+    render plain: ""
+  end
+
   private
 end
