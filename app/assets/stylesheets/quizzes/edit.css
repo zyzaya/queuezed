@@ -79,8 +79,7 @@
   background-color: var(--tertiary-bg-color);
 }
 
-.list_row > td > a, .list_row > td > a:visited {
-  display: block;
+.list_row > td {
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
