@@ -1,4 +1,4 @@
-<div class="quizzes_edit">
+<div class="quizzes_edit" id= <%= @quiz.id %>>
   <%= render 'shared/header' %>
   <div class="edit">
     <div class="quiz_info">
@@ -19,11 +19,10 @@
           <th>Best Streak</th>
         </tr>
         <% @quiz.questions.each do |q| %>
-          <% link = "/quizzes/#{@quiz.id}/edit/questions/#{q.id}" %>
-          <tr class="list_row">
-            <td><%= link_to "#{q.content}", link, data: {"turbo-frame" => "edit_detail"} %></td>
-            <td><%= link_to "#{q.current_streak.to_s}0", link, data: {"turbo-frame" => "edit_detail"} %></td>
-            <td><%= link_to "#{q.longest_streak.to_s}0", link, data: {"turbo-frame" => "edit_detail"} %></td>
+          <tr class="list_row" id= <%= q.id %>>
+            <td><%= "#{q.content}"%></td>
+            <td><%= "#{q.current_streak}0"%></td>
+            <td><%= "#{q.longest_streak}0"%></td>
           </tr>
         <% end %>
       </table>
@@ -34,3 +33,4 @@
   </div>
 </div>
 <%= stylesheet_link_tag "quizzes/edit", "data-turbo-track": "reload" %>
+<%= javascript_include_tag "quizzes/edit", "data-turbo-track": "reload" %>
