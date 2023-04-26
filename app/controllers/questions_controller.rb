@@ -9,7 +9,7 @@ class QuestionsController < ApplicationController
   def new
     @quiz = Quiz.find(params[:quiz_id])
     @question = @quiz.srs_boxes.first.questions.create
-    render 'questions/edit'
+    render json: @question
   end
   private
 end

@@ -9,25 +9,29 @@ let detail_frame = document.getElementById('edit_detail');
 let previous_id = null;
 let current_id = null;
 
+function setQuestion(id) {
+  previous_id = current_id;
+  current_id = id;
+  fetch(`/quizzes/${quiz_id}/update`, {
+    method: 'POST',
+    body: JSON.stringify(changes),
+    headers: {
+      'Content-Type': 'application/json',
+      'X-CSRF-Token': csrf,
+    },
+    credentials: 'same-origin',
+  }).then(() => {
+    Turbo.visit(`/quizzes/${quiz_id}/edit/questions/${current_id}/edit`, {
+      frame: 'edit_detail',
+      action: 'replace',
+    });
+  });
+}
+
 // table row click
 for (let i = 0; i < rows.length; i++) {
   rows[i].onclick = () => {
-    previous_id = current_id;
-    current_id = rows[i].id;
-    fetch(`/quizzes/${quiz_id}/update`, {
-      method: 'POST',
-      body: JSON.stringify(changes),
-      headers: {
-        'Content-Type': 'application/json',
-        'X-CSRF-Token': csrf,
-      },
-      credentials: 'same-origin',
-    }).then(() => {
-      Turbo.visit(`/quizzes/${quiz_id}/edit/questions/${current_id}/edit`, {
-        frame: 'edit_detail',
-        action: 'replace',
-      });
-    });
+    setQuestion(rows[i].id);
   };
 }
 
@@ -40,14 +44,41 @@ detail_frame.addEventListener('turbo:frame-render', (event) => {
 });
 
 // new question
+let question_table = document.getElementById('question_list').firstElementChild;
+function addRow(question) {
+  let row = document.createElement('tr');
+  row.classList.add('list_row');
+  row.id = question.id;
+  let content = document.createElement('td');
+  let current_streak = document.createElement('td');
+  current_streak.textContent = '0';
+  let longest_streak = document.createElement('td');
+  longest_streak.textContent = '0';
+
+  row.appendChild(content);
+  row.appendChild(current_streak);
+  row.appendChild(longest_streak);
+  row.onclick = () => setQuestion(question.id);
+  question_table.appendChild(row);
+}
+
 let new_question = document.getElementById('new_question');
+
 new_question.onclick = (e) => {
   console.log('new question');
-  Turbo.visit(`/quizzes/${quiz_id}/edit/questions/new`, {
-    frame: 'edit_detail',
-    action: 'replace',
-  });
-  // add table row
+  console.log(quiz_id);
+  fetch(`/quizzes/${quiz_id}/edit/questions/new`)
+    .then((response) => response.json())
+    .then((question) => {
+      console.log(question);
+      previous_id = current_id;
+      current_id = question.id;
+      Turbo.visit(`/quizzes/${quiz_id}/edit/questions/${current_id}/edit`, {
+        frame: 'edit_detail',
+        action: 'replace',
+      });
+      addRow(question);
+    });
 };
 
 /* 
