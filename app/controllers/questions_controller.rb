@@ -11,5 +11,12 @@ class QuestionsController < ApplicationController
     @question = @quiz.srs_boxes.first.questions.create
     render json: @question
   end
+
+  def delete
+    @quiz = Quiz.find(params[:quiz_id])
+    @question = Question.find(params[:question_id])
+    @question.destroy
+    render json: @question
+  end
   private
 end

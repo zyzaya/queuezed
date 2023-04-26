@@ -11,7 +11,7 @@ Rails.application.routes.draw do
   
   get '/quizzes/:quiz_id/edit/questions/:question_id/edit', to: 'questions#edit'
   get '/quizzes/:quiz_id/edit/questions/new', to: 'questions#new'
-
+  delete '/quizzes/:quiz_id/edit/questions/:question_id', to: 'questions#delete'
 
   post '/quizzes/:quiz_id/update', to: 'quizzes#update'
 

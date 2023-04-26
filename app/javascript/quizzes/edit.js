@@ -2,6 +2,7 @@ console.log('yes this this working');
 
 // add click evenet to every list row
 let csrf = document.head.querySelector('meta[name=csrf-token]')?.content;
+let question_table = document.getElementById('question_list').firstElementChild;
 let changes = { a: '' };
 let quiz_id = document.getElementsByClassName('quizzes_edit')[0].id;
 let rows = document.getElementsByClassName('list_row');
@@ -9,7 +10,7 @@ let detail_frame = document.getElementById('edit_detail');
 let previous_id = null;
 let current_id = null;
 
-function setQuestion(id) {
+function setSelectedQuestion(id) {
   previous_id = current_id;
   current_id = id;
   fetch(`/quizzes/${quiz_id}/update`, {
@@ -28,23 +29,54 @@ function setQuestion(id) {
   });
 }
 
+function removeRow(id) {
+  let row = document.getElementById(id);
+  row.remove();
+}
+
+function deleteQuestion(id) {
+  // server delete
+  fetch(`/quizzes/${quiz_id}/edit/questions/${current_id}`, {
+    method: 'DELETE',
+    headers: {
+      'Content-Type': 'application/json',
+      'X-CSRF-Token': csrf,
+    },
+    credentials: 'same-origin',
+  });
+  //
+  // set question to sibling id
+  let current = document.getElementById(current_id);
+  let next = current.nextElementSibling;
+  let previous = current.previousElementSibling;
+  if (next != null) {
+    setSelectedQuestion(next.id);
+  } else if (previous != null) {
+    setSelectedQuestion(previous.id);
+  } else {
+    // clearSelectedQuestion()
+  }
+  removeRow(previous_id);
+}
+
 // table row click
 for (let i = 0; i < rows.length; i++) {
-  rows[i].onclick = () => {
-    setQuestion(rows[i].id);
-  };
+  rows[i].onclick = () => setSelectedQuestion(rows[i].id);
 }
 
 // question focus
 detail_frame.addEventListener('turbo:frame-render', (event) => {
-  if (previous_id != null) {
-    document.getElementById(previous_id).classList.remove('active_question');
+  let previous = document.getElementById(previous_id);
+  if (previous != null) {
+    previous.classList.remove('active_question');
   }
   document.getElementById(current_id).classList.add('active_question');
+  document.getElementById('delete_question').onclick = () => {
+    deleteQuestion(current_id);
+  };
 });
 
 // new question
-let question_table = document.getElementById('question_list').firstElementChild;
 function addRow(question) {
   let row = document.createElement('tr');
   row.classList.add('list_row');
@@ -58,7 +90,7 @@ function addRow(question) {
   row.appendChild(content);
   row.appendChild(current_streak);
   row.appendChild(longest_streak);
-  row.onclick = () => setQuestion(question.id);
+  row.onclick = () => setSelectedQuestion(question.id);
   question_table.appendChild(row);
 }
 
