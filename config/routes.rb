@@ -7,9 +7,11 @@ Rails.application.routes.draw do
   post '/quizzes/:quiz_id/practice/:session_id/answers/new', to: 'answer_histories#create'
 
   get '/quizzes/:id/:practice_session_id/practice_questions/:practice_question_id', to: 'practice_questions#show'
-
   get '/quizzes/:quiz_id/practice/:session_id/questions/:question_id', to: 'practice_questions#show'
-  get '/quizzes/:quiz_id/edit/questions/:question_id', to: 'questions#edit'
+  
+  get '/quizzes/:quiz_id/edit/questions/:question_id/edit', to: 'questions#edit'
+  get '/quizzes/:quiz_id/edit/questions/new', to: 'questions#new'
+
 
   post '/quizzes/:quiz_id/update', to: 'quizzes#update'
 

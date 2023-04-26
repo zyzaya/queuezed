@@ -13,5 +13,6 @@ class QuizzesController < ApplicationController
     render plain: ""
   end
 
+
   private
 end

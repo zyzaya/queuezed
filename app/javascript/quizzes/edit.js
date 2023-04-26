@@ -7,8 +7,7 @@ let quiz_id = document.getElementsByClassName('quizzes_edit')[0].id;
 let rows = document.getElementsByClassName('list_row');
 let detail_frame = document.getElementById('edit_detail');
 
-function setDetails(info) {}
-
+// table row click
 for (let i = 0; i < rows.length; i++) {
   rows[i].onclick = () => {
     console.log(`hi ${rows[i].id}`);
@@ -22,7 +21,7 @@ for (let i = 0; i < rows.length; i++) {
       },
       credentials: 'same-origin',
     }).then(() => {
-      Turbo.visit(`/quizzes/${quiz_id}/edit/questions/${q_id}`, {
+      Turbo.visit(`/quizzes/${quiz_id}/edit/questions/${q_id}/edit`, {
         frame: 'edit_detail',
         action: 'replace',
       });
@@ -30,9 +29,15 @@ for (let i = 0; i < rows.length; i++) {
   };
 }
 
-detail_frame.addEventListener('turbo:frame-render', (event) => {
-  console.log(event.detail.fetchResponse);
-});
+// new question
+let new_question = document.getElementById('new_question');
+new_question.onclick = (e) => {
+  console.log('new question');
+  Turbo.visit(`/quizzes/${quiz_id}/edit/questions/new`, {
+    frame: 'edit_detail',
+    action: 'replace',
+  });
+};
 
 /* 
   apply local changes client side

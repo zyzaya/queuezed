@@ -5,5 +5,12 @@ class QuestionsController < ApplicationController
     
     # render json: @question
   end
+
+  def new
+    @quiz = Quiz.find(params[:quiz_id])
+    @question = @quiz.questions.create
+
+    render 'questions/edit'
+  end
   private
 end
