@@ -47,6 +47,7 @@ new_question.onclick = (e) => {
     frame: 'edit_detail',
     action: 'replace',
   });
+  // add table row
 };
 
 /* 
