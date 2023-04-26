@@ -4,7 +4,10 @@
   <div class="answers_header">Answer(s).</div>
   <% question.answers.each do |answer| %>
     <% variants = answer.answer_variants.pluck(:content) %>
-    <textarea class="answer_content" rows="1" ><%= variants.join(" / ") %></textarea>
+    <div class="answer_container">
+      <textarea class="answer_content" rows="1" ><%= variants.join(" / ") %></textarea>
+      <a class="button">[X]</a>
+    </div>
   <% end %>
   <a class="button add_answer">Add Answer</a>
 </div>

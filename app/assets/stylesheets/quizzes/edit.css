@@ -103,13 +103,17 @@ hr {
 
 .question_tags {
   display: grid;
-  grid-template-columns: min-content min-content;
+  grid-template-columns: min-content min-content 1fr;
   column-gap: 8px;
 }
 
 .add_tag {
   border-radius: none;
   font-size: small;
+}
+
+.delete_question {
+  justify-self: end;
 }
 
 .related_questions_header {
@@ -138,6 +142,11 @@ hr {
 .question_content {
   resize: vertical;
   height: 80px;
+}
+
+.answer_container {
+  display: grid;
+  grid-template-columns: 1fr min-content;
 }
 
 .answer_content {
