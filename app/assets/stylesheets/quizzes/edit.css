@@ -72,7 +72,7 @@
 }
 
 .list_row:hover {
-  border: 2px solid var(--secondary-bg-color-dark);
+  border: 2px solid var(--secondary-bg-color);
 }
 
 .list_row:nth-child(odd) {
@@ -86,6 +86,10 @@
   color: var(--main-text-color);
   text-decoration: none;
   padding: 8px 3px;
+}
+
+.active_question {
+  border: 2px solid var(--secondary-bg-color-dark);
 }
 
 hr {

@@ -6,12 +6,14 @@ let changes = { a: '' };
 let quiz_id = document.getElementsByClassName('quizzes_edit')[0].id;
 let rows = document.getElementsByClassName('list_row');
 let detail_frame = document.getElementById('edit_detail');
+let previous_id = null;
+let current_id = null;
 
 // table row click
 for (let i = 0; i < rows.length; i++) {
   rows[i].onclick = () => {
-    console.log(`hi ${rows[i].id}`);
-    let q_id = rows[i].id;
+    previous_id = current_id;
+    current_id = rows[i].id;
     fetch(`/quizzes/${quiz_id}/update`, {
       method: 'POST',
       body: JSON.stringify(changes),
@@ -21,13 +23,21 @@ for (let i = 0; i < rows.length; i++) {
       },
       credentials: 'same-origin',
     }).then(() => {
-      Turbo.visit(`/quizzes/${quiz_id}/edit/questions/${q_id}/edit`, {
+      Turbo.visit(`/quizzes/${quiz_id}/edit/questions/${current_id}/edit`, {
         frame: 'edit_detail',
         action: 'replace',
       });
     });
   };
 }
+
+// question focus
+detail_frame.addEventListener('turbo:frame-render', (event) => {
+  if (previous_id != null) {
+    document.getElementById(previous_id).classList.remove('active_question');
+  }
+  document.getElementById(current_id).classList.add('active_question');
+});
 
 // new question
 let new_question = document.getElementById('new_question');
