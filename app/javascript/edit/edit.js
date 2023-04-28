@@ -4,6 +4,7 @@ console.log('yes this this working');
 
 // add click evenet to every list row
 let csrf = document.head.querySelector('meta[name=csrf-token]')?.content;
+// .list_row[data-question_id]
 let question_table = document.getElementById('question_list').firstElementChild;
 let changes = { a: '' };
 let quiz_id = document.getElementById('quizzes_edit').dataset.quiz_id;
@@ -46,7 +47,10 @@ function deleteQuestion(id) {
   });
   //
   // set question to sibling id
-  let current = document.getElementById(current_id);
+  // let current = document.getElementById(current_id);
+  let current = document.querySelector(
+    `.list_row[data-question_id=${current_id}]`
+  );
   let next = current.nextElementSibling;
   let previous = current.previousElementSibling;
   if (next != null) {
@@ -62,18 +66,22 @@ function deleteQuestion(id) {
 // table row click
 for (let i = 0; i < rows.length; i++) {
   rows[i].onclick = (event) => {
-    setSelectedQuestion(event.currentTarget.id);
+    setSelectedQuestion(event.currentTarget.dataset.question_id);
   };
 }
 
 // question focus
 detail_frame.addEventListener('turbo:frame-render', (event) => {
-  let previous = document.getElementById(previous_id);
+  let previous = document.querySelector(
+    `.list_row[data-question_id="${previous_id}"]`
+  );
   if (previous != null) {
     previous.classList.remove('active_question');
   }
   console.log(current_id);
-  document.getElementById(current_id).classList.add('active_question');
+  document
+    .querySelector(`.list_row[data-question_id="${current_id}"]`)
+    .classList.add('active_question');
   document.getElementById('delete_question').onclick = () => {
     deleteQuestion(current_id);
   };

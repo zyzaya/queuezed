@@ -19,7 +19,7 @@
           <th>Best Streak</th>
         </tr>
         <% @quiz.questions.each do |q| %>
-          <tr class="list_row" id= <%= q.id %>>
+          <tr class="list_row" data-question_id= <%= q.id %>>
             <td><%= "#{q.content}"%></td>
             <td><%= "#{q.current_streak}0"%></td>
             <td><%= "#{q.longest_streak}0"%></td>

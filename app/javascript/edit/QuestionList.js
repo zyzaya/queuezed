@@ -19,7 +19,7 @@ export default function QuestionList(csrf, quiz_id) {
   obj.addRow = function (question) {
     let row = document.createElement('tr');
     row.classList.add('list_row');
-    row.id = question.id;
+    row.dataset.question_id = question.id;
     // create elements
     let content = document.createElement('td');
     let current_streak = document.createElement('td');
