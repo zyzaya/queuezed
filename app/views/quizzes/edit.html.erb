@@ -1,4 +1,4 @@
-<div class="quizzes_edit" id= <%= @quiz.id %>>
+<div class="quizzes_edit" id="quizzes_edit" data-quiz_id= <%= @quiz.id %>>
   <%= render 'shared/header' %>
   <div class="edit">
     <div class="quiz_info">
@@ -33,4 +33,4 @@
   </div>
 </div>
 <%= stylesheet_link_tag "quizzes/edit", "data-turbo-track": "reload" %>
-<%= javascript_include_tag "quizzes/edit", "data-turbo-track": "reload" %>
+<%= javascript_import_module_tag "edit/edit" %>

@@ -1,14 +1,19 @@
+import QuestionList from 'edit/QuestionList';
+
 console.log('yes this this working');
 
 // add click evenet to every list row
 let csrf = document.head.querySelector('meta[name=csrf-token]')?.content;
 let question_table = document.getElementById('question_list').firstElementChild;
 let changes = { a: '' };
-let quiz_id = document.getElementsByClassName('quizzes_edit')[0].id;
+let quiz_id = document.getElementById('quizzes_edit').dataset.quiz_id;
+console.log(quiz_id);
 let rows = document.getElementsByClassName('list_row');
 let detail_frame = document.getElementById('edit_detail');
 let previous_id = null;
 let current_id = null;
+
+let question_list = QuestionList(csrf, quiz_id);
 
 function setSelectedQuestion(id) {
   previous_id = current_id;
@@ -27,11 +32,6 @@ function setSelectedQuestion(id) {
       action: 'replace',
     });
   });
-}
-
-function removeRow(id) {
-  let row = document.getElementById(id);
-  row.remove();
 }
 
 function deleteQuestion(id) {
@@ -56,14 +56,12 @@ function deleteQuestion(id) {
   } else {
     // clearSelectedQuestion()
   }
-  removeRow(previous_id);
+  question_list.removeRow(previous_id);
 }
 
 // table row click
 for (let i = 0; i < rows.length; i++) {
   rows[i].onclick = (event) => {
-    console.log(event.currentTarget);
-    // console.log(`${i}, ${rows[i].id}`);
     setSelectedQuestion(event.currentTarget.id);
   };
 }
@@ -74,29 +72,12 @@ detail_frame.addEventListener('turbo:frame-render', (event) => {
   if (previous != null) {
     previous.classList.remove('active_question');
   }
+  console.log(current_id);
   document.getElementById(current_id).classList.add('active_question');
   document.getElementById('delete_question').onclick = () => {
     deleteQuestion(current_id);
   };
 });
-
-// new question
-function addRow(question) {
-  let row = document.createElement('tr');
-  row.classList.add('list_row');
-  row.id = question.id;
-  let content = document.createElement('td');
-  let current_streak = document.createElement('td');
-  current_streak.textContent = '0';
-  let longest_streak = document.createElement('td');
-  longest_streak.textContent = '0';
-
-  row.appendChild(content);
-  row.appendChild(current_streak);
-  row.appendChild(longest_streak);
-  row.onclick = () => setSelectedQuestion(question.id);
-  question_table.appendChild(row);
-}
 
 let new_question = document.getElementById('new_question');
 
@@ -113,32 +94,6 @@ new_question.onclick = (e) => {
         frame: 'edit_detail',
         action: 'replace',
       });
-      addRow(question);
+      question_list.addRow(question);
     });
 };
-
-/* 
-  apply local changes client side
-
-  first load: local changes ->
-    quiz = {}
-  make changes: local changes ->
-    quiz = {stuff}
-  load new question:
-   retrieve data from server
-   apply local changes to display
-  save changes:
-   send changes to server
-*/
-// OR
-/*
-  apply local changes server side/////
-
-  first load: local changes ->
-    quiz = {}
-  make changes: local changes ->
-    quiz = {stuff}
-  load new question:
-    send local changes to server
-    retrieve new question data
-*/
