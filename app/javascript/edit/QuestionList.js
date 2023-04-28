@@ -10,6 +10,47 @@ export default function QuestionList(csrf, quiz_id) {
   let obj = {};
   let question_table =
     document.getElementById('question_list').firstElementChild;
+  let previously_selected_id = null;
+  let currently_selected_id = null;
+
+  let rows = document.getElementsByClassName('list_row');
+  for (let i = 0; i < rows.length; i++) {
+    rows[i].onclick = (event) => {
+      obj.setSelectedQuestion(event.currentTarget.dataset.question_id);
+    };
+  }
+
+  let getRow = function (id) {
+    return document.querySelector(`.list_row[data-question_id="${id}"]`);
+  };
+
+  obj.setSelectedQuestion = function (id) {
+    previously_selected_id = currently_selected_id;
+    currently_selected_id = id;
+    // get question data
+    fetch(`/quizzes/${quiz_id}/update`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'X-CSRF-Token': csrf,
+      },
+      credentials: 'same-origin',
+    }).then(() => {
+      Turbo.visit(`/quizzes/${quiz_id}/edit/questions/${id}/edit`, {
+        frame: 'edit_detail',
+        action: 'replace',
+      });
+    });
+    // change visual selection
+    let previous = getRow(previously_selected_id);
+    if (previous != null) {
+      previous.classList.remove('active_question');
+    }
+    getRow(id).classList.add('active_question');
+    //   document.getElementById('delete_question').onclick = () => {
+    //     deleteQuestion(current_id);
+    //   };
+  };
 
   obj.removeRow = function (question_id) {
     let row = document.getElementById(question_id);
