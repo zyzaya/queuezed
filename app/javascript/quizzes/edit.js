@@ -61,7 +61,11 @@ function deleteQuestion(id) {
 
 // table row click
 for (let i = 0; i < rows.length; i++) {
-  rows[i].onclick = () => setSelectedQuestion(rows[i].id);
+  rows[i].onclick = (event) => {
+    console.log(event.currentTarget);
+    // console.log(`${i}, ${rows[i].id}`);
+    setSelectedQuestion(event.currentTarget.id);
+  };
 }
 
 // question focus
