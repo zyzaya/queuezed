@@ -24,6 +24,22 @@ export default function QuestionList(csrf, quiz_id) {
     return document.querySelector(`.list_row[data-question_id="${id}"]`);
   };
 
+  // public functions
+  obj.onDeleteQuestion = () => {};
+  obj.getCurrentlySelectedID = () => currently_selected_id;
+  obj.getPreviouslySelectedID = () => previously_selected_id;
+
+  obj.setSelectedToSibling = function () {
+    let current = getRow(currently_selected_id);
+    let next = current.nextElementSibling;
+    let previous = current.nextElementSibling;
+    if (next != null) {
+      obj.setSelectedQuestion(next.dataset.question_id);
+    } else if (previous != null) {
+      obj.setSelectedQuestion(previous.dataset.question_id);
+    }
+  };
+
   obj.setSelectedQuestion = function (id) {
     previously_selected_id = currently_selected_id;
     currently_selected_id = id;
@@ -47,13 +63,10 @@ export default function QuestionList(csrf, quiz_id) {
       previous.classList.remove('active_question');
     }
     getRow(id).classList.add('active_question');
-    //   document.getElementById('delete_question').onclick = () => {
-    //     deleteQuestion(current_id);
-    //   };
   };
 
   obj.removeRow = function (question_id) {
-    let row = document.getElementById(question_id);
+    let row = getRow(question_id);
     row.remove();
   };
 

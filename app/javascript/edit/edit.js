@@ -2,39 +2,39 @@ import QuestionList from 'edit/QuestionList';
 
 console.log('yes this this working');
 
-// add click evenet to every list row
 let csrf = document.head.querySelector('meta[name=csrf-token]')?.content;
 let changes = { a: '' };
 let quiz_id = document.getElementById('quizzes_edit').dataset.quiz_id;
 
 let question_list = QuestionList(csrf, quiz_id);
 
+let detail_frame = document.getElementById('edit_detail');
+detail_frame.addEventListener('turbo:frame-render', (event) => {
+  console.log('how are you');
+  document.getElementById('delete_question').onclick = () => {
+    deleteQuestion(question_list.getCurrentlySelectedID());
+  };
+});
+
 function deleteQuestion(id) {
   // server delete
-  fetch(`/quizzes/${quiz_id}/edit/questions/${current_id}`, {
-    method: 'DELETE',
-    headers: {
-      'Content-Type': 'application/json',
-      'X-CSRF-Token': csrf,
-    },
-    credentials: 'same-origin',
-  });
+  fetch(
+    `/quizzes/${quiz_id}/edit/questions/${question_list.getCurrentlySelectedID()}`,
+    {
+      method: 'DELETE',
+      headers: {
+        'Content-Type': 'application/json',
+        'X-CSRF-Token': csrf,
+      },
+      credentials: 'same-origin',
+    }
+  );
   //
   // set question to sibling id
-  let current = document.querySelector(
-    `.list_row[data-question_id=${current_id}]`
-  );
-  let next = current.nextElementSibling;
-  let previous = current.previousElementSibling;
-  if (next != null) {
-    question_list.setSelectedQuestion(next.dataset.question_id);
-  } else if (previous != null) {
-    question_list.setSelectedQuestion(next.dataset.question_id);
-  } else {
-    // clearSelectedQuestion()
-  }
-  question_list.removeRow(previous_id);
+  question_list.setSelectedToSibling();
+  question_list.removeRow(question_list.getPreviouslySelectedID());
 }
+question_list.onDeleteQuestion = deleteQuestion;
 
 let new_question = document.getElementById('new_question');
 
