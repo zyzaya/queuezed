@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_04_03_182320) do
+ActiveRecord::Schema[7.0].define(version: 2023_05_01_185930) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -58,7 +58,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_04_03_182320) do
     t.index ["question_id"], name: "index_question_histories_on_question_id"
   end
 
-  create_table "question_relations", id: false, force: :cascade do |t|
+  create_table "question_relations", force: :cascade do |t|
     t.bigint "question_id"
     t.bigint "relation_id"
   end
