@@ -20,6 +20,10 @@ export default function Change(csrf, quiz_id) {
     } else {
       answer = question.answers.find((e) => e.id == answer_id);
     }
+    if (answer == undefined) {
+      answer = { id: answer_id };
+      question.answers.push(answer);
+    }
     return answer;
   };
 
@@ -35,10 +39,7 @@ export default function Change(csrf, quiz_id) {
   obj.deleteAnswer = function (question_id, answer_id) {
     let question = getQuestion(question_id);
     let answer = getAnswer(question, answer_id);
-    if (answer == undefined) {
-      answer = { id: answer_id };
-      question.answers.push(answer);
-    }
+
     if (answer.meta === 'new') {
       question.answers = question.answers.filter((e) => e.id !== answer_id);
     } else {
@@ -46,6 +47,13 @@ export default function Change(csrf, quiz_id) {
     }
 
     console.log(changes);
+  };
+
+  obj.setAnswerContent = function (question_id, answer_id, content) {
+    let question = getQuestion(question_id);
+    let answer = getAnswer(question, answer_id);
+
+    answer.content = 'content';
   };
 
   return obj;

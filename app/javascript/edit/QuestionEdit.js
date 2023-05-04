@@ -5,15 +5,13 @@ export default function QuestionEdit() {
 
   let deleteAnswer = function (event) {
     let answer_id = event.currentTarget.dataset.answer_id;
-    console.log(`aid: ${answer_id}`);
-    obj.onDeleteAnswer(answer_id);
-  };
-
-  obj.removeAnswerDisplay = function (id) {
-    let answer = document.querySelector(
-      `.answer_container[data-answer_id="${id}"]`
+    let answer_content = document.querySelector(
+      `.answer_content[data-answer_id="${answer_id}"]`
     );
-    answer.remove();
+    let answer = {
+      content: answer_content.value,
+    };
+    obj.onDeleteAnswer(answer_id, answer);
   };
 
   obj.addAnswerDisplay = function (question_id, answer_id) {
@@ -28,6 +26,7 @@ export default function QuestionEdit() {
     let answer_content = document.createElement('textarea');
     answer_content.classList.add('answer_content');
     answer_content.rows = '1';
+    answer_content.dataset.answer_id = answer_id;
 
     let delete_answer = document.createElement('a');
     delete_answer.classList.add('button');
@@ -39,6 +38,20 @@ export default function QuestionEdit() {
     answer_container.appendChild(answer_content);
     answer_container.appendChild(delete_answer);
     add_answer.parentNode.insertBefore(answer_container, add_answer);
+  };
+
+  obj.deleteAnswerDisplay = function (id) {
+    let answer = document.querySelector(
+      `.answer_container[data-answer_id="${id}"]`
+    );
+    answer.remove();
+  };
+
+  obj.setAnswerContent = function (answer_id, content) {
+    let answer_content = document.querySelector(
+      `.answer_content[data-answer_id="${answer_id}"]`
+    );
+    answer_content.value = content;
   };
 
   frame.addEventListener('turbo:frame-render', (event) => {

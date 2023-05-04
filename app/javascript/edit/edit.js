@@ -25,10 +25,20 @@ btn_undo.onclick = undo.undo;
 let btn_redo = document.getElementById('redo');
 btn_redo.onclick = undo.redo;
 
-question_edit.onDeleteAnswer = (answer_id) => {
+question_edit.onDeleteAnswer = (answer_id, answer) => {
   let question_id = question_list.getCurrentlySelectedID();
-  change.deleteAnswer(question_id, answer_id);
-  question_edit.removeAnswerDisplay(answer_id);
+
+  let action = () => {
+    change.deleteAnswer(question_id, answer_id);
+    question_edit.deleteAnswerDisplay(answer_id);
+  };
+  let reverse = () => {
+    change.addAnswer(question_id, answer_id);
+    change.setAnswerContent(question_id, answer_id, answer.content);
+    question_edit.addAnswerDisplay(question_id, answer_id);
+    question_edit.setAnswerContent(answer_id, answer.content);
+  };
+  undo.add('Delete Answer', action, reverse);
 };
 
 question_edit.onAddAnswer = (question_id) => {
@@ -39,7 +49,7 @@ question_edit.onAddAnswer = (question_id) => {
   };
   let reverse = () => {
     change.deleteAnswer(question_id, answer_id);
-    question_edit.removeAnswerDisplay(answer_id);
+    question_edit.deleteAnswerDisplay(answer_id);
   };
   undo.add('Add Answer', action, reverse);
 };
