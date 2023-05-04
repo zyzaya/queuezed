@@ -18,6 +18,11 @@ question_edit.onDeleteAnswer = (answer_id) => {
   question_edit.removeAnswerDisplay(answer_id);
 };
 
+question_edit.onAddAnswer = (question_id) => {
+  change.addAnswer(question_id);
+  question_edit.addAnswerDisplay(question_id);
+};
+
 function deleteQuestion(id) {
   // server delete
   fetch(
