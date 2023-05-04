@@ -16,13 +16,14 @@ export default function QuestionEdit() {
     answer.remove();
   };
 
-  obj.addAnswerDisplay = function (question_id) {
+  obj.addAnswerDisplay = function (question_id, answer_id) {
     let add_answer = document.querySelector(
       `.add_answer[data-question_id="${question_id}"`
     );
 
     let answer_container = document.createElement('div');
     answer_container.classList.add('answer_container');
+    answer_container.dataset.answer_id = answer_id;
 
     let answer_content = document.createElement('textarea');
     answer_content.classList.add('answer_content');
@@ -32,6 +33,7 @@ export default function QuestionEdit() {
     delete_answer.classList.add('button');
     delete_answer.classList.add('delete_answer');
     delete_answer.textContent = '[X]';
+    delete_answer.dataset.answer_id = answer_id;
     delete_answer.onclick = deleteAnswer;
 
     answer_container.appendChild(answer_content);

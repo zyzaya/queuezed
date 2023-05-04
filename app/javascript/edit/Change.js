@@ -24,11 +24,11 @@ export default function Change(csrf, quiz_id) {
     return answer;
   };
 
-  obj.addAnswer = function (question_id) {
+  obj.addAnswer = function (question_id, answer_id) {
     // add to changes
     let question = getQuestion(question_id);
     if (question.answers == undefined) question.answers = [];
-    let answer = { meta: 'new' };
+    let answer = { meta: 'new', id: answer_id };
     question.answers.push(answer);
     console.log(changes);
   };

@@ -12,6 +12,12 @@ let question_list = QuestionList(csrf, quiz_id);
 let change = Change(csrf, quiz_id);
 let question_edit = QuestionEdit();
 
+let current = 0;
+let nextID = function () {
+  current++;
+  return `n${current}`;
+};
+
 question_edit.onDeleteAnswer = (answer_id) => {
   let question_id = question_list.getCurrentlySelectedID();
   change.deleteAnswer(question_id, answer_id);
@@ -19,8 +25,9 @@ question_edit.onDeleteAnswer = (answer_id) => {
 };
 
 question_edit.onAddAnswer = (question_id) => {
-  change.addAnswer(question_id);
-  question_edit.addAnswerDisplay(question_id);
+  let answer_id = nextID();
+  change.addAnswer(question_id, answer_id);
+  question_edit.addAnswerDisplay(question_id, answer_id);
 };
 
 function deleteQuestion(id) {
