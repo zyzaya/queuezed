@@ -28,7 +28,21 @@ question_edit.onAddAnswer = (question_id) => {
   let answer_id = nextID();
   change.addAnswer(question_id, answer_id);
   question_edit.addAnswerDisplay(question_id, answer_id);
+  /*
+    undo.add(name, () => {}, () => {});
+
+    undo.undo
+    undo.redo
+  */
 };
+
+/* 
+let undo_stack = {};
+  undo_stack.add_action(name, reverse function)
+  add_action('add answer', () => {
+    deleteAnswer(q_id, a_id)
+}
+*/
 
 function deleteQuestion(id) {
   // server delete

@@ -3,7 +3,6 @@ export default function Change(csrf, quiz_id) {
   let changes = {
     questions: [],
   };
-  let undo_stack = {};
 
   let getQuestion = function (question_id) {
     let question = changes.questions.find((e) => e.id == question_id);
