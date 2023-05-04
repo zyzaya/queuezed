@@ -20,6 +20,11 @@ let nextID = function () {
   return `n${current}`;
 };
 
+let btn_undo = document.getElementById('undo');
+btn_undo.onclick = undo.undo;
+let btn_redo = document.getElementById('redo');
+btn_redo.onclick = undo.redo;
+
 question_edit.onDeleteAnswer = (answer_id) => {
   let question_id = question_list.getCurrentlySelectedID();
   change.deleteAnswer(question_id, answer_id);

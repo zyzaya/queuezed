@@ -10,6 +10,7 @@ export default function Undo() {
       action,
       reverse,
     });
+    console.log('adding action');
     console.log(stack);
     console.log(redo);
   };
@@ -20,6 +21,7 @@ export default function Undo() {
       action.reverse();
       redo.push(action);
     }
+    console.log('undo');
     console.log(stack);
     console.log(redo);
   };
@@ -30,6 +32,7 @@ export default function Undo() {
       action.action();
       stack.push(action);
     }
+    console.log('redo');
     console.log(stack);
     console.log(redo);
   };
