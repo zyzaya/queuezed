@@ -4,7 +4,7 @@
   <div class="answers_header">Answer(s).</div>
   <% question.answers.each do |answer| %>
     <% variants = answer.answer_variants.pluck(:content) %>
-    <div class="answer_container">
+    <div class="answer_container" data-answer_id=<%= answer.id %>>
       <textarea class="answer_content" rows="1" ><%= variants.join(" / ") %></textarea>
       <a class="button delete_answer" data-answer_id=<%= answer.id %>>[X]</a>
     </div>
