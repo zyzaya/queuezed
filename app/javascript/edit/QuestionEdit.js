@@ -3,6 +3,12 @@ export default function QuestionEdit() {
 
   let frame = document.getElementById('edit_detail');
 
+  let deleteAnswer = function (event) {
+    let answer_id = event.currentTarget.dataset.answer_id;
+    console.log(`aid: ${answer_id}`);
+    obj.onDeleteAnswer(answer_id);
+  };
+
   obj.removeAnswerDisplay = function (id) {
     let answer = document.querySelector(
       `.answer_container[data-answer_id="${id}"]`
@@ -26,6 +32,7 @@ export default function QuestionEdit() {
     delete_answer.classList.add('button');
     delete_answer.classList.add('delete_answer');
     delete_answer.textContent = '[X]';
+    delete_answer.onclick = deleteAnswer;
 
     answer_container.appendChild(answer_content);
     answer_container.appendChild(delete_answer);
@@ -46,10 +53,7 @@ export default function QuestionEdit() {
     // delete answer
     let delete_answer = document.getElementsByClassName('delete_answer');
     for (let i = 0; i < delete_answer.length; i++) {
-      delete_answer[i].onclick = (event) => {
-        let answer_id = event.currentTarget.dataset.answer_id;
-        obj.onDeleteAnswer(answer_id);
-      };
+      delete_answer[i].onclick = deleteAnswer;
     }
   });
 
