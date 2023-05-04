@@ -1,6 +1,7 @@
 import QuestionList from 'edit/QuestionList';
 import Change from 'edit/Change';
 import QuestionEdit from 'edit/QuestionEdit';
+import Undo from 'edit/Undo';
 
 console.log('yes this this working');
 
@@ -11,6 +12,7 @@ let quiz_id = document.getElementById('quizzes_edit').dataset.quiz_id;
 let question_list = QuestionList(csrf, quiz_id);
 let change = Change(csrf, quiz_id);
 let question_edit = QuestionEdit();
+let undo = Undo();
 
 let current = 0;
 let nextID = function () {
@@ -26,23 +28,16 @@ question_edit.onDeleteAnswer = (answer_id) => {
 
 question_edit.onAddAnswer = (question_id) => {
   let answer_id = nextID();
-  change.addAnswer(question_id, answer_id);
-  question_edit.addAnswerDisplay(question_id, answer_id);
-  /*
-    undo.add(name, () => {}, () => {});
-
-    undo.undo
-    undo.redo
-  */
+  let action = () => {
+    change.addAnswer(question_id, answer_id);
+    question_edit.addAnswerDisplay(question_id, answer_id);
+  };
+  let reverse = () => {
+    change.deleteAnswer(question_id, answer_id);
+    question_edit.removeAnswerDisplay(answer_id);
+  };
+  undo.add('Add Answer', action, reverse);
 };
-
-/* 
-let undo_stack = {};
-  undo_stack.add_action(name, reverse function)
-  add_action('add answer', () => {
-    deleteAnswer(q_id, a_id)
-}
-*/
 
 function deleteQuestion(id) {
   // server delete
