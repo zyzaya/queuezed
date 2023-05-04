@@ -10,9 +10,6 @@ export default function Undo() {
       action,
       reverse,
     });
-    console.log('adding action');
-    console.log(stack);
-    console.log(redo);
   };
 
   obj.undo = function () {
@@ -21,9 +18,6 @@ export default function Undo() {
       action.reverse();
       redo.push(action);
     }
-    console.log('undo');
-    console.log(stack);
-    console.log(redo);
   };
 
   obj.redo = function () {
@@ -32,9 +26,6 @@ export default function Undo() {
       action.action();
       stack.push(action);
     }
-    console.log('redo');
-    console.log(stack);
-    console.log(redo);
   };
 
   return obj;

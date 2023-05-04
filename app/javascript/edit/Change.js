@@ -24,16 +24,17 @@ export default function Change(csrf, quiz_id) {
       answer = { id: answer_id };
       question.answers.push(answer);
     }
-    return answer;
   };
 
   obj.addAnswer = function (question_id, answer_id) {
-    // add to changes
     let question = getQuestion(question_id);
-    if (question.answers == undefined) question.answers = [];
-    let answer = { meta: 'new', id: answer_id };
-    question.answers.push(answer);
-    console.log(changes);
+    let answer = getAnswer(question, answer_id);
+    if (answer.meta === 'delete') {
+      question.answers = question.answers.filter((e) => e.id !== answer_id);
+    } else {
+      let answer = { meta: 'new', id: answer_id };
+      question.answers.push(answer);
+    }
   };
 
   obj.deleteAnswer = function (question_id, answer_id) {
@@ -45,14 +46,11 @@ export default function Change(csrf, quiz_id) {
     } else {
       answer.meta = 'delete';
     }
-
-    console.log(changes);
   };
 
   obj.setAnswerContent = function (question_id, answer_id, content) {
     let question = getQuestion(question_id);
     let answer = getAnswer(question, answer_id);
-
     answer.content = 'content';
   };
 
