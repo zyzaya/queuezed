@@ -40,7 +40,12 @@ export default function Change(csrf, quiz_id) {
       answer = { id: answer_id };
       question.answers.push(answer);
     }
-    answer.meta = 'delete';
+    if (answer.meta === 'new') {
+      question.answers = question.answers.filter((e) => e.id !== answer_id);
+    } else {
+      answer.meta = 'delete';
+    }
+
     console.log(changes);
   };
 
