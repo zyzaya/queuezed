@@ -6,7 +6,7 @@ export default function Change(csrf, quiz_id) {
 
   let getQuestion = function (question_id) {
     let question = changes.questions.find((e) => e.id == question_id);
-    if (question == undefined) {
+    if (question === undefined) {
       question = { id: question_id };
       changes.questions.push(question);
     }
@@ -36,7 +36,7 @@ export default function Change(csrf, quiz_id) {
     let question = getQuestion(question_id);
     let answer = getAnswer(question, answer_id);
     if (answer.meta === 'delete') {
-      question.answers = question.answers.filter((e) => e.id !== answer_id);
+      answer.meta = '';
     } else {
       answer.meta = 'new';
     }
