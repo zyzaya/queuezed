@@ -24,6 +24,7 @@ export default function Change(csrf, quiz_id) {
       answer = { id: answer_id };
       question.answers.push(answer);
     }
+    return answer;
   };
 
   obj.setQuestionContent = function (question_id, content) {

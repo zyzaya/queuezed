@@ -14,6 +14,15 @@ export default function QuestionEdit() {
     obj.onDeleteAnswer(answer_id, answer);
   };
 
+  let answerContentChange = function (event) {
+    let answer_id = event.currentTarget.dataset.answer_id;
+    let answer = {
+      content: event.currentTarget.value,
+      previous: event.currentTarget.dataset.previous,
+    };
+    obj.onAnswerContentChange(answer_id, answer);
+  };
+
   let questionContentChange = function (event) {
     let question_id = event.currentTarget.dataset.question_id;
     let question_content = document.querySelector(
@@ -84,7 +93,6 @@ export default function QuestionEdit() {
       };
       question_content[i].oninput = questionContentChange;
     }
-
     // add answer
     let add_answer = document.getElementsByClassName('add_answer');
     for (let i = 0; i < add_answer.length; i++) {
@@ -97,6 +105,14 @@ export default function QuestionEdit() {
     let delete_answer = document.getElementsByClassName('delete_answer');
     for (let i = 0; i < delete_answer.length; i++) {
       delete_answer[i].onclick = deleteAnswer;
+    }
+    // change answer content
+    let answer_content = document.getElementsByClassName('answer_content');
+    for (let i = 0; i < answer_content.length; i++) {
+      answer_content[i].onbeforeinput = (event) => {
+        event.currentTarget.dataset.previous = event.currentTarget.value;
+      };
+      answer_content[i].oninput = answerContentChange;
     }
   });
 

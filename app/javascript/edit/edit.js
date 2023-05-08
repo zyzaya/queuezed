@@ -54,6 +54,20 @@ question_edit.onAddAnswer = (question_id) => {
   undo.add('Add Answer', action, reverse);
 };
 
+question_edit.onAnswerContentChange = (answer_id, answer) => {
+  let question_id = question_list.getCurrentlySelectedID();
+
+  let action = () => {
+    change.setAnswerContent(question_id, answer_id, answer.content);
+    question_edit.setAnswerContent(answer_id, answer.content);
+  };
+  let reverse = () => {
+    change.setAnswerContent(question_id, answer_id, answer.previous);
+    question_edit.setAnswerContent(answer_id, answer.previous);
+  };
+  undo.add('Change Answer Content', action, reverse);
+};
+
 question_edit.onQuestionContentChange = (question_id, question) => {
   let action = () => {
     change.setQuestionContent(question_id, question.content);
