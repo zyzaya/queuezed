@@ -25,12 +25,9 @@ export default function QuestionEdit() {
 
   let questionContentChange = function (event) {
     let question_id = event.currentTarget.dataset.question_id;
-    let question_content = document.querySelector(
-      `.question_content[data-question_id="${question_id}"`
-    );
     let question = {
-      content: question_content.value,
-      previous: question_content.dataset.previous,
+      content: event.currentTarget.value,
+      previous: event.currentTarget.dataset.previous,
     };
     obj.onQuestionContentChange(question_id, question);
   };
