@@ -14,6 +14,25 @@ export default function QuestionEdit() {
     obj.onDeleteAnswer(answer_id, answer);
   };
 
+  let questionContentChange = function (event) {
+    let question_id = event.currentTarget.dataset.question_id;
+    let question_content = document.querySelector(
+      `.question_content[data-question_id="${question_id}"`
+    );
+    let question = {
+      content: question_content.value,
+      previous: question_content.dataset.previous,
+    };
+    obj.onQuestionContentChange(question_id, question);
+  };
+
+  obj.setQuestionContent = function (question_id, content) {
+    let question_content = document.querySelector(
+      `.question_content[data-question_id="${question_id}"`
+    );
+    question_content.value = content;
+  };
+
   obj.addAnswerDisplay = function (question_id, answer_id) {
     let add_answer = document.querySelector(
       `.add_answer[data-question_id="${question_id}"`
@@ -57,6 +76,15 @@ export default function QuestionEdit() {
   frame.addEventListener('turbo:frame-render', (event) => {
     // delete question
     document.getElementById('delete_question').onclick = obj.onDeleteQuestion;
+    // change question content
+    let question_content = document.getElementsByClassName('question_content');
+    for (let i = 0; i < question_content.length; i++) {
+      question_content[i].onbeforeinput = (event) => {
+        event.currentTarget.dataset.previous = event.currentTarget.value;
+      };
+      question_content[i].oninput = questionContentChange;
+    }
+
     // add answer
     let add_answer = document.getElementsByClassName('add_answer');
     for (let i = 0; i < add_answer.length; i++) {

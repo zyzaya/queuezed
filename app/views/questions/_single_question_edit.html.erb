@@ -1,6 +1,6 @@
 <div class="single_question_edit" >
   <div class="question_header">Question.</div>
-  <textarea class="question_content"><%= question.content %></textarea>
+  <textarea class="question_content" data-question_id=<%= question.id %>><%= question.content %></textarea>
   <div class="answers_header">Answer(s).</div>
   <% question.answers.each do |answer| %>
     <% variants = answer.answer_variants.pluck(:content) %>

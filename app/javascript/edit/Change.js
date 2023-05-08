@@ -26,6 +26,11 @@ export default function Change(csrf, quiz_id) {
     }
   };
 
+  obj.setQuestionContent = function (question_id, content) {
+    let question = getQuestion(question_id);
+    question.content = content;
+  };
+
   obj.addAnswer = function (question_id, answer_id) {
     let question = getQuestion(question_id);
     let answer = getAnswer(question, answer_id);
@@ -51,7 +56,7 @@ export default function Change(csrf, quiz_id) {
   obj.setAnswerContent = function (question_id, answer_id, content) {
     let question = getQuestion(question_id);
     let answer = getAnswer(question, answer_id);
-    answer.content = 'content';
+    answer.content = content;
   };
 
   return obj;
