@@ -38,8 +38,7 @@ export default function Change(csrf, quiz_id) {
     if (answer.meta === 'delete') {
       question.answers = question.answers.filter((e) => e.id !== answer_id);
     } else {
-      let answer = { meta: 'new', id: answer_id };
-      question.answers.push(answer);
+      answer.meta = 'new';
     }
   };
 
