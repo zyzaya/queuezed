@@ -6,7 +6,6 @@ import Undo from 'edit/Undo';
 console.log('yes this this working');
 
 let csrf = document.head.querySelector('meta[name=csrf-token]')?.content;
-let changes = { a: '' };
 let quiz_id = document.getElementById('quizzes_edit').dataset.quiz_id;
 
 let question_list = QuestionList(csrf, quiz_id);
@@ -19,7 +18,7 @@ let nextID = function () {
   current++;
   return `n${current}`;
 };
-
+// actions
 let btn_undo = document.getElementById('undo');
 btn_undo.onclick = undo.undo;
 let btn_redo = document.getElementById('redo');
@@ -116,4 +115,9 @@ new_question.onclick = (e) => {
       });
       question_list.addRow(question);
     });
+};
+// saving
+let btn_save = document.getElementById('save');
+btn_save.onclick = (event) => {
+  console.log(change.getChanges());
 };

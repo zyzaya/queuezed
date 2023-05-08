@@ -60,5 +60,7 @@ export default function Change(csrf, quiz_id) {
     answer.content = content;
   };
 
+  obj.getChanges = () => changes;
+
   return obj;
 }
