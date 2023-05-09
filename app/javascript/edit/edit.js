@@ -120,4 +120,16 @@ new_question.onclick = (e) => {
 let btn_save = document.getElementById('save');
 btn_save.onclick = (event) => {
   console.log(change.getChanges());
+  // server save
+  fetch(`/quizzes/${quiz_id}/update`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'X-CSRF-Token': csrf,
+    },
+    credentials: 'same-origin',
+    body: JSON.stringify(change.getChanges()),
+  });
+  // turbo visit replace q detail
+  // reset change object
 };

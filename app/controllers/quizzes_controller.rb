@@ -10,6 +10,48 @@ class QuizzesController < ApplicationController
   end
 
   def update
+    # rails puts json into params automagically
+    # format of a save changes is
+    # quiz {
+    #  quiz_info: ""
+    #  questions: [
+    #   {
+    #    question_info: ""
+    #    answers: []
+    #   }
+    #  ]
+    # }
+    # meta: delete, new
+    ## todo: save added answers, remove deleted answers,
+    # save changes to content of answers/questions
+
+    unless params[:questions].nil?
+      params[:questions].each do |q|
+        ## content
+        puts q
+        question = Question.find(q[:id])
+        question.update(content: q[:content]) unless q[:content].nil?
+        unless q[:answers].nil?
+          q[:answers].each do |a|
+            answer = a[:meta].eql?('new') ? question.answers.new : Answer.find(a[:id])
+
+            if a[:meta].eql?('delete')
+              answer.destroy
+            else
+              # update content
+              unless a[:content].nil?
+                variants = a[:content].split(/\s*\/\s*/)
+                variants.each do |v|
+                  answer.answer_variants.new(content: v)
+                end
+              end
+
+              answer.save
+            end
+          end
+        end
+      end
+    end
     render plain: ""
   end
 
