@@ -2,6 +2,7 @@ import QuestionList from 'edit/QuestionList';
 import Change from 'edit/Change';
 import QuestionEdit from 'edit/QuestionEdit';
 import Undo from 'edit/Undo';
+import ID from 'edit/ID';
 
 console.log('yes this this working');
 
@@ -13,11 +14,11 @@ let change = Change(csrf, quiz_id);
 let question_edit = QuestionEdit();
 let undo = Undo();
 
-let current = 0;
-let nextID = function () {
-  current++;
-  return `n${current}`;
-};
+// let current = 0;
+// let nextID = function () {
+//   current++;
+//   return `n${current}`;
+// };
 // actions
 let btn_undo = document.getElementById('undo');
 btn_undo.onclick = undo.undo;
@@ -41,7 +42,7 @@ question_edit.onDeleteAnswer = (answer_id, answer) => {
 };
 
 question_edit.onAddAnswer = (question_id) => {
-  let answer_id = nextID();
+  let answer_id = ID.next();
   let action = () => {
     change.addAnswer(question_id, answer_id);
     question_edit.addAnswerDisplay(question_id, answer_id);
