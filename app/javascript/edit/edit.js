@@ -14,12 +14,6 @@ let change = Change(csrf, quiz_id);
 let question_edit = QuestionEdit();
 let undo = Undo();
 
-// let current = 0;
-// let nextID = function () {
-//   current++;
-//   return `n${current}`;
-// };
-// actions
 let btn_undo = document.getElementById('undo');
 btn_undo.onclick = undo.undo;
 let btn_redo = document.getElementById('redo');
