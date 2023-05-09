@@ -3,6 +3,7 @@ import Change from 'edit/Change';
 import QuestionEdit from 'edit/QuestionEdit';
 import Undo from 'edit/Undo';
 import ID from 'edit/ID';
+import Data from 'edit/Data';
 
 console.log('yes this this working');
 
@@ -113,18 +114,6 @@ new_question.onclick = (e) => {
 };
 // saving
 let btn_save = document.getElementById('save');
-btn_save.onclick = (event) => {
-  console.log(change.getChanges());
-  // server save
-  fetch(`/quizzes/${quiz_id}/update`, {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-      'X-CSRF-Token': csrf,
-    },
-    credentials: 'same-origin',
-    body: JSON.stringify(change.getChanges()),
-  });
-  // turbo visit replace q detail
-  // reset change object
+btn_save.onclick = () => {
+  Data.save(csrf, quiz_id, change.getChanges());
 };
