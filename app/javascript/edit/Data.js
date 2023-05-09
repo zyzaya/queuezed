@@ -1,4 +1,11 @@
 const Data = (() => {
+  let setQuestion = function (csrf, quiz_id, question_id) {
+    Turbo.visit(`/quizzes/${quiz_id}/edit/questions/${question_id}/edit`, {
+      frame: 'edit_detail',
+      action: 'replace',
+    });
+  };
+
   let save = function (csrf, quiz_id, changes) {
     console.log(changes);
     return fetch(`/quizzes/${quiz_id}/update`, {
@@ -18,11 +25,7 @@ const Data = (() => {
     return fetch(`/quizzes/${quiz_id}/edit/questions/new`)
       .then((response) => response.json())
       .then((question) => {
-        console.log(question);
-        Turbo.visit(`/quizzes/${quiz_id}/edit/questions/${question.id}/edit`, {
-          frame: 'edit_detail',
-          action: 'replace',
-        });
+        setQuestion(csrf, quiz_id, question.id);
         return question;
       });
   };

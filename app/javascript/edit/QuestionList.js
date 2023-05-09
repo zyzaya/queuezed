@@ -36,6 +36,7 @@ export default function QuestionList(csrf, quiz_id) {
     previously_selected_id = currently_selected_id;
     currently_selected_id = id;
     // get question data
+
     fetch(`/quizzes/${quiz_id}/update`, {
       method: 'POST',
       headers: {
