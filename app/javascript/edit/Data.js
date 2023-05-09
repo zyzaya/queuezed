@@ -23,6 +23,7 @@ const Data = (() => {
           frame: 'edit_detail',
           action: 'replace',
         });
+        return question;
       });
   };
 

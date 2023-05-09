@@ -89,7 +89,7 @@ let new_question = document.getElementById('new_question');
 
 new_question.onclick = (e) => {
   let question = Data.newQuestion(csrf, quiz_id).then((question) => {
-    console.log('asdf');
+    question_list.addRow(question);
   });
 };
 // saving
