@@ -1,11 +1,3 @@
-/*
-  set selected question
-  delete question
-    remove row
-  new question
-    addrow
-*/
-
 export default function QuestionList(csrf, quiz_id) {
   let obj = {};
   let question_table =
