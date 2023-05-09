@@ -78,10 +78,10 @@ question_edit.onQuestionContentChange = (question_id, question) => {
 function deleteQuestion(id) {
   // server delete
   let question_id = question_list.getCurrentlySelectedID();
-  Data.deleteQuestion(csrf, quiz_id, question_id);
-  // set question to sibling id
-  question_list.setSelectedToSibling();
-  question_list.removeRow(question_list.getPreviouslySelectedID());
+  Data.deleteQuestion(csrf, quiz_id, question_id).then(() => {
+    question_list.setSelectedToSibling();
+    question_list.removeRow(question_id);
+  });
 }
 question_edit.onDeleteQuestion = deleteQuestion;
 

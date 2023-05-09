@@ -23,7 +23,8 @@ export default function QuestionList(csrf, quiz_id) {
   obj.setSelectedToSibling = function () {
     let current = getRow(currently_selected_id);
     let next = current.nextElementSibling;
-    let previous = current.nextElementSibling;
+    let previous = current.previousElementSibling;
+    console.log();
     if (next != null) {
       obj.setSelectedQuestion(next.dataset.question_id);
     } else if (previous != null) {
