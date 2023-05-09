@@ -77,17 +77,8 @@ question_edit.onQuestionContentChange = (question_id, question) => {
 
 function deleteQuestion(id) {
   // server delete
-  fetch(
-    `/quizzes/${quiz_id}/edit/questions/${question_list.getCurrentlySelectedID()}`,
-    {
-      method: 'DELETE',
-      headers: {
-        'Content-Type': 'application/json',
-        'X-CSRF-Token': csrf,
-      },
-      credentials: 'same-origin',
-    }
-  );
+  let question_id = question_list.getCurrentlySelectedID();
+  Data.deleteQuestion(csrf, quiz_id, question_id);
   // set question to sibling id
   question_list.setSelectedToSibling();
   question_list.removeRow(question_list.getPreviouslySelectedID());
