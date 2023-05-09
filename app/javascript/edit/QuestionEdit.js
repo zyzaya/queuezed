@@ -29,12 +29,14 @@ export default function QuestionEdit() {
       };
     }
   };
+
   let setupDeletingAnswer = function () {
     let delete_answer = document.getElementsByClassName('delete_answer');
     for (let i = 0; i < delete_answer.length; i++) {
       delete_answer[i].onclick = deleteAnswer;
     }
   };
+
   let setupChangingAnswerContent = function () {
     let answer_content = document.getElementsByClassName('answer_content');
     for (let i = 0; i < answer_content.length; i++) {
@@ -51,6 +53,7 @@ export default function QuestionEdit() {
     setupAddingAnswer();
     setupDeletingAnswer();
   });
+
   // answers
   let deleteAnswer = function (event) {
     let answer_id = event.currentTarget.dataset.answer_id;

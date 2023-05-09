@@ -4,15 +4,7 @@ export default function Change(csrf, quiz_id) {
     questions: [],
   };
 
-  let getQuestion = function (question_id) {
-    let question = changes.questions.find((e) => e.id == question_id);
-    if (question === undefined) {
-      question = { id: question_id };
-      changes.questions.push(question);
-    }
-    return question;
-  };
-
+  // answers
   let getAnswer = function (question, answer_id) {
     let answer = undefined;
     if (question.answers == undefined) {
@@ -25,11 +17,6 @@ export default function Change(csrf, quiz_id) {
       question.answers.push(answer);
     }
     return answer;
-  };
-
-  obj.setQuestionContent = function (question_id, content) {
-    let question = getQuestion(question_id);
-    question.content = content;
   };
 
   obj.addAnswer = function (question_id, answer_id) {
@@ -58,8 +45,23 @@ export default function Change(csrf, quiz_id) {
     let answer = getAnswer(question, answer_id);
     answer.content = content;
   };
+  // questions
+  let getQuestion = function (question_id) {
+    let question = changes.questions.find((e) => e.id == question_id);
+    if (question === undefined) {
+      question = { id: question_id };
+      changes.questions.push(question);
+    }
+    return question;
+  };
 
+  obj.setQuestionContent = function (question_id, content) {
+    let question = getQuestion(question_id);
+    question.content = content;
+  };
+  //
   obj.getChanges = () => changes;
+  obj.resetChanges = () => (changes = { questions: [] });
 
   return obj;
 }
