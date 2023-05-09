@@ -83,7 +83,7 @@ function deleteQuestion(id) {
   question_list.setSelectedToSibling();
   question_list.removeRow(question_list.getPreviouslySelectedID());
 }
-question_list.onDeleteQuestion = deleteQuestion;
+question_edit.onDeleteQuestion = deleteQuestion;
 
 let new_question = document.getElementById('new_question');
 

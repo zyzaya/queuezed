@@ -17,7 +17,6 @@ export default function QuestionList(csrf, quiz_id) {
   };
 
   // public functions
-  obj.onDeleteQuestion = () => {};
   obj.getCurrentlySelectedID = () => currently_selected_id;
   obj.getPreviouslySelectedID = () => previously_selected_id;
 
