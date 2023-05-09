@@ -41,7 +41,7 @@ const Data = (() => {
     });
   };
 
-  return { save, newQuestion, deleteQuestion };
+  return { save, newQuestion, deleteQuestion, setQuestion };
 })();
 
 export default Data;

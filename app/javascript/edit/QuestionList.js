@@ -1,3 +1,5 @@
+import Data from 'edit/Data';
+
 export default function QuestionList(csrf, quiz_id) {
   let obj = {};
   let question_table =
@@ -35,22 +37,7 @@ export default function QuestionList(csrf, quiz_id) {
   obj.setSelectedQuestion = function (id) {
     previously_selected_id = currently_selected_id;
     currently_selected_id = id;
-    // get question data
-
-    fetch(`/quizzes/${quiz_id}/update`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'X-CSRF-Token': csrf,
-      },
-      credentials: 'same-origin',
-    }).then(() => {
-      Turbo.visit(`/quizzes/${quiz_id}/edit/questions/${id}/edit`, {
-        frame: 'edit_detail',
-        action: 'replace',
-      });
-    });
-    // change visual selection
+    Data.setQuestion(csrf, quiz_id, id);
     let previous = getRow(previously_selected_id);
     if (previous != null) {
       previous.classList.remove('active_question');
@@ -79,7 +66,6 @@ export default function QuestionList(csrf, quiz_id) {
     row.appendChild(content);
     row.appendChild(current_streak);
     row.appendChild(longest_streak);
-    // row.onclick = () => setSelectedQuestion(question.id);
     question_table.appendChild(row);
   };
 
