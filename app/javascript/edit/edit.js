@@ -88,20 +88,9 @@ question_list.onDeleteQuestion = deleteQuestion;
 let new_question = document.getElementById('new_question');
 
 new_question.onclick = (e) => {
-  console.log('new question');
-  console.log(quiz_id);
-  fetch(`/quizzes/${quiz_id}/edit/questions/new`)
-    .then((response) => response.json())
-    .then((question) => {
-      console.log(question);
-      previous_id = current_id;
-      current_id = question.id;
-      Turbo.visit(`/quizzes/${quiz_id}/edit/questions/${current_id}/edit`, {
-        frame: 'edit_detail',
-        action: 'replace',
-      });
-      question_list.addRow(question);
-    });
+  let question = Data.newQuestion(csrf, quiz_id).then((question) => {
+    console.log('asdf');
+  });
 };
 // saving
 let btn_save = document.getElementById('save');

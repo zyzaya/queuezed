@@ -1,7 +1,7 @@
 const Data = (() => {
   let save = function (csrf, quiz_id, changes) {
     console.log(changes);
-    fetch(`/quizzes/${quiz_id}/update`, {
+    return fetch(`/quizzes/${quiz_id}/update`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -12,10 +12,22 @@ const Data = (() => {
     });
   };
 
-  let newQuestion = function (csrf, quiz_id) {};
+  let newQuestion = function (csrf, quiz_id) {
+    console.log('new question');
+    console.log(quiz_id);
+    return fetch(`/quizzes/${quiz_id}/edit/questions/new`)
+      .then((response) => response.json())
+      .then((question) => {
+        console.log(question);
+        Turbo.visit(`/quizzes/${quiz_id}/edit/questions/${question.id}/edit`, {
+          frame: 'edit_detail',
+          action: 'replace',
+        });
+      });
+  };
 
   let deleteQuestion = function (csrf, quiz_id, question_id) {
-    fetch(`/quizzes/${quiz_id}/edit/questions/${question_id}`, {
+    return fetch(`/quizzes/${quiz_id}/edit/questions/${question_id}`, {
       method: 'DELETE',
       headers: {
         'Content-Type': 'application/json',
