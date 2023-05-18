@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_05_01_185930) do
+ActiveRecord::Schema[7.0].define(version: 2023_05_18_185241) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -20,6 +20,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_05_01_185930) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.bigint "practice_session_id"
+    t.datetime "deleted_at"
     t.index ["answer_id"], name: "index_answer_histories_on_answer_id"
     t.index ["practice_session_id"], name: "index_answer_histories_on_practice_session_id"
   end
@@ -29,6 +30,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_05_01_185930) do
     t.bigint "answer_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.datetime "deleted_at"
     t.index ["answer_id"], name: "index_answer_variants_on_answer_id"
   end
 
@@ -36,6 +38,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_05_01_185930) do
     t.bigint "question_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.datetime "deleted_at"
     t.index ["question_id"], name: "index_answers_on_question_id"
   end
 
@@ -61,6 +64,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_05_01_185930) do
   create_table "question_relations", force: :cascade do |t|
     t.bigint "question_id"
     t.bigint "relation_id"
+    t.datetime "deleted_at"
   end
 
   create_table "questions", force: :cascade do |t|
@@ -70,6 +74,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_05_01_185930) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.bigint "srs_box_id"
+    t.datetime "deleted_at"
     t.index ["srs_box_id"], name: "index_questions_on_srs_box_id"
   end
 
