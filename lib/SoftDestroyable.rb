@@ -1,13 +1,17 @@
 module SoftDestroyable
-  scope :active, -> { where(deletd_at: nil) }
-  scope :destroyed, -> { where.not(deleted_at: nil) }
+  extend ActiveSupport::Concern
+
+  included do 
+    scope :active, -> { where(deleted_at: nil) }
+    scope :destroyed, -> { where.not(deleted_at: nil) }
+  end
 
   def soft_destroy(time = nil)
     raise_error_not_destroyed("Record already destroyed") unless deleted_at.nil?
 
     update_column(:deleted_at, time.nil? ? Time.now : time)
     
-    associations = self.class.reflect_on_all_associtiations.select do |a|
+    associations = self.class.reflect_on_all_associations.select do |a|
       a.options[:dependent] == :destroy
     end
 
@@ -35,12 +39,11 @@ module SoftDestroyable
         if (a.klass.include?(SoftDestroyable))
           public_send(a.name).unscope(where: :deleted_at).each do |m|
             m.restore(time)
+          end
         end
       end
     end
   end
-
-  private
 
   def raise_error_not_destroyed(message)
     raise ActiveRecord::RecordNotDestroyed.new("Failed to destroy the record: #{message}", self)
