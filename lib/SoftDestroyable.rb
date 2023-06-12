@@ -13,7 +13,7 @@ module SoftDestroyable
 
     associations.each do |a|
       if (a.klass.include?(SoftDestroyable))
-        public_send(a.name).each do |m|
+        public_send(a.name).unscope(where: :deleted_at).each do |m|
           m.soft_destroy(time)
         end
       end
@@ -33,7 +33,7 @@ module SoftDestroyable
 
       associations.each do |a|
         if (a.klass.include?(SoftDestroyable))
-          public_send(a.name).each do |m|
+          public_send(a.name).unscope(where: :deleted_at).each do |m|
             m.restore(time)
         end
       end
