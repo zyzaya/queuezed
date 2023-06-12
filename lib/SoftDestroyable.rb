@@ -12,16 +12,17 @@ module SoftDestroyable
     update_column(:deleted_at, time.nil? ? Time.now : time)
     
     associations = self.class.reflect_on_all_associations.select do |a|
-      a.options[:dependent] == :destroy
+      a.options[:dependent] == :destroy && a.klass.include?(SoftDestroyable)
     end
 
-    associations.each do |a|
-      if (a.klass.include?(SoftDestroyable))
+    result = transaction do
+      associations.each do |a|
         public_send(a.name).unscope(where: :deleted_at).each do |m|
           m.soft_destroy(time)
         end
-      end
+      end  
     end
+    result ? self : false
   end
 
   def restore(time = nil)
@@ -32,16 +33,17 @@ module SoftDestroyable
       update_column(:deleted_at, nil)
       
       associations = self.class.reflect_on_all_associations.select do |a|
-        a.options[:dependent] == :destroy
+        a.options[:dependent] == :destroy && a.klass.include?(SoftDestroyable)
       end
 
-      associations.each do |a|
-        if (a.klass.include?(SoftDestroyable))
+      result = transaction do
+        associations.each do |a|
           public_send(a.name).unscope(where: :deleted_at).each do |m|
             m.restore(time)
           end
         end
       end
+      result ? self : false
     end
   end
 
