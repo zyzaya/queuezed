@@ -62,6 +62,10 @@ export default function QuestionList(csrf, quiz_id) {
     content.textContent = question.content;
     current_streak.textContent = '0';
     longest_streak.textContent = '0';
+    //
+    row.onclick = (event) => {
+      obj.setSelectedQuestion(event.currentTarget.dataset.question_id);
+    };
     // add to dom
     row.appendChild(content);
     row.appendChild(current_streak);
