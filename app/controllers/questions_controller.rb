@@ -3,7 +3,12 @@ class QuestionsController < ApplicationController
     @quiz = Quiz.find(params[:quiz_id])
     @question = Question.find(params[:question_id])
     
-    # render json: @question
+  end
+
+  def update
+    @question = Question.find(params[:question_id])
+    @question.restore(@question.deleted_at)
+    render json: @question
   end
 
   def new
@@ -15,7 +20,7 @@ class QuestionsController < ApplicationController
   def delete
     @quiz = Quiz.find(params[:quiz_id])
     @question = Question.find(params[:question_id])
-    @question.destroy
+    @question.soft_destroy(Time.now)
     render json: @question
   end
   private

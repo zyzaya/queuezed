@@ -10,6 +10,7 @@ Rails.application.routes.draw do
   get '/quizzes/:quiz_id/practice/:session_id/questions/:question_id', to: 'practice_questions#show'
   
   get '/quizzes/:quiz_id/edit/questions/:question_id/edit', to: 'questions#edit'
+  put '/quizzes/:quiz_id/edit/questions/:question_id', to: 'questions#update'
   get '/quizzes/:quiz_id/edit/questions/new', to: 'questions#new'
   delete '/quizzes/:quiz_id/edit/questions/:question_id', to: 'questions#delete'
 

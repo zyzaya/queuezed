@@ -41,7 +41,19 @@ const Data = (() => {
     });
   };
 
-  return { save, newQuestion, deleteQuestion, setQuestion };
+  let restoreQuestion = function (csrf, quiz_id, question_id) {
+    return fetch(`/quizzes/${quiz_id}/edit/questions/${question_id}`, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+        'X-CSRF-Token': csrf,
+      },
+      credentials: 'same-origin',
+      body: JSON.stringify({ restore: true }),
+    });
+  };
+
+  return { save, newQuestion, deleteQuestion, restoreQuestion, setQuestion };
 })();
 
 export default Data;

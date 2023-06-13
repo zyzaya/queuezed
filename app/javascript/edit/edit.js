@@ -78,10 +78,21 @@ question_edit.onQuestionContentChange = (question_id, question) => {
 function deleteQuestion(id) {
   // server delete
   let question_id = question_list.getCurrentlySelectedID();
-  Data.deleteQuestion(csrf, quiz_id, question_id).then(() => {
-    question_list.setSelectedToSibling();
-    question_list.removeRow(question_id);
-  });
+  let action = () => {
+    Data.deleteQuestion(csrf, quiz_id, question_id).then(() => {
+      question_list.setSelectedToSibling();
+      question_list.removeRow(question_id);
+    });
+  };
+  let reverse = () => {
+    Data.restoreQuestion(csrf, quiz_id, question_id)
+      .then((response) => response.json())
+      .then((question) => {
+        question_list.addRow(question);
+        question_list.setSelectedQuestion(question_id);
+      });
+  };
+  undo.add('Delete Question', action, reverse);
 }
 question_edit.onDeleteQuestion = deleteQuestion;
 
