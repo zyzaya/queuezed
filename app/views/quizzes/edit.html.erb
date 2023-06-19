@@ -12,6 +12,7 @@
       <a class="button" id="save">save</a>
     </div>
     <div class="edit_frame">
+      <div class="gridjs_test" id='gridjs_test'></div>
       <table class="question_list" id="question_list">
         <tr class="list_header">
           <th>Question</th>
@@ -33,4 +34,5 @@
   </div>
 </div>
 <%= stylesheet_link_tag "quizzes/edit", "data-turbo-track": "reload" %>
+<%= stylesheet_link_tag "mermaid", "data-turbo-track": "reload" %>
 <%= javascript_import_module_tag "edit/edit" %>

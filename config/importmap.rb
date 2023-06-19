@@ -7,3 +7,5 @@ pin "@hotwired/stimulus-loading", to: "stimulus-loading.js", preload: true
 pin_all_from "app/javascript/controllers", under: "controllers"
 
 pin_all_from "app/javascript/edit/", under: "edit"
+
+pin "gridjs" # @6.0.6
