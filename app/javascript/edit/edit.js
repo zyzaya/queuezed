@@ -5,7 +5,7 @@ import Undo from 'edit/Undo';
 import ID from 'edit/ID';
 import Data from 'edit/Data';
 import { Grid, html } from 'gridjs';
-import { RowSelection } from 'selection';
+// import { RowSelection } from 'selection';
 
 console.log('yes this this working');
 
@@ -20,6 +20,7 @@ new Grid({
   ],
   search: true,
   sort: true,
+  resizable: true,
 }).render(document.getElementById('gridjs_test'));
 
 let csrf = document.head.querySelector('meta[name=csrf-token]')?.content;

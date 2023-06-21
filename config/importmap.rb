@@ -8,4 +8,5 @@ pin_all_from "app/javascript/controllers", under: "controllers"
 
 pin_all_from "app/javascript/edit/", under: "edit"
 
-pin "gridjs" # @6.0.6
+pin "selection", to: "https://unpkg.com/gridjs/plugins/selection/dist/selection.umd.js"
+pin "gridjs", to: "https://ga.jspm.io/npm:gridjs@6.0.6/dist/gridjs.module.js"
