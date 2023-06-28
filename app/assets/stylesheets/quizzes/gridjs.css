@@ -5,3 +5,8 @@
 .gridjs-tbody > tr:nth-child(even) > td {
   background-color: var(--tertiary-bg-color-dark);
 }
+
+.gridjs-tr:hover {
+  border: 2px solid var(--secondary-bg-color-dark);
+  cursor: pointer;
+}
