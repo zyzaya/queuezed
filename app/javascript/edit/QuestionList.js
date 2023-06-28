@@ -2,12 +2,11 @@ import Data from 'edit/Data';
 
 export default function QuestionList(csrf, quiz_id) {
   let obj = {};
-  let question_table =
-    document.getElementById('question_list').firstElementChild;
+  let question_table = document.getElementById('gridjs');
   let previously_selected_id = null;
   let currently_selected_id = null;
 
-  let rows = document.getElementsByClassName('list_row');
+  let rows = document.getElementsByClassName('gridjs-tr');
   for (let i = 0; i < rows.length; i++) {
     rows[i].onclick = (event) => {
       obj.setSelectedQuestion(event.currentTarget.dataset.question_id);

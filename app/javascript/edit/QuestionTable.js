@@ -2,11 +2,21 @@ import { Grid } from 'gridjs';
 
 const QuestionTable = (parent, quiz_id) => {
   let grid = new Grid({
-    columns: ['Question', 'Streak', 'Best Streak'],
+    columns: [
+      { name: 'id', hidden: true },
+      'Question',
+      'Streak',
+      'Best Streak',
+    ],
     server: {
       url: `/quizzes/${quiz_id}/questions`,
       then: (questions) =>
-        questions.map((q) => [q.content, q.current_streak, q.longest_streak]),
+        questions.map((q) => [
+          q.id,
+          q.content,
+          q.current_streak,
+          q.longest_streak,
+        ]),
     },
     search: true,
     sort: true,
@@ -43,6 +53,7 @@ const QuestionTable = (parent, quiz_id) => {
     },
   });
 
+  grid.on('rowClick', (e, d) => console.log(d.cells[0].data));
   grid.render(parent);
 
   return {};
