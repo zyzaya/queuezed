@@ -1,0 +1,7 @@
+.gridjs-tbody > tr:nth-child(odd) > td {
+  background-color: var(--tertiary-bg-color);
+}
+
+.gridjs-tbody > tr:nth-child(even) > td {
+  background-color: var(--tertiary-bg-color-dark);
+}

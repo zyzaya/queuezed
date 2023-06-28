@@ -11,7 +11,7 @@ console.log('yes this this working');
 let csrf = document.head.querySelector('meta[name=csrf-token]')?.content;
 let quiz_id = document.getElementById('quizzes_edit').dataset.quiz_id;
 
-let grid = QuestionTable(document.getElementById('gridjs_test'), quiz_id);
+let grid = QuestionTable(document.getElementById('gridjs'), quiz_id);
 
 let question_list = QuestionList(csrf, quiz_id);
 let change = Change(csrf, quiz_id);

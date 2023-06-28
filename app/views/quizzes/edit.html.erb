@@ -12,27 +12,14 @@
       <a class="button" id="save">save</a>
     </div>
     <div class="edit_frame">
-      <div class="gridjs_test" id='gridjs_test'></div>
-      <table class="question_list" id="question_list">
-        <tr class="list_header">
-          <th>Question</th>
-          <th>Streak</th>
-          <th>Best Streak</th>
-        </tr>
-        <% @quiz.questions.each do |q| %>
-          <tr class="list_row" data-question_id= <%= q.id %>>
-            <td><%= "#{q.content}"%></td>
-            <td><%= "#{q.current_streak}0"%></td>
-            <td><%= "#{q.longest_streak}0"%></td>
-          </tr>
-        <% end %>
-      </table>
+      <div id='gridjs'></div>
       <turbo-frame class="question_detail" id="edit_detail" >
         deeetail
       </turbo-frame>
     </div>
   </div>
 </div>
-<%= stylesheet_link_tag "quizzes/edit", "data-turbo-track": "reload" %>
 <%= stylesheet_link_tag "https://unpkg.com/gridjs/dist/theme/mermaid.min.css" %>
+<%= stylesheet_link_tag "quizzes/gridjs", "data-turbo-track": "reload"%>
+<%= stylesheet_link_tag "quizzes/edit", "data-turbo-track": "reload" %>
 <%= javascript_import_module_tag "edit/edit" %>

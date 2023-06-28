@@ -67,8 +67,9 @@
   margin: 0 4px;
 }
 
-.list_header > td {
+.list_header th {
   white-space: nowrap;
+  background-color: var(--tertiary-bg-color-dark);
 }
 
 .list_row:hover {
