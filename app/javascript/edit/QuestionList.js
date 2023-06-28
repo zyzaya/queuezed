@@ -1,20 +1,25 @@
 import Data from 'edit/Data';
+import QuestionTable from 'edit/QuestionTable';
 
 export default function QuestionList(csrf, quiz_id) {
   let obj = {};
-  let question_table = document.getElementById('gridjs');
+  let question_table = QuestionTable(
+    document.getElementById('gridjs'),
+    quiz_id
+  );
   let previously_selected_id = null;
   let currently_selected_id = null;
 
-  let rows = document.getElementsByClassName('gridjs-tr');
-  for (let i = 0; i < rows.length; i++) {
-    rows[i].onclick = (event) => {
-      obj.setSelectedQuestion(event.currentTarget.dataset.question_id);
-    };
-  }
+  question_table.onRowClick = function (event, data) {
+    obj.setSelectedQuestion(data.cells[0].data);
+  };
 
   let getRow = function (id) {
-    return document.querySelector(`.list_row[data-question_id="${id}"]`);
+    // get row element that contains id column of value /id/
+    let cell = document.querySelector(`.gridjs-td[data-question_id="${id}"]`);
+    if (cell === null) return null;
+
+    return cell.parentNode;
   };
 
   // public functions
@@ -25,7 +30,6 @@ export default function QuestionList(csrf, quiz_id) {
     let current = getRow(currently_selected_id);
     let next = current.nextElementSibling;
     let previous = current.previousElementSibling;
-    console.log();
     if (next != null) {
       obj.setSelectedQuestion(next.dataset.question_id);
     } else if (previous != null) {
@@ -72,5 +76,6 @@ export default function QuestionList(csrf, quiz_id) {
     question_table.appendChild(row);
   };
 
+  question_table.render();
   return obj;
 }

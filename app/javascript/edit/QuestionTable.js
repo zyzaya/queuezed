@@ -1,12 +1,35 @@
 import { Grid } from 'gridjs';
 
 const QuestionTable = (parent, quiz_id) => {
+  let obj = {};
+
   let grid = new Grid({
     columns: [
-      { name: 'id', hidden: true },
-      'Question',
-      'Streak',
-      'Best Streak',
+      {
+        name: 'id',
+        hidden: true,
+        attributes: (cell, row) => {
+          if (cell) return { 'data-question_id': row.cells[0].data };
+        },
+      },
+      {
+        name: 'Question',
+        attributes: (cell, row) => {
+          if (cell) return { 'data-question_id': row.cells[0].data };
+        },
+      },
+      {
+        name: 'Streak',
+        attributes: (cell, row) => {
+          if (cell) return { 'data-question_id': row.cells[0].data };
+        },
+      },
+      {
+        name: 'Best Streak',
+        attributes: (cell, row) => {
+          if (cell) return { 'data-question_id': row.cells[0].data };
+        },
+      },
     ],
     server: {
       url: `/quizzes/${quiz_id}/questions`,
@@ -53,10 +76,17 @@ const QuestionTable = (parent, quiz_id) => {
     },
   });
 
-  grid.on('rowClick', (e, d) => console.log(d.cells[0].data));
-  grid.render(parent);
+  grid.on('rowClick', (event, data) => {
+    if (obj.onRowClick !== null) {
+      obj.onRowClick(event, data);
+    }
+  });
+  console.log(grid);
+  obj.render = function () {
+    grid.render(parent);
+  };
 
-  return {};
+  return obj;
 };
 
 export default QuestionTable;
