@@ -9,25 +9,25 @@ const QuestionTable = (parent, quiz_id) => {
         name: 'id',
         hidden: true,
         attributes: (cell, row) => {
-          if (cell) return { 'data-question_id': row.cells[0].data };
+          if (row) return { 'data-question_id': row.cells[0].data };
         },
       },
       {
         name: 'Question',
         attributes: (cell, row) => {
-          if (cell) return { 'data-question_id': row.cells[0].data };
+          if (row) return { 'data-question_id': row.cells[0].data };
         },
       },
       {
         name: 'Streak',
         attributes: (cell, row) => {
-          if (cell) return { 'data-question_id': row.cells[0].data };
+          if (row) return { 'data-question_id': row.cells[0].data };
         },
       },
       {
         name: 'Best Streak',
         attributes: (cell, row) => {
-          if (cell) return { 'data-question_id': row.cells[0].data };
+          if (row) return { 'data-question_id': row.cells[0].data };
         },
       },
     ],

@@ -54,7 +54,7 @@ export default function QuestionList(csrf, quiz_id) {
   };
 
   obj.addRow = function (question) {
-    question_table.forceRender();
+    question_table.render();
     // let row = document.createElement('tr');
     // row.classList.add('list_row');
     // row.dataset.question_id = question.id;
