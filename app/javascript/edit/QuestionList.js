@@ -54,26 +54,27 @@ export default function QuestionList(csrf, quiz_id) {
   };
 
   obj.addRow = function (question) {
-    let row = document.createElement('tr');
-    row.classList.add('list_row');
-    row.dataset.question_id = question.id;
-    // create elements
-    let content = document.createElement('td');
-    let current_streak = document.createElement('td');
-    let longest_streak = document.createElement('td');
-    // set values
-    content.textContent = question.content;
-    current_streak.textContent = '0';
-    longest_streak.textContent = '0';
-    //
-    row.onclick = (event) => {
-      obj.setSelectedQuestion(event.currentTarget.dataset.question_id);
-    };
-    // add to dom
-    row.appendChild(content);
-    row.appendChild(current_streak);
-    row.appendChild(longest_streak);
-    question_table.appendChild(row);
+    question_table.forceRender();
+    // let row = document.createElement('tr');
+    // row.classList.add('list_row');
+    // row.dataset.question_id = question.id;
+    // // create elements
+    // let content = document.createElement('td');
+    // let current_streak = document.createElement('td');
+    // let longest_streak = document.createElement('td');
+    // // set values
+    // content.textContent = question.content;
+    // current_streak.textContent = '0';
+    // longest_streak.textContent = '0';
+    // //
+    // row.onclick = (event) => {
+    //   obj.setSelectedQuestion(event.currentTarget.dataset.question_id);
+    // };
+    // // add to dom
+    // row.appendChild(content);
+    // row.appendChild(current_streak);
+    // row.appendChild(longest_streak);
+    // question_table.appendChild(row);
   };
 
   question_table.render();

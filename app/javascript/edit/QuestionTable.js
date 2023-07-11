@@ -86,6 +86,10 @@ const QuestionTable = (parent, quiz_id) => {
     grid.render(parent);
   };
 
+  obj.forceRender = function () {
+    grid.forceRender();
+  };
+
   return obj;
 };
 
