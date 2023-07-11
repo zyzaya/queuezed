@@ -77,7 +77,9 @@ question_edit.onQuestionContentChange = (question_id, question) => {
 
 function deleteQuestion(id) {
   // server delete
+
   let question_id = question_list.getCurrentlySelectedID();
+  console.log(question_id);
   let action = () => {
     Data.deleteQuestion(csrf, quiz_id, question_id).then(() => {
       question_list.setSelectedToSibling();
