@@ -47,36 +47,12 @@ export default function QuestionList(csrf, quiz_id) {
     if (previous != null) {
       previous.classList.remove('active_question');
     }
-    getRow(id).classList.add('active_question');
+    let row = getRow(id);
+    row.classList.add('active_question');
   };
 
-  obj.removeRow = function (question_id) {
-    let row = getRow(question_id);
-    row.remove();
-  };
-
-  obj.addRow = function (question) {
-    question_table.render();
-    // let row = document.createElement('tr');
-    // row.classList.add('list_row');
-    // row.dataset.question_id = question.id;
-    // // create elements
-    // let content = document.createElement('td');
-    // let current_streak = document.createElement('td');
-    // let longest_streak = document.createElement('td');
-    // // set values
-    // content.textContent = question.content;
-    // current_streak.textContent = '0';
-    // longest_streak.textContent = '0';
-    // //
-    // row.onclick = (event) => {
-    //   obj.setSelectedQuestion(event.currentTarget.dataset.question_id);
-    // };
-    // // add to dom
-    // row.appendChild(content);
-    // row.appendChild(current_streak);
-    // row.appendChild(longest_streak);
-    // question_table.appendChild(row);
+  obj.refresh = function () {
+    question_table.forceRender();
   };
 
   question_table.render();

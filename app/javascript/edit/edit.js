@@ -82,17 +82,15 @@ function deleteQuestion(id) {
   console.log(question_id);
   let action = () => {
     Data.deleteQuestion(csrf, quiz_id, question_id).then(() => {
+      question_list.refresh();
       question_list.setSelectedToSibling();
-      question_list.removeRow(question_id);
     });
   };
   let reverse = () => {
     Data.restoreQuestion(csrf, quiz_id, question_id)
       .then((response) => response.json())
-      .then((question) => {
-        question_list.addRow(question);
-        question_list.setSelectedQuestion(question_id);
-      });
+      .then((question) => question_list.refresh())
+      .then(() => question_list.setSelectedQuestion(question_id));
   };
   undo.add('Delete Question', action, reverse);
 }
@@ -102,7 +100,9 @@ let new_question = document.getElementById('new_question');
 
 new_question.onclick = (e) => {
   let question = Data.newQuestion(csrf, quiz_id).then((question) => {
-    question_list.addRow(question);
+    question_list
+      .refresh()
+      .then((response) => question_list.setSelectedQuestion(question.id));
   });
 };
 // saving

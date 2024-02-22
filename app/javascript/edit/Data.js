@@ -20,8 +20,6 @@ const Data = (() => {
   };
 
   let newQuestion = function (csrf, quiz_id) {
-    console.log('new question');
-    console.log(quiz_id);
     return fetch(`/quizzes/${quiz_id}/edit/questions/new`)
       .then((response) => response.json())
       .then((question) => {
