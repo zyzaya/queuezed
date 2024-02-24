@@ -5,7 +5,15 @@ const QuestionTable = (parent, quiz_id) => {
   let grid = new zGrid({
     parent: parent,
     data: [],
-    columns: ['First Name', 'Last Name'],
+    columns: [
+      {
+        name: 'id',
+        visible: true,
+      },
+      'Question',
+      'Streak',
+      'Best Streak',
+    ],
   });
   // let grid = new Grid({
   //   columns: [
@@ -93,6 +101,30 @@ const QuestionTable = (parent, quiz_id) => {
   // obj.forceRender = function () {
   //   grid.forceRender();
   // };
+
+  obj.forceRender = function () {
+    fetch(`/quizzes/${quiz_id}/questions`)
+      .then((response) => response.json())
+      .then((questions) => {
+        console.log(questions);
+        let data = questions.map((e) => {
+          return {
+            id: e.id === null ? 0 : e.id.toString(),
+            Question: e.content,
+            Streak: e.current_streak,
+            'Best Streak': e.longest_streak,
+          };
+        });
+        console.log(data);
+        grid.reconfigure({
+          data: data,
+        });
+      });
+  };
+
+  obj.render = function () {
+    obj.forceRender();
+  };
 
   return obj;
 };
