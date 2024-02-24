@@ -7,12 +7,21 @@ const QuestionTable = (parent, quiz_id) => {
     data: [],
     columns: [
       {
-        name: 'id',
-        visible: true,
+        id: 'id',
+        visible: false,
       },
-      'Question',
-      'Streak',
-      'Best Streak',
+      {
+        id: 'content',
+        name: 'Question',
+      },
+      {
+        id: 'current_streak',
+        name: 'Streak',
+      },
+      {
+        id: 'longest_streak',
+        name: 'Best Streak',
+      },
     ],
   });
   // let grid = new Grid({
@@ -110,9 +119,9 @@ const QuestionTable = (parent, quiz_id) => {
         let data = questions.map((e) => {
           return {
             id: e.id === null ? 0 : e.id.toString(),
-            Question: e.content,
-            Streak: e.current_streak,
-            'Best Streak': e.longest_streak,
+            content: e.content,
+            current_streak: e.current_streak,
+            longest_streak: e.longest_streak,
           };
         });
         console.log(data);
