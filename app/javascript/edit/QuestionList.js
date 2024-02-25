@@ -7,6 +7,7 @@ export default function QuestionList(csrf, quiz_id) {
   let onClick = function (col, row, col_name, data) {
     console.log(`${col}, ${row}, ${col_name}`);
     console.log(data);
+    obj.setSelectedQuestion(data['id']);
   };
 
   let question_table = new zGrid({
@@ -31,6 +32,9 @@ export default function QuestionList(csrf, quiz_id) {
       },
     ],
     onClick: onClick,
+    className: {
+      tbody: 'zgrid_body',
+    },
   });
 
   let previously_selected_id = null;
@@ -41,11 +45,14 @@ export default function QuestionList(csrf, quiz_id) {
   // };
 
   let getRow = function (id) {
-    // get row element that contains id column of value /id/
-    let cell = document.querySelector(`.gridjs-td[data-question_id="${id}"]`);
-    if (cell === null) return null;
+    let body = document.getElementsByClassName('zgrid_body');
+    if (body.length !== 1) return null;
+    body = body[0];
+    let row_index = question_table.getData().findIndex((e) => e.id === id);
+    if (body === null || row_index === -1) return null;
+    let row = body.children[row_index];
 
-    return cell.parentNode;
+    return row;
   };
 
   // public functions
