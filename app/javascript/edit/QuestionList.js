@@ -3,6 +3,12 @@ import { zGrid } from 'zGrid';
 
 export default function QuestionList(csrf, quiz_id) {
   let obj = {};
+
+  let onClick = function (col, row, col_name, data) {
+    console.log(`${col}, ${row}, ${col_name}`);
+    console.log(data);
+  };
+
   let question_table = new zGrid({
     parent: document.getElementById('gridjs'),
     data: [],
@@ -24,14 +30,15 @@ export default function QuestionList(csrf, quiz_id) {
         name: 'Best Streak',
       },
     ],
+    onClick: onClick,
   });
 
   let previously_selected_id = null;
   let currently_selected_id = null;
 
-  question_table.onRowClick = function (event, data) {
-    obj.setSelectedQuestion(data.cells[0].data);
-  };
+  // question_table.onClick = function (event, data) {
+  //   obj.setSelectedQuestion(data.cells[0].data);
+  // };
 
   let getRow = function (id) {
     // get row element that contains id column of value /id/
@@ -75,7 +82,7 @@ export default function QuestionList(csrf, quiz_id) {
       console.log(questions);
       let data = questions.map((e) => {
         return {
-          id: e.id.toString,
+          id: e.id.toString(),
           content: e.content,
           current_streak: e.current_streak,
           longest_streak: e.longest_streak,
