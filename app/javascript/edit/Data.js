@@ -52,8 +52,8 @@ const Data = (() => {
   };
 
   let getQuestions = function (quiz_id) {
-    return fetch(`/quizzes/${quiz_id}/questions`).then(
-      (response) => response.json
+    return fetch(`/quizzes/${quiz_id}/questions`).then((response) =>
+      response.json()
     );
   };
 

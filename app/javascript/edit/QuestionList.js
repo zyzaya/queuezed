@@ -71,9 +71,22 @@ export default function QuestionList(csrf, quiz_id) {
   };
 
   obj.refresh = function () {
-    question_table.forceRender();
+    Data.getQuestions(quiz_id).then((questions) => {
+      console.log(questions);
+      let data = questions.map((e) => {
+        return {
+          id: e.id.toString,
+          content: e.content,
+          current_streak: e.current_streak,
+          longest_streak: e.longest_streak,
+        };
+      });
+      question_table.reconfigure({
+        data: data,
+      });
+    });
   };
 
-  question_table.render();
+  obj.refresh();
   return obj;
 }
