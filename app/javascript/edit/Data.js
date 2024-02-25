@@ -51,7 +51,20 @@ const Data = (() => {
     });
   };
 
-  return { save, newQuestion, deleteQuestion, restoreQuestion, setQuestion };
+  let getQuestions = function (quiz_id) {
+    return fetch(`/quizzes/${quiz_id}/questions`).then(
+      (response) => response.json
+    );
+  };
+
+  return {
+    save,
+    newQuestion,
+    deleteQuestion,
+    restoreQuestion,
+    setQuestion,
+    getQuestions,
+  };
 })();
 
 export default Data;
