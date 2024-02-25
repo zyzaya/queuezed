@@ -1,12 +1,31 @@
 import Data from 'edit/Data';
-import QuestionTable from 'edit/QuestionTable';
+import { zGrid } from 'zGrid';
 
 export default function QuestionList(csrf, quiz_id) {
   let obj = {};
-  let question_table = QuestionTable(
-    document.getElementById('gridjs'),
-    quiz_id
-  );
+  let question_table = new zGrid({
+    parent: document.getElementById('gridjs'),
+    data: [],
+    columns: [
+      {
+        id: 'id',
+        visible: false,
+      },
+      {
+        id: 'content',
+        name: 'Question',
+      },
+      {
+        id: 'current_streak',
+        name: 'Streak',
+      },
+      {
+        id: 'longest_streak',
+        name: 'Best Streak',
+      },
+    ],
+  });
+
   let previously_selected_id = null;
   let currently_selected_id = null;
 
