@@ -34,6 +34,7 @@ export default function QuestionList(csrf, quiz_id) {
     onClick: onClick,
     className: {
       tbody: 'zgrid_body',
+      tr: 'zgrid_tr',
     },
   });
 

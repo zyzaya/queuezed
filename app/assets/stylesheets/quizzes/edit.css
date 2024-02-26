@@ -50,10 +50,6 @@
   color: var(--main-text-color);
 }
 
-.active_question {
-  border: 2px solid var(--secondary-bg-color-dark);
-}
-
 .question_detail {
   display: flex;
   flex-direction: column;

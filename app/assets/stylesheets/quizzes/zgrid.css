@@ -1,0 +1,32 @@
+.zgrid_table {
+  color: var(--main-text-color);
+  border-collapse: collapse;
+  border-color: var(--secondary-bg-color-dark);
+}
+
+.zgrid_header {
+  background-color: var(--tertiary-bg-color-dark);
+  border-color: black;
+  font-size: large;
+}
+
+.zgrid_body > tr:nth-child(odd) {
+  background-color: var(--tertiary-bg-color);
+}
+
+.zgrid_body > tr:nth-child(even) {
+  background-color: var(--tertiary-bg-color-dark);
+}
+
+.zgrid_cell {
+  border-color: var(--secondary-bg-color-dark);
+}
+
+.zgrid_row:hover {
+  border: 2px solid var(--secondary-bg-color-dark);
+  cursor: pointer;
+}
+
+.active_question {
+  border: 2px solid var(--secondary-bg-color-dark);
+}
