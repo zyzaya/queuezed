@@ -5,8 +5,6 @@ export default function QuestionList(csrf, quiz_id) {
   let obj = {};
 
   let onClick = function (col, row, col_name, data) {
-    console.log(`${col}, ${row}, ${col_name}`);
-    console.log(data);
     obj.setSelectedQuestion(data['id']);
   };
 
@@ -40,10 +38,6 @@ export default function QuestionList(csrf, quiz_id) {
 
   let previously_selected_id = null;
   let currently_selected_id = null;
-
-  // question_table.onClick = function (event, data) {
-  //   obj.setSelectedQuestion(data.cells[0].data);
-  // };
 
   let getRow = function (id) {
     let body = document.getElementsByClassName('zgrid_body');
@@ -87,7 +81,6 @@ export default function QuestionList(csrf, quiz_id) {
 
   obj.refresh = function () {
     Data.getQuestions(quiz_id).then((questions) => {
-      console.log(questions);
       let data = questions.map((e) => {
         return {
           id: e.id.toString(),
