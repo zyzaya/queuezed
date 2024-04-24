@@ -79,12 +79,16 @@ function deleteQuestion(id) {
   // server delete
 
   let question_id = question_list.getCurrentlySelectedID();
-  console.log(question_id);
   let action = () => {
-    Data.deleteQuestion(csrf, quiz_id, question_id).then(() => {
-      question_list.refresh();
-      question_list.setSelectedToSibling();
-    });
+    question_list.setSelectedToSibling();
+
+    Data.deleteQuestion(csrf, quiz_id, question_id)
+      .then(() => question_list.refresh())
+      .then(() =>
+        question_list.setSelectedQuestion(
+          question_list.getCurrentlySelectedID()
+        )
+      );
   };
   let reverse = () => {
     Data.restoreQuestion(csrf, quiz_id, question_id)
