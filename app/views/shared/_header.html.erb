@@ -9,7 +9,7 @@
   </div>
   <div class="header_info">
     <div></div>
-    <h1 class="header_title">queuezed</h1>
+    <%= link_to "queuezed", quizzes_path, class: "header_title" %>
     <div class="header_buttons">
       <button class="header_settings button">Settings</button>
       <%= button_to "Sign Out", destroy_user_session_path, method: :delete, class: 'button' %>
