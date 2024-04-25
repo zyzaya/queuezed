@@ -24,7 +24,16 @@
 }
 
 .quiz_title {
-  font-size: xx-large;
+  font-size: x-large;
+  color: var(--main-text-color);
+  text-align: center;
+  background: none;
+  border: none;
+}
+
+.quiz_title:focus-visible {
+  outline: none;
+  border: none;
 }
 
 .toolbar {

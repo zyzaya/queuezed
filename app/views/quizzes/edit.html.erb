@@ -2,7 +2,7 @@
   <%= render 'shared/header' %>
   <div class="edit">
     <div class="quiz_info">
-      <h1 class="quiz_title"><%= @quiz.name %></h1>
+      <%= text_field "", "quiz_title", class: "quiz_title", value:"#{@quiz.name}"%>
       <div class="question_count"><%= @quiz.questions.count %> questions</div>
     </div>
     <div class="toolbar">
