@@ -13,7 +13,7 @@ class QuizzesController < ApplicationController
     # rails puts json into params automagically
     # format of a save changes is
     # quiz {
-    #  quiz_info: ""
+    #  quiz_title?: ""
     #  questions: [
     #   {
     #    question_info: ""
@@ -25,6 +25,9 @@ class QuizzesController < ApplicationController
     ## todo: save added answers, remove deleted answers,
     # save changes to content of answers/questions
 
+    unless params[:quiz_title].nil?
+      Quiz.find(params[:quiz_id]).update(name: params[:quiz_title])
+    end
     unless params[:questions].nil?
       params[:questions].each do |q|
         ## content
