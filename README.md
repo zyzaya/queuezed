@@ -22,3 +22,22 @@ Things you may want to cover:
 * Deployment instructions
 
 * ...
+
+
+# database
+To reload database:
+- db:reset
+- db:seed
+
+# git branches
+- *main* - only contains snapshots of release versions
+- *develop* - represents a state with the latest delivered development changes
+- *feature* - used when developing a new feature or enhancement. Named as feature#-name. # is only added if applicable
+- *issue* - used when fixing an existing issue. Named as issue#-summary
+
+
+git checkout develop
+git checkout -b feature#-name
+*work on feature*
+git checkout develop
+git merge feature#-name
