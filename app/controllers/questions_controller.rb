@@ -1,7 +1,7 @@
 class QuestionsController < ApplicationController
   def index
     @quiz = Quiz.find(params[:quiz_id])
-    @questions = @quiz.questions
+    @questions = @quiz.questions.order(:id)
     render json: @questions
   end
   
