@@ -5,11 +5,11 @@
       <%= text_field "", "quiz_title", class: "quiz_title", value:"#{@quiz.name}"%>
       <div class="question_count"><%= @quiz.questions.count %> questions</div>
     </div>
-    <div class="toolbar">
-      <a class="button" id="undo">undo</a>
-      <a class="button" id="redo">redo</a>
-      <a class="button" id="new_question">new q</a>
-      <a class="button" id="save">save</a>
+    <div class="toolbar" data-controller="toolbar">
+      <a class="button" id="undo" data-action="toolbar#undo">undo</a>
+      <a class="button" id="redo" data-action="toolbar#redo">redo</a>
+      <a class="button" id="new_question" data-action="toolbar#newQuestion">new q</a>
+      <a class="button" id="save" data-action="toolbar#save">save</a>
     </div>
     <div class="edit_frame">
       <div id='gridjs'></div>
