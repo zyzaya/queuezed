@@ -10,7 +10,7 @@ console.log('yes this this working');
 let csrf = document.head.querySelector('meta[name=csrf-token]')?.content;
 let quiz_id = document.getElementById('quizzes_edit').dataset.quiz_id;
 
-let question_list = QuestionList(csrf, quiz_id);
+// let question_list = QuestionList(csrf, quiz_id);
 let change = Change(csrf, quiz_id);
 let question_edit = QuestionEdit();
 let undo = Undo();
@@ -35,21 +35,21 @@ quiz_title.onchange = (event) => {
   undo.add('Change Quiz Title', action, reverse);
 };
 // questions
-question_edit.onDeleteAnswer = (answer_id, answer) => {
-  let question_id = question_list.getCurrentlySelectedID();
+// question_edit.onDeleteAnswer = (answer_id, answer) => {
+//   let question_id = question_list.getCurrentlySelectedID();
 
-  let action = () => {
-    change.deleteAnswer(question_id, answer_id);
-    question_edit.deleteAnswerDisplay(answer_id);
-  };
-  let reverse = () => {
-    change.addAnswer(question_id, answer_id);
-    change.setAnswerContent(question_id, answer_id, answer.content);
-    question_edit.addAnswerDisplay(question_id, answer_id);
-    question_edit.setAnswerContent(answer_id, answer.content);
-  };
-  undo.add('Delete Answer', action, reverse);
-};
+//   let action = () => {
+//     change.deleteAnswer(question_id, answer_id);
+//     question_edit.deleteAnswerDisplay(answer_id);
+//   };
+//   let reverse = () => {
+//     change.addAnswer(question_id, answer_id);
+//     change.setAnswerContent(question_id, answer_id, answer.content);
+//     question_edit.addAnswerDisplay(question_id, answer_id);
+//     question_edit.setAnswerContent(answer_id, answer.content);
+//   };
+//   undo.add('Delete Answer', action, reverse);
+// };
 
 question_edit.onAddAnswer = (question_id) => {
   let answer_id = ID.next();
@@ -64,19 +64,19 @@ question_edit.onAddAnswer = (question_id) => {
   undo.add('Add Answer', action, reverse);
 };
 
-question_edit.onAnswerContentChange = (answer_id, answer) => {
-  let question_id = question_list.getCurrentlySelectedID();
+// question_edit.onAnswerContentChange = (answer_id, answer) => {
+//   let question_id = question_list.getCurrentlySelectedID();
 
-  let action = () => {
-    change.setAnswerContent(question_id, answer_id, answer.content);
-    question_edit.setAnswerContent(answer_id, answer.content);
-  };
-  let reverse = () => {
-    change.setAnswerContent(question_id, answer_id, answer.previous);
-    question_edit.setAnswerContent(answer_id, answer.previous);
-  };
-  undo.add('Change Answer Content', action, reverse);
-};
+//   let action = () => {
+//     change.setAnswerContent(question_id, answer_id, answer.content);
+//     question_edit.setAnswerContent(answer_id, answer.content);
+//   };
+//   let reverse = () => {
+//     change.setAnswerContent(question_id, answer_id, answer.previous);
+//     question_edit.setAnswerContent(answer_id, answer.previous);
+//   };
+//   undo.add('Change Answer Content', action, reverse);
+// };
 
 question_edit.onQuestionContentChange = (question_id, question) => {
   let action = () => {
@@ -90,40 +90,40 @@ question_edit.onQuestionContentChange = (question_id, question) => {
   undo.add('Change Question Content', action, reverse);
 };
 
-function deleteQuestion(id) {
-  // server delete
+// function deleteQuestion(id) {
+//   // server delete
 
-  let question_id = question_list.getCurrentlySelectedID();
-  let action = () => {
-    question_list.setSelectedToSibling();
+//   let question_id = question_list.getCurrentlySelectedID();
+//   let action = () => {
+//     question_list.setSelectedToSibling();
 
-    Data.deleteQuestion(csrf, quiz_id, question_id)
-      .then(() => question_list.refresh())
-      .then(() =>
-        question_list.setSelectedQuestion(
-          question_list.getCurrentlySelectedID()
-        )
-      );
-  };
-  let reverse = () => {
-    Data.restoreQuestion(csrf, quiz_id, question_id)
-      .then((response) => response.json())
-      .then((question) => question_list.refresh())
-      .then(() => question_list.setSelectedQuestion(question_id));
-  };
-  undo.add('Delete Question', action, reverse);
-}
-question_edit.onDeleteQuestion = deleteQuestion;
+//     Data.deleteQuestion(csrf, quiz_id, question_id)
+//       .then(() => question_list.refresh())
+//       .then(() =>
+//         question_list.setSelectedQuestion(
+//           question_list.getCurrentlySelectedID()
+//         )
+//       );
+//   };
+//   let reverse = () => {
+//     Data.restoreQuestion(csrf, quiz_id, question_id)
+//       .then((response) => response.json())
+//       .then((question) => question_list.refresh())
+//       .then(() => question_list.setSelectedQuestion(question_id));
+//   };
+//   undo.add('Delete Question', action, reverse);
+// }
+// question_edit.onDeleteQuestion = deleteQuestion;
 
-let new_question = document.getElementById('new_question');
+// let new_question = document.getElementById('new_question');
 
-new_question.onclick = (e) => {
-  let question = Data.newQuestion(csrf, quiz_id).then((question) => {
-    question_list
-      .refresh()
-      .then((response) => question_list.setSelectedQuestion(question.id));
-  });
-};
+// new_question.onclick = (e) => {
+//   let question = Data.newQuestion(csrf, quiz_id).then((question) => {
+//     question_list
+//       .refresh()
+//       .then((response) => question_list.setSelectedQuestion(question.id));
+//   });
+// };
 // saving
 let btn_save = document.getElementById('save');
 btn_save.onclick = () => {

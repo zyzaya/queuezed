@@ -12,7 +12,7 @@
       <a class="button" id="save" data-action="toolbar#save">save</a>
     </div>
     <div class="edit_frame">
-      <div id='gridjs'></div>
+      <div id='gridjs' data-controller="zgrid" data-zgrid-quiz-id-value=<%= @quiz.id %>></div>
       <turbo-frame class="question_detail" id="edit_detail" >
         deeetail
       </turbo-frame>
