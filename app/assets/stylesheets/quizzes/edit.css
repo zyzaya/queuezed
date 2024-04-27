@@ -54,9 +54,10 @@
   margin: 5px;
 }
 
-.question_detail {
+#edit_detail {
   background-color: var(--tertiary-bg-color-dark);
   color: var(--main-text-color);
+  border: 1px solid black;
 }
 
 .question_detail {
@@ -64,7 +65,7 @@
   flex-direction: column;
   row-gap: 10px;
   padding: 8px;
-  border: 1px solid black;
+  
 }
 
 .question_tags {
