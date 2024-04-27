@@ -51,7 +51,7 @@ export default class extends Controller {
   }
 
   refresh() {
-    Data.getQuestions(this.quizIdValue).then((questions) => {
+    return Data.getQuestions(this.quizIdValue).then((questions) => {
       let data = questions.map((e) => {
         return {
           id: e.id.toString(),
@@ -75,16 +75,25 @@ export default class extends Controller {
     });
   }
 
-  select(event) {
-    if (this.previouslySelected !== null) {
-      this.previouslySelected.classList.remove('active_question');
+  setSelectionQuestion(id) {
+    let element = document.querySelector(`[data-question-id-value='${id}']`);
+    if (element !== undefined) {
+      if (this.previouslySelected !== null) {
+        this.previouslySelected.classList.remove('active_question');
+      }
+      element.classList.add('active_question');
+      this.previouslySelected = element;
+      Data.setQuestion(this.csrf, this.quizIdValue, id);
     }
-    event.currentTarget.classList.add('active_question');
-    this.previouslySelected = event.currentTarget;
-    Data.setQuestion(
-      this.csrf,
-      this.quizIdValue,
-      event.currentTarget.dataset.questionIdValue
-    );
+  }
+
+  select(event) {
+    this.setSelectionQuestion(event.currentTarget.dataset.questionIdValue);
+  }
+
+  newQuestion(event) {
+    Data.newQuestion(this.csrf, this.quizIdValue).then((question) => {
+      this.refresh().then((response) => this.setSelectionQuestion(question.id));
+    });
   }
 }

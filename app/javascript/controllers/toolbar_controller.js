@@ -1,4 +1,5 @@
 import { Controller } from '@hotwired/stimulus';
+import Data from 'edit/Data';
 
 export default class extends Controller {
   static values = {
@@ -22,8 +23,7 @@ export default class extends Controller {
   }
 
   newQuestion() {
-    // data.new question
-    // set selected q to new question
+    this.dispatch('new');
   }
 
   save() {

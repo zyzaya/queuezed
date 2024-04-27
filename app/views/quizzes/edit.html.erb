@@ -5,14 +5,14 @@
       <%= text_field "", "quiz_title", class: "quiz_title", value:"#{@quiz.name}"%>
       <div class="question_count"><%= @quiz.questions.count %> questions</div>
     </div>
-    <div class="toolbar" data-controller="toolbar">
+    <div class="toolbar" data-controller="toolbar" data-toolbar-quiz-id-value=<%= @quiz.id %>>
       <a class="button" id="undo" data-action="toolbar#undo">undo</a>
       <a class="button" id="redo" data-action="toolbar#redo">redo</a>
       <a class="button" id="new_question" data-action="toolbar#newQuestion">new q</a>
       <a class="button" id="save" data-action="toolbar#save">save</a>
     </div>
     <div class="edit_frame">
-      <div id='gridjs' data-controller="zgrid" data-zgrid-quiz-id-value=<%= @quiz.id %>></div>
+      <div id='gridjs' data-controller="zgrid" data-zgrid-quiz-id-value=<%= @quiz.id %> data-action="toolbar:new@window->zgrid#newQuestion"></div>
       <turbo-frame class="question_detail" id="edit_detail" >
         deeetail
       </turbo-frame>
