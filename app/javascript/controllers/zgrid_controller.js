@@ -34,7 +34,11 @@ export default class extends Controller {
         tbody: 'zgrid_body',
         tr: 'zgrid_tr',
       },
+      dataAttribute: {
+        tr: ['action', 'click->zgrid#select'],
+      },
     });
+    this.previouslySelected = null;
     this.csrf = document.head.querySelector('meta[name=csrf-token]')?.content;
   }
 
@@ -68,5 +72,11 @@ export default class extends Controller {
     });
   }
 
-  select() {}
+  select(event) {
+    if (this.previouslySelected !== null) {
+      this.previouslySelected.classList.remove('active_question');
+    }
+    event.currentTarget.classList.add('active_question');
+    this.previouslySelected = event.currentTarget;
+  }
 }
