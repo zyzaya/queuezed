@@ -1,21 +1,33 @@
 type FilterCallback = (row: Record<string, string>) => boolean;
 type CompareEntries = (a: string, b: string) => number;
 type CompareRows = (a: Record<string, string>, b: Record<string, string>) => number;
-type ClassNames = {
-    filterContainer?: string;
-    filter?: string;
-    paginationContainer?: string;
-    paginationInfo?: string;
-    paginationButton?: string;
-    paginationPrevious?: string;
-    paginationCurrent?: string;
-    paginationNext?: string;
+type ElementNames = {
+    filterContainer?: string | [string, string];
+    filter?: string | [string, string];
+    paginationContainer?: string | [string, string];
+    paginationInfo?: string | [string, string];
+    paginationButton?: string | [string, string];
+    paginationPrevious?: string | [string, string];
+    paginationCurrent?: string | [string, string];
+    paginationNext?: string | [string, string];
+    table?: string | [string, string];
+    tr?: string | [string, string];
+    th?: string | [string, string];
+    thead?: string | [string, string];
+    tbody?: string | [string, string];
+    td?: string | [string, string];
 };
 type ColumnConfiguration = {
     /**
-     * The name of the column
+     * The identifier of the column. Used to indicate
+     * the column when configuring the grid.
      */
-    name: string;
+    id: string;
+    /**
+     * The displayed name of the column
+     * Default is the same as id.
+     */
+    name?: string;
     /**
      * When set to a boolean it defines if the grid can (or cannot)
      * be sorted by that column
@@ -61,8 +73,9 @@ type Configuration = {
      * column as defined in the column configuration. The value is a string that is
      * displayed in the cell
      *
-     * Extra values or values with a key that doesn't match a column are ignored. If
-     * additional columns are added later these values can still be displayed
+     * Extra values or values with a key that doesn't match a column are ignored.
+     * If additional columns are added later these values can still be displayed,
+     * but only if they have a key.
      *
      * Values that are not explicitly defined are set to an empty string.
      */
@@ -120,9 +133,10 @@ type Configuration = {
      * @param data The row, as key-value pairs. Key is the name of the column, value is the value of the record for that column. This includes hidden columns.
      */
     onClick?: (column: number, row: number, columnName: string, data: Record<string, string>) => void;
-    className?: ClassNames;
+    className?: ElementNames;
+    dataAttribute?: ElementNames;
 };
-export default class zGrid {
+declare class zGrid {
     private currentPage;
     private columns;
     private data;
@@ -142,6 +156,7 @@ export default class zGrid {
     private onSort;
     private onClick;
     private className;
+    private dataAttribute;
     /**
      *
      * @param {Configuration} config
@@ -160,6 +175,7 @@ export default class zGrid {
     private configurePagination;
     private configureFilter;
     private configureClassName;
+    private configureDataAttributes;
     private configureUI;
     reconfigure(config: Partial<Configuration>): void;
     getRow(index: number): Record<string, string>;
@@ -226,4 +242,4 @@ export default class zGrid {
     private renderHeader;
     private renderData;
 }
-export {};
+export { zGrid };
