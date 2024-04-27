@@ -15,7 +15,7 @@ export default class extends Controller {
       columns: [
         {
           id: 'id',
-          visible: true,
+          visible: false,
         },
         {
           id: 'content',
@@ -44,14 +44,8 @@ export default class extends Controller {
 
   connect() {
     this.element.replaceChildren();
-    let quiz_id = this.quizIdValue;
-    let csrf = this.csrf;
-    let onclick = function (col, row, col_name, data) {
-      Data.setQuestion(csrf, quiz_id, data['id']);
-    };
     this.zgrid.reconfigure({
       parent: this.element,
-      onClick: onclick,
     });
     this.refresh();
   }
@@ -69,6 +63,15 @@ export default class extends Controller {
       this.zgrid.reconfigure({
         data: data,
       });
+      let body = document.getElementsByClassName('zgrid_body');
+      if (body.length === 1) {
+        let grid_data = this.zgrid.getData();
+        body = body[0];
+        console.log(body.children);
+        Array.from(body.children).forEach((r, i) => {
+          r.dataset['questionIdValue'] = grid_data[i].id;
+        });
+      }
     });
   }
 
@@ -78,5 +81,10 @@ export default class extends Controller {
     }
     event.currentTarget.classList.add('active_question');
     this.previouslySelected = event.currentTarget;
+    Data.setQuestion(
+      this.csrf,
+      this.quizIdValue,
+      event.currentTarget.dataset.questionIdValue
+    );
   }
 }
