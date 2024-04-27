@@ -15,11 +15,11 @@ export default class extends Controller {
   }
 
   undo() {
-    console.log('undo');
+    this.dispatch('undo');
   }
 
   redo() {
-    console.log('redo');
+    this.dispatch('redo');
   }
 
   newQuestion() {

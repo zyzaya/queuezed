@@ -42,7 +42,7 @@ export default class extends Controller {
     this.previouslySelected = null;
     this.currentlySelected = null;
     this.csrf = document.head.querySelector('meta[name=csrf-token]')?.content;
-    this.undo = Undo();
+    this.undo_handler = Undo();
   }
 
   connect() {
@@ -129,6 +129,14 @@ export default class extends Controller {
         .then((question) => this.refresh())
         .then(() => this.setSelectedQuestion(question_id));
     };
-    this.undo.add('Delete Question', action, reverse);
+    this.undo_handler.add('Delete Question', action, reverse);
+  }
+
+  undo(event) {
+    this.undo_handler.undo();
+  }
+
+  redo(event) {
+    this.undo_handler.redo();
   }
 }

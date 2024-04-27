@@ -17,6 +17,8 @@
         data-zgrid-quiz-id-value=<%= @quiz.id %> 
         data-action=
           "toolbar:new@window->zgrid#newQuestion
+          toolbar:undo@window->zgrid#undo
+          toolbar:redo@window->zgrid#redo
           question:delete@window->zgrid#deleteQuestion"></div>
       <turbo-frame id="edit_detail" >
         deeetail
