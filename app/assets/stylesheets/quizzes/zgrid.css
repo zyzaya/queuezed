@@ -22,7 +22,7 @@
   border-color: var(--secondary-bg-color-dark);
 }
 
-.zgrid_row:hover {
+.zgrid_body > .zgrid_row:hover {
   border: 2px solid var(--secondary-bg-color-dark);
   cursor: pointer;
 }
