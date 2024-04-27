@@ -35,17 +35,24 @@ export default class extends Controller {
         tr: 'zgrid_tr',
       },
     });
+    this.csrf = document.head.querySelector('meta[name=csrf-token]')?.content;
   }
 
   connect() {
+    this.element.replaceChildren();
+    let quiz_id = this.quizIdValue;
+    let csrf = this.csrf;
+    let onclick = function (col, row, col_name, data) {
+      Data.setQuestion(csrf, quiz_id, data['id']);
+    };
+    this.zgrid.reconfigure({
+      parent: this.element,
+      onClick: onclick,
+    });
     this.refresh();
   }
 
   refresh() {
-    this.element.replaceChildren();
-    this.zgrid.reconfigure({
-      parent: this.element,
-    });
     Data.getQuestions(this.quizIdValue).then((questions) => {
       let data = questions.map((e) => {
         return {
@@ -60,4 +67,6 @@ export default class extends Controller {
       });
     });
   }
+
+  select() {}
 }
