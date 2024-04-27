@@ -96,4 +96,8 @@ export default class extends Controller {
       this.refresh().then((response) => this.setSelectionQuestion(question.id));
     });
   }
+
+  deleteQuestion(event) {
+    console.log('delete question');
+  }
 }
