@@ -4,7 +4,7 @@ export default class extends Controller {
   static targets = ['info'];
 
   static values = {
-    questionId: String,
+    id: String,
   };
 
   initialize() {
@@ -17,7 +17,7 @@ export default class extends Controller {
     this.current = this.infoTarget.value;
     this.dispatch('questionContentChange', {
       detail: {
-        questionId: this.questionIdValue,
+        questionId: this.idValue,
         current: this.current,
         previous: this.previous,
         textarea: this.infoTarget,
@@ -29,7 +29,7 @@ export default class extends Controller {
     this.dispatch('addAnswer', {
       detail: {
         parent: this.element,
-        questionId: this.questionIdValue,
+        questionId: this.idValue,
       },
     });
   }

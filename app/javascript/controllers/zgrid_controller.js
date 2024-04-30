@@ -199,7 +199,6 @@ export default class extends Controller {
   }
 
   questionContentChange(event) {
-    console.log('questionContentChange');
     let action = () => {
       this.change_handler.setQuestionContent(
         event.detail.questionId,
