@@ -3,6 +3,8 @@ import { zGrid } from 'zGrid';
 import Data from 'edit/Data';
 import Undo from 'edit/Undo';
 import Change from 'edit/Change';
+import ID from 'edit/ID';
+import AnswerDisplay from '../edit/AnswerDisplay';
 
 export default class extends Controller {
   static values = {
@@ -132,6 +134,23 @@ export default class extends Controller {
         .then(() => this.setSelectedQuestion(question_id));
     };
     this.undo_handler.add('Delete Question', action, reverse);
+  }
+
+  addAnswer(event) {
+    console.log('addAnswer');
+    let answer_id = ID.next();
+    let action = () => {
+      this.change_handler.addAnswer(event.detail.questionId, answer_id);
+      AnswerDisplay(event.detail.parent, event.detail.questionId, answer_id);
+    };
+    let reverse = () => {
+      this.change_handler.deleteAnswer(event.detail.questionId, answer_id);
+      let answer = event.detail.parent.querySelector(
+        `.answer_container[data-answer-id-value="${answer_id}"]`
+      );
+      answer.remove();
+    };
+    this.undo_handler.add('Add Answer', action, reverse);
   }
 
   answerContentChange(event) {

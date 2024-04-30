@@ -24,4 +24,13 @@ export default class extends Controller {
       },
     });
   }
+
+  addAnswer(event) {
+    this.dispatch('addAnswer', {
+      detail: {
+        parent: this.element,
+        questionId: this.questionIdValue,
+      },
+    });
+  }
 }

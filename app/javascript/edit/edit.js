@@ -52,16 +52,16 @@ quiz_title.onchange = (event) => {
 // };
 
 question_edit.onAddAnswer = (question_id) => {
-  let answer_id = ID.next();
-  let action = () => {
-    change.addAnswer(question_id, answer_id);
-    question_edit.addAnswerDisplay(question_id, answer_id);
-  };
-  let reverse = () => {
-    change.deleteAnswer(question_id, answer_id);
-    question_edit.deleteAnswerDisplay(answer_id);
-  };
-  undo.add('Add Answer', action, reverse);
+  // let answer_id = ID.next();
+  // let action = () => {
+  //   change.addAnswer(question_id, answer_id);
+  //   question_edit.addAnswerDisplay(question_id, answer_id);
+  // };
+  // let reverse = () => {
+  //   change.deleteAnswer(question_id, answer_id);
+  //   question_edit.deleteAnswerDisplay(answer_id);
+  // };
+  // undo.add('Add Answer', action, reverse);
 };
 
 // question_edit.onAnswerContentChange = (answer_id, answer) => {

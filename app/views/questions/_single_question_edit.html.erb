@@ -14,8 +14,8 @@
       <textarea class="answer_content" rows="1" 
         data-answer-target='info' 
         data-action="answer#answerContentChange"><%= variants.join(" / ") %></textarea>
-      <a class="button delete_answer" data-answer_id=<%= answer.id %>>[X]</a>
+      <a class="button delete_answer" >[X]</a>
     </div>
   <% end %>
-  <a class="button add_answer" data-question_id=<%= question.id %>>Add Answer</a>
+  <a class="button add_answer" data-action='single-question#addAnswer'>Add Answer</a>
 </div>
