@@ -17,12 +17,8 @@ export default function AnswerDisplay(parent, question_id, answer_id) {
   let delete_answer = document.createElement('a');
   delete_answer.classList.add('button');
   delete_answer.classList.add('delete_answer');
+  delete_answer.dataset.action = 'answer#delete';
   delete_answer.textContent = '[X]';
-  delete_answer.onclick = (event) => {
-    if (typeof obj.onDelete === 'function') {
-      obj.onDelete(event);
-    }
-  };
 
   answer_container.appendChild(answer_content);
   answer_container.appendChild(delete_answer);

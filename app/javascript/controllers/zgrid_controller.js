@@ -136,6 +136,14 @@ export default class extends Controller {
     this.undo_handler.add('Delete Question', action, reverse);
   }
 
+  deleteAnswerDisplay(id) {
+    console.log(id);
+    let answer = document.querySelector(
+      `.answer_container[data-answer-id-value="${id}"]`
+    );
+    answer.remove();
+  }
+
   addAnswer(event) {
     console.log('addAnswer');
     let answer_id = ID.next();
@@ -145,12 +153,28 @@ export default class extends Controller {
     };
     let reverse = () => {
       this.change_handler.deleteAnswer(event.detail.questionId, answer_id);
-      let answer = event.detail.parent.querySelector(
-        `.answer_container[data-answer-id-value="${answer_id}"]`
-      );
-      answer.remove();
+      this.deleteAnswer(answer_id);
     };
     this.undo_handler.add('Add Answer', action, reverse);
+  }
+
+  deleteAnswer(event) {
+    let question_id = this.currentlySelected.dataset.questionIdValue;
+    console.log('deleteAnswer');
+    let action = () => {
+      this.change_handler.deleteAnswer(question_id, event.detail.answerId);
+      this.deleteAnswerDisplay(event.detail.answerId);
+    };
+    let reverse = () => {
+      this.change_handler.addAnswer(question_id, event.detailanswerId);
+      this.change_handler.setAnswerContent(
+        question_id,
+        event.detail.answerId /*content*/
+      );
+      AnswerDisplay(event.detail.parent, question_id, event.detail.answerId);
+      // set textarea content
+    };
+    this.undo_handler.add('Delete Answer', action, reverse);
   }
 
   answerContentChange(event) {

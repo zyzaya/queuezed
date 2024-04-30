@@ -35,21 +35,20 @@ quiz_title.onchange = (event) => {
   undo.add('Change Quiz Title', action, reverse);
 };
 // questions
-// question_edit.onDeleteAnswer = (answer_id, answer) => {
-//   let question_id = question_list.getCurrentlySelectedID();
-
-//   let action = () => {
-//     change.deleteAnswer(question_id, answer_id);
-//     question_edit.deleteAnswerDisplay(answer_id);
-//   };
-//   let reverse = () => {
-//     change.addAnswer(question_id, answer_id);
-//     change.setAnswerContent(question_id, answer_id, answer.content);
-//     question_edit.addAnswerDisplay(question_id, answer_id);
-//     question_edit.setAnswerContent(answer_id, answer.content);
-//   };
-//   undo.add('Delete Answer', action, reverse);
-// };
+question_edit.onDeleteAnswer = (answer_id, answer) => {
+  //   let question_id = question_list.getCurrentlySelectedID();
+  //   let action = () => {
+  //     change.deleteAnswer(question_id, answer_id);
+  //     question_edit.deleteAnswerDisplay(answer_id);
+  //   };
+  //   let reverse = () => {
+  //     change.addAnswer(question_id, answer_id);
+  //     change.setAnswerContent(question_id, answer_id, answer.content);
+  //     question_edit.addAnswerDisplay(question_id, answer_id);
+  //     question_edit.setAnswerContent(answer_id, answer.content);
+  //   };
+  //   undo.add('Delete Answer', action, reverse);
+};
 
 question_edit.onAddAnswer = (question_id) => {
   // let answer_id = ID.next();

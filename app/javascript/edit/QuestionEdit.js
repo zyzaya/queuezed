@@ -56,14 +56,14 @@ export default function QuestionEdit() {
 
   // answers
   let deleteAnswer = function (event) {
-    let answer_id = event.currentTarget.dataset.answer_id;
-    let answer_content = document.querySelector(
-      `.answer_content[data-answer_id="${answer_id}"]`
-    );
-    let answer = {
-      content: answer_content.value,
-    };
-    obj.onDeleteAnswer(answer_id, answer);
+    // let answer_id = event.currentTarget.dataset.answer_id;
+    // let answer_content = document.querySelector(
+    //   `.answer_content[data-answer_id="${answer_id}"]`
+    // );
+    // let answer = {
+    //   content: answer_content.value,
+    // };
+    // obj.onDeleteAnswer(answer_id, answer);
   };
 
   let answerContentChange = function (event) {
