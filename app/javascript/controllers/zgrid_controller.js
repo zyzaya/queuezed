@@ -142,7 +142,6 @@ export default class extends Controller {
         event.detail.id,
         event.detail.current
       );
-      // set textarea value
       event.detail.textarea.value = event.detail.current;
     };
     let reverse = () => {
