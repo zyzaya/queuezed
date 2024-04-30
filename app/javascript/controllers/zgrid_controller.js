@@ -2,6 +2,7 @@ import { Controller } from '@hotwired/stimulus';
 import { zGrid } from 'zGrid';
 import Data from 'edit/Data';
 import Undo from 'edit/Undo';
+import Change from 'edit/Change';
 
 export default class extends Controller {
   static values = {
@@ -43,6 +44,7 @@ export default class extends Controller {
     this.currentlySelected = null;
     this.csrf = document.head.querySelector('meta[name=csrf-token]')?.content;
     this.undo_handler = Undo();
+    this.change_handler = Change(this.csrf, this.quizIdValue);
   }
 
   connect() {
@@ -130,6 +132,28 @@ export default class extends Controller {
         .then(() => this.setSelectedQuestion(question_id));
     };
     this.undo_handler.add('Delete Question', action, reverse);
+  }
+
+  answerContentChange(event) {
+    let question_id = this.currentlySelected.dataset.questionIdValue;
+    let action = () => {
+      this.change_handler.setAnswerContent(
+        question_id,
+        event.detail.id,
+        event.detail.current
+      );
+      // set textarea value
+      event.detail.textarea.value = event.detail.current;
+    };
+    let reverse = () => {
+      this.change_handler.setAnswerContent(
+        question_id,
+        event.detail.id,
+        event.detail.previous
+      );
+      event.detail.textarea.value = event.detail.previous;
+    };
+    this.undo_handler.add('Change Answer Content', action, reverse);
   }
 
   undo(event) {
