@@ -156,6 +156,25 @@ export default class extends Controller {
     this.undo_handler.add('Change Answer Content', action, reverse);
   }
 
+  questionContentChange(event) {
+    console.log('questionContentChange');
+    let action = () => {
+      this.change_handler.setQuestionContent(
+        event.detail.questionId,
+        event.detail.current
+      );
+      event.detail.textarea.value = event.detail.current;
+    };
+    let reverse = () => {
+      this.change_handler.setQuestionContent(
+        event.detail.questionId,
+        event.detail.previous
+      );
+      event.detail.textarea.value = event.detail.previous;
+    };
+    this.undo_handler.add('Change Question Content', action, reverse);
+  }
+
   undo(event) {
     this.undo_handler.undo();
   }

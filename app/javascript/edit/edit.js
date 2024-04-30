@@ -79,15 +79,15 @@ question_edit.onAddAnswer = (question_id) => {
 // };
 
 question_edit.onQuestionContentChange = (question_id, question) => {
-  let action = () => {
-    change.setQuestionContent(question_id, question.content);
-    question_edit.setQuestionContent(question_id, question.content);
-  };
-  let reverse = () => {
-    change.setQuestionContent(question_id, question.previous);
-    question_edit.setQuestionContent(question_id, question.previous);
-  };
-  undo.add('Change Question Content', action, reverse);
+  // let action = () => {
+  //   change.setQuestionContent(question_id, question.content);
+  //   question_edit.setQuestionContent(question_id, question.content);
+  // };
+  // let reverse = () => {
+  //   change.setQuestionContent(question_id, question.previous);
+  //   question_edit.setQuestionContent(question_id, question.previous);
+  // };
+  // undo.add('Change Question Content', action, reverse);
 };
 
 // function deleteQuestion(id) {
