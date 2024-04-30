@@ -2,6 +2,7 @@ import { Controller } from '@hotwired/stimulus';
 
 export default class extends Controller {
   static targets = ['info'];
+  static outlets = ['single-question'];
 
   static values = {
     id: String,
@@ -29,6 +30,8 @@ export default class extends Controller {
     this.dispatch('delete', {
       detail: {
         answerId: this.idValue,
+        current: this.current,
+        parent: this.singleQuestionOutletElement,
       },
     });
   }

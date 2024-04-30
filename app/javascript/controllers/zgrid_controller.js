@@ -137,7 +137,6 @@ export default class extends Controller {
   }
 
   deleteAnswerDisplay(id) {
-    console.log(id);
     let answer = document.querySelector(
       `.answer_container[data-answer-id-value="${id}"]`
     );
@@ -145,7 +144,6 @@ export default class extends Controller {
   }
 
   addAnswer(event) {
-    console.log('addAnswer');
     let answer_id = ID.next();
     let action = () => {
       this.change_handler.addAnswer(event.detail.questionId, answer_id);
@@ -160,7 +158,6 @@ export default class extends Controller {
 
   deleteAnswer(event) {
     let question_id = this.currentlySelected.dataset.questionIdValue;
-    console.log('deleteAnswer');
     let action = () => {
       this.change_handler.deleteAnswer(question_id, event.detail.answerId);
       this.deleteAnswerDisplay(event.detail.answerId);
@@ -169,10 +166,15 @@ export default class extends Controller {
       this.change_handler.addAnswer(question_id, event.detailanswerId);
       this.change_handler.setAnswerContent(
         question_id,
-        event.detail.answerId /*content*/
+        event.detail.answerId,
+        event.detail.current
       );
-      AnswerDisplay(event.detail.parent, question_id, event.detail.answerId);
-      // set textarea content
+      AnswerDisplay(
+        event.detail.parent,
+        question_id,
+        event.detail.answerId,
+        event.detail.current
+      );
     };
     this.undo_handler.add('Delete Answer', action, reverse);
   }
