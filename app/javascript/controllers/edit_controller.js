@@ -50,6 +50,7 @@ export default class extends Controller {
     });
   }
 
+  // question-controller
   deleteQuestion(event) {
     console.log(event.detail.id);
     let question_id = event.detail.id;
@@ -71,5 +72,24 @@ export default class extends Controller {
         );
     };
     this.undo_handler.add('Delete Question', action, reverse);
+  }
+
+  // single-question controller
+  questionContentChange(event) {
+    let action = () => {
+      this.change_handler.setQuestionContent(
+        event.detail.questionId,
+        event.detail.current
+      );
+      event.detail.textarea.value = event.detail.current;
+    };
+    let reverse = () => {
+      this.change_handler.setQuestionContent(
+        event.detail.questionId,
+        event.detail.previous
+      );
+      event.detail.textarea.value = event.detail.previous;
+    };
+    this.undo_handler.add('Change Question Content', action, reverse);
   }
 }
