@@ -1,8 +1,8 @@
 <div class="quizzes_edit" id="quizzes_edit" data-quiz_id= <%= @quiz.id %>>
   <%= render 'shared/header' %>
-  <div class="edit">
+  <div class="edit" data-controller="edit" data-quiz-id-value = <%= @quiz.id %>>
     <div class="quiz_info">
-      <%= text_field "", "quiz_title", class: "quiz_title", value:"#{@quiz.name}"%>
+      <%= text_field "", "quiz_title", class: "quiz_title", value:"#{@quiz.name}", data: { action:'edit#quizTitleChange', 'edit-target': 'title' }%>
       <div class="question_count"><%= @quiz.questions.count %> questions</div>
     </div>
     <div class="toolbar" data-controller="toolbar" data-toolbar-quiz-id-value=<%= @quiz.id %>>
@@ -23,7 +23,8 @@
           single-question:questionContentChange@window->zgrid#questionContentChange
           single-question:addAnswer@window->zgrid#addAnswer
           answer:answerContentChange@window->zgrid#answerContentChange
-          answer:delete@window->zgrid#deleteAnswer"></div>
+          answer:delete@window->zgrid#deleteAnswer
+          edit:quizTitleChange@window->zgrid#quizTitleChange"></div>
       <turbo-frame id="edit_detail" >
         deeetail
       </turbo-frame>

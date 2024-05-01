@@ -20,20 +20,20 @@ btn_undo.onclick = undo.undo;
 let btn_redo = document.getElementById('redo');
 btn_redo.onclick = undo.redo;
 
-let quiz_title = document.getElementById('quiz_title');
-let prev_title = quiz_title.value;
-quiz_title.onchange = (event) => {
-  console.log(event.target.value);
-  let action = () => {
-    change.setQuizTitle(event.target.value);
-    prev_title = event.target.value;
-  };
-  let reverse = () => {
-    change.setQuizTitle(prev_title);
-    quiz_title.value = prev_title;
-  };
-  undo.add('Change Quiz Title', action, reverse);
-};
+// let quiz_title = document.getElementById('quiz_title');
+// let prev_title = quiz_title.value;
+// quiz_title.onchange = (event) => {
+//   console.log(event.target.value);
+//   let action = () => {
+//     change.setQuizTitle(event.target.value);
+//     prev_title = event.target.value;
+//   };
+//   let reverse = () => {
+//     change.setQuizTitle(prev_title);
+//     quiz_title.value = prev_title;
+//   };
+//   undo.add('Change Quiz Title', action, reverse);
+// };
 // questions
 question_edit.onDeleteAnswer = (answer_id, answer) => {
   //   let question_id = question_list.getCurrentlySelectedID();
