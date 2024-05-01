@@ -211,24 +211,4 @@ export default class extends Controller {
     };
     this.undo_handler.add('Change Question Content', action, reverse);
   }
-
-  quizTitleChange(event) {
-    let action = () => {
-      this.change_handler.setQuizTitle(event.detail.current);
-      event.detail.input.value = event.detail.current;
-    };
-    let reverse = () => {
-      this.change_handler.setQuizTitle(event.detail.previous);
-      event.detail.input.value = event.detail.previous;
-    };
-    this.undo_handler.add('Change Quiz Title', action, reverse);
-  }
-
-  undo(event) {
-    this.undo_handler.undo();
-  }
-
-  redo(event) {
-    this.undo_handler.redo();
-  }
 }
