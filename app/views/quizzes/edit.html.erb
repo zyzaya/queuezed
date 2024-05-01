@@ -1,6 +1,14 @@
 <div class="quizzes_edit" id="quizzes_edit" data-quiz_id= <%= @quiz.id %>>
   <%= render 'shared/header' %>
-  <div class="edit" data-controller="edit" data-edit-quiz-id-value = <%= @quiz.id %>>
+  <div class="edit" 
+    data-controller="edit" 
+    data-edit-quiz-id-value = <%= @quiz.id %>
+    data-action="
+      question:delete@window->edit#deleteQuestion
+      single-question:questionContentChange@window->edit#questionContentChange
+      single-question:addAnswer@window->edit#addAnswer
+      answer:answerContentChange@window->edit#answerContentChange
+      answer:delete@window->edit#deleteAnswer">
     <div class="quiz_info">
       <%= text_field "", "quiz_title", class: "quiz_title", value:"#{@quiz.name}", data: { action:'edit#quizTitleChange', 'edit-target': 'title' }%>
       <div class="question_count"><%= @quiz.questions.count %> questions</div>
@@ -18,12 +26,7 @@
         data-action=
           "edit:refresh@window->zgrid#refresh
           edit:selectQuestion@window->zgrid#selectQuestion
-          edit:selectSibling@window->zgrid#setSelectedToSibling
-          question:delete@window->edit#deleteQuestion
-          single-question:questionContentChange@window->edit#questionContentChange
-          single-question:addAnswer@window->edit#addAnswer
-          answer:answerContentChange@window->edit#answerContentChange
-          answer:delete@window->edit#deleteAnswer"></div>
+          edit:selectSibling@window->zgrid#setSelectedToSibling"></div>
       <turbo-frame id="edit_detail" >
         deeetail
       </turbo-frame>
