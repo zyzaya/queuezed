@@ -109,6 +109,26 @@ export default class extends Controller {
   }
 
   // answer controller
+  answerContentChange(event) {
+    let action = () => {
+      this.change_handler.setAnswerContent(
+        event.detail.questionId,
+        event.detail.id,
+        event.detail.current
+      );
+      event.detail.textarea.value = event.detail.current;
+    };
+    let reverse = () => {
+      this.change_handler.setAnswerContent(
+        event.detail.questionId,
+        event.detail.id,
+        event.detail.previous
+      );
+      event.detail.textarea.value = event.detail.previous;
+    };
+    this.undo_handler.add('Change Answer Content', action, reverse);
+  }
+
   deleteAnswerDisplay(id) {
     let answer = document.querySelector(
       `.answer_container[data-answer-id-value="${id}"]`
@@ -117,21 +137,26 @@ export default class extends Controller {
   }
 
   deleteAnswer(event) {
-    let question_id = this.currentlySelected;
     let action = () => {
-      this.change_handler.deleteAnswer(question_id, event.detail.answerId);
+      this.change_handler.deleteAnswer(
+        event.detail.questionId,
+        event.detail.answerId
+      );
       this.deleteAnswerDisplay(event.detail.answerId);
     };
     let reverse = () => {
-      this.change_handler.addAnswer(question_id, event.detailanswerId);
+      this.change_handler.addAnswer(
+        event.detail.questionId,
+        event.detailanswerId
+      );
       this.change_handler.setAnswerContent(
-        question_id,
+        event.detail.questionId,
         event.detail.answerId,
         event.detail.current
       );
       AnswerDisplay(
         event.detail.parent,
-        question_id,
+        event.detail.questionId,
         event.detail.answerId,
         event.detail.current
       );

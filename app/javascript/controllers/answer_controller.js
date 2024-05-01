@@ -6,6 +6,7 @@ export default class extends Controller {
 
   static values = {
     id: String,
+    questionId: String,
   };
 
   initialize() {
@@ -18,6 +19,7 @@ export default class extends Controller {
     this.current = this.infoTarget.value;
     this.dispatch('answerContentChange', {
       detail: {
+        questionId: this.questionIdValue,
         answerId: this.idValue,
         current: this.current,
         previous: this.previous,
@@ -29,6 +31,7 @@ export default class extends Controller {
   delete(event) {
     this.dispatch('delete', {
       detail: {
+        questionId: this.questionIdValue,
         answerId: this.idValue,
         current: this.current,
         parent: this.singleQuestionOutletElement,

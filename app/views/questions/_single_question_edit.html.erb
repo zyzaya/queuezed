@@ -10,6 +10,7 @@
     <% variants = answer.answer_variants.pluck(:content) %>
     <div class="answer_container" 
       data-controller='answer' 
+      data-answer-question-id-value='<%= question.id %>'
       data-answer-id-value='<%= answer.id %>'
       data-answer-single-question-outlet='.single_question_edit[data-single-question-id-value="<%= question.id %>"]'>
       <textarea class="answer_content" rows="1" 

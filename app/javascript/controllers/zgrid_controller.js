@@ -129,25 +129,4 @@ export default class extends Controller {
       this.setSelectedQuestion(sibling['id']);
     }
   }
-
-  answerContentChange(event) {
-    let question_id = this.currentlySelected;
-    let action = () => {
-      this.change_handler.setAnswerContent(
-        question_id,
-        event.detail.id,
-        event.detail.current
-      );
-      event.detail.textarea.value = event.detail.current;
-    };
-    let reverse = () => {
-      this.change_handler.setAnswerContent(
-        question_id,
-        event.detail.id,
-        event.detail.previous
-      );
-      event.detail.textarea.value = event.detail.previous;
-    };
-    this.undo_handler.add('Change Answer Content', action, reverse);
-  }
 }
