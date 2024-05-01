@@ -1,24 +1,22 @@
 <div class="quizzes_edit" id="quizzes_edit" data-quiz_id= <%= @quiz.id %>>
   <%= render 'shared/header' %>
-  <div class="edit" data-controller="edit" data-quiz-id-value = <%= @quiz.id %>>
+  <div class="edit" data-controller="edit" data-edit-quiz-id-value = <%= @quiz.id %>>
     <div class="quiz_info">
       <%= text_field "", "quiz_title", class: "quiz_title", value:"#{@quiz.name}", data: { action:'edit#quizTitleChange', 'edit-target': 'title' }%>
       <div class="question_count"><%= @quiz.questions.count %> questions</div>
     </div>
-    <div class="toolbar" data-controller="toolbar" data-toolbar-quiz-id-value=<%= @quiz.id %>>
-      <a class="button" id="undo" data-action="toolbar#undo">undo</a>
-      <a class="button" id="redo" data-action="toolbar#redo">redo</a>
-      <a class="button" id="new_question" data-action="toolbar#newQuestion">new q</a>
-      <a class="button" id="save" data-action="toolbar#save">save</a>
+    <div class="toolbar">
+      <a class="button" id="undo" data-action="edit#undo">undo</a>
+      <a class="button" id="redo" data-action="edit#redo">redo</a>
+      <a class="button" id="new_question" data-action="edit#newQuestion">new q</a>
+      <a class="button" id="save" data-action="edit#save">save</a>
     </div>
     <div class="edit_frame">
       <div id='gridjs' 
         data-controller="zgrid" 
         data-zgrid-quiz-id-value=<%= @quiz.id %> 
         data-action=
-          "toolbar:new@window->zgrid#newQuestion
-          toolbar:undo@window->zgrid#undo
-          toolbar:redo@window->zgrid#redo
+          "edit:refresh@window->zgrid#refresh
           question:delete@window->zgrid#deleteQuestion
           single-question:questionContentChange@window->zgrid#questionContentChange
           single-question:addAnswer@window->zgrid#addAnswer

@@ -62,28 +62,33 @@ export default class extends Controller {
     this.refresh();
   }
 
-  refresh() {
-    return Data.getQuestions(this.quizIdValue).then((questions) => {
-      let data = questions.map((e) => {
-        return {
-          id: e.id.toString(),
-          content: e.content,
-          current_streak: e.current_streak,
-          longest_streak: e.longest_streak,
-        };
-      });
-      this.zgrid.reconfigure({
-        data: data,
-      });
-      let body = document.getElementsByClassName('zgrid_body');
-      if (body.length === 1) {
-        let grid_data = this.zgrid.getData();
-        body = body[0];
-        Array.from(body.children).forEach((r, i) => {
-          r.dataset['questionIdValue'] = grid_data[i].id;
+  refresh(event) {
+    return Data.getQuestions(this.quizIdValue)
+      .then((questions) => {
+        let data = questions.map((e) => {
+          return {
+            id: e.id.toString(),
+            content: e.content,
+            current_streak: e.current_streak,
+            longest_streak: e.longest_streak,
+          };
         });
-      }
-    });
+        this.zgrid.reconfigure({
+          data: data,
+        });
+        let body = document.getElementsByClassName('zgrid_body');
+        if (body.length === 1) {
+          let grid_data = this.zgrid.getData();
+          body = body[0];
+          Array.from(body.children).forEach((r, i) => {
+            r.dataset['questionIdValue'] = grid_data[i].id;
+          });
+        }
+      })
+      .then(() => {
+        if (event !== undefined)
+          this.setSelectedQuestion(event.detail.selectedId);
+      });
   }
 
   setSelectedQuestion(id) {
