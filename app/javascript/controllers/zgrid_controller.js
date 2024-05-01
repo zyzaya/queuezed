@@ -92,6 +92,7 @@ export default class extends Controller {
   }
 
   select(event) {
+    if (event.currentTarget.parentNode.nodeName === 'THEAD') return;
     this.setSelectedQuestion(event.currentTarget.dataset.questionIdValue);
   }
 
