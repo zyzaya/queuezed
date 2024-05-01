@@ -11,6 +11,11 @@ export default class extends Controller {
     quizId: String,
   };
 
+  // let btn_save = document.getElementById('save');
+  // btn_save.onclick = () => {
+  //   Data.save(csrf, quiz_id, change.getChanges());
+  // };
+
   initialize() {
     let parent = document.createElement('div');
     this.zgrid = new zGrid({
