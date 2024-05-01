@@ -11,15 +11,18 @@ export default class extends Controller {
     quizId: String,
   };
 
+  static targets = ['body', 'row'];
+
   initialize() {
     let parent = document.createElement('div');
+
     this.zgrid = new zGrid({
       parent: parent,
       data: [],
       columns: [
         {
           id: 'id',
-          visible: false,
+          visible: true,
         },
         {
           id: 'content',
@@ -39,7 +42,8 @@ export default class extends Controller {
         tr: 'zgrid_tr',
       },
       dataAttribute: {
-        tr: ['action', 'click->zgrid#select'],
+        tr: ['zgridTarget', 'row'],
+        tbody: ['zgridTarget', 'body'],
       },
     });
     this.previouslySelected = null;
@@ -47,6 +51,18 @@ export default class extends Controller {
     this.csrf = document.head.querySelector('meta[name=csrf-token]')?.content;
     this.undo_handler = Undo();
     this.change_handler = Change(this.csrf, this.quizIdValue);
+  }
+
+  rowTargetConnected(element) {
+    element.dataset.action = 'click->zgrid#select';
+    let nodes = element.parentNode.children.length;
+    let grid_data = this.zgrid.getData();
+    if (nodes === grid_data.length) {
+      let index = Array.from(element.parentNode.children).findIndex(
+        (e) => e === element
+      );
+      element.dataset.questionIdValue = grid_data[index].id;
+    }
   }
 
   connect() {
@@ -69,18 +85,7 @@ export default class extends Controller {
           };
         });
 
-        this.zgrid.reconfigure({
-          data: data,
-        });
-
-        let body = document.getElementsByClassName('zgrid_body');
-        if (body.length === 1) {
-          let grid_data = this.zgrid.getData();
-          body = body[0];
-          Array.from(body.children).forEach((r, i) => {
-            r.dataset['questionIdValue'] = grid_data[i].id;
-          });
-        }
+        this.zgrid.reconfigure({ data: data });
       })
       .then(() => {
         if (event !== undefined && event.detail.selectedId !== undefined) {
