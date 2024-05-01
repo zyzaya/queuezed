@@ -122,12 +122,6 @@ export default class extends Controller {
     this.setSelectedQuestion(event.currentTarget.dataset.questionIdValue);
   }
 
-  newQuestion(event) {
-    Data.newQuestion(this.csrf, this.quizIdValue).then((question) => {
-      this.refresh().then((response) => this.setSelectedQuestion(question.id));
-    });
-  }
-
   deleteQuestion(event) {
     let question_id = this.currentlySelected.dataset.questionIdValue;
     let action = () => {
