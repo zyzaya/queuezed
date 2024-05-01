@@ -73,9 +73,11 @@ export default class extends Controller {
             longest_streak: e.longest_streak,
           };
         });
+
         this.zgrid.reconfigure({
           data: data,
         });
+
         let body = document.getElementsByClassName('zgrid_body');
         if (body.length === 1) {
           let grid_data = this.zgrid.getData();
@@ -86,26 +88,36 @@ export default class extends Controller {
         }
       })
       .then(() => {
-        if (event !== undefined)
+        if (event !== undefined && event.detail.selectedId !== undefined) {
           this.setSelectedQuestion(event.detail.selectedId);
+        } else if (this.currentlySelected !== null) {
+          this.setSelectedQuestion(this.currentlySelected);
+        }
       });
+  }
+
+  select(event) {
+    this.setSelectedQuestion(event.currentTarget.dataset.questionIdValue);
   }
 
   setSelectedQuestion(id) {
     let element = document.querySelector(`[data-question-id-value='${id}']`);
     if (element !== undefined) {
       this.previouslySelected = this.currentlySelected;
-      if (this.previouslySelected !== null) {
-        this.previouslySelected.classList.remove('active_question');
+      let previous_element = document.querySelector(
+        `[data-question-id-value='${this.previouslySelected}']`
+      );
+      if (previous_element !== null) {
+        previous_element.classList.remove('active_question');
       }
       element.classList.add('active_question');
-      this.currentlySelected = element;
+      this.currentlySelected = id;
       Data.setQuestion(this.csrf, this.quizIdValue, id);
     }
   }
 
   setSelectedToSibling() {
-    let question_id = this.currentlySelected.dataset.questionIdValue;
+    let question_id = this.currentlySelected;
     let data = this.zgrid.getData();
     let current = data.findIndex((e) => e.id === question_id);
     if (current === -1) return;
@@ -116,28 +128,6 @@ export default class extends Controller {
       let sibling = data[current - 1];
       this.setSelectedQuestion(sibling['id']);
     }
-  }
-
-  select(event) {
-    this.setSelectedQuestion(event.currentTarget.dataset.questionIdValue);
-  }
-
-  deleteQuestion(event) {
-    let question_id = this.currentlySelected.dataset.questionIdValue;
-    let action = () => {
-      this.setSelectedToSibling();
-      let sibling_id = this.currentlySelected.dataset.questionIdValue;
-      Data.deleteQuestion(this.csrf, this.quizIdValue, question_id)
-        .then(() => this.refresh())
-        .then(() => this.setSelectedQuestion(sibling_id));
-    };
-    let reverse = () => {
-      Data.restoreQuestion(this.csrf, this.quizIdValue, question_id)
-        .then((response) => response.json())
-        .then((question) => this.refresh())
-        .then(() => this.setSelectedQuestion(question_id));
-    };
-    this.undo_handler.add('Delete Question', action, reverse);
   }
 
   deleteAnswerDisplay(id) {
@@ -161,7 +151,7 @@ export default class extends Controller {
   }
 
   deleteAnswer(event) {
-    let question_id = this.currentlySelected.dataset.questionIdValue;
+    let question_id = this.currentlySelected;
     let action = () => {
       this.change_handler.deleteAnswer(question_id, event.detail.answerId);
       this.deleteAnswerDisplay(event.detail.answerId);
@@ -184,7 +174,7 @@ export default class extends Controller {
   }
 
   answerContentChange(event) {
-    let question_id = this.currentlySelected.dataset.questionIdValue;
+    let question_id = this.currentlySelected;
     let action = () => {
       this.change_handler.setAnswerContent(
         question_id,

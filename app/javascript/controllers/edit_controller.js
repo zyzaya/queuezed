@@ -49,4 +49,27 @@ export default class extends Controller {
       });
     });
   }
+
+  deleteQuestion(event) {
+    console.log(event.detail.id);
+    let question_id = event.detail.id;
+    let action = () => {
+      this.dispatch('selectSibling');
+      Data.deleteQuestion(this.csrf, this.quizIdValue, question_id).then(() =>
+        this.dispatch('refresh')
+      );
+    };
+    let reverse = () => {
+      Data.restoreQuestion(this.csrf, this.quizIdValue, question_id)
+        .then((response) => response.json())
+        .then((question) =>
+          this.dispatch('refresh', {
+            detail: {
+              selectedId: question_id,
+            },
+          })
+        );
+    };
+    this.undo_handler.add('Delete Question', action, reverse);
+  }
 }

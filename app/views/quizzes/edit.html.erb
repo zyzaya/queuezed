@@ -17,7 +17,9 @@
         data-zgrid-quiz-id-value=<%= @quiz.id %> 
         data-action=
           "edit:refresh@window->zgrid#refresh
-          question:delete@window->zgrid#deleteQuestion
+          edit:selectQuestion@window->zgrid#selectQuestion
+          edit:selectSibling@window->zgrid#setSelectedToSibling
+          question:delete@window->edit#deleteQuestion
           single-question:questionContentChange@window->zgrid#questionContentChange
           single-question:addAnswer@window->zgrid#addAnswer
           answer:answerContentChange@window->zgrid#answerContentChange
