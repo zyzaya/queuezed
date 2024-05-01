@@ -32,7 +32,9 @@ export default class extends Controller {
     });
   }
 
-  save(event) {}
+  save(event) {
+    Data.save(this.csrf, this.quizIdValue, this.change_handler.getChanges());
+  }
 
   undo(event) {
     this.undo_handler.undo();
@@ -113,7 +115,7 @@ export default class extends Controller {
     let action = () => {
       this.change_handler.setAnswerContent(
         event.detail.questionId,
-        event.detail.id,
+        event.detail.answerId,
         event.detail.current
       );
       event.detail.textarea.value = event.detail.current;
@@ -121,7 +123,7 @@ export default class extends Controller {
     let reverse = () => {
       this.change_handler.setAnswerContent(
         event.detail.questionId,
-        event.detail.id,
+        event.detail.answerId,
         event.detail.previous
       );
       event.detail.textarea.value = event.detail.previous;

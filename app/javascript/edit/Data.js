@@ -8,6 +8,7 @@ const Data = (() => {
 
   let save = function (csrf, quiz_id, changes) {
     console.log(changes);
+    console.log(quiz_id);
     return fetch(`/quizzes/${quiz_id}/update`, {
       method: 'POST',
       headers: {
