@@ -130,49 +130,6 @@ export default class extends Controller {
     }
   }
 
-  deleteAnswerDisplay(id) {
-    let answer = document.querySelector(
-      `.answer_container[data-answer-id-value="${id}"]`
-    );
-    answer.remove();
-  }
-
-  addAnswer(event) {
-    let answer_id = ID.next();
-    let action = () => {
-      this.change_handler.addAnswer(event.detail.questionId, answer_id);
-      AnswerDisplay(event.detail.parent, event.detail.questionId, answer_id);
-    };
-    let reverse = () => {
-      this.change_handler.deleteAnswer(event.detail.questionId, answer_id);
-      this.deleteAnswer(answer_id);
-    };
-    this.undo_handler.add('Add Answer', action, reverse);
-  }
-
-  deleteAnswer(event) {
-    let question_id = this.currentlySelected;
-    let action = () => {
-      this.change_handler.deleteAnswer(question_id, event.detail.answerId);
-      this.deleteAnswerDisplay(event.detail.answerId);
-    };
-    let reverse = () => {
-      this.change_handler.addAnswer(question_id, event.detailanswerId);
-      this.change_handler.setAnswerContent(
-        question_id,
-        event.detail.answerId,
-        event.detail.current
-      );
-      AnswerDisplay(
-        event.detail.parent,
-        question_id,
-        event.detail.answerId,
-        event.detail.current
-      );
-    };
-    this.undo_handler.add('Delete Answer', action, reverse);
-  }
-
   answerContentChange(event) {
     let question_id = this.currentlySelected;
     let action = () => {
