@@ -9,9 +9,11 @@ import AnswerDisplay from '../edit/AnswerDisplay';
 export default class extends Controller {
   static values = {
     quizId: String,
+    previouslySelected: String,
   };
 
   static targets = ['body', 'row'];
+  static outlets = ['edit'];
 
   initialize() {
     let parent = document.createElement('div');
@@ -48,21 +50,25 @@ export default class extends Controller {
     });
     this.previouslySelected = null;
     this.currentlySelected = null;
+    this.editOutlet.element.dataset.editCurrentlySelectedValue =
+      this.currentlySelected;
     this.csrf = document.head.querySelector('meta[name=csrf-token]')?.content;
     this.undo_handler = Undo();
     this.change_handler = Change(this.csrf, this.quizIdValue);
   }
 
   rowTargetConnected(element) {
-    element.dataset.action = 'click->zgrid#select';
+    element.dataset.action = 'click->edit#select';
     let nodes = element.parentNode.children.length;
     let grid_data = this.zgrid.getData();
     if (nodes === grid_data.length) {
       let index = Array.from(element.parentNode.children).findIndex(
         (e) => e === element
       );
-      element.dataset.questionIdValue = grid_data[index].id;
-      if (this.currentlySelected === grid_data[index].id)
+      let id = grid_data[index].id;
+      element.dataset.questionIdValue = id;
+      element.dataset.editQuestionIdParam = id;
+      if (this.currentlySelected === id)
         element.classList.add('active_question');
     }
   }
@@ -99,8 +105,8 @@ export default class extends Controller {
   }
 
   select(event) {
-    if (event.currentTarget.parentNode.nodeName === 'THEAD') return;
-    this.setSelectedQuestion(event.currentTarget.dataset.questionIdValue);
+    console.log(event.detail.questionId);
+    this.setSelectedQuestion(event.detail.questionId);
   }
 
   setSelectedQuestion(id) {
@@ -113,8 +119,10 @@ export default class extends Controller {
       if (previous_element !== null) {
         previous_element.classList.remove('active_question');
       }
-      element.classList.add('active_question');
       this.currentlySelected = id;
+      this.editOutlet.element.dataset.editCurrentlySelectedValue = id;
+      element.classList.add('active_question');
+      element.dataset.editPreviouslySelectedParam = this.previouslySelected;
       Data.setQuestion(this.csrf, this.quizIdValue, id);
     }
   }

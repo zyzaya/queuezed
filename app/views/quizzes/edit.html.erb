@@ -25,9 +25,10 @@
       <div id='gridjs' 
         data-controller="zgrid" 
         data-zgrid-quiz-id-value=<%= @quiz.id %> 
+        data-zgrid-edit-outlet='.edit[data-controller=edit]'
         data-action=
           "edit:refresh@window->zgrid#refresh
-          edit:selectQuestion@window->zgrid#selectQuestion
+          edit:selectQuestion@window->zgrid#select
           edit:selectSibling@window->zgrid#setSelectedToSibling"></div>
       <turbo-frame id="edit_detail" >
         deeetail

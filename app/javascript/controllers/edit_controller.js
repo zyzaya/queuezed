@@ -8,6 +8,7 @@ import AnswerDisplay from '../edit/AnswerDisplay';
 export default class extends Controller {
   static values = {
     quizId: String,
+    currentlySelected: String,
   };
 
   static targets = ['title'];
@@ -52,6 +53,26 @@ export default class extends Controller {
         },
       });
     });
+  }
+
+  select(event) {
+    let id = this.currentlySelectedValue;
+    if (event.currentTarget.parentNode.nodeName === 'THEAD') return;
+    let action = () => {
+      this.dispatch('selectQuestion', {
+        detail: {
+          questionId: event.params.questionId,
+        },
+      });
+    };
+    let reverse = () => {
+      this.dispatch('selectQuestion', {
+        detail: {
+          questionId: id,
+        },
+      });
+    };
+    this.undo_handler.add('Select Question', action, reverse, true);
   }
 
   // question-controller
