@@ -78,6 +78,25 @@ export default class extends Controller {
     this.undo_handler.add('Delete Question', action, reverse);
   }
 
+  loadSingleQuestion(event) {
+    let question = this.change_handler
+      .getChanges()
+      .questions.find((q) => q.id === event.detail.questionId);
+    console.log(question);
+    if (question === undefined) return;
+    if (question.content !== undefined)
+      event.detail.textarea.value = question.content;
+    if (question.answers !== undefined) {
+      question.answers.forEach((a) => {
+        if (a.meta === 'new') {
+          AnswerDisplay(event.detail.parent, question.id, a.id); // add answer with id a.id
+        } else if (a.meta === 'delete') {
+          this.deleteAnswerDisplay(a.id);
+        }
+      });
+    }
+  }
+
   // single-question controller
   questionContentChange(event) {
     let action = () => {
@@ -149,7 +168,7 @@ export default class extends Controller {
     let reverse = () => {
       this.change_handler.addAnswer(
         event.detail.questionId,
-        event.detailanswerId
+        event.detail.answerId
       );
       this.change_handler.setAnswerContent(
         event.detail.questionId,

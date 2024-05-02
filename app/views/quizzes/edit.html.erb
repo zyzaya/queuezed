@@ -5,6 +5,7 @@
     data-edit-quiz-id-value = <%= @quiz.id %>
     data-action="
       question:delete@window->edit#deleteQuestion
+      single-question:load@window->edit#loadSingleQuestion
       single-question:questionContentChange@window->edit#questionContentChange
       single-question:addAnswer@window->edit#addAnswer
       answer:answerContentChange@window->edit#answerContentChange

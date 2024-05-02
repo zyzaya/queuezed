@@ -12,6 +12,16 @@ export default class extends Controller {
     this.current = this.infoTarget.value;
   }
 
+  connect() {
+    this.dispatch('load', {
+      detail: {
+        parent: this.element,
+        questionId: this.idValue,
+        textarea: this.infoTarget,
+      },
+    });
+  }
+
   questionContentChange(event) {
     this.previous = this.current;
     this.current = this.infoTarget.value;
