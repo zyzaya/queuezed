@@ -51,13 +51,25 @@ export default class extends Controller {
   }
 
   newQuestion(event) {
+    let question_id = null;
     Data.newQuestion(this.csrf, this.quizIdValue).then((question) => {
+      question_id = question.id;
       this.dispatch('refresh', {
         detail: {
           selectedId: question.id,
         },
       });
     });
+    let triggered = false;
+    let action = () => {};
+    let reverse = () => {
+      Data.deleteQuestion(this.csrf, this.quizIdValue, question_id).then(() =>
+        this.dispatch('refresh', {
+          detail: { selectedId: this.currentlySelectedValue },
+        })
+      );
+    };
+    this.undo_handler.add('Create Question', action, reverse);
   }
 
   select(event) {
