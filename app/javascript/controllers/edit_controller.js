@@ -61,7 +61,11 @@ export default class extends Controller {
       });
     });
     let triggered = false;
-    let action = () => {};
+    let action = () => {
+      Data.restoreQuestion(this.csrf, this.quizIdValue, question_id).then(() =>
+        this.dispatch('refresh', { detail: { selectedId: question_id } })
+      );
+    };
     let reverse = () => {
       Data.deleteQuestion(this.csrf, this.quizIdValue, question_id).then(() =>
         this.dispatch('refresh', {
