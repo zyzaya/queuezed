@@ -11,7 +11,7 @@ export default class extends Controller {
     currentlySelected: String,
   };
 
-  static targets = ['title', 'questionContent'];
+  static targets = ['title', 'questionContent', 'answerContent'];
 
   initialize() {
     this.previous_title = '';
@@ -172,14 +172,21 @@ export default class extends Controller {
   }
 
   // answer controller
+  findAnswerContentTextarea(id) {
+    return this.answerContentTargets.find(
+      (a) => id === a.parentNode.dataset.answerIdValue
+    );
+  }
+
   loadAnswer(event) {
     let question = this.change_handler
       .getChanges()
       .questions.find((q) => q.id === event.detail.questionId);
-    if (question === undefined || question.answer === undefined) return;
+    if (question === undefined || question.answers === undefined) return;
     let answer = question.answers.find((a) => a.id === event.detail.answerId);
     if (answer === undefined) return;
-    event.detail.textarea.value = answer.content;
+    let textarea = this.findAnswerContentTextarea(event.detail.answerId);
+    textarea.value = answer.content;
   }
 
   answerContentChange(event) {
@@ -189,7 +196,8 @@ export default class extends Controller {
         event.detail.answerId,
         event.detail.current
       );
-      event.detail.textarea.value = event.detail.current;
+      let textarea = this.findAnswerContentTextarea(event.detail.answerId);
+      textarea.value = event.detail.current;
     };
     let reverse = () => {
       this.change_handler.setAnswerContent(
@@ -197,7 +205,14 @@ export default class extends Controller {
         event.detail.answerId,
         event.detail.previous
       );
-      event.detail.textarea.value = event.detail.previous;
+      if (this.currentlySelectedValue !== event.detail.questionId) {
+        this.dispatch('selectQuestion', {
+          detail: { questionId: event.detail.questionId },
+        });
+      } else {
+        let textarea = this.findAnswerContentTextarea(event.detail.answerId);
+        textarea.value = event.detail.previous;
+      }
     };
     this.undo_handler.add('Change Answer Content', action, reverse);
   }

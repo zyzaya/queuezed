@@ -17,6 +17,7 @@ export default function AnswerDisplay(
   let answer_content = document.createElement('textarea');
   answer_content.classList.add('answer_content');
   answer_content.rows = '1';
+  answer_content.dataset.editTarget = 'answerContent';
   answer_content.dataset.answerTarget = 'info';
   answer_content.dataset.action = 'answer#answerContentChange';
   answer_content.value = content;

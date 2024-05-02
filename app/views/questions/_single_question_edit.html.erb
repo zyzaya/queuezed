@@ -15,6 +15,7 @@
       data-answer-id-value='<%= answer.id %>'
       data-answer-single-question-outlet='.single_question_edit[data-single-question-id-value="<%= question.id %>"]'>
       <textarea class="answer_content" rows="1" 
+        data-edit-target='answerContent'
         data-answer-target='info' 
         data-action="answer#answerContentChange"><%= variants.join(" / ") %></textarea>
       <a class="button delete_answer" data-action="answer#delete">[X]</a>
