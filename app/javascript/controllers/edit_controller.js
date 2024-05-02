@@ -11,7 +11,12 @@ export default class extends Controller {
     currentlySelected: String,
   };
 
-  static targets = ['title', 'questionContent', 'answerContent'];
+  static targets = [
+    'title',
+    'questionContent',
+    'answerContent',
+    'singleQuestionContainer',
+  ];
 
   initialize() {
     this.previous_title = '';
@@ -116,6 +121,12 @@ export default class extends Controller {
     );
   }
 
+  findQuestionContainer(id) {
+    return this.singleQuestionContainerTargets.find(
+      (c) => id === c.dataset.singleQuestionIdValue
+    );
+  }
+
   questionContentChange(event) {
     let action = () => {
       this.change_handler.setQuestionContent(
@@ -148,11 +159,18 @@ export default class extends Controller {
     let answer_id = ID.next();
     let action = () => {
       this.change_handler.addAnswer(event.detail.questionId, answer_id);
-      AnswerDisplay(event.detail.parent, event.detail.questionId, answer_id);
+      let parent = this.findQuestionContainer(event.detail.questionId);
+      AnswerDisplay(parent, event.detail.questionId, answer_id);
     };
     let reverse = () => {
       this.change_handler.deleteAnswer(event.detail.questionId, answer_id);
-      this.deleteAnswer({ detail: { answerId: answer_id } });
+      if (this.currentlySelectedValue !== event.detail.questionId) {
+        this.dispatch('selectQuestion', {
+          detail: { questionId: event.detail.questionId },
+        });
+      } else {
+        this.deleteAnswerDisplay(answer_id);
+      }
     };
     this.undo_handler.add('Add Answer', action, reverse);
   }
