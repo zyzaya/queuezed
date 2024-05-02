@@ -183,7 +183,7 @@ export default class extends Controller {
     let answer = document.querySelector(
       `.answer_container[data-answer-id-value="${id}"]`
     );
-    answer.remove();
+    if (answer !== null) answer.remove();
   }
 
   deleteAnswer(event) {
