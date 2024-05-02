@@ -153,7 +153,7 @@ export default class extends Controller {
     let question = this.change_handler
       .getChanges()
       .questions.find((q) => q.id === event.detail.questionId);
-    if (question === undefined) return;
+    if (question === undefined || question.answer === undefined) return;
     let answer = question.answers.find((a) => a.id === event.detail.answerId);
     if (answer === undefined) return;
     event.detail.textarea.value = answer.content;
