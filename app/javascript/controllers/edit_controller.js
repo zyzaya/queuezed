@@ -63,21 +63,6 @@ export default class extends Controller {
         questionId: event.params.questionId,
       },
     });
-    // let action = () => {
-    //   // this.dispatch('selectQuestion', {
-    //   //   detail: {
-    //   //     questionId: event.params.questionId,
-    //   //   },
-    //   // });
-    // };
-    // let reverse = () => {
-    //   this.dispatch('selectQuestion', {
-    //     detail: {
-    //       questionId: id,
-    //     },
-    //   });
-    // };
-    // this.undo_handler.add('Select Question', action, reverse, true);
   }
 
   // question-controller
@@ -125,16 +110,19 @@ export default class extends Controller {
   }
 
   // single-question controller
+  findQuestionContentTextarea(id) {
+    return this.questionContentTargets.find(
+      (q) => id === q.parentNode.dataset.singleQuestionIdValue
+    );
+  }
+
   questionContentChange(event) {
     let action = () => {
       this.change_handler.setQuestionContent(
         event.detail.questionId,
         event.detail.current
       );
-      let textarea = this.questionContentTargets.find((q) => {
-        let id = q.parentNode.dataset.singleQuestionIdValue;
-        return id === event.detail.questionId;
-      });
+      let textarea = this.findQuestionContentTextarea(event.detail.questionId);
       textarea.value = event.detail.current;
     };
     let reverse = () => {
@@ -147,10 +135,9 @@ export default class extends Controller {
           detail: { questionId: event.detail.questionId },
         });
       } else {
-        let textarea = this.questionContentTargets.find((q) => {
-          let id = q.parentNode.dataset.singleQuestionIdValue;
-          return id === event.detail.questionId;
-        });
+        let textarea = this.findQuestionContentTextarea(
+          event.detail.questionId
+        );
         textarea.value = event.detail.previous;
       }
     };
