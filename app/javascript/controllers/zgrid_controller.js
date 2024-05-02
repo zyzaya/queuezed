@@ -129,7 +129,9 @@ export default class extends Controller {
   setSelectedToSibling() {
     let question_id = this.currentlySelected;
     let data = this.zgrid.getData();
-    let current = data.findIndex((e) => e.id === question_id);
+    let current = data.findIndex(
+      (e) => e.id.toString() === question_id.toString()
+    );
     if (current === -1) return;
     if (current + 1 < data.length) {
       let sibling = data[current + 1];
