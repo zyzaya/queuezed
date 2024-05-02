@@ -3,28 +3,38 @@ export default function Undo() {
   let redo = [];
   let stack = [];
 
-  obj.add = function (name, action, reverse) {
+  obj.add = function (name, action, reverse, pass = false) {
     action();
     stack.push({
       name,
       action,
       reverse,
+      pass,
     });
   };
 
   obj.undo = function () {
     if (stack.length > 0) {
-      let action = stack.pop();
-      action.reverse();
-      redo.push(action);
+      let pass = true;
+      while (pass) {
+        let element = stack.pop();
+        element.reverse();
+        redo.push(element);
+        pass = element.pass;
+      }
     }
   };
 
   obj.redo = function () {
     if (redo.length > 0) {
-      let action = redo.pop();
-      action.action();
-      stack.push(action);
+      let pass = true;
+      while (pass) {
+        let element = redo.pop();
+        element.action();
+        stack.push(element);
+        let next = redo.slice(-1)[0];
+        pass = next !== undefined && next.pass;
+      }
     }
   };
 
