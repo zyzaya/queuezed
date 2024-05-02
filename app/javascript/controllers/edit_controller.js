@@ -11,7 +11,7 @@ export default class extends Controller {
     currentlySelected: String,
   };
 
-  static targets = ['title'];
+  static targets = ['title', 'questionContent'];
 
   initialize() {
     this.previous_title = '';
@@ -58,21 +58,26 @@ export default class extends Controller {
   select(event) {
     let id = this.currentlySelectedValue;
     if (event.currentTarget.parentNode.nodeName === 'THEAD') return;
-    let action = () => {
-      this.dispatch('selectQuestion', {
-        detail: {
-          questionId: event.params.questionId,
-        },
-      });
-    };
-    let reverse = () => {
-      this.dispatch('selectQuestion', {
-        detail: {
-          questionId: id,
-        },
-      });
-    };
-    this.undo_handler.add('Select Question', action, reverse, true);
+    this.dispatch('selectQuestion', {
+      detail: {
+        questionId: event.params.questionId,
+      },
+    });
+    // let action = () => {
+    //   // this.dispatch('selectQuestion', {
+    //   //   detail: {
+    //   //     questionId: event.params.questionId,
+    //   //   },
+    //   // });
+    // };
+    // let reverse = () => {
+    //   this.dispatch('selectQuestion', {
+    //     detail: {
+    //       questionId: id,
+    //     },
+    //   });
+    // };
+    // this.undo_handler.add('Select Question', action, reverse, true);
   }
 
   // question-controller
@@ -99,12 +104,15 @@ export default class extends Controller {
   }
 
   loadSingleQuestion(event) {
+    let textarea = this.questionContentTargets.find((q) => {
+      let id = q.parentNode.dataset.singleQuestionIdValue;
+      return id === event.detail.questionId;
+    });
     let question = this.change_handler
       .getChanges()
       .questions.find((q) => q.id === event.detail.questionId);
     if (question === undefined) return;
-    if (question.content !== undefined)
-      event.detail.textarea.value = question.content;
+    if (question.content !== undefined) textarea.value = question.content;
     if (question.answers !== undefined) {
       question.answers.forEach((a) => {
         if (a.meta === 'new') {
@@ -123,14 +131,29 @@ export default class extends Controller {
         event.detail.questionId,
         event.detail.current
       );
-      event.detail.textarea.value = event.detail.current;
+      let textarea = this.questionContentTargets.find((q) => {
+        let id = q.parentNode.dataset.singleQuestionIdValue;
+        return id === event.detail.questionId;
+      });
+      textarea.value = event.detail.current;
     };
     let reverse = () => {
       this.change_handler.setQuestionContent(
         event.detail.questionId,
         event.detail.previous
       );
-      event.detail.textarea.value = event.detail.previous;
+      if (this.currentlySelectedValue !== event.detail.questionId) {
+        this.dispatch('selectQuestion', {
+          detail: { questionId: event.detail.questionId },
+        });
+      } else {
+        let textarea = this.questionContentTargets.find((q) => {
+          let id = q.parentNode.dataset.singleQuestionIdValue;
+          console.log(id);
+          return id === event.detail.questionId;
+        });
+        textarea.value = event.detail.previous;
+      }
     };
     this.undo_handler.add('Change Question Content', action, reverse);
   }
