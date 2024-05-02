@@ -149,7 +149,6 @@ export default class extends Controller {
       } else {
         let textarea = this.questionContentTargets.find((q) => {
           let id = q.parentNode.dataset.singleQuestionIdValue;
-          console.log(id);
           return id === event.detail.questionId;
         });
         textarea.value = event.detail.previous;

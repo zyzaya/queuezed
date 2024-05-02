@@ -11,9 +11,6 @@ export default function Undo() {
       reverse,
       pass,
     });
-    console.log('add');
-    console.log(stack);
-    console.log(redo);
   };
 
   obj.undo = function () {
@@ -26,9 +23,6 @@ export default function Undo() {
         pass = element.pass;
       }
     }
-    console.log('undo');
-    console.log(stack);
-    console.log(redo);
   };
 
   obj.redo = function () {
@@ -42,9 +36,6 @@ export default function Undo() {
         pass = next !== undefined && next.pass;
       }
     }
-    console.log('redo');
-    console.log(stack);
-    console.log(redo);
   };
 
   return obj;
