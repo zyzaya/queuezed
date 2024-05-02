@@ -56,7 +56,6 @@ export default class extends Controller {
 
   // question-controller
   deleteQuestion(event) {
-    console.log(event.detail.id);
     let question_id = event.detail.id;
     let action = () => {
       this.dispatch('selectSibling');
@@ -82,7 +81,6 @@ export default class extends Controller {
     let question = this.change_handler
       .getChanges()
       .questions.find((q) => q.id === event.detail.questionId);
-    console.log(question);
     if (question === undefined) return;
     if (question.content !== undefined)
       event.detail.textarea.value = question.content;
@@ -130,6 +128,16 @@ export default class extends Controller {
   }
 
   // answer controller
+  loadAnswer(event) {
+    let question = this.change_handler
+      .getChanges()
+      .questions.find((q) => q.id === event.detail.questionId);
+    if (question === undefined) return;
+    let answer = question.answers.find((a) => a.id === event.detail.answerId);
+    if (answer === undefined) return;
+    event.detail.textarea.value = answer.content;
+  }
+
   answerContentChange(event) {
     let action = () => {
       this.change_handler.setAnswerContent(
