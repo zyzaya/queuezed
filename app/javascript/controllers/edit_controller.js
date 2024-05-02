@@ -246,12 +246,19 @@ export default class extends Controller {
         event.detail.answerId,
         event.detail.current
       );
-      AnswerDisplay(
-        event.detail.parent,
-        event.detail.questionId,
-        event.detail.answerId,
-        event.detail.current
-      );
+      if (this.currentlySelectedValue !== event.detail.questionId) {
+        this.dispatch('selectQuestion', {
+          detail: { questionId: event.detail.questionId },
+        });
+      } else {
+        let parent = this.findQuestionContainer(event.detail.questionId);
+        AnswerDisplay(
+          parent,
+          event.detail.questionId,
+          event.detail.answerId,
+          event.detail.current
+        );
+      }
     };
     this.undo_handler.add('Delete Answer', action, reverse);
   }
