@@ -62,6 +62,8 @@ export default class extends Controller {
         (e) => e === element
       );
       element.dataset.questionIdValue = grid_data[index].id;
+      if (this.currentlySelected === grid_data[index].id)
+        element.classList.add('active_question');
     }
   }
 
@@ -103,7 +105,7 @@ export default class extends Controller {
 
   setSelectedQuestion(id) {
     let element = document.querySelector(`[data-question-id-value='${id}']`);
-    if (element !== undefined) {
+    if (element !== null) {
       this.previouslySelected = this.currentlySelected;
       let previous_element = document.querySelector(
         `[data-question-id-value='${this.previouslySelected}']`
