@@ -174,6 +174,7 @@ export default class extends Controller {
 
   addAnswer(event) {
     let answer_id = ID.next();
+    let selected = this.currentlySelectedValue;
     let action = () => {
       this.change_handler.addAnswer(event.detail.questionId, answer_id);
       let parent = this.findQuestionContainer(event.detail.questionId);
@@ -181,7 +182,7 @@ export default class extends Controller {
     };
     let reverse = () => {
       this.change_handler.deleteAnswer(event.detail.questionId, answer_id);
-      if (this.currentlySelectedValue !== event.detail.questionId) {
+      if (this.currentlySelectedValue !== selected) {
         this.dispatch('selectQuestion', {
           detail: { questionId: event.detail.questionId },
         });
