@@ -125,3 +125,17 @@
   width: min-content;
   align-self: center;
 }
+
+.tag_list {
+  display: flex;
+  column-gap: 6px;
+}
+
+.button.tag {
+  border-radius: 0px;
+  font-size: small;
+}
+
+.button.tag:hover {
+  text-decoration: line-through;
+}

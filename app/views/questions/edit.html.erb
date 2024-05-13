@@ -6,6 +6,11 @@
       <a class="button delete_question" 
         id="delete_question" 
         data-action="question#delete">Delete</a>
+      <div class="tag_list">
+        <% @question.tags.each do |t| %>
+          <a class="button tag"><%= t.content %></a>
+        <% end %>
+      </div>
     </div>
     <hr>
     <%= render 'questions/single_question_edit', question: @question %>
