@@ -10,6 +10,7 @@ require 'faker'
 user = User.new(email: 'username@test.ca', password: 'password')
 quiz1 = user.quizzes.new(name: 'Language')
 srs1 = SrsBox.new(rank: 1)
+tags1 = ['a', 'b', 'c']
 0.upto(10) do
   content = Faker::Name.first_name
   correct = content.reverse
@@ -18,6 +19,12 @@ srs1 = SrsBox.new(rank: 1)
   a.answer_variants.new(content: correct.upcase)
   a.answer_variants.new(content: correct.downcase)
   q = Question.new(content: "Reverse of: #{content}")
+  tags1.each do |t|
+    if correct.downcase.include?(t)
+      tag = Tag.find_or_create_by(content: "#{t}")
+      q.tags << tag
+    end
+  end
   q.answers << a
   srs1.questions << q
   
@@ -29,9 +36,13 @@ quiz2 = user.quizzes.new(name: 'Harry Potter')
 srs2 = SrsBox.new(rank: 1)
 0.upto(10) do
   content = Faker::Movies::HarryPotter.character
+  tag = Tag.new(content: content)
   related = []
   3.upto(rand(3..6)) do |n|
     q = Question.new(content: "First #{"#{n} " if n > 1}character#{'s' if n > 1} of #{content}")
+    t = Tag.find_or_create_by(content: "#{n}")
+    q.tags << tag
+    q.tags << t
     correct = content.slice(0, n)
     0.upto(rand(0..1)) do
       answer = Answer.new
