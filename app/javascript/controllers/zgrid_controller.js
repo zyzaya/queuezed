@@ -21,24 +21,7 @@ export default class extends Controller {
     this.zgrid = new zGrid({
       parent: parent,
       data: [],
-      columns: [
-        {
-          id: 'id',
-          visible: true,
-        },
-        {
-          id: 'content',
-          name: 'Question',
-        },
-        {
-          id: 'current_streak',
-          name: 'Streak',
-        },
-        {
-          id: 'longest_streak',
-          name: 'Best Streak',
-        },
-      ],
+      columns: ['id'],
       className: {
         tbody: 'zgrid_body',
         tr: 'zgrid_tr',
@@ -77,6 +60,24 @@ export default class extends Controller {
     this.element.replaceChildren();
     this.zgrid.reconfigure({
       parent: this.element,
+      columns: [
+        {
+          id: 'id',
+          visible: true,
+        },
+        {
+          id: 'content',
+          name: 'Question',
+        },
+        {
+          id: 'current_streak',
+          name: 'Streak',
+        },
+        {
+          id: 'longest_streak',
+          name: 'Best Streak',
+        },
+      ],
     });
     this.refresh();
   }
