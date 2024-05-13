@@ -247,6 +247,7 @@ export default class extends Controller {
   }
 
   deleteAnswer(event) {
+    let selected = this.currentlySelectedValue;
     let action = () => {
       this.change_handler.deleteAnswer(
         event.detail.questionId,
@@ -264,7 +265,7 @@ export default class extends Controller {
         event.detail.answerId,
         event.detail.current
       );
-      if (this.currentlySelectedValue !== event.detail.questionId) {
+      if (this.currentlySelectedValue !== selected) {
         this.dispatch('selectQuestion', {
           detail: { questionId: event.detail.questionId },
         });
