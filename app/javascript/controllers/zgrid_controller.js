@@ -33,11 +33,13 @@ export default class extends Controller {
     });
     this.previouslySelected = null;
     this.currentlySelected = null;
-    this.editOutlet.element.dataset.editCurrentlySelectedValue =
-      this.currentlySelected;
     this.csrf = document.head.querySelector('meta[name=csrf-token]')?.content;
     this.undo_handler = Undo();
     this.change_handler = Change(this.csrf, this.quizIdValue);
+  }
+
+  editOutletConnected(outlet, element) {
+    element.dataset.editCurrentlySelectedValue = this.currentlySelected;
   }
 
   rowTargetConnected(element) {
