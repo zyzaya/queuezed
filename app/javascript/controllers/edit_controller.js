@@ -160,7 +160,7 @@ export default class extends Controller {
       );
       if (this.currentlySelectedValue !== selected) {
         this.dispatch('selectQuestion', {
-          detail: { questionId: event.detail.questionId },
+          detail: { questionId: selected },
         });
       } else {
         let textarea = this.findQuestionContentTextarea(
@@ -184,7 +184,7 @@ export default class extends Controller {
       this.change_handler.deleteAnswer(event.detail.questionId, answer_id);
       if (this.currentlySelectedValue !== selected) {
         this.dispatch('selectQuestion', {
-          detail: { questionId: event.detail.questionId },
+          detail: { questionId: selected },
         });
       } else {
         this.deleteAnswerDisplay(answer_id);
@@ -230,7 +230,7 @@ export default class extends Controller {
       );
       if (this.currentlySelectedValue !== selected) {
         this.dispatch('selectQuestion', {
-          detail: { questionId: event.detail.questionId },
+          detail: { questionId: selected },
         });
       } else {
         let textarea = this.findAnswerContentTextarea(event.detail.answerId);
@@ -268,7 +268,7 @@ export default class extends Controller {
       );
       if (this.currentlySelectedValue !== selected) {
         this.dispatch('selectQuestion', {
-          detail: { questionId: event.detail.questionId },
+          detail: { questionId: selected },
         });
       } else {
         let parent = this.findQuestionContainer(event.detail.questionId);
