@@ -4,6 +4,7 @@
   data-single-question-id-value='<%= question.id %>'>
   <div class="question_header">Question.</div>
   <textarea class="question_content" 
+    data-single-question-id-value='<%= question.id %>'
     data-edit-target='questionContent'
     data-single-question-target='info'
     data-action='single-question#questionContentChange'><%= question.content %></textarea>

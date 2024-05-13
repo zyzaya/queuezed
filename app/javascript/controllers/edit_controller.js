@@ -133,7 +133,7 @@ export default class extends Controller {
   // single-question controller
   findQuestionContentTextarea(id) {
     return this.questionContentTargets.find(
-      (q) => id === q.parentNode.dataset.singleQuestionIdValue
+      (q) => id === q.dataset.singleQuestionIdValue
     );
   }
 
@@ -144,6 +144,7 @@ export default class extends Controller {
   }
 
   questionContentChange(event) {
+    let selected = this.currentlySelectedValue;
     let action = () => {
       this.change_handler.setQuestionContent(
         event.detail.questionId,
@@ -157,7 +158,7 @@ export default class extends Controller {
         event.detail.questionId,
         event.detail.previous
       );
-      if (this.currentlySelectedValue !== event.detail.questionId) {
+      if (this.currentlySelectedValue !== selected) {
         this.dispatch('selectQuestion', {
           detail: { questionId: event.detail.questionId },
         });
