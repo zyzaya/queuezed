@@ -212,6 +212,7 @@ export default class extends Controller {
   }
 
   answerContentChange(event) {
+    let selected = this.currentlySelectedValue;
     let action = () => {
       this.change_handler.setAnswerContent(
         event.detail.questionId,
@@ -227,7 +228,7 @@ export default class extends Controller {
         event.detail.answerId,
         event.detail.previous
       );
-      if (this.currentlySelectedValue !== event.detail.questionId) {
+      if (this.currentlySelectedValue !== selected) {
         this.dispatch('selectQuestion', {
           detail: { questionId: event.detail.questionId },
         });
