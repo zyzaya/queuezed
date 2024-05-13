@@ -71,7 +71,9 @@
 .question_tags {
   display: grid;
   grid-template-columns: min-content min-content 1fr;
+  grid-template-rows: min-content 1fr;
   column-gap: 8px;
+  row-gap: 6px;
 }
 
 .add_tag {
@@ -81,6 +83,23 @@
 
 .delete_question {
   justify-self: end;
+}
+
+.tag_list {
+  grid-area: 2 / 1 / -1 / -1;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.button.tag {
+  border-radius: 0px;
+  font-size: small;
+  padding: 2px;
+}
+
+.button.tag:hover {
+  text-decoration: line-through;
 }
 
 .related_questions_header {
@@ -124,18 +143,4 @@
 .add_answer {
   width: min-content;
   align-self: center;
-}
-
-.tag_list {
-  display: flex;
-  column-gap: 6px;
-}
-
-.button.tag {
-  border-radius: 0px;
-  font-size: small;
-}
-
-.button.tag:hover {
-  text-decoration: line-through;
 }

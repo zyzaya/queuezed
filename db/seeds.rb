@@ -11,7 +11,7 @@ user = User.new(email: 'username@test.ca', password: 'password')
 quiz1 = user.quizzes.new(name: 'Language')
 srs1 = SrsBox.new(rank: 1)
 tags1 = ['a', 'b', 'c']
-0.upto(10) do
+0.upto(10) do |i|
   content = Faker::Name.first_name
   correct = content.reverse
   a = Answer.new
@@ -23,6 +23,11 @@ tags1 = ['a', 'b', 'c']
     if correct.downcase.include?(t)
       tag = Tag.find_or_create_by(content: "#{t}")
       q.tags << tag
+    end
+  end
+  if i == 0
+    0.upto(15) do 
+      q.tags << Tag.find_or_create_by(content: Faker::Name.first_name)
     end
   end
   q.answers << a
