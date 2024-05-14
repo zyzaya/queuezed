@@ -7,4 +7,5 @@ class Question < ApplicationRecord
   has_many :question_histories, dependent: :destroy
   has_many :question_relations, -> { QuestionRelation.active }
   has_many :relations, through: :question_relations, class_name: 'Question'
+  has_one :quiz, through: :srs_box
 end
