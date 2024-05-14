@@ -23,10 +23,12 @@
 }
 
 .zgrid_body > .zgrid_row:hover {
-  border: 2px solid var(--secondary-bg-color-dark);
+  border-top: 2px solid var(--secondary-bg-color-dark);
+  border-bottom: 2px solid var(--secondary-bg-color-dark);
   cursor: pointer;
 }
 
 .active_question {
-  border: 2px solid var(--secondary-bg-color-dark);
+  border-top: 2px solid var(--secondary-bg-color-dark);
+  border-bottom: 2px solid var(--secondary-bg-color-dark);
 }

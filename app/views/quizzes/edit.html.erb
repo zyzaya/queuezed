@@ -22,14 +22,22 @@
       <a class="button" id="save" data-action="edit#save">save</a>
     </div>
     <div class="edit_frame">
-      <div id='gridjs' 
-        data-controller="zgrid" 
-        data-zgrid-quiz-id-value=<%= @quiz.id %> 
-        data-zgrid-edit-outlet='.edit[data-controller=edit]'
-        data-action=
-          "edit:refresh@window->zgrid#refresh
-          edit:selectQuestion@window->zgrid#select
-          edit:selectSibling@window->zgrid#setSelectedToSibling"></div>
+      <div class="edit_question_list">
+        <div class="quiz_tag_list">
+          <% @quiz.tags.uniq.each do |t| %>
+            <div class="button tag"><%= t.content %></div>
+          <% end %>
+        </div>
+        <div id='gridjs' 
+          data-controller="zgrid" 
+          data-zgrid-quiz-id-value=<%= @quiz.id %> 
+          data-zgrid-edit-outlet='.edit[data-controller=edit]'
+          data-action=
+            "edit:refresh@window->zgrid#refresh
+            edit:selectQuestion@window->zgrid#select
+            edit:selectSibling@window->zgrid#setSelectedToSibling"></div>
+      </div>
+      
       <turbo-frame id="edit_detail" >
         deeetail
       </turbo-frame>

@@ -50,8 +50,15 @@
 .edit_frame {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  column-gap: 8px;
   margin: 5px;
+}
+
+.quiz_tag_list {
+  grid-area: 1 / 2 / -1 / -1;
+  background-color: var(--tertiary-bg-color-dark);
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
 }
 
 #edit_detail {
