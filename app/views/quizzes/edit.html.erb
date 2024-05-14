@@ -24,7 +24,7 @@
     <div class="edit_frame">
       <div class="edit_question_list">
         <div class="quiz_tag_list">
-          <% @quiz.tags.uniq.each do |t| %>
+          <% @quiz.tags.order('content').uniq.each do |t| %>
             <div class="button tag"><%= t.content %></div>
           <% end %>
         </div>

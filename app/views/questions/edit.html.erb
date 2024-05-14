@@ -2,12 +2,19 @@
   <div class="question_detail" data-controller="question" data-question-id-value = <%= @question.id %>>
     <div class="question_tags">
       <div>Tags</div>
-      <a class="button add_tag">ADD</a>
+      <input type="text" name="Create Tag" id="create_tag" hidden>
+      <select class='add_tag' name='Add Tag'>
+        <% @quiz.tags.order('content').uniq.each do |t| %>
+          <option value=<%= t.id %>><%= t.content %></option>
+        <% end %>
+        <option disabled>------</option>
+        <option value=-1>Create Tag</option>
+      </select>
       <a class="button delete_question" 
         id="delete_question" 
         data-action="question#delete">Delete</a>
       <div class="tag_list">
-        <% @question.tags.each do |t| %>
+        <% @question.tags.order('content').each do |t| %>
           <a class="button tag"><%= t.content %></a>
         <% end %>
       </div>
