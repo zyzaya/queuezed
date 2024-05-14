@@ -62,6 +62,32 @@ export default function Change(csrf, quiz_id) {
     let question = getQuestion(question_id);
     question.content = content;
   };
+  // tags
+  let getTag = function (question_id, tag_id, content) {
+    let question = getQuestion(question_id);
+    if (question.tags === undefined) question.tags = [];
+    let tag = question.tags.find(
+      (t) => t.id === tag_id && t.content === content
+    );
+    if (tag === undefined) {
+      tag = {
+        id: tag_id,
+        content: content,
+      };
+      question.tags.push(tag);
+    }
+    return tag;
+  };
+
+  obj.addTag = function (question_id, tag_id, content) {
+    let tag = getTag(question_id, tag_id, content);
+    if (tag.meta === 'delete') {
+      tag.meta = '';
+    } else {
+      tag.meta = 'add';
+    }
+  };
+
   //
   obj.getChanges = () => changes;
   obj.resetChanges = () => (changes = { questions: [] });

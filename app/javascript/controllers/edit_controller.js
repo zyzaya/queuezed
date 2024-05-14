@@ -4,6 +4,7 @@ import Change from 'edit/Change';
 import Data from 'edit/Data';
 import ID from 'edit/ID';
 import AnswerDisplay from '../edit/AnswerDisplay';
+import TagDisplay from '../edit/TagDisplay';
 
 export default class extends Controller {
   static values = {
@@ -16,6 +17,7 @@ export default class extends Controller {
     'questionContent',
     'answerContent',
     'singleQuestionContainer',
+    'tagList',
   ];
 
   initialize() {
@@ -128,6 +130,28 @@ export default class extends Controller {
         }
       });
     }
+  }
+  // tags
+  addTag(event) {
+    let selected = this.currentlySelectedValue;
+    let action = () => {
+      this.change_handler.addTag(
+        event.detail.questionId,
+        event.detail.tagId,
+        event.detail.tagContent
+      );
+      TagDisplay(
+        this.tagListTarget,
+        event.detail.tagId,
+        event.detail.tagContent
+      );
+      // sort ui
+    };
+    let reverse = () => {
+      // change.removeTag(qid, tid, tcontent)
+      // remove from ui
+    };
+    this.undo_handler.add('Add Tag', action, reverse);
   }
 
   // single-question controller

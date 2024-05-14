@@ -3,9 +3,9 @@
     <div class="question_tags">
       <div>Tags</div>
       <input type="text" name="Create Tag" id="create_tag" hidden>
-      <select class='add_tag' name='Add Tag'>
+      <select class='add_tag' name='Add Tag' data-action="question#addTag">
         <% @quiz.tags.order('content').uniq.each do |t| %>
-          <option value=<%= t.id %>><%= t.content %></option>
+          <option value=<%= t.id %> data-question-target="tagOption"><%= t.content %></option>
         <% end %>
         <option disabled>------</option>
         <option value=-1>Create Tag</option>
@@ -13,9 +13,9 @@
       <a class="button delete_question" 
         id="delete_question" 
         data-action="question#delete">Delete</a>
-      <div class="tag_list">
+      <div class="tag_list" data-edit-target="tagList">
         <% @question.tags.order('content').each do |t| %>
-          <a class="button tag"><%= t.content %></a>
+          <a class="button tag" data-id=<%= t.id %> data-question-target="tag"><%= t.content %></a>
         <% end %>
       </div>
     </div>
