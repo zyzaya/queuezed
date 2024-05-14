@@ -135,17 +135,22 @@ export default class extends Controller {
   addTag(event) {
     let selected = this.currentlySelectedValue;
     let action = () => {
+      let content = event.detail.tagContent;
       this.change_handler.addTag(
         event.detail.questionId,
         event.detail.tagId,
-        event.detail.tagContent
+        content
       );
-      TagDisplay(
-        this.tagListTarget,
-        event.detail.tagId,
-        event.detail.tagContent
-      );
-      // sort ui
+      let display = TagDisplay(event.detail.tagId, content);
+      // maintain sorted order of displayed tags
+      if (this.tagListTarget.children.length === 0) {
+        this.tagListTarget.appendChild(display);
+      } else {
+        let next = Array.from(this.tagListTarget.children).find(
+          (t) => content.localeCompare(t.text) <= 0
+        );
+        this.tagListTarget.insertBefore(display, next);
+      }
     };
     let reverse = () => {
       // change.removeTag(qid, tid, tcontent)

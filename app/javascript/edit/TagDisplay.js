@@ -1,11 +1,8 @@
-export default function TagDisplay(parent, tag_id, content) {
-  let obj = {};
-
+export default function TagDisplay(tag_id, content) {
   let button = document.createElement('a');
   button.classList.add('button');
   button.classList.add('tag');
   button.text = content;
 
-  parent.appendChild(button);
-  return obj;
+  return button;
 }
