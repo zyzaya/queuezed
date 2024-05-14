@@ -26,7 +26,7 @@
       <div class="edit_question_list">
         <div class="quiz_tag_list">
           <% @quiz.tags.order('content').uniq.each do |t| %>
-            <div class="button tag"><%= t.content %></div>
+            <div class="button tag" data-id=<%= t.id %>><%= t.content %></div>
           <% end %>
         </div>
         <div id='gridjs' 

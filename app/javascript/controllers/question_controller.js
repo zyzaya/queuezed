@@ -21,8 +21,10 @@ export default class extends Controller {
     let content = this.tagOptionTargets.find((t) => t.value === tagId);
     content = content.text;
     let existing = this.tagTargets.find((t) => {
-      console.log(`${t.dataset.id}, ${t.text} | ${tagId}, ${content}`);
-      return t.dataset.id.toString() === tagId.toString() && t.text === content;
+      return (
+        t.dataset.questionTagIdValue.toString() === tagId.toString() &&
+        t.text === content
+      );
     });
     if (existing !== undefined) return;
 

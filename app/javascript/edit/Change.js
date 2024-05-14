@@ -88,6 +88,18 @@ export default function Change(csrf, quiz_id) {
     }
   };
 
+  obj.removeTag = function (question_id, tag_id, content) {
+    let question = getQuestion(question_id);
+    let tag = getTag(question_id, tag_id, content);
+    if (tag.meta === 'add') {
+      question.tags = question.tags.filter(
+        (e) => !(e.id === tag_id && e.content === content)
+      );
+    } else {
+      tag.meta = 'remove';
+    }
+  };
+
   //
   obj.getChanges = () => changes;
   obj.resetChanges = () => (changes = { questions: [] });

@@ -15,7 +15,7 @@
         data-action="question#delete">Delete</a>
       <div class="tag_list" data-edit-target="tagList">
         <% @question.tags.order('content').each do |t| %>
-          <a class="button tag" data-id=<%= t.id %> data-question-target="tag"><%= t.content %></a>
+          <a class="button tag" data-question-tag-id-value=<%= t.id %> data-question-target="tag"><%= t.content %></a>
         <% end %>
       </div>
     </div>

@@ -132,6 +132,13 @@ export default class extends Controller {
     }
   }
   // tags
+  deleteTagDisplay(id) {
+    let tag = document.querySelector(
+      `.button.tag[data-question-tag-id-value="${id}"]`
+    );
+    if (tag !== null) tag.remove();
+  }
+
   addTag(event) {
     let selected = this.currentlySelectedValue;
     let action = () => {
@@ -153,8 +160,17 @@ export default class extends Controller {
       }
     };
     let reverse = () => {
-      // change.removeTag(qid, tid, tcontent)
-      // remove from ui
+      this.change_handler.removeTag(
+        event.detail.questionId,
+        event.detail.tagId,
+        event.detail.tagContent
+      );
+      if (this.currentlySelectedValue !== selected) {
+        this.dispatch('selectQuestion', {
+          detail: { questionId: selected },
+        });
+      }
+      this.deleteTagDisplay(event.detail.tagId);
     };
     this.undo_handler.add('Add Tag', action, reverse);
   }
