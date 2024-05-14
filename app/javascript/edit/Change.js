@@ -80,9 +80,12 @@ export default function Change(csrf, quiz_id) {
   };
 
   obj.addTag = function (question_id, tag_id, content) {
+    let question = getQuestion(question_id);
     let tag = getTag(question_id, tag_id, content);
-    if (tag.meta === 'delete') {
-      tag.meta = '';
+    if (tag.meta === 'remove') {
+      question.tags = question.tags.filter(
+        (e) => !(e.id === tag_id && e.content === content)
+      );
     } else {
       tag.meta = 'add';
     }

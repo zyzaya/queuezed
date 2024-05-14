@@ -36,4 +36,16 @@ export default class extends Controller {
       },
     });
   }
+
+  removeTag(event) {
+    let tagId = event.currentTarget.dataset.questionTagIdValue;
+    let content = event.currentTarget.text;
+    this.dispatch('removeTag', {
+      detail: {
+        questionId: this.idValue,
+        tagId: tagId,
+        tagContent: content,
+      },
+    });
+  }
 }

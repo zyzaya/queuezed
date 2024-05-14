@@ -132,6 +132,19 @@ export default class extends Controller {
     }
   }
   // tags
+  addTagDisplay(id, content) {
+    let display = TagDisplay(id, content);
+    // maintain sorted order of displayed tags
+    if (this.tagListTarget.children.length === 0) {
+      this.tagListTarget.appendChild(display);
+    } else {
+      let next = Array.from(this.tagListTarget.children).find(
+        (t) => content.localeCompare(t.text) <= 0
+      );
+      this.tagListTarget.insertBefore(display, next);
+    }
+  }
+
   deleteTagDisplay(id) {
     let tag = document.querySelector(
       `.button.tag[data-question-tag-id-value="${id}"]`
@@ -148,16 +161,7 @@ export default class extends Controller {
         event.detail.tagId,
         content
       );
-      let display = TagDisplay(event.detail.tagId, content);
-      // maintain sorted order of displayed tags
-      if (this.tagListTarget.children.length === 0) {
-        this.tagListTarget.appendChild(display);
-      } else {
-        let next = Array.from(this.tagListTarget.children).find(
-          (t) => content.localeCompare(t.text) <= 0
-        );
-        this.tagListTarget.insertBefore(display, next);
-      }
+      this.addTagDisplay(event.detail.tagId, content);
     };
     let reverse = () => {
       this.change_handler.removeTag(
@@ -173,6 +177,32 @@ export default class extends Controller {
       this.deleteTagDisplay(event.detail.tagId);
     };
     this.undo_handler.add('Add Tag', action, reverse);
+  }
+
+  removeTag(event) {
+    let selected = this.currentlySelectedValue;
+    let action = () => {
+      this.change_handler.removeTag(
+        event.detail.questionId,
+        event.detail.tagId,
+        event.detail.tagContent
+      );
+      this.deleteTagDisplay(event.detail.tagId);
+    };
+    let reverse = () => {
+      this.change_handler.addTag(
+        event.detail.questionId,
+        event.detail.tagId,
+        event.detail.tagContent
+      );
+      if (this.currentlySelectedValue !== selected) {
+        this.dispatch('selectQuestion', {
+          detail: { questionId: selected },
+        });
+      }
+      this.addTagDisplay(event.detail.tagId, event.detail.tagContent);
+    };
+    this.undo_handler.add('Remove Tag', action, reverse);
   }
 
   // single-question controller
