@@ -7,6 +7,14 @@ export default class extends Controller {
 
   static targets = ['tag', 'tagOption'];
 
+  connect() {
+    this.dispatch('load', {
+      detail: {
+        questionId: this.idValue,
+      },
+    });
+  }
+
   delete() {
     this.dispatch('delete', {
       detail: {

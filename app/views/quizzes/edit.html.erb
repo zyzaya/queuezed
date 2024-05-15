@@ -4,6 +4,7 @@
     data-controller="edit" 
     data-edit-quiz-id-value = <%= @quiz.id %>
     data-action="
+      question:load@window->edit#loadQuestion
       question:delete@window->edit#deleteQuestion
       question:addTag@window->edit#addTag
       question:removeTag@window->edit#removeTag

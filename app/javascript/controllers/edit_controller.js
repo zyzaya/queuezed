@@ -91,6 +91,29 @@ export default class extends Controller {
   }
 
   // question-controller
+  loadQuestion(event) {
+    let changes = this.change_handler.getChanges();
+    changes.questions.forEach((q) => {
+      q.tags?.forEach((t) => {
+        if (t.meta === 'new') this.addTagOption(t.id, t.content);
+      });
+    });
+
+    let question = changes.questions.find(
+      (q) => q.id === event.detail.questionId
+    );
+    if (question === undefined) return;
+    if (question.tags !== undefined) {
+      question.tags.forEach((t) => {
+        if (t.meta === 'add') {
+          this.addTagDisplay(t.id, t.content);
+        } else if (t.meta === 'remove') {
+          this.deleteTagDisplay(t.id);
+        }
+      });
+    }
+  }
+
   deleteQuestion(event) {
     let question_id = event.detail.id;
     let action = () => {
