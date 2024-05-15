@@ -172,13 +172,14 @@ export default class extends Controller {
 
   updateFilter() {
     let filter = this.tagFilterTargets.map((t) => t.dataset.id);
-    let textFilter = this.textFilterTarget.value;
+    let textFilter = this.textFilterTarget.value.toLowerCase();
 
     this.zgrid.reconfigure({
       filter: (row) => {
         let tags = row.tags.split(' ');
         return (
-          (textFilter === '' || row.content.includes(textFilter)) &&
+          (textFilter === '' ||
+            row.content.toLowerCase().includes(textFilter)) &&
           (filter.length === 0 || filter.some((f) => tags.includes(f)))
         );
       },
