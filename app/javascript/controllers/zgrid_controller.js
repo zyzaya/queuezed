@@ -20,6 +20,7 @@ export default class extends Controller {
     'tagFilterOption',
     'tagFilterList',
     'tagFilter',
+    'textFilter',
   ];
   static outlets = ['edit'];
 
@@ -75,11 +76,11 @@ export default class extends Controller {
       columns: [
         {
           id: 'id',
-          visible: true,
+          visible: false,
         },
         {
           id: 'tags',
-          visible: true,
+          visible: false,
         },
         {
           id: 'content',
@@ -171,18 +172,17 @@ export default class extends Controller {
 
   updateFilter() {
     let filter = this.tagFilterTargets.map((t) => t.dataset.id);
-    if (filter.length === 0) {
-      this.zgrid.reconfigure({
-        filter: '',
-      });
-    } else {
-      this.zgrid.reconfigure({
-        filter: (row) => {
-          let tags = row.tags.split(' ');
-          return filter.some((f) => tags.includes(f));
-        },
-      });
-    }
+    let textFilter = this.textFilterTarget.value;
+
+    this.zgrid.reconfigure({
+      filter: (row) => {
+        let tags = row.tags.split(' ');
+        return (
+          (textFilter === '' || row.content.includes(textFilter)) &&
+          (filter.length === 0 || filter.some((f) => tags.includes(f)))
+        );
+      },
+    });
   }
 
   addTagFilter(event) {

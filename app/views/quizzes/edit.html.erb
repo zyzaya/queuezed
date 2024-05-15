@@ -45,6 +45,8 @@
               <option value=<%= t.id %> data-zgrid-target="tagFilterOption"><%= t.content%></option>
             <% end %>
           </select>
+          <label for="edit_filter">Filter by text</label>
+          <input type="text" name="" id="edit_filter" data-action="change->zgrid#updateFilter" data-zgrid-target="textFilter">
         </div>
         <hr>
         <div class="edit_list_tag_filter" data-zgrid-target="tagFilterList">

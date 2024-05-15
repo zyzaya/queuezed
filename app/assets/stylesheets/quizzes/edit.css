@@ -10,7 +10,6 @@
   grid-template-rows: min-content min-content 1fr;
   column-gap: 16px;
   width: 100%;
-  max-width: 800px;
   margin: 8px;
   border-radius: 10px; 
 }
@@ -73,9 +72,13 @@
 .edit_list_tag_filter_toolbar {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  grid-template-rows: min-content;
+  grid-template-rows: min-content min-content;
   gap: 4px;
   padding: 4px;
+}
+
+.edit_list_tag_filter_toolbar > label {
+  white-space: nowrap;
 }
 
 .edit_list_tag_filter {
