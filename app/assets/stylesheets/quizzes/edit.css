@@ -114,11 +114,6 @@
   white-space: nowrap;
 }
 
-.add_tag {
-  border-radius: none;
-  font-size: small;
-}
-
 .delete_question {
   align-self: flex-end;
   width: min-content
@@ -131,7 +126,7 @@
   gap: 6px;
 }
 
-.button.tag {
+.button.tag, .button.tagFilter {
   border-radius: 0px;
   font-size: small;
   padding: 2px;

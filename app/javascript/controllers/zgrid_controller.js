@@ -164,12 +164,25 @@ export default class extends Controller {
 
   hasTagFilter(id, content) {
     let existing = this.tagFilterTargets.find((t) => {
-      return (
-        t.dataset.questionTagIdValue.toString() === id.toString() &&
-        t.text === content
-      );
+      return t.dataset.id.toString() === id.toString() && t.text === content;
     });
     return existing !== undefined;
+  }
+
+  updateFilter() {
+    let filter = this.tagFilterTargets.map((t) => t.dataset.id);
+    if (filter.length === 0) {
+      this.zgrid.reconfigure({
+        filter: '',
+      });
+    } else {
+      this.zgrid.reconfigure({
+        filter: (row) => {
+          let tags = row.tags.split(' ');
+          return filter.some((f) => tags.includes(f));
+        },
+      });
+    }
   }
 
   addTagFilter(event) {
@@ -182,13 +195,16 @@ export default class extends Controller {
 
     let tag = TagFilterDisplay(tagId, content);
     this.tagFilterListTarget.appendChild(tag);
+    this.updateFilter();
+  }
 
-    let filter = this.tagFilterTargets.map((t) => t.dataset.questionTagIdValue);
-    this.zgrid.reconfigure({
-      filter: (row) => {
-        let tags = row.tags.split(' ');
-        return filter.some((f) => tags.includes(f));
-      },
-    });
+  removeTagFilter(event) {
+    console.log(event);
+    let tagId = event.currentTarget.dataset.id;
+    let option = document.querySelector(
+      `.button.tagFilter[data-id="${tagId}"]`
+    );
+    if (option !== null) option.remove();
+    this.updateFilter();
   }
 }
