@@ -5,6 +5,7 @@ import Data from 'edit/Data';
 import ID from 'edit/ID';
 import AnswerDisplay from '../edit/AnswerDisplay';
 import TagDisplay from '../edit/TagDisplay';
+import TagOptionDisplay from '../edit/TagOptionDisplay';
 
 export default class extends Controller {
   static values = {
@@ -18,6 +19,7 @@ export default class extends Controller {
     'answerContent',
     'singleQuestionContainer',
     'tagList',
+    'tagOptionList',
   ];
 
   initialize() {
@@ -152,6 +154,23 @@ export default class extends Controller {
     if (tag !== null) tag.remove();
   }
 
+  addTagOption(id, content) {
+    let option = TagOptionDisplay(id, content);
+    if (this.tagOptionListTarget.children.length === 2) {
+      this.tagOptionListTarget.appendChild(option);
+    } else {
+      let next = Array.from(this.tagOptionListTarget.children).find((t) => {
+        return t.value != -1 && content.localeCompare(t.text) <= 0;
+      });
+      this.tagOptionListTarget.insertBefore(option, next);
+    }
+  }
+
+  deleteTagOption(id) {
+    let option = document.querySelector(`.add_tag > option[value="${id}"`);
+    if (option !== null) option.remove();
+  }
+
   addTag(event) {
     let selected = this.currentlySelectedValue;
     let action = () => {
@@ -206,7 +225,6 @@ export default class extends Controller {
   }
 
   createTag(event) {
-    console.log(event.detail);
     let selected = this.currentlySelectedValue;
     let id = ID.next();
     let action = () => {
@@ -215,7 +233,9 @@ export default class extends Controller {
         id,
         event.detail.tagContent
       );
-      this.addTagDisplay(event.detail.tagId, event.detail.tagContent);
+      // add to drop down
+      this.addTagOption(id, event.detail.tagContent);
+      this.addTagDisplay(id, event.detail.tagContent);
     };
     let reverse = () => {
       this.change_handler.deleteTag(
@@ -228,7 +248,8 @@ export default class extends Controller {
           detail: { questionId: selected },
         });
       }
-      this.deleteTagDisplay(event.detail.tagId);
+      this.deleteTagOption(id);
+      this.deleteTagDisplay(id);
     };
     this.undo_handler.add('Create Tag', action, reverse);
   }

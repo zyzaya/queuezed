@@ -7,9 +7,11 @@
       <hr>
       <div class="question_tag_toolbar" >
         <label for="add_tag">Add Tag</label>
-        <select class='add_tag' id='add_tag' name='Add Tag' data-action="question#addTag">
+        <select class='add_tag' id='add_tag' name='Add Tag' 
+          data-action="question#addTag" 
+          data-edit-target="tagOptionList">
           <option value="-1" selected>Select to add</option>
-          <option value='seperator' disabled>-----</option>
+          <option value='-1' disabled>-----</option>
           <% @quiz.tags.order('content').uniq.each do |t| %>
             <option value=<%= t.id %> data-question-target="tagOption"><%= t.content %></option>
           <% end %>
