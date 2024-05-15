@@ -26,12 +26,21 @@
       <a class="button" id="save" data-action="edit#save">save</a>
     </div>
     <div class="edit_frame">
-      <div class="edit_question_list">
-        <div class="quiz_tag_list">
-          <% @quiz.tags.order('content').uniq.each do |t| %>
-            <div class="button tag" data-id=<%= t.id %>><%= t.content %></div>
-          <% end %>
+      <div class="edit_list">
+        <div class="edit_list_tag_filter_toolbar">
+          <label for="edit_add_tag_filter">Filter by Tag</label>
+          <select name="" id="edit_add_tag_filter" class="add_tag_filter">
+            <option value="-1" selected>Select to add</option>
+            <option value="-1" disabled>-----</option>
+            <% @quiz.tags.order('content').uniq.each do |t| %>
+              <option value=<%= t.id %>><%= t.content%></option>
+            <% end %>
+          </select>
         </div>
+        <hr>
+        <div class="edit_list_tag_filter">
+        </div>
+        <hr>
         <div id='gridjs' 
           data-controller="zgrid" 
           data-zgrid-quiz-id-value=<%= @quiz.id %> 

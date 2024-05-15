@@ -23,8 +23,10 @@ export default class extends Controller {
       data: [],
       columns: ['id'],
       className: {
-        tbody: 'zgrid_body',
-        tr: 'zgrid_tr',
+        table: 'zg_table',
+        th: 'zg_th',
+        tbody: 'zg_body',
+        td: 'zg_td',
       },
       dataAttribute: {
         tr: ['zgridTarget', 'row'],

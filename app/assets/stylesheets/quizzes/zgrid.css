@@ -1,28 +1,30 @@
-.zgrid_table {
+.zg_table {
   color: var(--main-text-color);
   border-collapse: collapse;
-  border-color: var(--secondary-bg-color-dark);
+  border: none;
+  border-radius: 0px;
 }
 
-.zgrid_header {
+.zg_th {
   background-color: var(--tertiary-bg-color-dark);
   border-color: black;
+  border-top: 2px solid black;
   font-size: large;
 }
 
-.zgrid_body > tr:nth-child(odd) {
+.zg_body > tr:nth-child(odd) {
   background-color: var(--tertiary-bg-color);
 }
 
-.zgrid_body > tr:nth-child(even) {
+.zg_body > tr:nth-child(even) {
   background-color: var(--tertiary-bg-color-dark);
 }
 
-.zgrid_cell {
+.zg_td {
   border-color: var(--secondary-bg-color-dark);
 }
 
-.zgrid_body > .zgrid_row:hover {
+.zg_body > .zgrid_row:hover {
   border-top: 2px solid var(--secondary-bg-color-dark);
   border-bottom: 2px solid var(--secondary-bg-color-dark);
   cursor: pointer;

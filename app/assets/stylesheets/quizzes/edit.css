@@ -53,12 +53,35 @@
   margin: 5px;
 }
 
+.edit_list {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  background-color: var(--tertiary-bg-color-dark);
+  border: 1px solid black;
+  color: var(--main-text-color)
+}
+
 .quiz_tag_list {
   grid-area: 1 / 2 / -1 / -1;
   background-color: var(--tertiary-bg-color-dark);
   display: flex;
   flex-wrap: wrap;
   gap: 6px;
+}
+
+.edit_list_tag_filter_toolbar {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: min-content;
+  gap: 4px;
+  padding: 4px;
+}
+
+.edit_list_tag_filter {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
 }
 
 #edit_detail {
