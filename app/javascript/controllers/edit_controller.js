@@ -205,6 +205,34 @@ export default class extends Controller {
     this.undo_handler.add('Remove Tag', action, reverse);
   }
 
+  createTag(event) {
+    console.log(event.detail);
+    let selected = this.currentlySelectedValue;
+    let id = ID.next();
+    let action = () => {
+      this.change_handler.createTag(
+        event.detail.questionId,
+        id,
+        event.detail.tagContent
+      );
+      this.addTagDisplay(event.detail.tagId, event.detail.tagContent);
+    };
+    let reverse = () => {
+      this.change_handler.deleteTag(
+        event.detail.questionId,
+        id,
+        event.detail.tagContent
+      );
+      if (this.currentlySelectedValue !== selected) {
+        this.dispatch('selectQuestion', {
+          detail: { questionId: selected },
+        });
+      }
+      this.deleteTagDisplay(event.detail.tagId);
+    };
+    this.undo_handler.add('Create Tag', action, reverse);
+  }
+
   // single-question controller
   findQuestionContentTextarea(id) {
     return this.questionContentTargets.find(

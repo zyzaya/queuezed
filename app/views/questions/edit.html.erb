@@ -8,14 +8,14 @@
       <div class="question_tag_toolbar" >
         <label for="add_tag">Add Tag</label>
         <select class='add_tag' id='add_tag' name='Add Tag' data-action="question#addTag">
-          <option value="default" selected>Select to add</option>
-          <option value='-1' disabled>-----</option>
+          <option value="-1" selected>Select to add</option>
+          <option value='seperator' disabled>-----</option>
           <% @quiz.tags.order('content').uniq.each do |t| %>
             <option value=<%= t.id %> data-question-target="tagOption"><%= t.content %></option>
           <% end %>
         </select>
         <label for="create_tag">Create Tag</label>
-        <input type="text" name="Create Tag" id="create_tag">
+        <input type="text" name="Create Tag" id="create_tag" data-action="change->question#createTag">
       </div>
       <hr>
       <div class="tag_list" data-edit-target="tagList">

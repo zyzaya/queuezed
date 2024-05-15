@@ -14,19 +14,29 @@ export default class extends Controller {
       },
     });
   }
+  // determines if the question has the specified tag
+  hasTag(id, content) {
+    let existing = this.tagTargets.find((t) => {
+      return (
+        t.dataset.questionTagIdValue.toString() === id.toString() &&
+        t.text === content
+      );
+    });
+    return existing !== undefined;
+  }
+
+  findTagId(content) {
+    let id = this.tagOptionTargets.find((t) => t.text === content);
+    return id === undefined ? undefined : id.value;
+  }
 
   addTag(event) {
     let tagId = event.currentTarget.value;
     if (tagId === -1) return;
     let content = this.tagOptionTargets.find((t) => t.value === tagId);
     content = content.text;
-    let existing = this.tagTargets.find((t) => {
-      return (
-        t.dataset.questionTagIdValue.toString() === tagId.toString() &&
-        t.text === content
-      );
-    });
-    if (existing !== undefined) return;
+
+    if (this.hasTag(tagId, content)) return;
 
     this.dispatch('addTag', {
       detail: {
@@ -47,5 +57,29 @@ export default class extends Controller {
         tagContent: content,
       },
     });
+  }
+
+  createTag(event) {
+    let content = event.currentTarget.value;
+    event.currentTarget.value = '';
+    if (this.hasTag(content)) return;
+
+    let tagId = this.findTagId(content);
+    if (tagId !== undefined) {
+      this.dispatch('addTag', {
+        detail: {
+          questionId: this.idValue,
+          tagId: tagId,
+          tagContent: content,
+        },
+      });
+    } else {
+      this.dispatch('createTag', {
+        detail: {
+          questionId: this.idValue,
+          tagContent: content,
+        },
+      });
+    }
   }
 }

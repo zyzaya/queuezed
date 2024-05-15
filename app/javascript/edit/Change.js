@@ -103,6 +103,26 @@ export default function Change(csrf, quiz_id) {
     }
   };
 
+  obj.createTag = function (question_id, tag_id, content) {
+    let question = getQuestion(question_id);
+    let tag = getTag(question_id, tag_id, content);
+    if (tag.meta === 'delete') {
+      question.tags = question.tags.filter((e) => e !== tag);
+    } else {
+      tag.meta = 'new';
+    }
+  };
+
+  obj.deleteTag = function (question_id, tag_id, content) {
+    let question = getQuestion(question_id);
+    let tag = getTag(question_id, tag_id, content);
+    if (tag.meta === 'new') {
+      question.tags = question.tags.filter((e) => e !== tag);
+    } else {
+      tag.meta = 'delete';
+    }
+  };
+
   //
   obj.getChanges = () => changes;
   obj.resetChanges = () => (changes = { questions: [] });
