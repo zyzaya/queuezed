@@ -18,10 +18,11 @@ class QuizzesController < ApplicationController
     #   {
     #    question_info: ""
     #    answers: []
+    #    tags: []
     #   }
     #  ]
     # }
-    # meta: delete, new
+    # meta: delete, new, add, remove
     ## todo: save added answers, remove deleted answers,
     # save changes to content of answers/questions
 
@@ -31,9 +32,9 @@ class QuizzesController < ApplicationController
     unless params[:questions].nil?
       params[:questions].each do |q|
         ## content
-        puts q
         question = Question.find(q[:id])
         question.update(content: q[:content]) unless q[:content].nil?
+        ## answers
         unless q[:answers].nil?
           q[:answers].each do |a|
             answer = a[:meta].eql?('new') ? question.answers.new : Answer.find(a[:id])
@@ -53,6 +54,22 @@ class QuizzesController < ApplicationController
             end
           end
         end
+        ## tags
+        unless q[:tags].nil?
+          q[:tags].each do |t|
+            # if new create new
+            tag = t[:meta].eql?('new') ? question.tags.new(content: t[:content]) : Tag.find(t[:id])
+
+            if t[:meta].eql?('delete')
+              tag.destroy
+            elsif t[:meta].eql?('add')
+              question.tags << tag
+            elsif t[:meta].eql?('remove')
+              question.tags.destroy(tag)
+            end
+          end
+        end
+        question.save
       end
     end
     render plain: ""
