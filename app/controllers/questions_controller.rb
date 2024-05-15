@@ -1,8 +1,8 @@
 class QuestionsController < ApplicationController
   def index
     @quiz = Quiz.find(params[:quiz_id])
-    @questions = @quiz.questions.order(:id)
-    render json: @questions
+    @questions = @quiz.questions.includes(:tags).order(:id)
+    render json: @questions, include: [:tags]
   end
   
   def edit

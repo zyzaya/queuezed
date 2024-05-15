@@ -5,6 +5,7 @@ import Undo from 'edit/Undo';
 import Change from 'edit/Change';
 import ID from 'edit/ID';
 import AnswerDisplay from '../edit/AnswerDisplay';
+import TagFilterDisplay from '../edit/TagFilterDisplay';
 
 export default class extends Controller {
   static values = {
@@ -12,7 +13,14 @@ export default class extends Controller {
     previouslySelected: String,
   };
 
-  static targets = ['body', 'row'];
+  static targets = [
+    'body',
+    'row',
+    'zgridContainer',
+    'tagFilterOption',
+    'tagFilterList',
+    'tagFilter',
+  ];
   static outlets = ['edit'];
 
   initialize() {
@@ -60,13 +68,17 @@ export default class extends Controller {
     }
   }
 
-  connect() {
-    this.element.replaceChildren();
+  zgridContainerTargetConnected(element) {
+    element.replaceChildren();
     this.zgrid.reconfigure({
-      parent: this.element,
+      parent: element,
       columns: [
         {
           id: 'id',
+          visible: true,
+        },
+        {
+          id: 'tags',
           visible: true,
         },
         {
@@ -82,6 +94,7 @@ export default class extends Controller {
           name: 'Best Streak',
         },
       ],
+      searchbox: false,
     });
     this.refresh();
   }
@@ -90,11 +103,13 @@ export default class extends Controller {
     return Data.getQuestions(this.quizIdValue)
       .then((questions) => {
         let data = questions.map((e) => {
+          let tags = e.tags.reduce((a, c) => (a += ` ${c.id}`), '');
           return {
             id: e.id.toString(),
             content: e.content,
             current_streak: e.current_streak,
             longest_streak: e.longest_streak,
+            tags: tags,
           };
         });
 
@@ -145,5 +160,35 @@ export default class extends Controller {
       let sibling = data[current - 1];
       this.setSelectedQuestion(sibling['id']);
     }
+  }
+
+  hasTagFilter(id, content) {
+    let existing = this.tagFilterTargets.find((t) => {
+      return (
+        t.dataset.questionTagIdValue.toString() === id.toString() &&
+        t.text === content
+      );
+    });
+    return existing !== undefined;
+  }
+
+  addTagFilter(event) {
+    let tagId = event.currentTarget.value;
+    if (tagId === -1) return;
+    let content = this.tagFilterOptionTargets.find((t) => t.value === tagId);
+    content = content.text;
+
+    if (this.hasTagFilter(tagId, content)) return;
+
+    let tag = TagFilterDisplay(tagId, content);
+    this.tagFilterListTarget.appendChild(tag);
+
+    let filter = this.tagFilterTargets.map((t) => t.dataset.questionTagIdValue);
+    this.zgrid.reconfigure({
+      filter: (row) => {
+        let tags = row.tags.split(' ');
+        return filter.some((f) => tags.includes(f));
+      },
+    });
   }
 }
