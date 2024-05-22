@@ -29,6 +29,7 @@ export default class extends Controller {
     this.csrf = document.head.querySelector('meta[name=csrf-token]')?.content;
     this.undo_handler = Undo();
     this.change_handler = Change(this.csrf, this.quizIdValue);
+    this.tagCount = {};
   }
 
   quizTitleChange(event) {
@@ -162,6 +163,28 @@ export default class extends Controller {
     }
   }
   // tags
+  setTagCount(event) {
+    this.tagCount = event.detail.tagCount;
+  }
+
+  modifyTagCount(id, content, delta) {
+    if (delta > 0) {
+      if (this.tagCount[id] === undefined) {
+        this.tagCount[id] = 1;
+        this.addTagOption(id, content);
+      } else {
+        this.tagCount[id] += 1;
+      }
+    } else if (delta < 0) {
+      if (this.tagCount[id] === 1) {
+        delete this.tagCount[id];
+        this.deleteTagOption(id);
+      } else {
+        this.tagCount[id] -= 1;
+      }
+    }
+  }
+
   addTagDisplay(id, content) {
     let display = TagDisplay(id, content);
     // maintain sorted order of displayed tags
@@ -211,89 +234,79 @@ export default class extends Controller {
   }
 
   deleteTagOption(id) {
+    // remove from question display
     let option = document.querySelector(`.add_tag > option[value="${id}"`);
     if (option !== null) option.remove();
+    // remove from filter display
+    let filter = document.querySelector(
+      `.add_tag_filter > option[value="${id}"]`
+    );
+    console.log(filter === null);
+    if (filter !== null) filter.remove();
   }
 
   addTag(event) {
     let selected = this.currentlySelectedValue;
+    let tagContent = event.detail.tagContent;
+    let tagId = event.detail.tagId;
     let action = () => {
-      let content = event.detail.tagContent;
-      this.change_handler.addTag(
-        event.detail.questionId,
-        event.detail.tagId,
-        content
-      );
-      this.addTagDisplay(event.detail.tagId, content);
+      this.change_handler.addTag(event.detail.questionId, tagId, tagContent);
+      this.modifyTagCount(tagId, tagContent, 1);
+      this.addTagDisplay(tagId, tagContent);
     };
     let reverse = () => {
-      this.change_handler.removeTag(
-        event.detail.questionId,
-        event.detail.tagId,
-        event.detail.tagContent
-      );
+      this.change_handler.removeTag(event.detail.questionId, tagId, tagContent);
       if (this.currentlySelectedValue !== selected) {
         this.dispatch('selectQuestion', {
           detail: { questionId: selected },
         });
       }
-      this.deleteTagDisplay(event.detail.tagId);
+      this.modifyTagCount(tagId, tagContent, -1);
+      this.deleteTagDisplay(tagId);
     };
     this.undo_handler.add('Add Tag', action, reverse);
   }
 
   removeTag(event) {
     let selected = this.currentlySelectedValue;
+    let tagId = event.detail.tagId;
+    let tagContent = event.detail.tagContent;
     let action = () => {
-      this.change_handler.removeTag(
-        event.detail.questionId,
-        event.detail.tagId,
-        event.detail.tagContent
-      );
-      this.deleteTagDisplay(event.detail.tagId);
+      this.change_handler.removeTag(event.detail.questionId, tagId, tagContent);
+      this.modifyTagCount(tagId, tagContent, -1);
+      this.deleteTagDisplay(tagId);
     };
     let reverse = () => {
-      this.change_handler.addTag(
-        event.detail.questionId,
-        event.detail.tagId,
-        event.detail.tagContent
-      );
+      this.change_handler.addTag(event.detail.questionId, tagId, tagContent);
       if (this.currentlySelectedValue !== selected) {
         this.dispatch('selectQuestion', {
           detail: { questionId: selected },
         });
       }
-      this.addTagDisplay(event.detail.tagId, event.detail.tagContent);
+      this.modifyTagCount(tagId, tagContent, 1);
+      this.addTagDisplay(tagId, tagContent);
     };
     this.undo_handler.add('Remove Tag', action, reverse);
   }
 
   createTag(event) {
     let selected = this.currentlySelectedValue;
-    let id = ID.next();
+    let tagId = ID.next();
+    let tagContent = event.detail.tagContent;
     let action = () => {
-      this.change_handler.createTag(
-        event.detail.questionId,
-        id,
-        event.detail.tagContent
-      );
-      // add to drop down
-      this.addTagOption(id, event.detail.tagContent);
-      this.addTagDisplay(id, event.detail.tagContent);
+      this.change_handler.createTag(event.detail.questionId, tagId, tagContent);
+      this.modifyTagCount(tagId, tagContent, 1);
+      this.addTagDisplay(tagId, tagContent);
     };
     let reverse = () => {
-      this.change_handler.deleteTag(
-        event.detail.questionId,
-        id,
-        event.detail.tagContent
-      );
+      this.change_handler.deleteTag(event.detail.questionId, tagId, tagContent);
       if (this.currentlySelectedValue !== selected) {
         this.dispatch('selectQuestion', {
           detail: { questionId: selected },
         });
       }
-      this.deleteTagOption(id);
-      this.deleteTagDisplay(id);
+      this.modifyTagCount(tagId, tagContent, -1);
+      this.deleteTagDisplay(tagId);
     };
     this.undo_handler.add('Create Tag', action, reverse);
   }

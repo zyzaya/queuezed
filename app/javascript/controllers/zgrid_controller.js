@@ -101,10 +101,16 @@ export default class extends Controller {
   }
 
   refresh(event) {
+    let tagCount = {};
     return Data.getQuestions(this.quizIdValue)
       .then((questions) => {
         let data = questions.map((e) => {
-          let tags = e.tags.reduce((a, c) => (a += ` ${c.id}`), '');
+          let tags = '';
+          e.tags.forEach((t) => {
+            tags += ` ${t.id}`;
+            tagCount[t.id] =
+              tagCount[t.id] === undefined ? 1 : tagCount[t.id] + 1;
+          });
           return {
             id: e.id.toString(),
             content: e.content,
@@ -113,7 +119,7 @@ export default class extends Controller {
             tags: tags,
           };
         });
-
+        this.dispatch('setTagCount', { detail: { tagCount: tagCount } });
         this.zgrid.reconfigure({ data: data });
       })
       .then(() => {
@@ -174,6 +180,7 @@ export default class extends Controller {
     let filter = this.tagFilterTargets.map((t) => t.dataset.id);
     let textFilter = this.textFilterTarget.value.toLowerCase();
 
+    console.log(filter);
     this.zgrid.reconfigure({
       filter: (row) => {
         let tags = row.tags.split(' ');

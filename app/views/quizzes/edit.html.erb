@@ -4,6 +4,7 @@
     data-controller="edit" 
     data-edit-quiz-id-value = <%= @quiz.id %>
     data-action="
+      zgrid:setTagCount@window->edit#setTagCount
       question:load@window->edit#loadQuestion
       question:delete@window->edit#deleteQuestion
       question:addTag@window->edit#addTag
