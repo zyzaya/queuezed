@@ -5,7 +5,7 @@ export default class extends Controller {
     id: String,
   };
 
-  static targets = ['tag', 'tagOption'];
+  static targets = ['tag', 'tagOption', 'tagOptionList'];
 
   connect() {
     this.dispatch('load', {

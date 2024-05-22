@@ -20,6 +20,7 @@ export default class extends Controller {
     'singleQuestionContainer',
     'tagList',
     'tagOptionList',
+    'tagFilterOptionList',
   ];
 
   initialize() {
@@ -183,6 +184,11 @@ export default class extends Controller {
 
   addTagOption(id, content) {
     let option = TagOptionDisplay(id, content);
+    option.dataset.questionTarget = 'tagOption';
+    let filter = TagOptionDisplay(id, content);
+    filter.dataset.zgridTarget = 'tagFilterOption';
+
+    // add to question display
     if (this.tagOptionListTarget.children.length === 2) {
       this.tagOptionListTarget.appendChild(option);
     } else {
@@ -190,6 +196,17 @@ export default class extends Controller {
         return t.value != -1 && content.localeCompare(t.text) <= 0;
       });
       this.tagOptionListTarget.insertBefore(option, next);
+    }
+    // add to filter display
+    if (this.tagFilterOptionListTarget.children.length === 2) {
+      this.tagFilterOptionListTarget.appendChild(filter);
+    } else {
+      let next = Array.from(this.tagFilterOptionListTarget.children).find(
+        (t) => {
+          return t.value != -1 && content.localeCompare(t.text) <= 0;
+        }
+      );
+      this.tagFilterOptionListTarget.insertBefore(filter, next);
     }
   }
 
