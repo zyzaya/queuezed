@@ -101,7 +101,7 @@ export default class extends Controller {
     let changes = this.change_handler.getChanges();
     changes.questions.forEach((q) => {
       q.tags?.forEach((t) => {
-        if (t.meta === 'new') this.addTagOption(t.id, t.content);
+        if (t.meta === 'new') this.addQuestionTagOption(t.id, t.content);
       });
     });
 
@@ -111,7 +111,7 @@ export default class extends Controller {
     if (question === undefined) return;
     if (question.tags !== undefined) {
       question.tags.forEach((t) => {
-        if (t.meta === 'add') {
+        if (t.meta === 'add' || t.meta === 'new') {
           this.addTagDisplay(t.id, t.content);
         } else if (t.meta === 'remove') {
           this.deleteTagDisplay(t.id);
@@ -171,7 +171,8 @@ export default class extends Controller {
     if (delta > 0) {
       if (this.tagCount[id] === undefined) {
         this.tagCount[id] = 1;
-        this.addTagOption(id, content);
+        this.addQuestionTagOption(id, content);
+        this.addTagFilterOption(id, content);
       } else {
         this.tagCount[id] += 1;
       }
@@ -205,11 +206,9 @@ export default class extends Controller {
     if (tag !== null) tag.remove();
   }
 
-  addTagOption(id, content) {
+  addQuestionTagOption(id, content) {
     let option = TagOptionDisplay(id, content);
     option.dataset.questionTarget = 'tagOption';
-    let filter = TagOptionDisplay(id, content);
-    filter.dataset.zgridTarget = 'tagFilterOption';
 
     // add to question display
     if (this.tagOptionListTarget.children.length === 2) {
@@ -221,6 +220,12 @@ export default class extends Controller {
       this.tagOptionListTarget.insertBefore(option, next);
     }
     // add to filter display
+  }
+
+  addTagFilterOption(id, content) {
+    let filter = TagOptionDisplay(id, content);
+    filter.dataset.zgridTarget = 'tagFilterOption';
+
     if (this.tagFilterOptionListTarget.children.length === 2) {
       this.tagFilterOptionListTarget.appendChild(filter);
     } else {
@@ -241,7 +246,6 @@ export default class extends Controller {
     let filter = document.querySelector(
       `.add_tag_filter > option[value="${id}"]`
     );
-    console.log(filter === null);
     if (filter !== null) filter.remove();
   }
 
