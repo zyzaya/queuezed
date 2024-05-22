@@ -7,7 +7,7 @@
     data-single-question-id-value='<%= question.id %>'
     data-edit-target='questionContent'
     data-single-question-target='info'
-    data-action='single-question#questionContentChange'><%= question.content %></textarea>
+    data-action='change->single-question#questionContentChange'><%= question.content %></textarea>
   <div class="answers_header">Answer(s).</div>
   <% question.answers.each do |answer| %>
     <% variants = answer.answer_variants.pluck(:content) %>

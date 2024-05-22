@@ -34,7 +34,10 @@
           data-action=
             "edit:refresh@window->zgrid#refresh
             edit:selectQuestion@window->zgrid#select
-            edit:selectSibling@window->zgrid#setSelectedToSibling">
+            edit:selectSibling@window->zgrid#setSelectedToSibling
+            edit:addTag@window->zgrid#addTag
+            edit:removeTag@window->zgrid#removeTag
+            edit:questionContentChange@window->zgrid#questionContentChange">
         <div class="edit_list_tag_filter_toolbar">
           <label for="edit_filter">Filter by text</label>
           <input type="text" name="" id="edit_filter" data-action="change->zgrid#updateFilter" data-zgrid-target="textFilter">

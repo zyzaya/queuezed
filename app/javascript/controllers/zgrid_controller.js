@@ -47,6 +47,7 @@ export default class extends Controller {
     this.csrf = document.head.querySelector('meta[name=csrf-token]')?.content;
     this.undo_handler = Undo();
     this.change_handler = Change(this.csrf, this.quizIdValue);
+    this.zgrid_data = [];
   }
 
   editOutletConnected(outlet, element) {
@@ -64,7 +65,9 @@ export default class extends Controller {
       let id = grid_data[index].id;
       element.dataset.questionIdValue = id;
       element.dataset.editQuestionIdParam = id;
-      if (this.currentlySelected === id)
+      if (this.currentlySelected === null) return;
+
+      if (this.currentlySelected.toString() === id.toString())
         element.classList.add('active_question');
     }
   }
@@ -104,7 +107,7 @@ export default class extends Controller {
     let tagCount = {};
     return Data.getQuestions(this.quizIdValue)
       .then((questions) => {
-        let data = questions.map((e) => {
+        this.zgrid_data = questions.map((e) => {
           let tags = '';
           e.tags.forEach((t) => {
             tags += ` ${t.id}`;
@@ -120,7 +123,7 @@ export default class extends Controller {
           };
         });
         this.dispatch('setTagCount', { detail: { tagCount: tagCount } });
-        this.zgrid.reconfigure({ data: data });
+        this.zgrid.reconfigure({ data: this.zgrid_data });
       })
       .then(() => {
         if (event !== undefined && event.detail.selectedId !== undefined) {
@@ -136,11 +139,14 @@ export default class extends Controller {
   }
 
   setSelectedQuestion(id) {
-    let element = document.querySelector(`[data-question-id-value='${id}']`);
+    let element = document.querySelector(
+      `.zgrid_row[data-question-id-value='${id}']`
+    );
+    console.log(`.zgrid_row[data-question-id-value='${id}']`);
     if (element !== null) {
       this.previouslySelected = this.currentlySelected;
       let previous_element = document.querySelector(
-        `[data-question-id-value='${this.previouslySelected}']`
+        `.zgrid_row[data-question-id-value='${this.previouslySelected}']`
       );
       if (previous_element !== null) {
         previous_element.classList.remove('active_question');
@@ -212,5 +218,30 @@ export default class extends Controller {
     );
     if (option !== null) option.remove();
     this.updateFilter();
+  }
+
+  // local question modifications
+  addTag(event) {
+    let qId = event.detail.questionId;
+    let tagId = event.detail.tagId;
+    let question = this.zgrid_data.find((q) => q.id === qId);
+    question.tags += ` ${tagId}`;
+    console.log(this.zgrid_data);
+    this.zgrid.reconfigure({ data: this.zgrid_data });
+  }
+
+  removeTag(event) {
+    let qId = event.detail.questionId;
+    let tagId = event.detail.tagId;
+    let question = this.zgrid_data.find((q) => q.id === qId);
+    question.tags = question.tags.split(' ').filter((t) => t !== tagId);
+    this.zgrid.reconfigure({ data: this.zgrid_data });
+  }
+
+  questionContentChange(event) {
+    let qId = event.detail.questionId;
+    let question = this.zgrid_data.find((q) => q.id === qId);
+    question.content = event.detail.questionContent;
+    this.zgrid.reconfigure({ data: this.zgrid_data });
   }
 }

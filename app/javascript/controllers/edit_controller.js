@@ -257,6 +257,7 @@ export default class extends Controller {
       this.change_handler.addTag(event.detail.questionId, tagId, tagContent);
       this.modifyTagCount(tagId, tagContent, 1);
       this.addTagDisplay(tagId, tagContent);
+      this.dispatch('addTag', { detail: event.detail });
     };
     let reverse = () => {
       this.change_handler.removeTag(event.detail.questionId, tagId, tagContent);
@@ -267,6 +268,7 @@ export default class extends Controller {
       }
       this.modifyTagCount(tagId, tagContent, -1);
       this.deleteTagDisplay(tagId);
+      this.dispatch('removeTag', { detail: event.detail });
     };
     this.undo_handler.add('Add Tag', action, reverse);
   }
@@ -279,6 +281,7 @@ export default class extends Controller {
       this.change_handler.removeTag(event.detail.questionId, tagId, tagContent);
       this.modifyTagCount(tagId, tagContent, -1);
       this.deleteTagDisplay(tagId);
+      this.dispatch('removeTag', { detail: event.detail });
     };
     let reverse = () => {
       this.change_handler.addTag(event.detail.questionId, tagId, tagContent);
@@ -289,6 +292,7 @@ export default class extends Controller {
       }
       this.modifyTagCount(tagId, tagContent, 1);
       this.addTagDisplay(tagId, tagContent);
+      this.dispatch('addTag', { detail: event.detail });
     };
     this.undo_handler.add('Remove Tag', action, reverse);
   }
@@ -301,6 +305,13 @@ export default class extends Controller {
       this.change_handler.createTag(event.detail.questionId, tagId, tagContent);
       this.modifyTagCount(tagId, tagContent, 1);
       this.addTagDisplay(tagId, tagContent);
+      this.dispatch('addTag', {
+        detail: {
+          questionId: event.detail.questionId,
+          tagId: tagId,
+          tagContent: tagContent,
+        },
+      });
     };
     let reverse = () => {
       this.change_handler.deleteTag(event.detail.questionId, tagId, tagContent);
@@ -311,6 +322,13 @@ export default class extends Controller {
       }
       this.modifyTagCount(tagId, tagContent, -1);
       this.deleteTagDisplay(tagId);
+      this.dispatch('removeTag', {
+        detail: {
+          questionId: event.detail.questionId,
+          tagId: tagId,
+          tagContent: tagContent,
+        },
+      });
     };
     this.undo_handler.add('Create Tag', action, reverse);
   }
@@ -337,6 +355,12 @@ export default class extends Controller {
       );
       let textarea = this.findQuestionContentTextarea(event.detail.questionId);
       textarea.value = event.detail.current;
+      this.dispatch('questionContentChange', {
+        detail: {
+          questionId: event.detail.questionId,
+          questionContent: event.detail.current,
+        },
+      });
     };
     let reverse = () => {
       this.change_handler.setQuestionContent(
@@ -353,6 +377,12 @@ export default class extends Controller {
         );
         textarea.value = event.detail.previous;
       }
+      this.dispatch('questionContentChange', {
+        detail: {
+          questionId: event.detail.questionId,
+          questionContent: event.detail.previous,
+        },
+      });
     };
     this.undo_handler.add('Change Question Content', action, reverse);
   }
