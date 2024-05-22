@@ -180,7 +180,6 @@ export default class extends Controller {
     let filter = this.tagFilterTargets.map((t) => t.dataset.id);
     let textFilter = this.textFilterTarget.value.toLowerCase();
 
-    console.log(filter);
     this.zgrid.reconfigure({
       filter: (row) => {
         let tags = row.tags.split(' ');
@@ -207,7 +206,6 @@ export default class extends Controller {
   }
 
   removeTagFilter(event) {
-    console.log(event);
     let tagId = event.currentTarget.dataset.id;
     let option = document.querySelector(
       `.button.tagFilter[data-id="${tagId}"]`
