@@ -200,7 +200,7 @@ export default class extends Controller {
 
   addTagFilter(event) {
     let tagId = event.currentTarget.value;
-    if (tagId === -1) return;
+    if (tagId.toString() === (-1).toString()) return;
     let content = this.tagFilterOptionTargets.find((t) => t.value === tagId);
     content = content.text;
 
