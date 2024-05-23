@@ -24,8 +24,7 @@ export default class extends Controller {
   ];
 
   initialize() {
-    this.previous_title = '';
-    this.current_title = this.titleTarget.value;
+    this.title = this.titleTarget.value;
     this.csrf = document.head.querySelector('meta[name=csrf-token]')?.content;
     this.undo_handler = Undo();
     this.change_handler = Change(this.csrf, this.quizIdValue);
@@ -33,15 +32,17 @@ export default class extends Controller {
   }
 
   quizTitleChange(event) {
-    this.previous_title = this.current_title;
-    this.current_title = this.titleTarget.value;
-    this.dispatch('quizTitleChange', {
-      detail: {
-        current: this.current_title,
-        previous: this.previous_title,
-        input: this.titleTarget,
-      },
-    });
+    let previous = this.title;
+    let current = this.titleTarget.value;
+    let action = () => {
+      this.titleTarget.value = current;
+      this.title = current;
+    };
+    let reverse = () => {
+      this.titleTarget.value = previous;
+      this.title = previous;
+    };
+    this.undo_handler.add('Change Quiz Title', action, reverse);
   }
 
   save(event) {
