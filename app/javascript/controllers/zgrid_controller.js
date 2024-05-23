@@ -142,7 +142,6 @@ export default class extends Controller {
     let element = document.querySelector(
       `.zgrid_row[data-question-id-value='${id}']`
     );
-    console.log(`.zgrid_row[data-question-id-value='${id}']`);
     if (element !== null) {
       this.previouslySelected = this.currentlySelected;
       let previous_element = document.querySelector(
@@ -226,7 +225,6 @@ export default class extends Controller {
     let tagId = event.detail.tagId;
     let question = this.zgrid_data.find((q) => q.id === qId);
     question.tags += ` ${tagId}`;
-    console.log(this.zgrid_data);
     this.zgrid.reconfigure({ data: this.zgrid_data });
   }
 
