@@ -354,8 +354,14 @@ export default class extends Controller {
         event.detail.questionId,
         event.detail.current
       );
-      let textarea = this.findQuestionContentTextarea(event.detail.questionId);
-      textarea.value = event.detail.current;
+      if (this.currentlySelectedValue !== selected) {
+        this.dispatch('selectQuestion', { detail: { questionId: selected } });
+      } else {
+        let textarea = this.findQuestionContentTextarea(
+          event.detail.questionId
+        );
+        textarea.value = event.detail.current;
+      }
       this.dispatch('questionContentChange', {
         detail: {
           questionId: event.detail.questionId,
