@@ -45,6 +45,7 @@ class QuizzesController < ApplicationController
               # update content
               unless a[:content].nil?
                 variants = a[:content].split(/\s*\/\s*/)
+                answer.answer_variants.clear
                 variants.each do |v|
                   answer.answer_variants.new(content: v)
                 end
