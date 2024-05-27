@@ -399,15 +399,17 @@ export default class extends Controller {
     let selected = this.currentlySelectedValue;
     let action = () => {
       this.change_handler.addAnswer(event.detail.questionId, answer_id);
-      let parent = this.findQuestionContainer(event.detail.questionId);
-      AnswerDisplay(parent, event.detail.questionId, answer_id);
+      if (this.currentlySelectedValue !== selected) {
+        this.dispatch('selectQuestion', { detail: { questionId: selected } });
+      } else {
+        let parent = this.findQuestionContainer(event.detail.questionId);
+        AnswerDisplay(parent, event.detail.questionId, answer_id);
+      }
     };
     let reverse = () => {
       this.change_handler.deleteAnswer(event.detail.questionId, answer_id);
       if (this.currentlySelectedValue !== selected) {
-        this.dispatch('selectQuestion', {
-          detail: { questionId: selected },
-        });
+        this.dispatch('selectQuestion', { detail: { questionId: selected } });
       } else {
         this.deleteAnswerDisplay(answer_id);
       }
