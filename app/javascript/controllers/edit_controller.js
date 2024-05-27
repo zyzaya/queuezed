@@ -480,7 +480,11 @@ export default class extends Controller {
         event.detail.questionId,
         event.detail.answerId
       );
-      this.deleteAnswerDisplay(event.detail.answerId);
+      if (this.currentlySelectedValue !== selected) {
+        this.dispatch('selectQuestion', { detail: { questionId: selected } });
+      } else {
+        this.deleteAnswerDisplay(event.detail.answerId);
+      }
     };
     let reverse = () => {
       this.change_handler.addAnswer(
@@ -493,9 +497,7 @@ export default class extends Controller {
         event.detail.current
       );
       if (this.currentlySelectedValue !== selected) {
-        this.dispatch('selectQuestion', {
-          detail: { questionId: selected },
-        });
+        this.dispatch('selectQuestion', { detail: { questionId: selected } });
       } else {
         let parent = this.findQuestionContainer(event.detail.questionId);
         AnswerDisplay(
