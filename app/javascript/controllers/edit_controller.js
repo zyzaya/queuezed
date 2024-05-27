@@ -305,6 +305,9 @@ export default class extends Controller {
     let tagContent = event.detail.tagContent;
     let action = () => {
       this.change_handler.createTag(event.detail.questionId, tagId, tagContent);
+      if (this.currentlySelectedValue !== selected) {
+        this.dispatch('selectQuestion', { detail: { questionId: selected } });
+      }
       this.modifyTagCount(tagId, tagContent, 1);
       this.addTagDisplay(tagId, tagContent);
       this.dispatch('addTag', {
@@ -318,9 +321,7 @@ export default class extends Controller {
     let reverse = () => {
       this.change_handler.deleteTag(event.detail.questionId, tagId, tagContent);
       if (this.currentlySelectedValue !== selected) {
-        this.dispatch('selectQuestion', {
-          detail: { questionId: selected },
-        });
+        this.dispatch('selectQuestion', { detail: { questionId: selected } });
       }
       this.modifyTagCount(tagId, tagContent, -1);
       this.deleteTagDisplay(tagId);
