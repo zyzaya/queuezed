@@ -375,9 +375,7 @@ export default class extends Controller {
         event.detail.previous
       );
       if (this.currentlySelectedValue !== selected) {
-        this.dispatch('selectQuestion', {
-          detail: { questionId: selected },
-        });
+        this.dispatch('selectQuestion', { detail: { questionId: selected } });
       } else {
         let textarea = this.findQuestionContentTextarea(
           event.detail.questionId
@@ -443,8 +441,12 @@ export default class extends Controller {
         event.detail.answerId,
         event.detail.current
       );
-      let textarea = this.findAnswerContentTextarea(event.detail.answerId);
-      textarea.value = event.detail.current;
+      if (this.currentlySelectedValue !== selected) {
+        this.dispatch('selectQuestion', { detail: { questionId: selected } });
+      } else {
+        let textarea = this.findAnswerContentTextarea(event.detail.answerId);
+        textarea.value = event.detail.current;
+      }
     };
     let reverse = () => {
       this.change_handler.setAnswerContent(
