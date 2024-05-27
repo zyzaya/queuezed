@@ -35,10 +35,12 @@ export default class extends Controller {
     let previous = this.title;
     let current = this.titleTarget.value;
     let action = () => {
+      this.change_handler.setQuizTitle(current);
       this.titleTarget.value = current;
       this.title = current;
     };
     let reverse = () => {
+      this.change_handler.setQuizTitle(previous);
       this.titleTarget.value = previous;
       this.title = previous;
     };
