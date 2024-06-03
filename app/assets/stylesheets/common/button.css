@@ -2,7 +2,6 @@
   background-color: var(--interact-color);
   color: var(--main-text-color);
   border: none;
-  border-radius: 10px;
   border-color: var(--interact-color);
   cursor: pointer;
   padding: 3px 7px;
