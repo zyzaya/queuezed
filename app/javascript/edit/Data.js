@@ -15,7 +15,7 @@ const Data = (() => {
       },
       credentials: 'same-origin',
       body: JSON.stringify(changes),
-    });
+    }).then((response) => response.json());
   };
 
   let newQuestion = function (csrf, quiz_id) {

@@ -123,8 +123,32 @@ export default function Change(csrf, quiz_id) {
     }
   };
 
-  //
-  obj.getChanges = () => changes;
+  obj.getChanges = function (idConversion = null) {
+    if (idConversion === null) return changes;
+
+    for (const [temp, real] of Object.entries(idConversion.answers)) {
+      changes.questions.forEach((q) => {
+        if (q.answers !== null) {
+          q.answers.forEach((a) => {
+            if (a.id === temp) a.id = real;
+          });
+        }
+      });
+    }
+
+    for (const [temp, real] of Object.entries(idConversion.tags)) {
+      changes.questions.forEach((q) => {
+        if (q.tags !== null) {
+          q.tags.forEach((t) => {
+            if (t.id === temp) t.id = real;
+          });
+        }
+      });
+    }
+
+    return changes;
+  };
+
   obj.resetChanges = () => (changes = { questions: [] });
 
   return obj;

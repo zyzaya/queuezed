@@ -29,6 +29,7 @@ export default class extends Controller {
     this.undo_handler = Undo();
     this.change_handler = Change(this.csrf, this.quizIdValue);
     this.tagCount = {};
+    this.idConversion = { answers: {}, tags: {} };
   }
 
   quizTitleChange(event) {
@@ -48,7 +49,11 @@ export default class extends Controller {
   }
 
   save(event) {
-    Data.save(this.csrf, this.quizIdValue, this.change_handler.getChanges());
+    let changes = this.change_handler.getChanges(this.idConversion);
+    Data.save(this.csrf, this.quizIdValue, changes).then(
+      (ids) => (this.idConversion = ids)
+    );
+    this.change_handler.resetChanges();
   }
 
   undo(event) {

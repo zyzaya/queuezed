@@ -26,6 +26,16 @@ class QuizzesController < ApplicationController
     ## todo: save added answers, remove deleted answers,
     # save changes to content of answers/questions
 
+    # response is 
+    # {
+    #   answers: { tempId: newId }
+    #   tags: { tempId: newId }
+    # }
+    response = {
+      answers: {},
+      tags: {}
+    }
+
     unless params[:quiz_title].nil?
       Quiz.find(params[:quiz_id]).update(name: params[:quiz_title])
     end
@@ -37,7 +47,14 @@ class QuizzesController < ApplicationController
         ## answers
         unless q[:answers].nil?
           q[:answers].each do |a|
-            answer = a[:meta].eql?('new') ? question.answers.new : Answer.find(a[:id])
+            ## 
+            answer = nil
+            if a[:meta].eql?('new')
+              answer = question.answers.create
+              response[:answers][a[:id]] = answer.id
+            else
+              answer = Answer.find(a[:id])
+            end
 
             if a[:meta].eql?('delete')
               answer.destroy
@@ -50,8 +67,6 @@ class QuizzesController < ApplicationController
                   answer.answer_variants.new(content: v)
                 end
               end
-
-              answer.save
             end
           end
         end
@@ -59,7 +74,13 @@ class QuizzesController < ApplicationController
         unless q[:tags].nil?
           q[:tags].each do |t|
             # if new create new
-            tag = t[:meta].eql?('new') ? question.tags.new(content: t[:content]) : Tag.find(t[:id])
+            tag = nil
+            if t[:meta].eql?('new')
+              tag = question.tags.create(content: t[:content])
+              response[:tags][t[:id]] = tag.id
+            else
+              tag = Tag.find(t[:id])
+            end
 
             if t[:meta].eql?('delete')
               tag.destroy
@@ -73,7 +94,8 @@ class QuizzesController < ApplicationController
         question.save
       end
     end
-    render plain: ""
+    puts response
+    render json: response
   end
 
 
