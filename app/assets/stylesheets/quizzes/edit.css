@@ -17,8 +17,10 @@
 .quiz_info {
   color: var(--main-text-color);
   text-align: center;
+  justify-items: center;
+  align-items: center;
   display: grid;
-  grid-template-rows: 1fr 1fr;
+  grid-template-rows: 1fr 1fr 1fr;
   border-bottom: 3px solid var(--secondary-bg-color-dark);
 }
 
@@ -35,6 +37,11 @@
   border: none;
 }
 
+.quiz_practice {
+  height: min-content;
+  margin-bottom: 5px;
+}
+
 .toolbar {
   display: grid;
   grid-template-columns: repeat(4, min-content);
@@ -45,6 +52,8 @@
   align-content: center;
   border-bottom: 3px solid var(--secondary-bg-color-dark);
 }
+
+
 
 .edit_frame {
   display: grid;
