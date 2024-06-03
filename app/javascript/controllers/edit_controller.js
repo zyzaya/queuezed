@@ -66,6 +66,7 @@ export default class extends Controller {
 
   newQuestion(event) {
     let question_id = null;
+    let selected = this.currentlySelectedValue;
     Data.newQuestion(this.csrf, this.quizIdValue).then((question) => {
       question_id = question.id;
       this.dispatch('refresh', {
@@ -87,7 +88,7 @@ export default class extends Controller {
     let reverse = () => {
       Data.deleteQuestion(this.csrf, this.quizIdValue, question_id).then(() =>
         this.dispatch('refresh', {
-          detail: { selectedId: this.currentlySelectedValue },
+          detail: { selectedId: selected },
         })
       );
     };
