@@ -56,3 +56,7 @@
 .quiz_review {
   grid-area: -2 / -2 / -1 / -1;
 }
+
+.quiz_practice {
+  grid-area: -1 / 1 / -2 / 2;
+}
