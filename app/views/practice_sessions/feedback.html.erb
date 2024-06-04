@@ -3,7 +3,9 @@
  <div class="feedback">
   <div class="quiz_info">
     <div class="quiz_title"><%= @quiz.name %></div>
-    <div class="feedback_correct">x/y or n% correct</div>
+    <div class="feedback_correct">
+      <%= "#{@correct} / #{@total} or #{((@correct.to_f / @total.to_f) * 100).round(2)}%"%>
+    </div>
   </div>
   <div class="feedback_info"> 
     <table class="question_list">
