@@ -18,7 +18,11 @@ class AnswerHistoriesController < ApplicationController
     @quiz = Quiz.find(params[:quiz_id])
     @practice_session = PracticeSession.find(params[:session_id])
     params[:given].each do |i, g|
-      @practice_session.answer_histories.new(answer_id: i, given: g)
+      answer = Answer.find(i)
+      variants = answer.answer_variants.pluck(:content)
+      expected = variants.join(" / ")
+      correct = variants.include?(g)
+      @practice_session.answer_histories.new(answer_id: i, given: g, expected: expected, correct: correct)
     end
     @practice_session.save
     
