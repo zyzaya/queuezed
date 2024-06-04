@@ -3,14 +3,12 @@
   <% question.answers.each do |answer| %>
     <% 
       history = answer.answer_histories.find_by(practice_session_id: @practice_session.id)
-      variants = answer.answer_variants.pluck(:content)
-      correct = variants.include?(history.given)
     %>
-    <div class="feedback_container <%= correct ? "correct" : "incorrect" %>">
+    <div class="feedback_container <%= history.correct ? "correct" : "incorrect" %>">
       <input class="answer_input" type="text" value="<%= history.given %>" disabled>
-      <div class="answer_symbol"><%= correct ? "✓" : "x" %></div>
-      <% unless correct %>
-        <input class="answer_input" type="text" value="<%= variants.join(" / ") %>" disabled>
+      <div class="answer_symbol"><%= history.correct ? "✓" : "x" %></div>
+      <% unless history.correct %>
+        <input class="answer_input" type="text" value="<%= history.expected %>" disabled>
       <% end %>
     </div>  
   <% end %>
