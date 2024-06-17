@@ -11,7 +11,7 @@ class QuestionsController < ApplicationController
   end
 
   def update
-    @question = Question.find(params[:question_id])
+    @question = Question.find(params[:id])
     @question.restore(@question.deleted_at)
     render json: @question
   end
