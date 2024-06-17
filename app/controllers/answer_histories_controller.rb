@@ -1,4 +1,6 @@
 class AnswerHistoriesController < ApplicationController
+  before_action :authenticate_user!
+  
   def new
     @practice_session = PracticeSession.find(params[:practice_id])
     @quiz = @practice_session.quiz
