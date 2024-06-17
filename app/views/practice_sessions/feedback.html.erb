@@ -9,9 +9,9 @@
   </div>
   <div class="feedback_info"> 
     <div class="feedback_toolbar">
-      <%= link_to "Retry", "/quizzes/#{@quiz.id}/practice", class: "button" %>
+      <%= link_to "Retry", new_quiz_practice_path(@quiz.id), class: "button" %>
       <%= link_to "Home", "/", class: "button" %>
-      <%= link_to "Edit", "/quizzes/#{@quiz.id}/edit", class: "button" %>
+      <%= link_to "Edit", edit_quiz_path(@quiz.id), class: "button" %>
     </div>
     <div class="feedback_questions">
       <% @questions.each do |q|%>
