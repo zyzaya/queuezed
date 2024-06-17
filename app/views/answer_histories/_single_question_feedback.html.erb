@@ -1,15 +1,17 @@
-<div class="question">
+<div class="single_question_feedback">
   <h1 class="question_content">Q. <%= question.content %></h1>
-  <% question.answers.each do |answer| %>
-    <% 
-      history = answer.answer_histories.find_by(practice_session_id: @practice_session.id)
-    %>
-    <div class="feedback_container <%= history.correct ? "correct" : "incorrect" %>">
-      <input class="answer_input" type="text" value="<%= history.given %>" disabled>
-      <div class="answer_symbol"><%= history.correct ? "✓" : "x" %></div>
-      <% unless history.correct %>
-        <input class="answer_input" type="text" value="<%= history.expected %>" disabled>
-      <% end %>
-    </div>  
-  <% end %>
+  <div class="answer_feedback">
+    <% question.answers.each do |answer| %>
+      <% 
+        history = answer.answer_histories.find_by(practice_session_id: @practice_session.id)
+      %>
+      <div class="feedback_container <%= history.correct ? "correct" : "incorrect" %>">
+        <input class="answer_input" type="text" value="<%= history.given %>" disabled>
+        <div class="answer_symbol"><%= history.correct ? "✓" : "x" %></div>
+        <% unless history.correct %>
+          <input class="answer_input" type="text" value="<%= history.expected %>" disabled>
+        <% end %>
+      </div>  
+    <% end %>
+  </div>
 </div>

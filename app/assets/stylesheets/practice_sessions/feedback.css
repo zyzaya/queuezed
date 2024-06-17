@@ -8,12 +8,9 @@
   background-color: var(--secondary-bg-color);
   display: grid;
   grid-template-rows: min-content 1fr;
-  column-gap: 16px;
-  row-gap: 32px;
   width: 100%;
   max-width: 800px;
   margin: 8px;
-  border-radius: 10px;
 }
 
 .quiz_info {
@@ -28,70 +25,52 @@
   font-size: xx-large;
 }
 
-.feedback_info {
+.feedback_filter {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  column-gap: 8px;
-  margin: 5px;
-}
-
-.question_list, .question_detail {
-  background-color: var(--tertiary-bg-color-dark);
+  grid-template-rows: min-content min-content;
   color: var(--main-text-color);
-}
-
-.question_list {
-  table-layout: fixed;
-  border-collapse: collapse;
-  width: 100%;
-  height: min-content;
-  border-radius: 10px;
-  padding: 3px;
-}
-
-.list_header {
-  font-size: large;
-  border-bottom: 4px solid var(--secondary-bg-color-dark);
-  border-radius: 0;
+  gap: 4px;
   padding: 4px;
-  margin: 0 4px;
+  border-bottom: 3px solid var(--secondary-bg-color-dark);
+  margin-bottom: 4px;
 }
 
-.feedback_list_header > td {
-  white-space: nowrap;
-}
-
-.list_row:hover {
-  border: 2px solid var(--secondary-bg-color-dark);
-}
-
-.list_row:nth-child(odd) {
-  background-color: var(--tertiary-bg-color);
-}
-
-.list_row > td > a, .list_row > td > a:visited {
-  display: block;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  color: var(--main-text-color);
-  text-decoration: none;
-  padding: 8px 3px;
-}
-
-.question_detail {
+.feedback_questions {
   display: flex;
   flex-direction: column;
+  width: 98%;
+  margin: auto;
+  row-gap: 15px;
+}
+
+.single_question_feedback {
+  /* width: min-content;
+  display: flex;
+  flex-direction: row;
+  column-gap: 5px;
+  align-items: flex-start; */
+  display: grid;
+  grid-template-columns: 1fr 1fr;
 }
 
 .question_content {
   text-align: center;
   color: var(--main-text-color);
+  text-wrap: nowrap;
   font-size: large;
+  justify-self: start;
+}
+
+.answer_feedback {
+  justify-self: start;
+  display: flex;
+  flex-direction: column;
+  row-gap: 5px;
 }
 
 .feedback_container {
-  margin: 10px 0;
+  /* margin: 10px 0; */
   display: grid;
   justify-content: center;
   grid-template-columns: repeat(3, min-content);

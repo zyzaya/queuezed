@@ -8,24 +8,23 @@
     </div>
   </div>
   <div class="feedback_info"> 
-    <table class="question_list">
-      <tr class="list_header">
-        <th>Question</th>
-        <th>Streak</th>
-        <th>Best Streak</th>
-      <tr>
-      <% @questions.each do |q| %>
-        <% link = "/quizzes/#{@quiz.id}/practice/#{@practice_session.id}/questions/#{q.id}"%>
-        <tr class="list_row">
-          <td><%= link_to "#{q.content}", link, data: {"turbo-frame" => "feedback_detail"} %></td>
-          <td><%= link_to "#{q.current_streak.to_s}0", link, data: {"turbo-frame" => "feedback_detail"} %></td>
-          <td><%= link_to "#{q.longest_streak.to_s}0", link, data: {"turbo-frame" => "feedback_detail"} %></td>
-        </tr>
+    <div class="feedback_filter">
+      <label for="feedback_tag_filter">Filter by text</label>
+      <input type="text" id="feedback_tag_filter">
+      <label for="feedback_tag_filter">Filter by tag</label>
+      <select name="" id="feedback_tag_filter">
+        <option value="-1" selected>Select to add</option>
+        <option value="-1" disabled>-----</option>
+        <option value="correct" >Correct</option>
+        <option value="incorrect">Incorrect</option>
+        <option value="-1" disabled>-----</option>
+      </select>
+    </div>
+    <div class="feedback_questions">
+      <% @questions.each do |q|%>
+        <%= render 'answer_histories/single_question_feedback', question: q %>
       <% end %>
-    </table>
-    <turbo-frame class="question_detail" id="feedback_detail" >
-      deetail
-    </turbo-frame>
+    </div>
   </div>
  </div>
 </div>
