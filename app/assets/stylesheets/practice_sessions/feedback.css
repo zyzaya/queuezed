@@ -39,7 +39,7 @@
 .feedback_questions {
   display: flex;
   flex-direction: column;
-  width: 98%;
+  width: 100%;
   margin: auto;
   row-gap: 15px;
 }
@@ -47,6 +47,8 @@
 .single_question_feedback {
   display: grid;
   grid-template-columns: 1fr 1fr;
+  padding: 5px 10px 5px 10px;
+  border-bottom: 1px solid var(--tertiary-bg-color);
 }
 
 .question_content {
