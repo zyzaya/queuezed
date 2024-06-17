@@ -10,8 +10,8 @@ const Data = (() => {
   };
 
   let save = function (csrf, quiz_id, changes) {
-    return fetch(`/quizzes/${quiz_id}/update`, {
-      method: 'POST',
+    return fetch(quiz_path(quiz_id), {
+      method: 'PATCH',
       headers: {
         'Content-Type': 'application/json',
         'X-CSRF-Token': csrf,
