@@ -25,17 +25,6 @@
   font-size: xx-large;
 }
 
-.feedback_filter {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  grid-template-rows: min-content min-content;
-  color: var(--main-text-color);
-  gap: 4px;
-  padding: 4px;
-  border-bottom: 3px solid var(--secondary-bg-color-dark);
-  margin-bottom: 4px;
-}
-
 .feedback_questions {
   display: flex;
   flex-direction: column;
