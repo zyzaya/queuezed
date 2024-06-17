@@ -1,6 +1,6 @@
 class PracticeSessionsController < ApplicationController
   def new
-    @quiz = Quiz.find(params[:id])
+    @quiz = Quiz.find(params[:quiz_id])
     ids = []
     order = []
     @quiz.questions.includes(:relations).shuffle.each.with_index do |question|
@@ -18,7 +18,7 @@ class PracticeSessionsController < ApplicationController
   end
 
   def show
-    @quiz = Quiz.find(params[:id])
+    @quiz = Quiz.find(params[:quiz_id])
   end
   private
 end

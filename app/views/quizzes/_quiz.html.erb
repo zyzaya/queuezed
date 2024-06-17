@@ -7,7 +7,7 @@
     <h3 class="subtitle"><%= quiz.questions.count %> questions</h2>
   </div>
   <div>
-    <%= link_to 'Practice', "quizzes/#{quiz.id}/practice", class: 'quiz_practice button' %>
+    <%= link_to 'Practice', new_quiz_practice_session_path(quiz), class: 'quiz_practice button' %>
     <button class="quiz_difficult button">Difficult</button>
     <button class="quiz_review button">Review</button>
   </div>
