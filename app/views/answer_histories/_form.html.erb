@@ -1,6 +1,8 @@
 <turbo-frame id="input">
   <%= render 'practice_sessions/progress', practice_session: @practice_session %>
-  <div class="practice_form">
+  <div class="practice_form" 
+    data-controller="practice"
+    data-action="keydown->practice#ChangeAnswer">
     <%= form_with url: practice_answers_path(@practice_session.id) do |form| %>
       <% questions.each do |q| %>
         <%= render 'answer_histories/single_question', form: form, question: q %>

@@ -2,7 +2,11 @@
   <h1 class="question_content">Q. <%= question.content %></h1>
   <% question.answers.each_with_index do |answer, i| %>
     <div class="answer_container">
-      <%= form.text_field "given[#{answer.id}]", autocomplete: 'off', class: "answer_input", autofocus: (i == 0) %>
+      <%= form.text_field "given[#{answer.id}]",
+        autocomplete: 'off', 
+        class: "answer_input", 
+        data: {"practice-target": "input",
+                action: "focus->practice#FocusAnswer"}%>
     </div>  
   <% end %>
 </div>
