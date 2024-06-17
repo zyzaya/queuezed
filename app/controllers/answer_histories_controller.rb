@@ -5,9 +5,9 @@ class AnswerHistoriesController < ApplicationController
     @practice_session.current += 1
     @practice_session.save
     if @practice_session.current > @practice_session.length - 1
-      question_ids = @practice_session.order.map { |q| q.filter { |e| !e.nil? }.first }
+      question_ids = @practice_session.order.flatten.compact
       @correct = @practice_session.answer_histories.where(correct: true).count
-      @questions = Question.where(id: question_ids)
+      @questions = @practice_session.questions
       @total = @questions.count
       render 'practice_sessions/feedback'
     else
