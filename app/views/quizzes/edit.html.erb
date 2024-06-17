@@ -19,7 +19,7 @@
     <div class="quiz_info">
       <%= text_field "", "quiz_title", class: "quiz_title", value:"#{@quiz.name}", data: { action:'edit#quizTitleChange', 'edit-target': 'title' }%>
       <div class="question_count"><%= @quiz.questions.count %> questions</div>
-      <%= link_to 'Practice', "practice", class: 'quiz_practice button' %>
+      <%= link_to 'Practice', new_quiz_practice_session_path(@quiz.id), class: 'quiz_practice button' %>
     </div>
     <div class="toolbar">
       <a class="button" id="undo" data-action="edit#undo">undo</a>
