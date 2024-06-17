@@ -1,8 +1,8 @@
 <div class="question">
   <h1 class="question_content">Q. <%= question.content %></h1>
-  <% question.answers.each do |answer| %>
+  <% question.answers.each_with_index do |answer, i| %>
     <div class="answer_container">
-      <%= form.text_field "given[#{answer.id}]", autocomplete: 'off', class: "answer_input" %>
+      <%= form.text_field "given[#{answer.id}]", autocomplete: 'off', class: "answer_input", autofocus: (i == 0) %>
     </div>  
   <% end %>
 </div>
