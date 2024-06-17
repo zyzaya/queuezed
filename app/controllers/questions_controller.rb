@@ -6,9 +6,8 @@ class QuestionsController < ApplicationController
   end
   
   def edit
-    @quiz = Quiz.find(params[:quiz_id])
-    @question = Question.find(params[:question_id])
-    
+    @question = Question.find(params[:id])
+    @quiz = @question.quiz
   end
 
   def update

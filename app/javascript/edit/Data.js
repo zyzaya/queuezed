@@ -1,6 +1,9 @@
 const Data = (() => {
+  let edit_question_path = (id) => `/questions/${id}/edit`;
+  let quiz_path = (id) => `/quizzes/${id}`;
+
   let setQuestion = function (csrf, quiz_id, question_id) {
-    Turbo.visit(`/quizzes/${quiz_id}/edit/questions/${question_id}/edit`, {
+    Turbo.visit(edit_question_path(question_id), {
       frame: 'edit_detail',
       action: 'replace',
     });
