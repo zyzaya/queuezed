@@ -1,6 +1,7 @@
 const Data = (() => {
   let edit_question_path = (id) => `/questions/${id}/edit`;
   let quiz_path = (id) => `/quizzes/${id}`;
+  let new_quiz_question_path = (quiz_id) => `/quizzes/${quiz_id}/questions/new`;
 
   let setQuestion = function (csrf, quiz_id, question_id) {
     Turbo.visit(edit_question_path(question_id), {
@@ -22,7 +23,7 @@ const Data = (() => {
   };
 
   let newQuestion = function (csrf, quiz_id) {
-    return fetch(`/quizzes/${quiz_id}/edit/questions/new`)
+    return fetch(new_quiz_question_path(quiz_id))
       .then((response) => response.json())
       .then((question) => {
         setQuestion(csrf, quiz_id, question.id);
