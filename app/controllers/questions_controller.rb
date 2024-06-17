@@ -22,9 +22,8 @@ class QuestionsController < ApplicationController
     render json: @question
   end
 
-  def delete
-    @quiz = Quiz.find(params[:quiz_id])
-    @question = Question.find(params[:question_id])
+  def destroy
+    @question = Question.find(params[:id])
     @question.soft_destroy(Time.now)
     render json: @question
   end

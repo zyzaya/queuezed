@@ -2,6 +2,7 @@ const Data = (() => {
   let edit_question_path = (id) => `/questions/${id}/edit`;
   let quiz_path = (id) => `/quizzes/${id}`;
   let new_quiz_question_path = (quiz_id) => `/quizzes/${quiz_id}/questions/new`;
+  let question_path = (id) => `/questions/${id}`;
 
   let setQuestion = function (csrf, quiz_id, question_id) {
     Turbo.visit(edit_question_path(question_id), {
@@ -32,7 +33,7 @@ const Data = (() => {
   };
 
   let deleteQuestion = function (csrf, quiz_id, question_id) {
-    return fetch(`/quizzes/${quiz_id}/edit/questions/${question_id}`, {
+    return fetch(question_path(question_id), {
       method: 'DELETE',
       headers: {
         'Content-Type': 'application/json',
@@ -43,8 +44,8 @@ const Data = (() => {
   };
 
   let restoreQuestion = function (csrf, quiz_id, question_id) {
-    return fetch(`/quizzes/${quiz_id}/edit/questions/${question_id}`, {
-      method: 'PUT',
+    return fetch(question_path(question_id), {
+      method: 'PATCH',
       headers: {
         'Content-Type': 'application/json',
         'X-CSRF-Token': csrf,
