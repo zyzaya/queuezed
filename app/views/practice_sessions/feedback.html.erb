@@ -8,6 +8,11 @@
     </div>
   </div>
   <div class="feedback_info"> 
+    <div class="feedback_toolbar">
+      <%= link_to "Retry", "/quizzes/#{@quiz.id}/practice", class: "button" %>
+      <%= link_to "Home", "/", class: "button" %>
+      <%= link_to "Edit", "/quizzes/#{@quiz.id}/edit", class: "button" %>
+    </div>
     <div class="feedback_questions">
       <% @questions.each do |q|%>
         <%= render 'answer_histories/single_question_feedback', question: q %>

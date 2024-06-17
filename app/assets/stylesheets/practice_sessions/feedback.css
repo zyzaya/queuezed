@@ -25,6 +25,18 @@
   font-size: xx-large;
 }
 
+.feedback_toolbar {
+  display: grid;
+  grid-template-columns: repeat(3, min-content);
+  color: var(--main-text-color);
+  justify-content: center;
+  align-content: center;
+  gap: 5px;
+  padding: 4px;
+  border-bottom: 3px solid var(--secondary-bg-color-dark);
+  margin-bottom: 4px;
+}
+
 .feedback_questions {
   display: flex;
   flex-direction: column;
