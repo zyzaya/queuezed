@@ -1,6 +1,7 @@
 const Data = (() => {
   let edit_question_path = (id) => `/questions/${id}/edit`;
   let quiz_path = (id) => `/quizzes/${id}`;
+  let quiz_questions_path = (quiz_id) => `/quizzes/${quiz_id}/questions`;
   let new_quiz_question_path = (quiz_id) => `/quizzes/${quiz_id}/questions/new`;
   let question_path = (id) => `/questions/${id}`;
 
@@ -56,7 +57,7 @@ const Data = (() => {
   };
 
   let getQuestions = function (quiz_id) {
-    return fetch(`/quizzes/${quiz_id}/questions`).then((response) =>
+    return fetch(quiz_questions_path(quiz_id)).then((response) =>
       response.json()
     );
   };
