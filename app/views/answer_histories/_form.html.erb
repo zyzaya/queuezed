@@ -1,7 +1,7 @@
 <turbo-frame id="input">
   <%= render 'practice_sessions/progress', practice_session: @practice_session %>
   <div class="practice_form">
-    <%= form_with url: "/quizzes/#{quiz.id}/practice/#{practice_session.id}/answers/new" do |form| %>
+    <%= form_with url: practice_answers_path(@practice_session.id) do |form| %>
       <% questions.each do |q| %>
         <%= render 'answer_histories/single_question', form: form, question: q %>
       <% end %>

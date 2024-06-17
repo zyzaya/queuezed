@@ -1,7 +1,7 @@
 class AnswerHistoriesController < ApplicationController
   def new
-    @quiz = Quiz.find(params[:quiz_id])
-    @practice_session = @quiz.practice_sessions.find(params[:session_id])
+    @practice_session = PracticeSession.find(params[:practice_id])
+    @quiz = @practice_session.quiz
     @practice_session.current += 1
     @practice_session.save
     if @practice_session.current > @practice_session.length - 1
@@ -17,8 +17,8 @@ class AnswerHistoriesController < ApplicationController
   end
 
   def create
-    @quiz = Quiz.find(params[:quiz_id])
-    @practice_session = PracticeSession.find(params[:session_id])
+    @practice_session = PracticeSession.find(params[:practice_id])
+    @quiz = @practice_session.quiz
     params[:given].each do |i, g|
       answer = Answer.find(i)
       variants = answer.answer_variants.pluck(:content)
