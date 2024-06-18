@@ -138,22 +138,21 @@ export default class extends Controller {
 
   deleteQuestion(event) {
     let question_id = event.detail.id;
+    let count = this.questionCountValue;
     let action = () => {
       this.dispatch('selectSibling');
-      Data.deleteQuestion(this.csrf, this.quizIdValue, question_id).then(() =>
-        this.dispatch('refresh')
-      );
+      Data.deleteQuestion(this.csrf, this.quizIdValue, question_id).then(() => {
+        this.dispatch('refresh');
+        this.questionCountValue = count - 1;
+      });
     };
     let reverse = () => {
       Data.restoreQuestion(this.csrf, this.quizIdValue, question_id)
         .then((response) => response.json())
-        .then((question) =>
-          this.dispatch('refresh', {
-            detail: {
-              selectedId: question_id,
-            },
-          })
-        );
+        .then((question) => {
+          this.dispatch('refresh', { detail: { selectedId: question_id } });
+          this.questionCountValue = count;
+        });
     };
     this.undo_handler.add('Delete Question', action, reverse);
   }
