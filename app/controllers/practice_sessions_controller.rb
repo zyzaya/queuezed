@@ -5,7 +5,12 @@ class PracticeSessionsController < ApplicationController
     @quiz = Quiz.find(params[:quiz_id])
     ids = []
     order = []
-    @quiz.questions.includes(:relations).shuffle.each.with_index do |question|
+    # gets all questions that have at least one answers
+    # groups related questions together
+    @quiz
+      .questions
+      .where(id: Answer.pluck(:question_id))
+      .includes(:relations).shuffle.each.with_index do |question|
       unless ids.include?(question.id)
         q_ids = [question.id] + question.relations.pluck(:id)
         order << q_ids
