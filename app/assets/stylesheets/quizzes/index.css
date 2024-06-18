@@ -5,6 +5,7 @@
 
 .quiz_new {
   height: 64px;
+  line-height: 64px;
   font-size: 32px;
   margin: 20px 16px 0 16px;
   width: min-content;

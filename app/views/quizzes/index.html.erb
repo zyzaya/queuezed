@@ -1,6 +1,6 @@
 <div class="quizzes_index">
   <%= render 'shared/header' %>
-  <button class="quiz_new button">New Quiz</button>
+  <%= link_to "New Quiz", new_quiz_path(), class: "quiz_new button" %>
   <div class="quizzes_container">
     <% @quizzes.each do |q| %>
       <%= render 'quizzes/quiz', quiz: q %>
