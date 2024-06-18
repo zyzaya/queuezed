@@ -445,7 +445,7 @@ export default class extends Controller {
       .questions.find((q) => q.id === event.detail.questionId);
     if (question === undefined || question.answers === undefined) return;
     let answer = question.answers.find((a) => a.id === event.detail.answerId);
-    if (answer === undefined) return;
+    if (answer === undefined || answer.content == undefined) return;
     let textarea = this.findAnswerContentTextarea(event.detail.answerId);
     textarea.value = answer.content;
   }
