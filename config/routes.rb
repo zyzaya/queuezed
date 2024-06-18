@@ -1,6 +1,6 @@
 Rails.application.routes.draw do
   devise_for :users
-  resources :quizzes, shallow: true, only: [:index, :new, :show, :edit, :update] do
+  resources :quizzes, shallow: true, only: [:index, :new, :show, :edit, :update, :destroy] do
     resources :questions, only: [:index, :new, :show, :edit, :update, :destroy]
     resources :practice, only: [:new], controller: 'practice_sessions' do
       resources :answers, only: [:new, :create], controller: 'answer_histories'
