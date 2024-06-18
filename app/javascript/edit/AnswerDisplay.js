@@ -11,6 +11,7 @@ export default function AnswerDisplay(
   let answer_container = document.createElement('div');
   answer_container.classList.add('answer_container');
   answer_container.dataset.controller = 'answer';
+  answer_container.dataset.answerQuestionIdValue = question_id;
   answer_container.dataset.answerIdValue = answer_id;
   answer_container.dataset.answerSingleQuestionOutlet = `.single_question_edit[data-single-question-id-value="${question_id}"]`;
 
