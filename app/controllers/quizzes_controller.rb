@@ -15,6 +15,12 @@ class QuizzesController < ApplicationController
     @quiz = Quiz.find(params[:id])
   end
 
+  def destroy
+    quiz = Quiz.find(params[:id])
+    quiz.destroy
+    redirect_to(quizzes_path())
+  end
+
   def update
     # rails puts json into params automagically
     # format of a save changes is
@@ -103,7 +109,6 @@ class QuizzesController < ApplicationController
     puts response
     render json: response
   end
-
 
   private
 end
