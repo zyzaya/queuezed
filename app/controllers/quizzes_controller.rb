@@ -5,6 +5,12 @@ class QuizzesController < ApplicationController
     @quizzes = current_user.quizzes
   end
 
+  def new
+    @quiz = current_user.quizzes.create(name: "New Quiz")
+    @quiz.srs_boxes.create(rank: 1)
+    render "quizzes/edit"
+  end
+
   def edit
     @quiz = Quiz.find(params[:id])
   end
@@ -37,7 +43,7 @@ class QuizzesController < ApplicationController
     }
 
     unless params[:quiz_title].nil?
-      Quiz.find(params[:quiz_id]).update(name: params[:quiz_title])
+      Quiz.find(params[:id]).update(name: params[:quiz_title])
     end
     unless params[:questions].nil?
       params[:questions].each do |q|
