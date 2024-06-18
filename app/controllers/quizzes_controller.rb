@@ -76,7 +76,7 @@ class QuizzesController < ApplicationController
                 variants = a[:content].split(/\s*\/\s*/)
                 answer.answer_variants.clear
                 variants.each do |v|
-                  answer.answer_variants.new(content: v)
+                  answer.answer_variants.create(content: v)
                 end
               end
             end

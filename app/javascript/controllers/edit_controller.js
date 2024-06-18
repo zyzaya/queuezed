@@ -56,6 +56,7 @@ export default class extends Controller {
 
   save(event) {
     let changes = this.change_handler.getChanges(this.idConversion);
+    console.log(changes);
     Data.save(this.csrf, this.quizIdValue, changes).then(
       (ids) => (this.idConversion = ids)
     );
