@@ -4,7 +4,7 @@
     <%= link_to 'Edit 🖉', edit_quiz_path(quiz), class: 'quiz_edit button' %>
   </div>
   <div>
-    <h3 class="subtitle"><%= quiz.questions.count %> questions</h2>
+    <h3 class="subtitle"><%= quiz.questions_count %> questions</h2>
   </div>
   <div>
     <%= link_to 'Practice', new_quiz_practice_path(quiz), class: 'quiz_practice button' %>
