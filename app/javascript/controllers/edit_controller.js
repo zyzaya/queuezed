@@ -11,10 +11,12 @@ export default class extends Controller {
   static values = {
     quizId: String,
     currentlySelected: String,
+    questionCount: Number,
   };
 
   static targets = [
     'title',
+    'subtitle',
     'questionContent',
     'answerContent',
     'singleQuestionContainer',
@@ -30,6 +32,10 @@ export default class extends Controller {
     this.change_handler = Change(this.csrf, this.quizIdValue);
     this.tagCount = {};
     this.idConversion = { answers: {}, tags: {} };
+  }
+
+  questionCountValueChanged() {
+    this.subtitleTarget.innerText = `${this.questionCountValue} questions`;
   }
 
   quizTitleChange(event) {
@@ -67,30 +73,31 @@ export default class extends Controller {
   newQuestion(event) {
     let question_id = null;
     let selected = this.currentlySelectedValue;
-    Data.newQuestion(this.csrf, this.quizIdValue).then((question) => {
-      question_id = question.id;
-      this.dispatch('refresh', {
-        detail: {
-          selectedId: question.id,
-        },
-      });
-    });
+    let count = this.questionCountValue;
+    Data.newQuestion(this.csrf, this.quizIdValue)
+      .then((question) => {
+        question_id = question.id;
+        this.dispatch('refresh', { detail: { selectedId: question.id } });
+        this.questionCountValue = count + 1;
+      })
+      .then(() => (this.questionCountValue = count + 1));
     let triggered = false;
     let action = () => {
       if (triggered) {
         Data.restoreQuestion(this.csrf, this.quizIdValue, question_id).then(
-          () =>
-            this.dispatch('refresh', { detail: { selectedId: question_id } })
+          () => {
+            this.dispatch('refresh', { detail: { selectedId: question_id } });
+            this.questionCountValue = count + 1;
+          }
         );
       }
       triggered = true;
     };
     let reverse = () => {
-      Data.deleteQuestion(this.csrf, this.quizIdValue, question_id).then(() =>
-        this.dispatch('refresh', {
-          detail: { selectedId: selected },
-        })
-      );
+      Data.deleteQuestion(this.csrf, this.quizIdValue, question_id).then(() => {
+        this.dispatch('refresh', { detail: { selectedId: selected } });
+        this.questionCountValue = count;
+      });
     };
     this.undo_handler.add('Create Question', action, reverse);
   }

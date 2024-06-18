@@ -3,6 +3,7 @@
   <div class="edit" 
     data-controller="edit" 
     data-edit-quiz-id-value = <%= @quiz.id %>
+    data-edit-question-count-value = <%= @quiz.questions.count %>
     data-action="
       zgrid:setTagCount@window->edit#setTagCount
       question:load@window->edit#loadQuestion
@@ -18,7 +19,7 @@
       answer:delete@window->edit#deleteAnswer">
     <div class="quiz_info">
       <%= text_field "", "quiz_title", class: "quiz_title", value:"#{@quiz.name}", data: { action:'edit#quizTitleChange', 'edit-target': 'title' }%>
-      <div class="question_count"><%= @quiz.questions.count %> questions</div>
+      <div class="question_count" data-edit-target="subtitle"></div>
       <%= link_to 'Practice', new_quiz_practice_path(@quiz.id), class: 'quiz_practice button' %>
     </div>
     <div class="toolbar">
