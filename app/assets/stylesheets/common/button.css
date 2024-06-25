@@ -1,18 +1,18 @@
 .button {
   background-color: var(--interact-color);
   color: var(--main-text-color);
-  border: none;
   border-color: var(--interact-color);
   cursor: pointer;
   padding: 3px 7px;
   white-space: nowrap;
   text-decoration: none;
+  border-style: none;
 }
 
 .button:hover {
-  border-style: none outset outset none;
+  box-shadow: 1px 1px 0px 2px var(--interact-color-dark);
 }
 
 .button:active {
-  border-style: inset none none inset;
+  box-shadow: 1px 1px 0px 2px inset var(--interact-color-dark);
 }
