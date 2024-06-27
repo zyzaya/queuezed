@@ -1,19 +1,21 @@
-<div class="edit_list_tag_filter_toolbar" data-controller="filter">
-  <label for="edit_filter">Filter by text</label>
-  <input type="text" name="" id="edit_filter" 
-    data-action="change->filter#updateFilter" 
-    data-filter-target="text">
-  <label for="edit_add_tag_filter">Filter by tag</label>
-  <select name="" id="edit_add_tag_filter" class="add_tag_filter" 
-    data-action="filter#addTag"
-    data-filter-target="tagOptionList">
-    <option value="-1" selected>Select to add</option>
-    <option value="-1" disabled>-----</option>
-    <% @quiz.tags.order('content').uniq.each do |t| %>
-      <option value=<%= t.id %> data-filter-target="tagOption"><%= t.content%></option>
-    <% end %>
-  </select>
+<div class="filter" data-controller="filter">
+  <div class="filter_toolbar">
+    <label for="edit_filter">Filter by text</label>
+    <input type="text" name="" id="edit_filter" 
+      data-action="change->filter#updateFilter" 
+      data-filter-target="text">
+    <label for="edit_add_tag_filter">Filter by tag</label>
+    <select name="" id="edit_add_tag_filter" class="add_tag_filter" 
+      data-action="filter#addTag"
+      data-filter-target="tagOptionList">
+      <option value="-1" selected>Select to add</option>
+      <option value="-1" disabled>-----</option>
+      <% @quiz.tags.order('content').uniq.each do |t| %>
+        <option value=<%= t.id %> data-filter-target="tagOption"><%= t.content%></option>
+      <% end %>
+    </select>
+  </div>
   <hr>
-  <div class="edit_list_tag_filter" data-filter-target="tagList">
+  <div class="filter_tag_list" data-filter-target="tagList">
   </div>
 </div>

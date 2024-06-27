@@ -168,8 +168,6 @@ export default class extends Controller {
   updateFilter(event) {
     let filter = event.detail.tagIds;
     let textFilter = event.detail.textFilter;
-    // let filter = this.tagFilterTargets.map((t) => t.dataset.id);
-    // let textFilter = this.textFilterTarget.value.toLowerCase();
 
     this.zgrid.reconfigure({
       filter: (row) => {

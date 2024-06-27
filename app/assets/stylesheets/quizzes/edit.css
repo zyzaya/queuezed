@@ -53,8 +53,6 @@
   border-bottom: 3px solid var(--secondary-bg-color-dark);
 }
 
-
-
 .edit_frame {
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -76,24 +74,6 @@
   display: flex;
   flex-wrap: wrap;
   gap: 6px;
-}
-
-.edit_list_tag_filter_toolbar {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  grid-template-rows: min-content min-content;
-  gap: 4px;
-  padding: 4px;
-}
-
-.edit_list_tag_filter_toolbar > label {
-  white-space: nowrap;
-}
-
-.edit_list_tag_filter {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 4px;
 }
 
 #edit_detail {

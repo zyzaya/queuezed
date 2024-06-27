@@ -1,0 +1,18 @@
+.filter_toolbar {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: min-content min-content;
+  gap: 4px;
+  padding: 4px;
+}
+
+.filter_toolbar > label {
+  white-space: nowrap;
+}
+
+.filter_tag_list {
+  display: flex;
+  flex-wrap: wrap;
+  padding: 4px;
+  gap: 4px;
+}
