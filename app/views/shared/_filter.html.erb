@@ -10,7 +10,7 @@
       data-edit-target="tagFilterOptionList">
       <option value="-1" selected>Select to add</option>
       <option value="-1" disabled>-----</option>
-      <% @quiz.tags.order('content').uniq.each do |t| %>
+      <% quiz.tags.order('content').uniq.each do |t| %>
         <option value=<%= t.id %> data-filter-target="tagOption"><%= t.content%></option>
       <% end %>
     </select>

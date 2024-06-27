@@ -2,6 +2,7 @@ class PracticeSessionsController < ApplicationController
   before_action :authenticate_user!
   
   def new
+    @quiz = Quiz.find(params[:quiz_id])
   end
 
   def create

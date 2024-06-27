@@ -42,7 +42,7 @@
             edit:questionContentChange@window->zgrid#questionContentChange
             filter:updateFilter@window->zgrid#updateFilter
             filter:addTag@window->zgrid#addTagFilter">
-        <%= render 'shared/filter' %>
+        <%= render 'shared/filter', quiz: @quiz %>
         <hr>
         <div data-zgrid-target="zgridContainer"></div>
       </div>
