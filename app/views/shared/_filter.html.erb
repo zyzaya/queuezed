@@ -7,7 +7,7 @@
     <label for="edit_add_tag_filter">Filter by tag</label>
     <select name="" id="edit_add_tag_filter" class="add_tag_filter" 
       data-action="filter#addTag"
-      data-filter-target="tagOptionList">
+      data-edit-target="tagFilterOptionList">
       <option value="-1" selected>Select to add</option>
       <option value="-1" disabled>-----</option>
       <% @quiz.tags.order('content').uniq.each do |t| %>

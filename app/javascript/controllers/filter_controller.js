@@ -2,7 +2,7 @@ import { Controller } from '@hotwired/stimulus';
 import TagFilterDisplay from '../edit/TagFilterDisplay';
 
 export default class extends Controller {
-  static targets = ['text', 'tagOptionList', 'tagOption', 'tagList', 'tag'];
+  static targets = ['text', 'tagOption', 'tagList', 'tag'];
 
   updateFilter() {
     this.dispatch('updateFilter', {
@@ -19,20 +19,29 @@ export default class extends Controller {
     let content = this.tagOptionTargets.find((t) => t.value === id);
     content = content.text;
 
-    if (this.hasTagFilter(id, content)) return;
+    if (this.hasTag(id, content)) return;
     let tag = TagFilterDisplay(id, content);
-    this.tagListTarget.appendChild(tag);
+    // maintain sorted order of displayed tags
+    if (this.tagListTarget.children.length === 0) {
+      this.tagListTarget.appendChild(tag);
+    } else {
+      let next = Array.from(this.tagListTarget.children).find(
+        (t) => content.localeCompare(t.text) <= 0
+      );
+      this.tagListTarget.insertBefore(tag, next);
+    }
+
     this.updateFilter();
   }
 
-  removeTagFilter(event) {
+  removeTag(event) {
     let id = event.currentTarget.dataset.id;
     let option = document.querySelector(`.button.tagFilter[data-id="${id}"]`);
     if (option !== null) option.remove();
     this.updateFilter();
   }
 
-  hasTagFilter(id, content) {
+  hasTag(id, content) {
     let existing = this.tagTargets.find((t) => {
       return t.dataset.id.toString() == id.toString() && t.text === content;
     });

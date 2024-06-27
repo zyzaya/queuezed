@@ -240,7 +240,7 @@ export default class extends Controller {
 
   addTagFilterOption(id, content) {
     let filter = TagOptionDisplay(id, content);
-    filter.dataset.zgridTarget = 'tagFilterOption';
+    filter.dataset.filterTarget = 'tagOption';
 
     if (this.tagFilterOptionListTarget.children.length === 2) {
       this.tagFilterOptionListTarget.appendChild(filter);
