@@ -1,0 +1,26 @@
+.practice_new {
+  background-color: var(--secondary-bg-color);
+  width: min-content;
+  margin: 32px auto;
+}
+
+.practice_buttons {
+  display: grid;
+  gap: 8px;
+  grid-template-columns: 1fr 1fr;
+  padding: 8px;
+  margin: auto;
+}
+
+.practice_buttons .button {
+  width: min-content;
+  font-size: larger;
+}
+
+.practice_start {
+  justify-self: end;
+}
+
+.practice_cancel {
+  justify-self: start;
+}

@@ -1,7 +1,12 @@
-<div class="practice_new">
+<div>
   <%= render "shared/header"%>
-  <%= render "shared/filter", quiz: @quiz %>
-  <%= button_to 'Start', quiz_practice_index_path(@quiz.id), class: 'quiz_practice button', data: {turbo: false} %>
-  <%= link_to 'Cancel', :back, class: 'button' %>
+  <div class="practice_new">
+    <%= render "shared/filter", quiz: @quiz %>
+    <div class="practice_buttons">
+      <%= button_to 'Start', quiz_practice_index_path(@quiz.id), form_class: 'practice_start', class: 'button', data: {turbo: false} %>
+      <%= link_to 'Cancel', :back, class: 'practice_cancel button' %>
+    </div>
+  </div>
+  
 </div>
-<%= stylesheet_link_tag "filter", "data-turbo-track": "reload" %>
+<%= stylesheet_link_tag "practice_sessions/create", "data-turbo-track": "reload" %>
