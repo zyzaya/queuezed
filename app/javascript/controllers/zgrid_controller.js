@@ -5,7 +5,6 @@ import Undo from 'edit/Undo';
 import Change from 'edit/Change';
 import ID from 'edit/ID';
 import AnswerDisplay from '../edit/AnswerDisplay';
-import TagFilterDisplay from '../edit/TagFilterDisplay';
 
 export default class extends Controller {
   static values = {
@@ -13,15 +12,7 @@ export default class extends Controller {
     previouslySelected: String,
   };
 
-  static targets = [
-    'body',
-    'row',
-    'zgridContainer',
-    'tagFilterOption',
-    'tagFilterList',
-    'tagFilter',
-    'textFilter',
-  ];
+  static targets = ['body', 'row', 'zgridContainer'];
   static outlets = ['edit'];
 
   initialize() {
@@ -174,13 +165,6 @@ export default class extends Controller {
     }
   }
 
-  hasTagFilter(id, content) {
-    let existing = this.tagFilterTargets.find((t) => {
-      return t.dataset.id.toString() === id.toString() && t.text === content;
-    });
-    return existing !== undefined;
-  }
-
   updateFilter(event) {
     let filter = event.detail.tagIds;
     let textFilter = event.detail.textFilter;
@@ -197,28 +181,6 @@ export default class extends Controller {
         );
       },
     });
-  }
-
-  addTagFilter(event) {
-    let tagId = event.currentTarget.value;
-    if (tagId.toString() === (-1).toString()) return;
-    let content = this.tagFilterOptionTargets.find((t) => t.value === tagId);
-    content = content.text;
-
-    if (this.hasTagFilter(tagId, content)) return;
-
-    let tag = TagFilterDisplay(tagId, content);
-    this.tagFilterListTarget.appendChild(tag);
-    this.updateFilter();
-  }
-
-  removeTagFilter(event) {
-    let tagId = event.currentTarget.dataset.id;
-    let option = document.querySelector(
-      `.button.tagFilter[data-id="${tagId}"]`
-    );
-    if (option !== null) option.remove();
-    this.updateFilter();
   }
 
   // local question modifications
