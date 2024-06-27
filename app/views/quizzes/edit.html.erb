@@ -41,18 +41,7 @@
             edit:removeTag@window->zgrid#removeTag
             edit:questionContentChange@window->zgrid#questionContentChange">
         <div class="edit_list_tag_filter_toolbar">
-          <label for="edit_filter">Filter by text</label>
-          <input type="text" name="" id="edit_filter" data-action="change->zgrid#updateFilter" data-zgrid-target="textFilter">
-          <label for="edit_add_tag_filter">Filter by tag</label>
-          <select name="" id="edit_add_tag_filter" class="add_tag_filter" 
-            data-action="zgrid#addTagFilter"
-            data-edit-target="tagFilterOptionList">
-            <option value="-1" selected>Select to add</option>
-            <option value="-1" disabled>-----</option>
-            <% @quiz.tags.order('content').uniq.each do |t| %>
-              <option value=<%= t.id %> data-zgrid-target="tagFilterOption"><%= t.content%></option>
-            <% end %>
-          </select>
+          <%= render 'shared/filter' %>
         </div>
         <hr>
         <div class="edit_list_tag_filter" data-zgrid-target="tagFilterList">
