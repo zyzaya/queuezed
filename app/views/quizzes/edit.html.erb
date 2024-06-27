@@ -39,13 +39,10 @@
             edit:selectSibling@window->zgrid#setSelectedToSibling
             edit:addTag@window->zgrid#addTag
             edit:removeTag@window->zgrid#removeTag
-            edit:questionContentChange@window->zgrid#questionContentChange">
-        <div class="edit_list_tag_filter_toolbar">
-          <%= render 'shared/filter' %>
-        </div>
-        <hr>
-        <div class="edit_list_tag_filter" data-zgrid-target="tagFilterList">
-        </div>
+            edit:questionContentChange@window->zgrid#questionContentChange
+            filter:updateFilter@window->zgrid#updateFilter
+            filter:addTag@window->zgrid#addTagFilter">
+        <%= render 'shared/filter' %>
         <hr>
         <div data-zgrid-target="zgridContainer"></div>
       </div>
