@@ -1,16 +1,11 @@
 import { Controller } from '@hotwired/stimulus';
 
 export default class extends Controller {
-  connect() {
-    this.tagIds = [];
-    this.textFilter = '';
-  }
+  static targets = ['tagIds', 'textFilter'];
 
   updateFilter(event) {
-    this.tagIds = event.detail.tagIds;
-    this.textFilter = event.detail.textFilter;
+    this.tagIdsTarget.value = event.detail.tagIds;
+    this.textFilterTarget.value = event.detail.textFilter;
     console.log(event.detail);
   }
-
-  start() {}
 }
