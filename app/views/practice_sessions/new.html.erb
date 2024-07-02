@@ -1,12 +1,15 @@
 <div>
   <%= render "shared/header"%>
-  <div class="practice_new">
+  <div class="practice_new" 
+    data-controller="start-practice"
+    data-action="filter:updateFilter@window->start-practice#updateFilter">
     <%= render "shared/filter", quiz: @quiz %>
     <div class="practice_buttons">
-      <%= button_to 'Start', quiz_practice_index_path(@quiz.id), form_class: 'practice_start', class: 'button', data: {turbo: false} %>
+      <%= form_with(url: quiz_practice_index_path, class: 'practice_start', data: {turbo: false}) do |form| %>
+        <%= form.submit "Start", class: 'button' %>
+      <% end %>
       <%= link_to 'Cancel', :back, class: 'practice_cancel button' %>
     </div>
-  </div>
-  
+  </div>  
 </div>
 <%= stylesheet_link_tag "practice_sessions/create", "data-turbo-track": "reload" %>
