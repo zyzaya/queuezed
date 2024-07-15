@@ -9,7 +9,11 @@
   </div>
   <div class="feedback_info"> 
     <div class="feedback_toolbar">
-      <%= link_to "Retry", new_quiz_practice_path(@quiz.id), class: "button" %>
+      <%= button_to "Retry", 
+        quiz_practice_index_path(@quiz.id), 
+        params: {textFilter: @practice_session.textFilter, tagFilter: @practice_session.tagFilter}, 
+        data: {turbo: false},
+        class: "button" %>
       <%= link_to "Home", "/", class: "button" %>
       <%= link_to "Edit", edit_quiz_path(@quiz.id), class: "button" %>
     </div>

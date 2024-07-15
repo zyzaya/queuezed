@@ -7,7 +7,7 @@ export default class extends Controller {
   updateFilter() {
     this.dispatch('updateFilter', {
       detail: {
-        tagIds: this.tagTargets.map((t) => t.dataset.id),
+        tagFilter: this.tagTargets.map((t) => t.dataset.id),
         textFilter: this.textTarget.value.toLowerCase(),
       },
     });
