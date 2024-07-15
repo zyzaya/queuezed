@@ -1,17 +1,27 @@
 <div>
   <%= render "shared/header"%>
-  <div class="practice_new" 
+  <div class="practice" 
     data-controller="start-practice"
     data-action="filter:updateFilter@window->start-practice#updateFilter">
-    <%= render "shared/filter", quiz: @quiz %>
-    <div class="practice_buttons">
-      <%= form_with(url: quiz_practice_index_path, class: 'practice_start', data: {turbo: false}) do |form| %>
-        <%= form.hidden_field :textFilter, value: '', data: {'start-practice-target': 'textFilter'} %>
-        <%= form.hidden_field :tagFilter, name: 'tagFilter', value: '', data: {'start-practice-target': 'tagFilter'} %>
-        <%= form.submit "Start", class: 'button' %>
-      <% end %>
-      <%= link_to 'Cancel', :back, class: 'practice_cancel button' %>
+     <div class="practice_new">
+      <%= render "shared/filter", quiz: @quiz %>
+      <div class="practice_buttons">
+        <%= form_with(url: quiz_practice_index_path, class: 'practice_start', data: {turbo: false}) do |form| %>
+          <%= form.hidden_field :textFilter, value: '', data: {'start-practice-target': 'textFilter'} %>
+          <%= form.hidden_field :tagFilter, name: 'tagFilter', value: '', data: {'start-practice-target': 'tagFilter'} %>
+          <%= form.submit "Start", class: 'button' %>
+        <% end %>
+        <%= link_to 'Cancel', :back, class: 'practice_cancel button' %>
+      </div>
     </div>
+    <% if @unfinished.count > 0 %>
+      <div class="practice_continue">
+        <div class="continue_info">You have unfinished sessions:</div>  
+        <% @unfinished.each do |session| %>
+          <%= render "unfinished", session: session %>
+        <% end %>
+      </div>
+    <% end %>
   </div>  
 </div>
 <%= stylesheet_link_tag "practice_sessions/create", "data-turbo-track": "reload" %>

@@ -1,7 +1,15 @@
+.practice {
+  width: min-content;
+  margin: 32px auto;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  color: var(--main-text-color);
+}
+
 .practice_new {
   background-color: var(--secondary-bg-color);
   width: min-content;
-  margin: 32px auto;
 }
 
 .practice_buttons {
@@ -23,4 +31,48 @@
 
 .practice_cancel {
   justify-self: start;
+}
+
+.practice_continue {
+  background-color: var(--secondary-bg-color-dark);
+}
+
+.continue_info {
+  margin: 8px;
+  text-align: center;
+}
+
+.unfinished {
+  white-space: nowrap;
+  margin: 6px;
+  padding: 2px;
+  background-color: var(--secondary-bg-color);
+}
+
+.unfinished > div {
+  margin: 4px 0;
+}
+
+.unfinished_header {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+}
+
+.unfinished_header > .button {
+  justify-self: flex-end;
+}
+
+.textFilter {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+}
+
+.tagContainer {
+  display: flex;
+  gap: 4px;
+}
+
+.tagFilter .tag {
+  border: 2px solid var(--tertiary-bg-color-dark);
+  padding: 2px;
 }

@@ -3,6 +3,7 @@ class PracticeSessionsController < ApplicationController
   
   def new
     @quiz = Quiz.find(params[:quiz_id])
+    @unfinished = @quiz.practice_sessions.where("current < length")
   end
 
   def create
@@ -10,7 +11,7 @@ class PracticeSessionsController < ApplicationController
     ids = []
     order = []
     textFilter = params[:textFilter].downcase
-    tagFilter = params[:tagFilter].split(" ").map { |t| t.to_i }
+    tagFilter = params[:tagFilter].split(",").map { |t| t.to_i }
     # all questions that 
     #   have at least one answer
     #   content contains textFilter

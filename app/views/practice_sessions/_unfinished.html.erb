@@ -1,0 +1,24 @@
+<div class="unfinished">
+  <div class="unfinished_header">
+    <div class="progress"><%= "#{session.current} / #{session.length}"%></div>
+    <%= link_to 'Continue', "", class: "button" %>
+  </div>
+  <% unless session.textFilter.eql?("") %>
+    <div class="textFilter">
+      <span>Filter by text:</span><span><%= session.textFilter%></span>
+    </div>
+  <% end %>
+  <% unless session.textFilter.eql?("") || session.tagFilter.eql?("") %>
+    <hr>
+  <% end %>
+  <% unless session.tagFilter.eql?("") %>
+    <div class="tagFilter">
+      <div>Filter by tag:</div>
+      <div class="tagContainer">
+        <% session.tagFilter.split(",").each do |t| %>
+          <span class="tag"><%= session.quiz.tags.find(t.to_i).content %></span>
+        <% end %>
+      </div>
+    </div>
+  <% end %>
+</div>
