@@ -41,10 +41,15 @@ class PracticeSessionsController < ApplicationController
     )
     current_question_ids = @practice_session.order[0].filter { |e| !e.nil? }
     @questions = Question.includes(:answers).where(id: current_question_ids)
+    render 'practice_sessions/show'
   end
 
   def show
-    @quiz = Quiz.find(params[:quiz_id])
+    @practice_session = PracticeSession.find(params[:id])
+    @quiz = @practice_session.quiz
+    current_question_ids = @practice_session.order[@practice_session.current].filter { |e| !e.nil? }
+    @questions = Question.includes(:answers).where(id: current_question_ids)
+    
   end
   private
 end
