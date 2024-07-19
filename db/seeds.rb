@@ -15,9 +15,7 @@ tags1 = ['a', 'b', 'c']
   content = Faker::Name.first_name
   correct = content.reverse
   a = Answer.new
-  a.answer_variants.new(content: correct)
-  a.answer_variants.new(content: correct.upcase)
-  a.answer_variants.new(content: correct.downcase)
+  a.content = "#{correct} / #{correct.upcase} / #{correct.downcase}"
   q = Question.new(content: "Reverse of: #{content}")
   tags1.each do |t|
     if correct.downcase.include?(t)
@@ -51,9 +49,7 @@ srs2 = SrsBox.new(rank: 1)
     correct = content.slice(0, n)
     0.upto(rand(0..1)) do
       answer = Answer.new
-      answer.answer_variants.new(content: correct)
-      answer.answer_variants.new(content: correct.upcase)
-      answer.answer_variants.new(content: correct.downcase)
+      answer.content = "#{correct} / #{correct.upcase} / #{correct.downcase}"
       q.answers << answer
     end
     

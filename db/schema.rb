@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2024_07_19_182209) do
+ActiveRecord::Schema[7.0].define(version: 2024_07_19_183825) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -27,20 +27,12 @@ ActiveRecord::Schema[7.0].define(version: 2024_07_19_182209) do
     t.index ["practice_session_id"], name: "index_answer_histories_on_practice_session_id"
   end
 
-  create_table "answer_variants", force: :cascade do |t|
-    t.text "content"
-    t.bigint "answer_id"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.datetime "deleted_at"
-    t.index ["answer_id"], name: "index_answer_variants_on_answer_id"
-  end
-
   create_table "answers", force: :cascade do |t|
     t.bigint "question_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.datetime "deleted_at"
+    t.text "content"
     t.index ["question_id"], name: "index_answers_on_question_id"
   end
 
@@ -127,7 +119,6 @@ ActiveRecord::Schema[7.0].define(version: 2024_07_19_182209) do
 
   add_foreign_key "answer_histories", "answers"
   add_foreign_key "answer_histories", "practice_sessions"
-  add_foreign_key "answer_variants", "answers"
   add_foreign_key "answers", "questions"
   add_foreign_key "practice_sessions", "quizzes"
   add_foreign_key "question_histories", "questions"

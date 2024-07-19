@@ -23,15 +23,15 @@ class AnswerHistoriesController < ApplicationController
     @quiz = @practice_session.quiz
     params[:given].each do |i, g|
       answer = Answer.find(i)
-      variants = answer.answer_variants.pluck(:content)
-      expected = variants.join(" / ")
+      expected = answer.content
+      variants = expected.split(" / ")
       correct = variants.include?(g)
       @practice_session.answer_histories.new(answer_id: i, given: g, expected: expected, correct: correct)
     end
     @practice_session.save
     
     current_question_ids = @practice_session.order[@practice_session.current].filter { |e| !e.nil? }
-    @questions = Question.includes(answers: [:answer_histories, :answer_variants]).where(id: current_question_ids)
+    @questions = Question.includes(answers: [:answer_histories]).where(id: current_question_ids)
   end
   private
 end
