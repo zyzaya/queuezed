@@ -10,19 +10,19 @@ class PracticeSessionsController < ApplicationController
     @quiz = Quiz.find(params[:quiz_id])
     ids = []
     order = []
-    textFilter = params[:textFilter].downcase
-    tagFilter = params[:tagFilter].split(",").map { |t| t.to_i }
+    text_filter = params[:text_filter].downcase
+    tag_filter = params[:tag_filter].split(",").map { |t| t.to_i }
     # all questions that 
     #   have at least one answer
-    #   content contains textFilter
-    #   have all tags in tagFilter
+    #   content contains text_filter
+    #   have all tags in tag_filter
     # related questions grouped together
 
     @quiz.questions.includes(:relations, :answers, :tags).shuffle.each.with_index do |question|
       if (!ids.include?(question.id) && # not already selected
         (question.answers.count > 0) && # has at least one answer
-        (textFilter.eql?("") || question.content.downcase.include?(textFilter)) && 
-        ((tagFilter - question.tags.pluck(:id)).length == 0))
+        (text_filter.eql?("") || question.content.downcase.include?(text_filter)) && 
+        ((tag_filter - question.tags.pluck(:id)).length == 0))
         # group related questions
         q_ids = [question.id] + question.relations.pluck(:id)
         order << q_ids
