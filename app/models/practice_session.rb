@@ -5,8 +5,8 @@ class PracticeSession < ApplicationRecord
   after_initialize :init
 
   def init
-    self.tagFilter = "" if self.tagFilter.nil?
-    self.textFilter = "" if self.textFilter.nil?
+    self.tag_filter = "" if self.tag_filter.nil?
+    self.text_filter = "" if self.text_filter.nil?
   end
 
   def questions

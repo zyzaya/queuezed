@@ -3,19 +3,19 @@
     <div class="progress"><%= "#{session.current} / #{session.length}"%></div>
     <%= link_to 'Continue', "", class: "button" %>
   </div>
-  <% unless session.textFilter.eql?("") %>
+  <% unless session.text_filter.eql?("") %>
     <div class="textFilter">
-      <span>Filter by text:</span><span><%= session.textFilter%></span>
+      <span>Filter by text:</span><span><%= session.text_filter%></span>
     </div>
   <% end %>
-  <% unless session.textFilter.eql?("") || session.tagFilter.eql?("") %>
+  <% unless session.text_filter.eql?("") || session.tag_filter.eql?("") %>
     <hr>
   <% end %>
-  <% unless session.tagFilter.eql?("") %>
+  <% unless session.tag_filter.eql?("") %>
     <div class="tagFilter">
       <div>Filter by tag:</div>
       <div class="tagContainer">
-        <% session.tagFilter.split(",").each do |t| %>
+        <% session.tag_filter.split(",").each do |t| %>
           <span class="tag"><%= session.quiz.tags.find(t.to_i).content %></span>
         <% end %>
       </div>
