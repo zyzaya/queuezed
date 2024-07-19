@@ -7,7 +7,7 @@ class QuestionHistoriesController < ApplicationController
     @practice_session.update(current: @practice_session.current + 1)
     if @practice_session.current >= @practice_session.length
       question_ids = @practice_session.order.flatten.compact
-      @correct = @practice_session.questions.where(correct: true).count
+      @correct = @practice_session.question_histories.where(correct: true).count
       @questions = @practice_session.questions
       @total = @questions.count
       render 'practice_sessions/feedback'
