@@ -18,8 +18,8 @@
       <%= link_to "Edit", edit_quiz_path(@quiz.id), class: "button" %>
     </div>
     <div class="feedback_questions">
-      <% @questions.each do |q|%>
-        <%= render 'question_histories/single_question_feedback', question: q %>
+      <% @question_histories.each do |h| %>
+        <%= render 'question_histories/single_question_feedback', question_history: h %>
       <% end %>
     </div>
   </div>

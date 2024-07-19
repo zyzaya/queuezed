@@ -8,8 +8,8 @@ class QuestionHistoriesController < ApplicationController
     if @practice_session.current >= @practice_session.length
       question_ids = @practice_session.order.flatten.compact
       @correct = @practice_session.question_histories.where(correct: true).count
-      @questions = @practice_session.questions
-      @total = @questions.count
+      @question_histories = @practice_session.question_histories.includes(:question, :answer_histories)
+      @total = @question_histories.count
       render 'practice_sessions/feedback'
     else
       current_question_ids = @practice_session.order[@practice_session.current].filter { |e| !e.nil? }
