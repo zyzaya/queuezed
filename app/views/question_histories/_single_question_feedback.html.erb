@@ -1,10 +1,10 @@
 <div class="single_question_feedback">
   <h1 class="question_content">Q. <%= question.content %></h1>
   <div class="answer_feedback">
-    <% question.answers.each do |answer| %>
-      <% 
-        history = answer.histories.find_by(practice_session_id: @practice_session.id)
-      %>
+    <%
+      question_history = @practice_session.question_histories.find_by(question_id: question.id)
+    %>
+    <% question_history.answer_histories.each do |history| %>
       <div class="feedback_container <%= history.correct ? "correct" : "incorrect" %>">
         <input class="answer_input" type="text" value="<%= history.given %>" disabled>
         <div class="answer_symbol"><%= history.correct ? "✓" : "x" %></div>

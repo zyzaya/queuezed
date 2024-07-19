@@ -31,7 +31,6 @@ class QuestionHistoriesController < ApplicationController
         correct = variants.include?(given)
         question_correct = false if !correct
         question_history.answer_histories.new(
-          practice_session_id: @practice_session.id,
           answer_id: a_id,
           expected: expected,
           given: given,
