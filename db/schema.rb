@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2024_07_19_201221) do
+ActiveRecord::Schema[7.0].define(version: 2024_07_19_201511) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -66,15 +66,15 @@ ActiveRecord::Schema[7.0].define(version: 2024_07_19_201221) do
 
   create_table "questions", force: :cascade do |t|
     t.text "content"
-    t.integer "current_streak"
-    t.integer "longest_streak"
+    t.integer "current_streak", default: 0
+    t.integer "longest_streak", default: 0
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.bigint "srs_box_id"
     t.datetime "deleted_at"
     t.datetime "last_taken"
-    t.integer "times_taken"
-    t.integer "times_correct"
+    t.integer "times_taken", default: 0
+    t.integer "times_correct", default: 0
     t.index ["srs_box_id"], name: "index_questions_on_srs_box_id"
   end
 
