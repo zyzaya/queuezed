@@ -1,8 +1,8 @@
 <turbo-frame class="immediate_feedback" id="input">
   <%= render 'practice_sessions/progress', practice_session: @practice_session %>
   <div class="immediate_feedback">
-    <% @questions.each_with_index do |q, i| %>
-      <%= render 'question_histories/single_question_feedback', question: q, practice_session: @practice_session %>
+    <% @question_histories.each do |h| %>
+      <%= render 'question_histories/single_question_feedback', question_history: h, practice_session: @practice_session %>
     <% end %>
     <%= link_to 'Next', new_practice_answer_path(@practice_session.id), class: 'immediate_feedback_next button', autofocus: true %>
   </div>

@@ -1,5 +1,5 @@
 <turbo-frame id="feedback_detail">
-  <% @questions.each do |q| %>
-    <%= render 'question_histories/single_question_feedback', question: q, practice_session: @practice_session %>
+  <% @questions_histories.each do |h| %>
+    <%= render 'question_histories/single_question_feedback', question_history: h, practice_session: @practice_session %>
   <% end %>
 </turbo-frame>

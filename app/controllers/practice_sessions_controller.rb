@@ -20,7 +20,7 @@ class PracticeSessionsController < ApplicationController
 
     @quiz.questions.includes(:relations, :answers, :tags).shuffle.each.with_index do |question|
       if (!ids.include?(question.id) && # not already selected
-        (question.answers.count > 0) && # has at least one answer
+        (!question.answers.empty?) && # has at least one answer
         (text_filter.eql?("") || question.content.downcase.include?(text_filter)) && 
         ((tag_filter - question.tags.pluck(:id)).length == 0))
         # group related questions
@@ -48,8 +48,7 @@ class PracticeSessionsController < ApplicationController
     @practice_session = PracticeSession.find(params[:id])
     @quiz = @practice_session.quiz
     current_question_ids = @practice_session.order[@practice_session.current].filter { |e| !e.nil? }
-    @questions = Question.includes(:answers).where(id: current_question_ids)
-    
+    @question_histories = @practice_session.question_histories
   end
   private
 end

@@ -53,7 +53,7 @@ class QuestionHistoriesController < ApplicationController
     end
 
     current_question_ids = @practice_session.order[@practice_session.current].filter { |e| !e.nil? }
-    @questions = Question.includes(answers: :histories).where(id: current_question_ids)
+    @question_histories = @practice_session.question_histories.where(question_id: current_question_ids)
   end
   private
 end
