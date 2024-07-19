@@ -1,5 +1,5 @@
 class PracticeSession < ApplicationRecord
-  has_many :answer_histories
+  has_many :question_histories
   belongs_to :quiz
 
   after_initialize :init

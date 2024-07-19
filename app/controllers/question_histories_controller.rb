@@ -22,8 +22,7 @@ class QuestionHistoriesController < ApplicationController
     @quiz = @practice_session.quiz
     params[:given].each do |q_id, answers|
       question = Question.find(q_id)
-      ## pracice_session id
-      question_history = question.histories.new
+      question_history = question.histories.new(practice_session_id: @practice_session.id)
       question_correct = true
       answers.each do |a_id, given|
         answer = Answer.find(a_id)
