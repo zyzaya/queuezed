@@ -56,7 +56,6 @@ class QuestionHistoriesController < ApplicationController
 
     current_question_ids = @practice_session.order[@practice_session.current].filter { |e| !e.nil? }
     @questions = Question.includes(answers: :histories).where(id: current_question_ids)
-    render 'answer_histories/create'
   end
   private
 end
