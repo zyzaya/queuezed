@@ -3,7 +3,7 @@
   <div class="answer_feedback">
     <% question.answers.each do |answer| %>
       <% 
-        history = answer.answer_histories.find_by(practice_session_id: @practice_session.id)
+        history = answer.histories.find_by(practice_session_id: @practice_session.id)
       %>
       <div class="feedback_container <%= history.correct ? "correct" : "incorrect" %>">
         <input class="answer_input" type="text" value="<%= history.given %>" disabled>

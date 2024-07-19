@@ -4,6 +4,7 @@ class AddStatisticsToQuestion < ActiveRecord::Migration[7.0]
     add_column :questions, :times_taken, :integer
     add_column :questions, :times_correct, :integer
 
-    remove_column :question_histories, :times_correct, :times_taken
+    remove_column :question_histories, :times_correct
+    remove_column :question_histories, :times_taken
   end
 end
