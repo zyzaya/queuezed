@@ -7,7 +7,6 @@ class QuizzesController < ApplicationController
 
   def new
     @quiz = current_user.quizzes.create(name: "New Quiz")
-    @quiz.srs_boxes.create(rank: 1)
     render "quizzes/edit"
   end
 

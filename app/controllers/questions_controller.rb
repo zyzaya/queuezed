@@ -20,8 +20,7 @@ class QuestionsController < ApplicationController
 
   def new
     @quiz = Quiz.find(params[:quiz_id])
-    @quiz.srs_boxes.create(rank: 1) if @quiz.srs_boxes.empty?
-    @question = @quiz.srs_boxes.first.questions.create
+    @question = @quiz.questions.create
     render json: @question
   end
 
