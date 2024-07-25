@@ -20,20 +20,23 @@ class QuestionHistoriesController < ApplicationController
   def create
     @practice_session = PracticeSession.find(params[:practice_id])
     @quiz = @practice_session.quiz
-    # get questions of given ids
-    # create question history for each given
-    # add answer history to each (load answers)
-    # save
-    given = params.to_unsafe_hash[:given].map { |k, v| {k.to_i => v }}.reduce(:merge)
-    puts params.to_unsafe_hash[:given]
+    # converts ids from string to integers
+    given = params.to_unsafe_hash[:given].map do |k, v|
+      {
+        k.to_i => v.map do |x, y|
+          { x.to_i => y}
+        end.reduce(:merge)
+      }
+    end.reduce(:merge)
+
     q_ids = given.keys
     Question.transaction do
-      Question.includes(:answers).find(q_ids).each do |q|
+      @quiz.questions.find(q_ids).each do |q|
         question_history = q.histories.new(practice_session_id: @practice_session.id)
         question_correct = true
         q.answers.each do |a|
           if given[q.id].keys.include?(a.id)
-            expected = answer.content
+            expected = a.content
             variants = expected.split(" / ")
             given_answer = given[q.id][a.id]
             correct = variants.include?(given_answer)
@@ -61,39 +64,6 @@ class QuestionHistoriesController < ApplicationController
         q.save
       end
     end
-
-
-    # params[:given].each do |q_id, answers|
-    #   question = @quiz.questions.find(q_id)
-    #   question_history = question.histories.new(practice_session_id: @practice_session.id)
-    #   question_correct = true
-    #   answers.each do |a_id, given|
-    #     answer = question.answers.find(a_id)
-    #     expected = answer.content
-    #     variants = expected.split(" / ")
-    #     correct = variants.include?(given)
-    #     question_correct = false if !correct
-    #     question_history.answer_histories.new(
-    #       answer_id: a_id,
-    #       expected: expected,
-    #       given: given,
-    #       correct: correct,
-    #     )
-    #   end
-    #   question_history.correct = question_correct
-    #   question.times_taken += 1
-    #   question.last_taken = Time.now
-    #   if (question_correct)
-    #     question.times_correct += 1
-    #     question.current_streak += 1
-    #     if (question.current_streak > question.longest_streak)
-    #       question.longest_streak = question.current_streak
-    #     end
-    #   else
-    #     question.current_streak = 0
-    #   end
-    #   question.save
-    # end
 
     current_question_ids = @practice_session.order[@practice_session.current].filter { |e| !e.nil? }
     @question_histories = @practice_session.question_histories.where(question_id: current_question_ids)
