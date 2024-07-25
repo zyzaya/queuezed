@@ -1,5 +1,6 @@
 class Question < ApplicationRecord
   include SoftDestroyable
+  after_initialize :update_review
 
   belongs_to :quiz
   has_and_belongs_to_many :tags
@@ -7,4 +8,11 @@ class Question < ApplicationRecord
   has_many :histories, dependent: :destroy, class_name: 'QuestionHistory'
   has_many :question_relations, -> { QuestionRelation.active }
   has_many :relations, through: :question_relations, class_name: 'Question'
+
+  private
+  def update_review
+    if (!self.review && !self.next_review.nil? && self.next_review < DateTime.now)
+      self.review = true
+    end
+  end
 end

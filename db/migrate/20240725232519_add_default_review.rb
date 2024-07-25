@@ -1,0 +1,5 @@
+class AddDefaultReview < ActiveRecord::Migration[7.0]
+  def change
+    change_column_default :questions, :review, false
+  end
+end
