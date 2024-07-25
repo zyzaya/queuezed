@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2024_07_25_203746) do
+ActiveRecord::Schema[7.0].define(version: 2024_07_25_205334) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -70,12 +70,12 @@ ActiveRecord::Schema[7.0].define(version: 2024_07_25_203746) do
     t.integer "longest_streak", default: 0
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.bigint "srs_box_id"
     t.datetime "deleted_at"
     t.datetime "last_taken"
     t.integer "times_taken", default: 0
     t.integer "times_correct", default: 0
-    t.index ["srs_box_id"], name: "index_questions_on_srs_box_id"
+    t.bigint "quiz_id", null: false
+    t.index ["quiz_id"], name: "index_questions_on_quiz_id"
   end
 
   create_table "questions_tags", id: false, force: :cascade do |t|
@@ -132,7 +132,7 @@ ActiveRecord::Schema[7.0].define(version: 2024_07_25_203746) do
   add_foreign_key "practice_sessions", "quizzes"
   add_foreign_key "question_histories", "practice_sessions"
   add_foreign_key "question_histories", "questions"
-  add_foreign_key "questions", "srs_boxes"
+  add_foreign_key "questions", "quizzes"
   add_foreign_key "quizzes", "users"
   add_foreign_key "srs_boxes", "quizzes"
 end

@@ -7,9 +7,8 @@
 #   Character.create(name: "Luke", movie: movies.first)
 require 'faker'
 
-user = User.new(email: 'username@test.ca', password: 'password')
+user = User.create(email: 'username@test.ca', password: 'password')
 quiz1 = user.quizzes.new(name: 'Language')
-srs1 = SrsBox.new(rank: 1)
 tags1 = ['a', 'b', 'c']
 0.upto(10) do |i|
   content = Faker::Name.first_name
@@ -29,14 +28,11 @@ tags1 = ['a', 'b', 'c']
     end
   end
   q.answers << a
-  srs1.questions << q
-  
+  quiz1.questions << q
 end
-quiz1.srs_boxes << srs1
 user.quizzes << quiz1
 
-quiz2 = user.quizzes.new(name: 'Harry Potter')
-srs2 = SrsBox.new(rank: 1)
+quiz2 = user.quizzes.create(name: 'Harry Potter')
 0.upto(10) do
   content = Faker::Movies::HarryPotter.character
   tag = Tag.new(content: content)
@@ -52,8 +48,7 @@ srs2 = SrsBox.new(rank: 1)
       answer.content = "#{correct} / #{correct.upcase} / #{correct.downcase}"
       q.answers << answer
     end
-    
-    srs2.questions << q
+    quiz2.questions << q
     related << q
   end
   related.each do |q|
@@ -62,7 +57,7 @@ srs2 = SrsBox.new(rank: 1)
     end
   end
 end
-quiz2.srs_boxes << srs2
+user.quizzes << quiz2
 
 quiz3 = user.quizzes.new(name: 'This is a quiz with an extremely long name to test how the web layout looks like')
 
