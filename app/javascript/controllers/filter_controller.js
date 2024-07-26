@@ -5,10 +5,15 @@ export default class extends Controller {
   static targets = ['text', 'tagOption', 'tagList', 'tag'];
 
   updateFilter() {
+    let tagFilter = this.tagTargets.map((t) => t.dataset.id);
+    let reviewFilter = tagFilter.includes('review');
+    tagFilter = tagFilter.filter((t) => t != 'review');
+
     this.dispatch('updateFilter', {
       detail: {
-        tagFilter: this.tagTargets.map((t) => t.dataset.id),
+        tagFilter: tagFilter,
         textFilter: this.textTarget.value.toLowerCase(),
+        reviewFilter: reviewFilter,
       },
     });
   }

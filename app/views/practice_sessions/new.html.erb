@@ -9,6 +9,7 @@
         <%= form_with(url: quiz_practice_index_path, class: 'practice_start', data: {turbo: false}) do |form| %>
           <%= form.hidden_field :text_filter, value: '', data: {'start-practice-target': 'textFilter'} %>
           <%= form.hidden_field :tag_filter, value: '', data: {'start-practice-target': 'tagFilter'} %>
+          <%= form.hidden_field :review_filter, value: false, data: {'start-practice-target': 'reviewFilter'} %>
           <%= form.submit "Start", class: 'button' %>
         <% end %>
         <%= link_to 'Cancel', :back, class: 'practice_cancel button' %>

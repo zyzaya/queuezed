@@ -12,13 +12,18 @@ class PracticeSessionsController < ApplicationController
     order = []
     text_filter = params[:text_filter].downcase
     tag_filter = params[:tag_filter].split(",").map { |t| t.to_i }
+    review_filter = params[:review_filter].eql?("true")
+    questions = if review_filter
+      @quiz.questions.where(review: review_filter)
+    else
+      @quiz.questions
+    end
     # all questions that 
     #   have at least one answer
     #   content contains text_filter
     #   have all tags in tag_filter
     # related questions grouped together
-
-    @quiz.questions.includes(:relations, :answers, :tags).shuffle.each.with_index do |question|
+    questions.includes(:relations, :answers, :tags).shuffle.each.with_index do |question|
       if (!ids.include?(question.id) && # not already selected
         (!question.answers.empty?) && # has at least one answer
         (text_filter.eql?("") || question.content.downcase.include?(text_filter)) && 
