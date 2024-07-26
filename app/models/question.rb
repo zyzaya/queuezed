@@ -1,6 +1,6 @@
 class Question < ApplicationRecord
   include SoftDestroyable
-  after_initialize :update_review
+  after_initialize :init
 
   belongs_to :quiz
   has_and_belongs_to_many :tags
@@ -10,6 +10,15 @@ class Question < ApplicationRecord
   has_many :relations, through: :question_relations, class_name: 'Question'
 
   private
+  def init
+    update_review
+
+    if self.next_review.nil?
+      self.next_review = DateTime.now 
+      self.review = true
+    end
+  end
+
   def update_review
     if (!self.review && !self.next_review.nil? && self.next_review < DateTime.now)
       self.review = true
