@@ -7,6 +7,5 @@ export default class extends Controller {
     this.tagFilterTarget.value = event.detail.tagFilter;
     this.textFilterTarget.value = event.detail.textFilter;
     this.reviewFilterTarget.value = event.detail.reviewFilter;
-    console.log(event.detail);
   }
 }
