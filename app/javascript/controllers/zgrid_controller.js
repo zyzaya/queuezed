@@ -181,17 +181,27 @@ export default class extends Controller {
   }
 
   updateFilter(event) {
-    let filter = event.detail.tagFilter;
+    let tagFilter = event.detail.tagFilter;
     let textFilter = event.detail.textFilter;
+    let reviewFilter = event.detail.reviewFilter;
 
     this.zgrid.reconfigure({
       filter: (row) => {
         let tags = row.tags.split(' ');
+        let matches_text_filter =
+          textFilter === '' || row.content.toLowerCase().includes(textFilter);
+        let matches_tag_filter =
+          tagFilter.length === 0 || tagFilter.some((f) => tags.includes(f));
+        let matches_review_filter = !reviewFilter || row.review;
         return (
-          (textFilter === '' ||
-            row.content.toLowerCase().includes(textFilter)) &&
-          (filter.length === 0 || filter.some((f) => tags.includes(f)))
+          matches_text_filter && matches_tag_filter && matches_review_filter
         );
+
+        // return (
+        //   (textFilter === '' ||
+        //     row.content.toLowerCase().includes(textFilter)) &&
+        //   (tagFilter.length === 0 || tagFilter.some((f) => tags.includes(f)))
+        // );
       },
     });
   }
