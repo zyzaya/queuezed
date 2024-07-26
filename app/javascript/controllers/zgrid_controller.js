@@ -73,6 +73,10 @@ export default class extends Controller {
           visible: false,
         },
         {
+          id: 'review',
+          visible: false,
+        },
+        {
           id: 'tags',
           visible: false,
         },
@@ -82,11 +86,19 @@ export default class extends Controller {
         },
         {
           id: 'current_streak',
-          name: 'Streak',
+          name: 'Current Streak',
         },
         {
           id: 'longest_streak',
-          name: 'Best Streak',
+          name: 'Longest Streak',
+        },
+        {
+          id: 'times_taken',
+          name: 'Times Taken',
+        },
+        {
+          id: 'times_correct',
+          name: 'Times Correct',
         },
       ],
       searchbox: false,
@@ -107,10 +119,13 @@ export default class extends Controller {
           });
           return {
             id: e.id.toString(),
+            review: e.review,
+            tags: tags,
             content: e.content,
             current_streak: e.current_streak,
             longest_streak: e.longest_streak,
-            tags: tags,
+            times_taken: e.times_taken,
+            times_correct: e.times_correct,
           };
         });
         this.dispatch('setTagCount', { detail: { tagCount: tagCount } });
