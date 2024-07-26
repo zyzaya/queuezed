@@ -65,6 +65,12 @@ class QuestionHistoriesController < ApplicationController
         if ((q.times_taken >= 3 && q.current_streak < 3) || ((q.times_correct.to_f / q.times_taken.to_f) < 0.5))
           Tag.find_or_create_by(content: "Difficult").questions << q
         end
+        # update srs rank, next taken
+        if (q.review)
+          q.rank = question_correct ? q.rank + 1 : q.rank - 1
+          q.rank = q.rank.clamp(0, 5)
+          q.next_review = DateTime.now + @quiz.interval_duration(q.rank)
+        end
         q.save
       end
     end
