@@ -166,7 +166,7 @@ export default class extends Controller {
   }
 
   updateFilter(event) {
-    let filter = event.detail.tagIds;
+    let filter = event.detail.tagFilter;
     let textFilter = event.detail.textFilter;
 
     this.zgrid.reconfigure({
