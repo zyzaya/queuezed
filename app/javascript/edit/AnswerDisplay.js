@@ -33,5 +33,9 @@ export default function AnswerDisplay(
   answer_container.appendChild(delete_answer);
   parent.insertBefore(answer_container, add_answer);
 
+  obj.focus = () => {
+    answer_content.focus();
+  };
+
   return obj;
 }

@@ -418,7 +418,8 @@ export default class extends Controller {
         this.dispatch('selectQuestion', { detail: { questionId: selected } });
       } else {
         let parent = this.findQuestionContainer(event.detail.questionId);
-        AnswerDisplay(parent, event.detail.questionId, answer_id);
+        let ad = AnswerDisplay(parent, event.detail.questionId, answer_id);
+        ad.focus();
       }
     };
     let reverse = () => {
