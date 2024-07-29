@@ -114,6 +114,10 @@ export default class extends Controller {
 
   // question-controller
   loadQuestion(event) {
+    this.questionContentTarget.focus();
+    this.questionContentTarget.selectionStart = 10000;
+    this.questionContentTarget.selectionEnd = 10000;
+
     let changes = this.change_handler.getChanges();
     changes.questions.forEach((q) => {
       q.tags?.forEach((t) => {
@@ -124,15 +128,17 @@ export default class extends Controller {
     let question = changes.questions.find(
       (q) => q.id === event.detail.questionId
     );
-    if (question === undefined) return;
-    if (question.tags !== undefined) {
-      question.tags.forEach((t) => {
-        if (t.meta === 'add' || t.meta === 'new') {
-          this.addTagDisplay(t.id, t.content);
-        } else if (t.meta === 'remove') {
-          this.deleteTagDisplay(t.id);
-        }
-      });
+
+    if (question !== undefined) {
+      if (question.tags !== undefined) {
+        question.tags.forEach((t) => {
+          if (t.meta === 'add' || t.meta === 'new') {
+            this.addTagDisplay(t.id, t.content);
+          } else if (t.meta === 'remove') {
+            this.deleteTagDisplay(t.id);
+          }
+        });
+      }
     }
   }
 
