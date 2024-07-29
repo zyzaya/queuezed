@@ -2,7 +2,7 @@ class Question < ApplicationRecord
   include SoftDestroyable
   after_initialize :init
 
-  belongs_to :quiz
+  belongs_to :quiz, counter_cache: true
   has_and_belongs_to_many :tags
   has_many :answers, -> { Answer.active }, dependent: :destroy
   has_many :histories, dependent: :destroy, class_name: 'QuestionHistory'
