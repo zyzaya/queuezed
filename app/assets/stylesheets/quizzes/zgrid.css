@@ -12,12 +12,24 @@
   font-size: large;
 }
 
+.zg_body > tr {
+  box-sizing: border-box;
+}
+
 .zg_body > tr:nth-child(odd) {
   background-color: var(--tertiary-bg-color);
 }
 
+.zg_body > tr:nth-child(odd):not(.active_question, :hover) {
+  border-top: 2px solid var(--tertiary-bg-color);
+}
+
 .zg_body > tr:nth-child(even) {
   background-color: var(--tertiary-bg-color-dark);
+}
+
+.zg_body > tr:nth-child(even):not(.active_question, :hover) {
+  border-top: 2px solid var(--tertiary-bg-color-dark);
 }
 
 .zg_td {
