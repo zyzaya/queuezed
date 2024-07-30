@@ -57,7 +57,7 @@
 .feedback_container {
   display: grid;
   justify-content: center;
-  grid-template-columns: min-content min-content min-content;
+  grid-template-columns: 1fr min-content 1fr;
 }
 
 .feedback_container > .answer_input {
