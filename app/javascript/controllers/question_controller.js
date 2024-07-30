@@ -40,6 +40,7 @@ export default class extends Controller {
 
   addTag(event) {
     let tagId = event.currentTarget.value;
+    event.currentTarget.value = '-1';
     if (tagId.toString() === (-1).toString()) return;
     let content = this.tagOptionTargets.find((t) => t.value === tagId);
     content = content.text;
