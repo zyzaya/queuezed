@@ -35,6 +35,7 @@ export default class extends Controller {
       );
       this.tagListTarget.insertBefore(tag, next);
     }
+    event.currentTarget.value = '-1';
 
     this.updateFilter();
   }
