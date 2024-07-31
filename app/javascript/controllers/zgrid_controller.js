@@ -108,6 +108,11 @@ export default class extends Controller {
 
   refresh(event) {
     let tagCount = {};
+    let changes = [];
+    if (event !== undefined && event.detail.changes !== undefined) {
+      changes = event.detail.changes;
+    }
+
     return Data.getQuestions(this.quizIdValue)
       .then((questions) => {
         this.zgrid_data = questions.map((e) => {
@@ -117,11 +122,16 @@ export default class extends Controller {
             tagCount[t.id] =
               tagCount[t.id] === undefined ? 1 : tagCount[t.id] + 1;
           });
+          let content = e.content;
+          if (changes.questions !== undefined) {
+            let c = changes.questions.find((q) => q.id === e.id.toString());
+            content = c === undefined ? content : c.content;
+          }
           return {
             id: e.id.toString(),
             review: e.review,
             tags: tags,
-            content: e.content,
+            content: content,
             current_streak: e.current_streak,
             longest_streak: e.longest_streak,
             times_taken: e.times_taken,

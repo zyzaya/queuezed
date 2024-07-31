@@ -74,10 +74,13 @@ export default class extends Controller {
     let question_id = null;
     let selected = this.currentlySelectedValue;
     let count = this.questionCountValue;
+    let changes = this.change_handler.getChanges();
     Data.newQuestion(this.csrf, this.quizIdValue)
       .then((question) => {
         question_id = question.id;
-        this.dispatch('refresh', { detail: { selectedId: question.id } });
+        this.dispatch('refresh', {
+          detail: { selectedId: question.id, changes: changes },
+        });
         this.questionCountValue = count + 1;
       })
       .then(() => (this.questionCountValue = count + 1));
@@ -86,7 +89,9 @@ export default class extends Controller {
       if (triggered) {
         Data.restoreQuestion(this.csrf, this.quizIdValue, question_id).then(
           () => {
-            this.dispatch('refresh', { detail: { selectedId: question_id } });
+            this.dispatch('refresh', {
+              detail: { selectedId: question_id, changes: changes },
+            });
             this.questionCountValue = count + 1;
           }
         );
@@ -95,7 +100,9 @@ export default class extends Controller {
     };
     let reverse = () => {
       Data.deleteQuestion(this.csrf, this.quizIdValue, question_id).then(() => {
-        this.dispatch('refresh', { detail: { selectedId: selected } });
+        this.dispatch('refresh', {
+          detail: { selectedId: selected, changes: changes },
+        });
         this.questionCountValue = count;
       });
     };
@@ -145,10 +152,13 @@ export default class extends Controller {
   deleteQuestion(event) {
     let question_id = event.detail.id;
     let count = this.questionCountValue;
+    let changes = this.change_handler.getChanges();
     let action = () => {
       this.dispatch('selectSibling');
       Data.deleteQuestion(this.csrf, this.quizIdValue, question_id).then(() => {
-        this.dispatch('refresh');
+        this.dispatch('refresh', {
+          detail: { changes: changes },
+        });
         this.questionCountValue = count - 1;
       });
     };
@@ -156,7 +166,9 @@ export default class extends Controller {
       Data.restoreQuestion(this.csrf, this.quizIdValue, question_id)
         .then((response) => response.json())
         .then((question) => {
-          this.dispatch('refresh', { detail: { selectedId: question_id } });
+          this.dispatch('refresh', {
+            detail: { selectedId: question_id, changes: changes },
+          });
           this.questionCountValue = count;
         });
     };
