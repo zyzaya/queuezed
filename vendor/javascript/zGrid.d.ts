@@ -1,21 +1,37 @@
 type FilterCallback = (row: Record<string, string>) => boolean;
 type CompareEntries = (a: string, b: string) => number;
 type CompareRows = (a: Record<string, string>, b: Record<string, string>) => number;
-type ElementNames = {
-    filterContainer?: string | [string, string];
-    filter?: string | [string, string];
-    paginationContainer?: string | [string, string];
-    paginationInfo?: string | [string, string];
-    paginationButton?: string | [string, string];
-    paginationPrevious?: string | [string, string];
-    paginationCurrent?: string | [string, string];
-    paginationNext?: string | [string, string];
-    table?: string | [string, string];
-    tr?: string | [string, string];
-    th?: string | [string, string];
-    thead?: string | [string, string];
-    tbody?: string | [string, string];
-    td?: string | [string, string];
+type CustomClassElementNames = {
+    filterContainer?: string;
+    filter?: string;
+    paginationContainer?: string;
+    paginationInfo?: string;
+    paginationButton?: string;
+    paginationPrevious?: string;
+    paginationCurrent?: string;
+    paginationNext?: string;
+    table?: string;
+    tr?: string;
+    th?: string;
+    thead?: string;
+    tbody?: string;
+    td?: string;
+};
+type CustomDataAttributeElementNames = {
+    filterContainer?: Record<string, string>;
+    filter?: Record<string, string>;
+    paginationContainer?: Record<string, string>;
+    paginationInfo?: Record<string, string>;
+    paginationButton?: Record<string, string>;
+    paginationPrevious?: Record<string, string>;
+    paginationCurrent?: Record<string, string>;
+    paginationNext?: Record<string, string>;
+    table?: Record<string, string>;
+    tr?: Record<string, string>;
+    th?: Record<string, string>;
+    thead?: Record<string, string>;
+    tbody?: Record<string, string>;
+    td?: Record<string, string>;
 };
 type ColumnConfiguration = {
     /**
@@ -133,8 +149,8 @@ type Configuration = {
      * @param data The row, as key-value pairs. Key is the name of the column, value is the value of the record for that column. This includes hidden columns.
      */
     onClick?: (column: number, row: number, columnName: string, data: Record<string, string>) => void;
-    className?: ElementNames;
-    dataAttribute?: ElementNames;
+    className?: CustomClassElementNames;
+    dataAttribute?: CustomDataAttributeElementNames;
 };
 declare class zGrid {
     private currentPage;
@@ -149,6 +165,8 @@ declare class zGrid {
     private head;
     private ui_filter;
     private ui_pages;
+    private ui_header_row;
+    private header_cells;
     private pages_info;
     private pages_info_container;
     private onFilter;
@@ -171,6 +189,7 @@ declare class zGrid {
     constructor(config: Configuration);
     private configureParent;
     private configureColumns;
+    private initializeRow;
     private configureData;
     private configurePagination;
     private configureFilter;
@@ -178,7 +197,39 @@ declare class zGrid {
     private configureDataAttributes;
     private configureUI;
     reconfigure(config: Partial<Configuration>): void;
-    getRow(index: number): Record<string, string>;
+    /**
+     * Adds a row with the specified data
+     * @param data The data to of the row, in the same format as configuration
+     */
+    addRow(data: Record<string, string> | Array<string>): void;
+    /**
+     * Gets the data of a specific row
+     * @param id The value of the id column
+     * @returns An object representing the found row, or undefined if no row is found
+     */
+    getRow(id: string): Record<string, string>;
+    /**
+     * Modifies the data in a single row
+     * @param id The id of row to change
+     * @param data The data to set the row to in the same format as configuration
+     * with the exception that if no id is defined it will keep its original id
+     */
+    setRow(id: string, data: Record<string, string> | Array<string>): void;
+    /**
+     * Removes a row
+     * @param id  The value of the id column
+     * @returns The data of the row as key/value pairs where the
+     * keys are column ids, and the values are what is in the column.
+     * If no row is found returns undefined.
+     */
+    removeRow(id: string): Record<string, string> | undefined;
+    /**
+     * Changes the value of a specific cell
+     * @param id The value of the id column
+     * @param column The column of the cell to change
+     * @param value The value to chagne the cell to
+     */
+    setCell(id: string, column: string, value: string): void;
     /**
      * Gets the currently displayed data, after filtering
      * sorting, and pagination are applied.
