@@ -29,8 +29,8 @@ export default class extends Controller {
         td: 'zg_td',
       },
       dataAttribute: {
-        tr: ['zgridTarget', 'row'],
-        tbody: ['zgridTarget', 'body'],
+        tr: { zgridTarget: 'row' },
+        tbody: { zgridTarget: 'body' },
       },
     });
     this.previouslySelected = null;
