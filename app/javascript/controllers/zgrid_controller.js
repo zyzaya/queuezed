@@ -46,7 +46,10 @@ export default class extends Controller {
   }
 
   rowTargetConnected(element) {
+    // use configure to set data attribtue
     element.dataset.action = 'click->edit#select';
+    // i believe this is all for selecting a question,
+    // which they ways its done doesn't make any sense to me.
     let nodes = element.parentNode.children.length;
     let grid_data = this.zgrid.getData();
     if (nodes === grid_data.length) {
@@ -195,6 +198,19 @@ export default class extends Controller {
     let textFilter = event.detail.textFilter;
     let reviewFilter = event.detail.reviewFilter;
 
+    // let start = Date.now();
+    // this.zgrid.setFilter((row) => {
+    //   let tags = row.tags.split(' ');
+    //   let matches_text_filter =
+    //     textFilter === '' || row.content.toLowerCase().includes(textFilter);
+    //   let matches_tag_filter =
+    //     tagFilter.length === 0 || tagFilter.some((f) => tags.includes(f));
+    //   let matches_review_filter = !reviewFilter || row.review;
+    //   return matches_text_filter && matches_tag_filter && matches_review_filter;
+    // });
+    // console.log(this.zgrid.getData());
+    // console.log((Date.now() - start) / 1000);
+
     this.zgrid.reconfigure({
       filter: (row) => {
         let tags = row.tags.split(' ');
@@ -206,12 +222,6 @@ export default class extends Controller {
         return (
           matches_text_filter && matches_tag_filter && matches_review_filter
         );
-
-        // return (
-        //   (textFilter === '' ||
-        //     row.content.toLowerCase().includes(textFilter)) &&
-        //   (tagFilter.length === 0 || tagFilter.some((f) => tags.includes(f)))
-        // );
       },
     });
   }
