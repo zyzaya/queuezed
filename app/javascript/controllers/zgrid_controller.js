@@ -220,9 +220,9 @@ export default class extends Controller {
   addTag(event) {
     let qId = event.detail.questionId;
     let tagId = event.detail.tagId;
-    let question = this.zgrid_data.find((q) => q.id === qId);
+    let question = this.zgrid.getRow(qId);
     question.tags += ` ${tagId}`;
-    this.zgrid.reconfigure({ data: this.zgrid_data });
+    this.zgrid.setRow(qId, question);
   }
 
   removeTag(event) {
