@@ -130,12 +130,14 @@ export default class extends Controller {
   }
 
   setSelectedQuestion(id) {
+    id = id.toString();
     let prev = document.querySelector('.active_question');
     if (prev != null) prev.classList.remove('active_question');
     let body = document.querySelector('.zg_body');
     let row = this.zgrid.getData().findIndex((e) => e.id === id);
     let curr = body.children[row];
     curr.classList.add('active_question');
+    this.currentlySelected = id;
     Data.setQuestion(this.csrf, this.quizIdValue, id);
   }
 

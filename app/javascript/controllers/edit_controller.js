@@ -109,16 +109,6 @@ export default class extends Controller {
     this.undo_handler.add('Create Question', action, reverse);
   }
 
-  select(event) {
-    let id = this.currentlySelectedValue;
-    if (event.currentTarget.parentNode.nodeName === 'THEAD') return;
-    this.dispatch('selectQuestion', {
-      detail: {
-        questionId: event.params.questionId,
-      },
-    });
-  }
-
   // question-controller
   loadQuestion(event) {
     this.questionContentTarget.focus();
