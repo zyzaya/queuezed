@@ -9,10 +9,9 @@ import AnswerDisplay from '../edit/AnswerDisplay';
 export default class extends Controller {
   static values = {
     quizId: String,
-    previouslySelected: String,
   };
 
-  static targets = ['body', 'row', 'zgridContainer'];
+  static targets = ['zgridContainer'];
   static outlets = ['edit'];
 
   initialize() {
@@ -30,7 +29,6 @@ export default class extends Controller {
       },
       onClick: (col, row, colName, data) => this.setSelectedQuestion(data.id),
     });
-    this.previouslySelected = null;
     this.currentlySelected = null;
     this.csrf = document.head.querySelector('meta[name=csrf-token]')?.content;
     this.change_handler = Change(this.csrf, this.quizIdValue);
@@ -161,19 +159,6 @@ export default class extends Controller {
     let tagFilter = event.detail.tagFilter;
     let textFilter = event.detail.textFilter;
     let reviewFilter = event.detail.reviewFilter;
-
-    // let start = Date.now();
-    // this.zgrid.setFilter((row) => {
-    //   let tags = row.tags.split(' ');
-    //   let matches_text_filter =
-    //     textFilter === '' || row.content.toLowerCase().includes(textFilter);
-    //   let matches_tag_filter =
-    //     tagFilter.length === 0 || tagFilter.some((f) => tags.includes(f));
-    //   let matches_review_filter = !reviewFilter || row.review;
-    //   return matches_text_filter && matches_tag_filter && matches_review_filter;
-    // });
-    // console.log(this.zgrid.getData());
-    // console.log((Date.now() - start) / 1000);
 
     this.zgrid.reconfigure({
       filter: (row) => {
