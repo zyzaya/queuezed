@@ -28,42 +28,16 @@ export default class extends Controller {
         tbody: 'zg_body',
         td: 'zg_td',
       },
-      dataAttribute: {
-        tr: { zgridTarget: 'row' },
-        tbody: { zgridTarget: 'body' },
-      },
+      onClick: (col, row, colName, data) => this.setSelectedQuestion(data.id),
     });
     this.previouslySelected = null;
     this.currentlySelected = null;
     this.csrf = document.head.querySelector('meta[name=csrf-token]')?.content;
-    this.undo_handler = Undo();
     this.change_handler = Change(this.csrf, this.quizIdValue);
-    this.zgrid_data = [];
   }
 
   editOutletConnected(outlet, element) {
     element.dataset.editCurrentlySelectedValue = this.currentlySelected;
-  }
-
-  rowTargetConnected(element) {
-    // use configure to set data attribtue
-    element.dataset.action = 'click->edit#select';
-    // i believe this is all for selecting a question,
-    // which they ways its done doesn't make any sense to me.
-    let nodes = element.parentNode.children.length;
-    let grid_data = this.zgrid.getData();
-    if (nodes === grid_data.length) {
-      let index = Array.from(element.parentNode.children).findIndex(
-        (e) => e === element
-      );
-      let id = grid_data[index].id;
-      element.dataset.questionIdValue = id;
-      element.dataset.editQuestionIdParam = id;
-      if (this.currentlySelected === null) return;
-
-      if (this.currentlySelected.toString() === id.toString())
-        element.classList.add('active_question');
-    }
   }
 
   zgridContainerTargetConnected(element) {
@@ -118,7 +92,7 @@ export default class extends Controller {
 
     return Data.getQuestions(this.quizIdValue)
       .then((questions) => {
-        this.zgrid_data = questions.map((e) => {
+        let zgrid_data = questions.map((e) => {
           let tags = '';
           e.tags.forEach((t) => {
             tags += ` ${t.id}`;
@@ -142,7 +116,7 @@ export default class extends Controller {
           };
         });
         this.dispatch('setTagCount', { detail: { tagCount: tagCount } });
-        this.zgrid.reconfigure({ data: this.zgrid_data });
+        this.zgrid.reconfigure({ data: zgrid_data });
       })
       .then(() => {
         if (event !== undefined && event.detail.selectedId !== undefined) {
@@ -158,23 +132,13 @@ export default class extends Controller {
   }
 
   setSelectedQuestion(id) {
-    let element = document.querySelector(
-      `.zgrid_row[data-question-id-value='${id}']`
-    );
-    if (element !== null) {
-      this.previouslySelected = this.currentlySelected;
-      let previous_element = document.querySelector(
-        `.zgrid_row[data-question-id-value='${this.previouslySelected}']`
-      );
-      if (previous_element !== null) {
-        previous_element.classList.remove('active_question');
-      }
-      this.currentlySelected = id;
-      this.editOutlet.element.dataset.editCurrentlySelectedValue = id;
-      element.classList.add('active_question');
-      element.dataset.editPreviouslySelectedParam = this.previouslySelected;
-      Data.setQuestion(this.csrf, this.quizIdValue, id);
-    }
+    let prev = document.querySelector('.active_question');
+    if (prev != null) prev.classList.remove('active_question');
+    let body = document.querySelector('.zg_body');
+    let row = this.zgrid.getData().findIndex((e) => e.id === id);
+    let curr = body.children[row];
+    curr.classList.add('active_question');
+    Data.setQuestion(this.csrf, this.quizIdValue, id);
   }
 
   setSelectedToSibling() {
