@@ -25,6 +25,7 @@ export default class extends Controller {
         table: 'zg_table',
         th: 'zg_th',
         tbody: 'zg_body',
+        tr: 'zg_row',
         td: 'zg_td',
       },
       onClick: (col, row, colName, data) => this.setSelectedQuestion(data.id),
@@ -133,9 +134,11 @@ export default class extends Controller {
     id = id.toString();
     let prev = document.querySelector('.active_question');
     if (prev != null) prev.classList.remove('active_question');
-    let body = document.querySelector('.zg_body');
+    let children = document.querySelectorAll(
+      '.zg_body > .zg_row:not(.zgrid_hidden)'
+    );
     let row = this.zgrid.getData().findIndex((e) => e.id === id);
-    let curr = body.children[row];
+    let curr = children[row];
     curr.classList.add('active_question');
     this.currentlySelected = id;
     Data.setQuestion(this.csrf, this.quizIdValue, id);
