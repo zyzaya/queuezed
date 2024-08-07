@@ -4,13 +4,29 @@ class QuestionsControllerTest < ActionDispatch::IntegrationTest
   include Devise::Test::IntegrationHelpers
 
   # successful requests return json objects
-  test "index returns json of question" do
+  test "index returns json of questions" do
     sign_in users(:john)
     get quiz_questions_path(1)
     expected = Quiz.find(1).questions.includes(:tags).to_json(include: :tags)
 
     assert_response :ok
     assert_equal expected, @response.body
+  end
+
+  test "new returns json of empty question" do
+    sign_in users(:john)
+    get new_quiz_question_path(1)
+    expected = Quiz.find(1).questions.new.to_json
+    expected = expected.sub(/,"next_review":".+"/, "")
+    result = @response.body.sub(/,"next_review":".+"/, "")
+    assert_response :ok
+    assert_equal expected, result
+  end
+
+  test "new does not create a question" do
+    sign_in users(:john)
+    get new_quiz_question_path(1)
+    assert_equal 2, Quiz.find(1).questions.length
   end
 
   # cannot access questions of another user
@@ -23,12 +39,6 @@ class QuestionsControllerTest < ActionDispatch::IntegrationTest
   test "cannot edit question of another user" do
     sign_in users(:john)
     get edit_question_path(3)
-    assert_response :not_found
-  end
-
-  test "cannot update question of another user" do
-    sign_in users(:john)
-    patch "/questions/3"
     assert_response :not_found
   end
 

@@ -20,22 +20,12 @@ class QuestionsController < ApplicationController
     end
   end
 
-  def update
-    @question = Question.find_by(id: params[:id], quiz_id: current_user.quizzes.ids)
-    if (@question.nil?)
-      head :not_found
-    else
-      @question.restore(@question.deleted_at)
-      render json: @question  
-    end
-  end
-
   def new
     @quiz = current_user.quizzes.find_by(id: params[:quiz_id])
     if (@quiz.nil?)
       head :not_found
     else
-      @question = @quiz.questions.create
+      @question = @quiz.questions.new
       render json: @question
     end
   end
