@@ -65,7 +65,4 @@ class QuestionsControllerTest < ActionDispatch::IntegrationTest
     delete "/questions/3"
     assert_response :not_found
   end
-
-  # only valid params allowed
-  ## params for index, edit, update, new, destroy, only accept quiz_id
 end
