@@ -2,32 +2,52 @@ class QuestionsController < ApplicationController
   before_action :authenticate_user!
   
   def index
-    @quiz = Quiz.find(params[:quiz_id])
-    @questions = @quiz.questions.includes(:tags).order(:id)
-    render json: @questions, include: [:tags]
+    @quiz = current_user.quizzes.find_by(id: params[:quiz_id])
+    if @quiz.nil?
+      head :not_found
+    else
+      @questions = @quiz.questions.include(:tags).order(:id)
+      render json: @questions, inlcude: [:tags]
+    end
   end
   
   def edit
-    @question = Question.find(params[:id])
-    @quiz = @question.quiz
+    @question = Question.find_by(id: params[:id], quiz_id: current_user.quizzes.ids)
+    if (@question.nil?)
+      head :not_found
+    else
+      @quiz = @question.quiz
+    end
   end
 
   def update
-    @question = Question.find(params[:id])
-    @question.restore(@question.deleted_at)
-    render json: @question
+    @question = Question.find_by(id: params[:id], quiz_id: current_user.quizzes.ids)
+    if (@question.nil?)
+      head :not_found
+    else
+      @question.restore(@question.deleted_at)
+      render json: @question  
+    end
   end
 
   def new
-    @quiz = Quiz.find(params[:quiz_id])
-    @question = @quiz.questions.create
-    render json: @question
+    @quiz = current_user.quizzes.find_by(id: params[:quiz_id])
+    if (@quiz.nil?)
+      head :not_found
+    else
+      @question = @quiz.questions.create
+      render json: @question
+    end
   end
 
   def destroy
-    @question = Question.find(params[:id])
-    @question.soft_destroy(Time.now)
-    render json: @question
+    @question = Question.find_by(id: params[:id], quiz_id: current_user.quizzes.ids)
+    if (@question.nil?)
+      head :not_found
+    else
+      @question.soft_destroy(Time.now)
+      render json: @question
+    end
   end
   private
 end
