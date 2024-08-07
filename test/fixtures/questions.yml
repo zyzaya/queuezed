@@ -16,7 +16,6 @@ two:
   id: 2
   quiz_id: 1
   content: "Reverse of: Deloris"
-  next_review: <%= DateTime.now %>
   current_streak: 0
   longest_streak: 0
   times_taken: 0
@@ -30,7 +29,6 @@ three:
   id: 3
   quiz_id: 2
   content: "Reverse of: Asha"
-  next_review: <%= DateTime.now %>
   current_streak: 0
   longest_streak: 0
   times_taken: 0
@@ -42,7 +40,6 @@ four:
   id: 4
   quiz_id: 2
   content: "Reverse of: Elvis"
-  next_review: <%= DateTime.now %>
   current_streak: 0
   longest_streak: 0
   times_taken: 0
