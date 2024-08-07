@@ -1,11 +1,21 @@
 # Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
 
+# john
 one:
-  content: MyText
-  current_streak: 1
-  longest_streak: 1
-
+  id: 1
+  quiz_id: 1
+  content: "Reverse of: Holly"
 two:
-  content: MyText
-  current_streak: 1
-  longest_streak: 1
+  id: 2
+  quiz_id: 1
+  content: "Reverse of: Deloris"
+
+# jane
+three:
+  id: 3
+  quiz_id: 2
+  content: "Reverse of: Asha"
+four:
+  id: 4
+  quiz_id: 2
+  content: "Reverse of: Elvis"
