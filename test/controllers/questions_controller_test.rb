@@ -4,6 +4,14 @@ class QuestionsControllerTest < ActionDispatch::IntegrationTest
   include Devise::Test::IntegrationHelpers
 
   # successful requests return json objects
+  test "index returns json of question" do
+    sign_in users(:john)
+    get quiz_questions_path(1)
+    expected = Quiz.find(1).questions.includes(:tags).to_json(include: :tags)
+
+    assert_response :ok
+    assert_equal expected, @response.body
+  end
 
   # cannot access questions of another user
   test "cannot index questions of another user" do

@@ -6,8 +6,8 @@ class QuestionsController < ApplicationController
     if @quiz.nil?
       head :not_found
     else
-      @questions = @quiz.questions.include(:tags).order(:id)
-      render json: @questions, inlcude: [:tags]
+      @questions = @quiz.questions.includes(:tags).order(:id)
+      render json: @questions, include: [:tags]
     end
   end
   
