@@ -42,6 +42,21 @@ class QuizzesControllerTest < ActionDispatch::IntegrationTest
     assert_equal 3, Quiz.find(1).questions.length
     assert_not_nil Quiz.find(1).questions.find_by(content: expected_content)
   end
+
+  test "delete question" do
+    body = {
+      quiz: {
+        questions: [
+          id: 1,
+          meta: "delete"
+        ]
+      }
+    }
+    patch "/quizzes/1", params: body.to_json, headers: {'content-type': 'application/json'}
+    assert_equal 1, Quiz.find(1).questions.length
+    assert_nil Quiz.find(1).questions.find_by(id: 1)
+  end
+
   # update
   # quiz title
   # questions
