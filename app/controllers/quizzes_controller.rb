@@ -146,11 +146,28 @@ class QuizzesController < ApplicationController
 
   def update_question(question, changes)
     update_question_content(question, changes)
+    update_all_answers(question, changes)
   end
 
   def update_question_content(question, changes)
     unless changes[:content].nil?
       question.content = changes[:content]
+    end
+  end
+
+  def update_all_answers(question, changes)
+    unless changes[:answers].nil?
+      changes[:answers].each do |a|
+        answer = question.answers.find(a[:id])
+        update_answer(answer, a)
+        answer.save
+      end
+    end
+  end
+
+  def update_answer(answer, changes)
+    unless changes[:content].nil?
+      answer.content = changes[:content]
     end
   end
 end
