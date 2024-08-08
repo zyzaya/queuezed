@@ -74,6 +74,24 @@ class QuizzesControllerTest < ActionDispatch::IntegrationTest
     assert_equal expected, Answer.find(1).content
   end
 
+  test "new answer" do
+    expected_content = "new answer"
+    body = {
+      quiz: {
+        questions: [
+          id: 1,
+          answers: [
+            content: expected_content,
+            meta: "new"
+          ]
+        ]
+      }
+    }
+    patch "/quizzes/1", params: body.to_json, headers: {'content-type': 'application/json'}
+    assert_equal 2, Question.find(1).answers.length
+    assert_not_nil Question.find(1).answers.find_by(content: expected_content)
+  end
+
   # update
   # quiz title
   # questions

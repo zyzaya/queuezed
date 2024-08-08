@@ -158,7 +158,11 @@ class QuizzesController < ApplicationController
   def update_all_answers(question, changes)
     unless changes[:answers].nil?
       changes[:answers].each do |a|
-        answer = question.answers.find(a[:id])
+        answer = if a[:meta].eql?("new")
+          question.answers.new
+        else
+          question.answers.find(a[:id])
+        end
         update_answer(answer, a)
         answer.save
       end
