@@ -147,6 +147,7 @@ class QuizzesController < ApplicationController
   def update_question(question, changes)
     update_question_content(question, changes)
     update_all_answers(question, changes)
+    update_all_tags(question, changes)
   end
 
   def update_question_content(question, changes)
@@ -168,7 +169,6 @@ class QuizzesController < ApplicationController
           answer.destroy
         else
           update_answer(answer, a)
-          answer.save
         end
       end
     end
@@ -177,6 +177,24 @@ class QuizzesController < ApplicationController
   def update_answer(answer, changes)
     unless changes[:content].nil?
       answer.content = changes[:content]
+    end
+  end
+
+  def update_all_tags(question, changes)
+    unless changes[:tags].nil?
+      changes[:tags].each do |t|
+        tag = if t[:meta].eql?("new")
+          question.tags.new
+        else
+        end
+        update_tag(tag, t)
+      end
+    end
+  end
+
+  def update_tag(tag, changes)
+    unless changes[:content].nil?
+      tag.content = changes[:content]
     end
   end
 end
