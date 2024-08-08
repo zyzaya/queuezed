@@ -32,7 +32,7 @@ class QuizzesController < ApplicationController
     # rails puts json into params automagically
     # format of a save changes is
     # quiz {
-    #  quiz_title?: ""
+    #  name?: ""
     #  questions: [
     #   {
     #    question_info: ""
@@ -53,15 +53,14 @@ class QuizzesController < ApplicationController
     quiz = current_user.quizzes.find_by(id: params[:id])
     if (quiz.nil?)
       head :not_found
+    elsif (params[:quiz].nil?)
     else
       response = {
         answers: {},
         tags: {}
       }
 
-      unless params[:quiz_title].nil?
-        Quiz.find(params[:id]).update(name: params[:quiz_title])
-      end
+      update_name(quiz, params)
       unless params[:questions].nil?
         params[:questions].each do |q|
           ## content
@@ -111,10 +110,16 @@ class QuizzesController < ApplicationController
           question.save
         end
       end
+      quiz.save
       puts response
       render json: response
     end
   end
 
   private
+  def update_name(quiz, params)
+    unless params[:quiz][:name].nil?
+      quiz.name = params[:quiz][:name]
+    end
+  end
 end

@@ -6,6 +6,26 @@ class QuizzesControllerTest < ActionDispatch::IntegrationTest
   setup do
     sign_in users(:john)
   end
+  # update
+  test "quiz title can be modified" do
+    expected = "modified title"
+    body = { quiz: {name: expected}}
+    patch "/quizzes/1", params: body.to_json, headers: {'content-type': 'application/json'}
+    assert_equal expected, Quiz.find(1).name
+  end
+
+
+  # update
+  # quiz title
+  # questions
+  #   new/edit/delete
+  #   content
+  #   answers
+  #     new/edit/delete
+  #     content
+  #   tags
+  #     new/edit/delete
+
   # succesfull requests
   test "destroy destroys quiz" do
     delete "/quizzes/1"
@@ -27,17 +47,4 @@ class QuizzesControllerTest < ActionDispatch::IntegrationTest
     put "/quizzes/2"
     assert_response :not_found
   end
-  # new does not create
-
-
-  # update
-  # quiz title
-  # questions
-  #   new/edit/delete
-  #   content
-  #   answers
-  #     new/edit/delete
-  #     content
-  #   tags
-  #     new/edit/delete
 end
