@@ -163,8 +163,13 @@ class QuizzesController < ApplicationController
         else
           question.answers.find(a[:id])
         end
-        update_answer(answer, a)
-        answer.save
+
+        if (a[:meta].eql?("delete"))
+          answer.destroy
+        else
+          update_answer(answer, a)
+          answer.save
+        end
       end
     end
   end
