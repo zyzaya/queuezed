@@ -128,7 +128,11 @@ class QuizzesController < ApplicationController
   def update_all_questions(quiz, params)
     unless params[:quiz][:questions].nil?
       params[:quiz][:questions].each do |q|
-        question = quiz.questions.find(q[:id])
+        question = if q[:meta].eql?("new")
+          quiz.questions.new
+        else
+          quiz.questions.find(q[:id])
+        end
         update_question(question, q)
         question.save
       end
