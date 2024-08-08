@@ -1,6 +1,6 @@
 class Quiz < ApplicationRecord
   belongs_to :user
-  has_many :questions, -> { Question.active }
+  has_many :questions, -> { Question.active }, dependent: :destroy
   has_many :tags, through: :questions
   has_many :practice_sessions
 

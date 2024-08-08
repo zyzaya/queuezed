@@ -6,7 +6,11 @@ class QuizzesControllerTest < ActionDispatch::IntegrationTest
   setup do
     sign_in users(:john)
   end
-
+  # succesfull requests
+  test "destroy destroys quiz" do
+    delete "/quizzes/1"
+    assert_equal 0, users(:john).quizzes.length
+  end
 
   # cannot access quizzes of another user
   test "cannot edit a quiz of another user" do
