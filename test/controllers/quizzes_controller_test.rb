@@ -14,6 +14,19 @@ class QuizzesControllerTest < ActionDispatch::IntegrationTest
     assert_equal expected, Quiz.find(1).name
   end
 
+  test "modify question content" do
+    expected = "modified content"
+    body = { 
+      quiz: {
+        questions: [
+          id: 1,
+          content: expected,
+        ]
+      }
+    }
+    patch "/quizzes/1", params: body.to_json, headers: {'content-type': 'application/json'}
+    assert_equal expected, Question.find(1).content
+  end
 
   # update
   # quiz title
@@ -24,7 +37,9 @@ class QuizzesControllerTest < ActionDispatch::IntegrationTest
   #     new/edit/delete
   #     content
   #   tags
-  #     new/edit/delete
+  #     new/add/remove
+
+  # nonexistant ids
 
   # succesfull requests
   test "destroy destroys quiz" do

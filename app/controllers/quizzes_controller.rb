@@ -61,55 +61,57 @@ class QuizzesController < ApplicationController
       }
 
       update_name(quiz, params)
-      unless params[:questions].nil?
-        params[:questions].each do |q|
-          ## content
-          question = Question.find(q[:id])
-          question.update(content: q[:content]) unless q[:content].nil?
-          ## answers
-          unless q[:answers].nil?
-            q[:answers].each do |a|
-              ## 
-              answer = nil
-              if a[:meta].eql?('new')
-                answer = question.answers.create
-                response[:answers][a[:id]] = answer.id
-              else
-                answer = Answer.find(a[:id])
-              end
+      update_all_questions(quiz, params)
+      # unless params[:quiz][:questions].nil?
+      #   params[:quiz][:questions].each do |q|
+      #     update_question(quiz, q)
+      #     ## content
+      #     question = Question.find(q[:id])
+      #     question.update(content: q[:content]) unless q[:content].nil?
+      #     ## answers
+      #     unless q[:answers].nil?
+      #       q[:answers].each do |a|
+      #         ## 
+      #         answer = nil
+      #         if a[:meta].eql?('new')
+      #           answer = question.answers.create
+      #           response[:answers][a[:id]] = answer.id
+      #         else
+      #           answer = Answer.find(a[:id])
+      #         end
 
-              if a[:meta].eql?('delete')
-                answer.destroy
-              else
-                # update content
-                answer.update(content: a[:content]) unless a[:content].nil?
-              end
-            end
-          end
-          ## tags
-          unless q[:tags].nil?
-            q[:tags].each do |t|
-              # if new create new
-              tag = nil
-              if t[:meta].eql?('new')
-                tag = question.tags.create(content: t[:content])
-                response[:tags][t[:id]] = tag.id
-              else
-                tag = Tag.find(t[:id])
-              end
+      #         if a[:meta].eql?('delete')
+      #           answer.destroy
+      #         else
+      #           # update content
+      #           answer.update(content: a[:content]) unless a[:content].nil?
+      #         end
+      #       end
+      #     end
+      #     ## tags
+      #     unless q[:tags].nil?
+      #       q[:tags].each do |t|
+      #         # if new create new
+      #         tag = nil
+      #         if t[:meta].eql?('new')
+      #           tag = question.tags.create(content: t[:content])
+      #           response[:tags][t[:id]] = tag.id
+      #         else
+      #           tag = Tag.find(t[:id])
+      #         end
 
-              if t[:meta].eql?('delete')
-                tag.destroy
-              elsif t[:meta].eql?('add')
-                question.tags << tag
-              elsif t[:meta].eql?('remove')
-                question.tags.destroy(tag)
-              end
-            end
-          end
-          question.save
-        end
-      end
+      #         if t[:meta].eql?('delete')
+      #           tag.destroy
+      #         elsif t[:meta].eql?('add')
+      #           question.tags << tag
+      #         elsif t[:meta].eql?('remove')
+      #           question.tags.destroy(tag)
+      #         end
+      #       end
+      #     end
+      #     question.save
+      #   end
+      # end
       quiz.save
       puts response
       render json: response
@@ -120,6 +122,26 @@ class QuizzesController < ApplicationController
   def update_name(quiz, params)
     unless params[:quiz][:name].nil?
       quiz.name = params[:quiz][:name]
+    end
+  end
+
+  def update_all_questions(quiz, params)
+    unless params[:quiz][:questions].nil?
+      params[:quiz][:questions].each do |q|
+        question = quiz.questions.find(q[:id])
+        update_question(question, q)
+        question.save
+      end
+    end
+  end
+
+  def update_question(question, changes)
+    update_question_content(question, changes)
+  end
+
+  def update_question_content(question, changes)
+    unless changes[:content].nil?
+      question.content = changes[:content]
     end
   end
 end
