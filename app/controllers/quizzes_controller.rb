@@ -192,7 +192,8 @@ class QuizzesController < ApplicationController
 
         if t[:meta].eql?('add')
           question.tags << tag
-        else
+        elsif t[:meta].eql?("remove")
+          question.tags.delete(tag)
         end
         update_tag(tag, t)
       end

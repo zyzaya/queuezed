@@ -180,6 +180,28 @@ class QuizzesControllerTest < ActionDispatch::IntegrationTest
     assert_equal initial_count + 1, Question.find(question.id).tags.length
     assert_not_nil Question.find(question.id).tags.find_by(id: tag.id)
   end
+
+  test "remove tag" do
+    quiz = quizzes(:johns)
+    question = questions(:john_one)
+    tag = tags(:tag_1)
+    initial_count = question.tags.length
+    body = {
+      quiz: {
+        questions: [
+          id: question.id,
+          tags: [
+            meta: "remove",
+            id: tag.id
+          ]
+        ]
+      }
+    }
+    update(quiz.id, body)
+    assert_response :ok
+    assert_equal initial_count - 1, Question.find(question.id).tags.length
+    assert_nil Question.find(question.id).tags.find_by(id: tag.id)
+  end
   # update
   # quiz title
   # questions
