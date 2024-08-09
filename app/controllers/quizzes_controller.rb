@@ -120,7 +120,7 @@ class QuizzesController < ApplicationController
     update_question_content(question, changes)
     success = update_all_answers(question, changes, response)
     return :not_found if success == :not_found
-    success = update_all_tags(question, changes)
+    success = update_all_tags(question, changes, response)
     return :not_found if success == :not_found
   end
 
@@ -145,7 +145,7 @@ class QuizzesController < ApplicationController
         else
           update_answer(answer, a)
           answer.save
-          response[:answers][a[:id]] = answer.id
+          response[:answers][a[:id]] = answer.id if a[:meta].eql?("new")
         end
       end
     end
@@ -158,7 +158,7 @@ class QuizzesController < ApplicationController
     end
   end
 
-  def update_all_tags(question, changes)
+  def update_all_tags(question, changes, response)
     unless changes[:tags].nil?
       changes[:tags].each do |t|
         tag = if t[:meta].eql?("new")
@@ -174,6 +174,8 @@ class QuizzesController < ApplicationController
           question.tags.delete(tag)
         end
         update_tag(tag, t)
+        tag.save
+        response[:tags][t[:id]] = tag.id if t[:meta].eql?("new")
       end
     end
     return true

@@ -313,6 +313,30 @@ class QuizzesControllerTest < ActionDispatch::IntegrationTest
     assert_equal expected_content, Answer.find(result["answers"][initial_id]).content
   end
 
+  test "response converts temporary id of new tag to real id" do
+    quiz = quizzes(:johns)
+    question = questions(:john_one)
+    expected_content = "content"
+    initial_id = "temp1"
+    body = {
+      quiz: {
+        questions: [
+          id: question.id,
+          tags: [
+            id: initial_id,
+            meta: "new",
+            content: expected_content
+          ]
+        ]
+      }
+    }
+    update(quiz.id, body)
+    assert_response :ok
+    result = JSON.parse(response.body)
+    assert_not_nil result["tags"][initial_id]
+    assert_equal expected_content, Tag.find(result["tags"][initial_id]).content
+  end
+
   # succesfull requests
   test "destroy destroys quiz" do
     delete "/quizzes/#{quizzes(:johns).id}"
