@@ -289,6 +289,29 @@ class QuizzesControllerTest < ActionDispatch::IntegrationTest
   end
   # valid parameters
   # response
+  test "response converts temporary id of new answer to real id" do
+    quiz = quizzes(:johns)
+    question = questions(:john_one)
+    expected_content = "content"
+    initial_id = "temp1"
+    body = {
+      quiz: {
+        questions: [
+          id: question.id,
+          answers: [
+            id: initial_id,
+            meta: "new",
+            content: expected_content,
+          ]
+        ]
+      }
+    }
+    update(quiz.id, body)
+    assert_response :ok
+    result = JSON.parse(response.body)
+    assert_not_nil result["answers"][initial_id]
+    assert_equal expected_content, Answer.find(result["answers"][initial_id]).content
+  end
 
   # succesfull requests
   test "destroy destroys quiz" do

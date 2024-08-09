@@ -74,7 +74,7 @@ class QuizzesController < ApplicationController
       success = false
       quiz.transaction do 
         update_name(quiz, params)
-        success = update_all_questions(quiz, params)
+        success = update_all_questions(quiz, params, response)
         raise ActiveRecord::Rollback if (success == :not_found)
       end
 
@@ -95,7 +95,7 @@ class QuizzesController < ApplicationController
     end
   end
 
-  def update_all_questions(quiz, params)
+  def update_all_questions(quiz, params, response)
     unless params[:quiz][:questions].nil?
       params[:quiz][:questions].each do |q|
         question = if q[:meta].eql?("new")
@@ -108,7 +108,7 @@ class QuizzesController < ApplicationController
         if (q[:meta].eql?("delete"))
           question.destroy
         else
-          success = update_question(question, q)
+          success = update_question(question, q, response)
           return :not_found if success == :not_found
           question.save
         end
@@ -116,9 +116,9 @@ class QuizzesController < ApplicationController
     end
   end
 
-  def update_question(question, changes)
+  def update_question(question, changes, response)
     update_question_content(question, changes)
-    success = update_all_answers(question, changes)
+    success = update_all_answers(question, changes, response)
     return :not_found if success == :not_found
     success = update_all_tags(question, changes)
     return :not_found if success == :not_found
@@ -130,7 +130,7 @@ class QuizzesController < ApplicationController
     end
   end
 
-  def update_all_answers(question, changes)
+  def update_all_answers(question, changes, response)
     unless changes[:answers].nil?
       changes[:answers].each do |a|
         answer = if a[:meta].eql?("new")
@@ -145,6 +145,7 @@ class QuizzesController < ApplicationController
         else
           update_answer(answer, a)
           answer.save
+          response[:answers][a[:id]] = answer.id
         end
       end
     end
