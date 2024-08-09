@@ -187,6 +187,12 @@ class QuizzesController < ApplicationController
         tag = if t[:meta].eql?("new")
           question.tags.new
         else
+          Tag.find(t[:id])
+        end
+
+        if t[:meta].eql?('add')
+          question.tags << tag
+        else
         end
         update_tag(tag, t)
       end

@@ -155,9 +155,27 @@ class QuizzesControllerTest < ActionDispatch::IntegrationTest
     assert_not_nil Question.find(question.id).tags.find_by(content: expected_content)
   end
 
-  # test "add tag" do
-    
-  # end
+  test "add tag" do
+    quiz = quizzes(:johns)
+    question = questions(:john_one)
+    tag = tags(:tag_2)
+    initial_count = question.tags.length
+    body = {
+      quiz: {
+        questions: [
+          id: question.id,
+          tags: [
+            meta: "add",
+            id: tag.id
+          ]
+        ]
+      }
+    }
+    patch "/quizzes/#{quiz.id}", params: body.to_json, headers: {'content-type': 'application/json'}
+    assert_response :ok
+    assert_equal initial_count + 1, Question.find(question.id).tags.length
+    assert_not_nil Question.find(question.id).tags.find_by(id: tag.id)
+  end
   # update
   # quiz title
   # questions

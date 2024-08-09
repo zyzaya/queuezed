@@ -3,6 +3,7 @@
 # john
 john_one:
   quiz: johns
+  tags: tag_1
   content: "Reverse of: Holly"
   current_streak: 0
   longest_streak: 0
@@ -13,6 +14,7 @@ john_one:
   next_review: <%= DateTime.now %>
 john_two:
   quiz: johns
+  tags: tag_2
   content: "Reverse of: Deloris"
   current_streak: 0
   longest_streak: 0
@@ -25,6 +27,7 @@ john_two:
 # jane
 jane_one:
   quiz: janes
+  tags: tag_1
   content: "Reverse of: Asha"
   current_streak: 0
   longest_streak: 0
@@ -35,6 +38,7 @@ jane_one:
   next_review: <%= DateTime.now %>
 jane_two:
   quiz: janes
+  tags: tag_2
   content: "Reverse of: Elvis"
   current_streak: 0
   longest_streak: 0
