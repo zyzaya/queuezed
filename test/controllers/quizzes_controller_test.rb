@@ -10,26 +10,32 @@ class QuizzesControllerTest < ActionDispatch::IntegrationTest
   test "quiz title can be modified" do
     expected = "modified title"
     body = { quiz: {name: expected}}
-    patch "/quizzes/1", params: body.to_json, headers: {'content-type': 'application/json'}
-    assert_equal expected, Quiz.find(1).name
+    quiz = quizzes(:johns)
+    patch "/quizzes/#{quiz.id}", params: body.to_json, headers: {'content-type': 'application/json'}
+    assert_equal expected, Quiz.find(quiz.id).name
   end
 
   test "modify question content" do
     expected = "modified content"
+    quiz = quizzes(:johns)
+    question = questions(:john_one)
     body = { 
       quiz: {
         questions: [
-          id: 1,
+          id: question.id,
           content: expected,
         ]
       }
     }
-    patch "/quizzes/1", params: body.to_json, headers: {'content-type': 'application/json'}
-    assert_equal expected, Question.find(1).content
+    patch "/quizzes/#{quiz.id}", params: body.to_json, headers: {'content-type': 'application/json'}
+    assert_response :ok
+    assert_equal expected, Question.find(question.id).content
   end
 
   test "new question" do
     expected_content = "new question"
+    quiz = quizzes(:johns)
+    initial_count = quiz.questions.length
     body = {
       quiz: {
         questions: [
@@ -38,48 +44,60 @@ class QuizzesControllerTest < ActionDispatch::IntegrationTest
         ]
       }
     }
-    patch "/quizzes/1", params: body.to_json, headers: {'content-type': 'application/json'}
-    assert_equal 3, Quiz.find(1).questions.length
-    assert_not_nil Quiz.find(1).questions.find_by(content: expected_content)
+    patch "/quizzes/#{quiz.id}", params: body.to_json, headers: {'content-type': 'application/json'}
+    assert_response :ok
+    assert_equal initial_count + 1, Quiz.find(quiz.id).questions.length
+    assert_not_nil Quiz.find(quiz.id).questions.find_by(content: expected_content)
   end
 
   test "delete question" do
+    quiz = quizzes(:johns)
+    question = questions(:john_one)
+    initial_count = quiz.questions.length
     body = {
       quiz: {
         questions: [
-          id: 1,
+          id: question.id,
           meta: "delete"
         ]
       }
     }
-    patch "/quizzes/1", params: body.to_json, headers: {'content-type': 'application/json'}
-    assert_equal 1, Quiz.find(1).questions.length
-    assert_nil Quiz.find(1).questions.find_by(id: 1)
+    patch "/quizzes/#{quiz.id}", params: body.to_json, headers: {'content-type': 'application/json'}
+    assert_response :ok
+    assert_equal initial_count - 1, Quiz.find(quiz.id).questions.length
+    assert_nil Quiz.find(quiz.id).questions.find_by(id: question.id)
   end
 
   test "modify answer content" do
     expected = "modified content"
+    quiz = quizzes(:johns)
+    question = questions(:john_one)
+    answer = answers(:john_one)
     body = {
       quiz: {
         questions: [
-          id: 1,
+          id: question.id,
           answers: [
-            id: 1,
+            id: answer.id,
             content: expected
           ]
         ]
       }
     }
-    patch "/quizzes/1", params: body.to_json, headers: {'content-type': 'application/json'}
-    assert_equal expected, Answer.find(1).content
+    patch "/quizzes/#{quiz.id}", params: body.to_json, headers: {'content-type': 'application/json'}
+    assert_response :ok
+    assert_equal expected, Answer.find(answer.id).content
   end
 
   test "new answer" do
     expected_content = "new answer"
+    quiz = quizzes(:johns)
+    question = questions(:john_one)
+    initial_count = question.answers.length
     body = {
       quiz: {
         questions: [
-          id: 1,
+          id: question.id,
           answers: [
             content: expected_content,
             meta: "new"
@@ -87,34 +105,43 @@ class QuizzesControllerTest < ActionDispatch::IntegrationTest
         ]
       }
     }
-    patch "/quizzes/1", params: body.to_json, headers: {'content-type': 'application/json'}
-    assert_equal 2, Question.find(1).answers.length
-    assert_not_nil Question.find(1).answers.find_by(content: expected_content)
+    patch "/quizzes/#{quiz.id}", params: body.to_json, headers: {'content-type': 'application/json'}
+    assert_response :ok
+    assert_equal initial_count + 1, Question.find(question.id).answers.length
+    assert_not_nil Question.find(question.id).answers.find_by(content: expected_content)
   end
 
   test "delete answer" do
+    quiz = quizzes(:johns)
+    question = questions(:john_one)
+    answer = answers(:john_one)
+    initial_count = question.answers.length
     body = {
       quiz: {
         questions: [
-          id: 1,
+          id: question.id,
           answers: [
-            id: 1,
+            id: answer.id,
             meta: "delete"
           ]
         ]
       }
     }
-    patch "/quizzes/1", params: body.to_json, headers: {'content-type': 'application/json'}
-    assert_equal 0, Question.find(1).answers.length
-    assert_nil Question.find(1).answers.find_by(id: 1)
+    patch "/quizzes/#{quiz.id}", params: body.to_json, headers: {'content-type': 'application/json'}
+    assert_response :ok
+    assert_equal initial_count - 1, Question.find(question.id).answers.length
+    assert_nil Question.find(question.id).answers.find_by(id: answer.id)
   end
 
   test "new tag" do
+    quiz = quizzes(:johns)
+    question = questions(:john_one)
+    initial_count = question.tags.count
     expected_content = "new tag"
     body = {
       quiz: {
         questions: [
-          id: 1,
+          id: question.id,
           tags: [
             meta: "new",
             content: expected_content
@@ -122,14 +149,15 @@ class QuizzesControllerTest < ActionDispatch::IntegrationTest
         ]
       }
     }
-    patch "/quizzes/1", params: body.to_json, headers: {'content-type': 'application/json'}
-    assert_equal 1, Question.find(1).tags.length
-    assert_not_nil Question.find(1).tags.find_by(content: expected_content)
+    patch "/quizzes/#{quiz.id}", params: body.to_json, headers: {'content-type': 'application/json'}
+    assert_response :ok
+    assert_equal initial_count + 1, Question.find(question.id).tags.length
+    assert_not_nil Question.find(question.id).tags.find_by(content: expected_content)
   end
 
-  test "add tag" do
+  # test "add tag" do
     
-  end
+  # end
   # update
   # quiz title
   # questions
@@ -145,23 +173,23 @@ class QuizzesControllerTest < ActionDispatch::IntegrationTest
 
   # succesfull requests
   test "destroy destroys quiz" do
-    delete "/quizzes/1"
+    delete "/quizzes/#{quizzes(:johns).id}"
     assert_equal 0, users(:john).quizzes.length
   end
 
   # cannot access quizzes of another user
   test "cannot edit a quiz of another user" do
-    get edit_quiz_path(2)
+    get edit_quiz_path(quizzes(:janes))
     assert_response :not_found
   end
 
   test "cannot destroy a quiz of another user" do
-    delete "/quizzes/2"
+    delete "/quizzes/#{quizzes(:janes).id}"
     assert_response :not_found
   end
 
   test "cannot update a quiz of another user" do
-    put "/quizzes/2"
+    put "/quizzes/#{quizzes(:janes).id}"
     assert_response :not_found
   end
 end

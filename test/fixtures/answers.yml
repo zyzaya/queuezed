@@ -1,19 +1,19 @@
 # Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
 
 # john
-one:
+john_one:
   question: john_one
   content: "ylloh / yollH / YOLLH"
-two:
+john_two:
   question: john_two
   content: "siroled / siroleD / SIROLED"
 
 # jane
-three:
+jane_one:
   id: 3
   question: jane_one
   content: "ahsa / ashA / AHSA"
-four:
+jane_two:
   id: 4
   question: jane_two
   content: "sivle / sivlE / SIVLE"

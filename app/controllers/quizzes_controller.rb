@@ -169,6 +169,7 @@ class QuizzesController < ApplicationController
           answer.destroy
         else
           update_answer(answer, a)
+          answer.save
         end
       end
     end
