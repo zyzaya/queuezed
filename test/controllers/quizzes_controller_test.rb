@@ -202,7 +202,7 @@ class QuizzesControllerTest < ActionDispatch::IntegrationTest
     assert_equal initial_count - 1, Question.find(question.id).tags.length
     assert_nil Question.find(question.id).tags.find_by(id: tag.id)
   end
-  # nonexistant ids
+  # invalid ids
   test "responds with 404 to invalid quiz id" do
     body = { quiz: { } }
     update(0, body)
@@ -230,6 +230,23 @@ class QuizzesControllerTest < ActionDispatch::IntegrationTest
         questions: [
           id: question.id,
           answers: [
+            id: "invalid"
+          ]
+        ]
+      }
+    }
+    update(quiz.id, body)
+    assert_response :not_found
+  end
+
+  test "responds with 404 to invalid tag id" do
+    quiz = quizzes(:johns)
+    question = questions(:john_one)
+    body = {
+      quiz: {
+        questions: [
+          id: question.id,
+          tags: [
             id: "invalid"
           ]
         ]

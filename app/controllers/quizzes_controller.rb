@@ -104,7 +104,8 @@ class QuizzesController < ApplicationController
     update_question_content(question, changes)
     success = update_all_answers(question, changes)
     return :not_found if success == :not_found
-    update_all_tags(question, changes)
+    success = update_all_tags(question, changes)
+    return :not_found if success == :not_found
   end
 
   def update_question_content(question, changes)
@@ -131,6 +132,7 @@ class QuizzesController < ApplicationController
         end
       end
     end
+    return true
   end
 
   def update_answer(answer, changes)
@@ -145,8 +147,9 @@ class QuizzesController < ApplicationController
         tag = if t[:meta].eql?("new")
           question.tags.new
         else
-          Tag.find(t[:id])
+          Tag.find_by(id: t[:id])
         end
+        return :not_found if tag.nil?
 
         if t[:meta].eql?('add')
           question.tags << tag
@@ -156,6 +159,7 @@ class QuizzesController < ApplicationController
         update_tag(tag, t)
       end
     end
+    return true
   end
 
   def update_tag(tag, changes)
