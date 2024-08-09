@@ -1,9 +1,8 @@
 # Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
 
 # john
-one:
-  id: 1
-  quiz_id: 1
+john_one:
+  quiz: johns
   content: "Reverse of: Holly"
   current_streak: 0
   longest_streak: 0
@@ -12,9 +11,8 @@ one:
   rank: 0
   review: true
   next_review: <%= DateTime.now %>
-two:
-  id: 2
-  quiz_id: 1
+john_two:
+  quiz: johns
   content: "Reverse of: Deloris"
   current_streak: 0
   longest_streak: 0
@@ -25,9 +23,8 @@ two:
   next_review: <%= DateTime.now %>
 
 # jane
-three:
-  id: 3
-  quiz_id: 2
+jane_one:
+  quiz: janes
   content: "Reverse of: Asha"
   current_streak: 0
   longest_streak: 0
@@ -36,9 +33,8 @@ three:
   rank: 0
   review: true
   next_review: <%= DateTime.now %>
-four:
-  id: 4
-  quiz_id: 2
+jane_two:
+  quiz: janes
   content: "Reverse of: Elvis"
   current_streak: 0
   longest_streak: 0

@@ -2,20 +2,18 @@
 
 # john
 one:
-  id: 1
-  question_id: 1
+  question: john_one
   content: "ylloh / yollH / YOLLH"
 two:
-  id: 2
-  question_id: 2
+  question: john_two
   content: "siroled / siroleD / SIROLED"
 
 # jane
 three:
   id: 3
-  question_id: 3
+  question: jane_one
   content: "ahsa / ashA / AHSA"
 four:
   id: 4
-  question_id: 3
+  question: jane_two
   content: "sivle / sivlE / SIVLE"

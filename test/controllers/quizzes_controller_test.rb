@@ -126,6 +126,10 @@ class QuizzesControllerTest < ActionDispatch::IntegrationTest
     assert_equal 1, Question.find(1).tags.length
     assert_not_nil Question.find(1).tags.find_by(content: expected_content)
   end
+
+  test "add tag" do
+    
+  end
   # update
   # quiz title
   # questions
