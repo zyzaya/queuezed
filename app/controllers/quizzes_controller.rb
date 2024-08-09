@@ -31,19 +31,30 @@ class QuizzesController < ApplicationController
   def update
     # rails puts json into params automagically
     # format of a save changes is
-    # quiz {
-    #  name?: ""
+    # quiz: {
+    #  name: "",
     #  questions: [
     #   {
-    #    question_info: ""
-    #    answers: []
-    #    tags: []
+    #     id:,
+    #     meta: new/delete,
+    #     content: "",
+    #     answers: [
+    #       {
+    #         id:,
+    #         meta: new/delete,
+    #         content: "",
+    #       }
+    #     ],
+    #     tags: [
+    #       {
+    #         id:,
+    #         meta: new/add/remove,
+    #         content: "",
+    #       }
+    #     ],
     #   }
     #  ]
     # }
-    # meta: delete, new, add, remove
-    ## todo: save added answers, remove deleted answers,
-    # save changes to content of answers/questions
 
     # response is 
     # {
@@ -59,9 +70,14 @@ class QuizzesController < ApplicationController
         answers: {},
         tags: {}
       }
+      ##
+      success = false
+      quiz.transaction do 
+        update_name(quiz, params)
+        success = update_all_questions(quiz, params)
+        raise ActiveRecord::Rollback if (success == :not_found)
+      end
 
-      update_name(quiz, params)
-      success = update_all_questions(quiz, params)
       if (success == :not_found)
         head :not_found
       else

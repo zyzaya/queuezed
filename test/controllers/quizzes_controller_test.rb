@@ -256,6 +256,37 @@ class QuizzesControllerTest < ActionDispatch::IntegrationTest
     assert_response :not_found
   end
 
+  test "modifications do not occur of any id is invalid" do
+    quiz = quizzes(:johns)
+    question = questions(:john_one)
+    answer = answers(:john_one)
+    expected = quiz.name
+    modified_name = "modified name"
+    modified_content = "modified content"
+    body = {
+      quiz: {
+        name: modified_name,
+        questions: [
+          id: question.id,
+          content: modified_content,
+          answers: [
+            id: answer.id,
+            content: modified_content
+          ],
+          tags: [
+            id: "invalid",
+            meta: "add",
+            content: "invalid tag"
+          ]
+        ]
+      }
+    }
+    update(quiz.id, body)
+    assert_response :not_found
+    assert_equal quiz.to_json, Quiz.find(quiz.id).to_json
+    assert_equal question.to_json, Question.find(question.id).to_json
+    assert_equal answer.to_json, Answer.find(answer.id).to_json
+  end
   # valid parameters
   # response
 
