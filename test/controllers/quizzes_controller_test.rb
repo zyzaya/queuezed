@@ -6,12 +6,16 @@ class QuizzesControllerTest < ActionDispatch::IntegrationTest
   setup do
     sign_in users(:john)
   end
+
+  def update(quiz_id, body)
+    patch "/quizzes/#{quiz_id}", params: body.to_json, headers: {'content-type': 'application/json'}
+  end
   # update
   test "quiz title can be modified" do
     expected = "modified title"
     body = { quiz: {name: expected}}
     quiz = quizzes(:johns)
-    patch "/quizzes/#{quiz.id}", params: body.to_json, headers: {'content-type': 'application/json'}
+    update(quiz.id, body)
     assert_equal expected, Quiz.find(quiz.id).name
   end
 
@@ -27,7 +31,7 @@ class QuizzesControllerTest < ActionDispatch::IntegrationTest
         ]
       }
     }
-    patch "/quizzes/#{quiz.id}", params: body.to_json, headers: {'content-type': 'application/json'}
+    update(quiz.id, body)
     assert_response :ok
     assert_equal expected, Question.find(question.id).content
   end
@@ -44,7 +48,7 @@ class QuizzesControllerTest < ActionDispatch::IntegrationTest
         ]
       }
     }
-    patch "/quizzes/#{quiz.id}", params: body.to_json, headers: {'content-type': 'application/json'}
+    update(quiz.id, body)
     assert_response :ok
     assert_equal initial_count + 1, Quiz.find(quiz.id).questions.length
     assert_not_nil Quiz.find(quiz.id).questions.find_by(content: expected_content)
@@ -62,7 +66,7 @@ class QuizzesControllerTest < ActionDispatch::IntegrationTest
         ]
       }
     }
-    patch "/quizzes/#{quiz.id}", params: body.to_json, headers: {'content-type': 'application/json'}
+    update(quiz.id, body)
     assert_response :ok
     assert_equal initial_count - 1, Quiz.find(quiz.id).questions.length
     assert_nil Quiz.find(quiz.id).questions.find_by(id: question.id)
@@ -84,7 +88,7 @@ class QuizzesControllerTest < ActionDispatch::IntegrationTest
         ]
       }
     }
-    patch "/quizzes/#{quiz.id}", params: body.to_json, headers: {'content-type': 'application/json'}
+    update(quiz.id, body)
     assert_response :ok
     assert_equal expected, Answer.find(answer.id).content
   end
@@ -105,7 +109,7 @@ class QuizzesControllerTest < ActionDispatch::IntegrationTest
         ]
       }
     }
-    patch "/quizzes/#{quiz.id}", params: body.to_json, headers: {'content-type': 'application/json'}
+    update(quiz.id, body)
     assert_response :ok
     assert_equal initial_count + 1, Question.find(question.id).answers.length
     assert_not_nil Question.find(question.id).answers.find_by(content: expected_content)
@@ -127,7 +131,7 @@ class QuizzesControllerTest < ActionDispatch::IntegrationTest
         ]
       }
     }
-    patch "/quizzes/#{quiz.id}", params: body.to_json, headers: {'content-type': 'application/json'}
+    update(quiz.id, body)
     assert_response :ok
     assert_equal initial_count - 1, Question.find(question.id).answers.length
     assert_nil Question.find(question.id).answers.find_by(id: answer.id)
@@ -149,7 +153,7 @@ class QuizzesControllerTest < ActionDispatch::IntegrationTest
         ]
       }
     }
-    patch "/quizzes/#{quiz.id}", params: body.to_json, headers: {'content-type': 'application/json'}
+    update(quiz.id, body)
     assert_response :ok
     assert_equal initial_count + 1, Question.find(question.id).tags.length
     assert_not_nil Question.find(question.id).tags.find_by(content: expected_content)
@@ -171,7 +175,7 @@ class QuizzesControllerTest < ActionDispatch::IntegrationTest
         ]
       }
     }
-    patch "/quizzes/#{quiz.id}", params: body.to_json, headers: {'content-type': 'application/json'}
+    update(quiz.id, body)
     assert_response :ok
     assert_equal initial_count + 1, Question.find(question.id).tags.length
     assert_not_nil Question.find(question.id).tags.find_by(id: tag.id)
