@@ -92,7 +92,8 @@ class QuizzesController < ApplicationController
         if (q[:meta].eql?("delete"))
           question.destroy
         else
-          update_question(question, q)
+          success = update_question(question, q)
+          return :not_found if success == :not_found
           question.save
         end
       end
@@ -101,7 +102,8 @@ class QuizzesController < ApplicationController
 
   def update_question(question, changes)
     update_question_content(question, changes)
-    update_all_answers(question, changes)
+    success = update_all_answers(question, changes)
+    return :not_found if success == :not_found
     update_all_tags(question, changes)
   end
 
@@ -117,8 +119,9 @@ class QuizzesController < ApplicationController
         answer = if a[:meta].eql?("new")
           question.answers.new
         else
-          question.answers.find(a[:id])
+          question.answers.find_by(id: a[:id])
         end
+        return :not_found if answer.nil?
 
         if (a[:meta].eql?("delete"))
           answer.destroy

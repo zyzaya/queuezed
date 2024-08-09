@@ -211,12 +211,27 @@ class QuizzesControllerTest < ActionDispatch::IntegrationTest
 
   test "responds with 404 to invalid question id" do
     quiz = quizzes(:johns)
-    modified_content = "modified content"
     body = {
       quiz: {
         questions: [
-          id: "invalid id",
-          content: modified_content
+          id: "invalid",
+        ]
+      }
+    }
+    update(quiz.id, body)
+    assert_response :not_found
+  end
+
+  test "responds with 404 to invalid answer id" do
+    quiz = quizzes(:johns)
+    question = questions(:john_one)
+    body = {
+      quiz: {
+        questions: [
+          id: question.id,
+          answers: [
+            id: "invalid"
+          ]
         ]
       }
     }
