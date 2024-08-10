@@ -118,14 +118,13 @@ class QuizzesController < ApplicationController
         else
           success = update_question(question, q)
           return :not_found if success == :not_found
-          question.save
         end
       end
     end
   end
 
   def update_question(question, changes)
-    update_question_content(question, changes)
+    update_content(question, changes)
     success = update_all_answers(question, changes)
     return :not_found if success == :not_found
     success = update_all_tags(question, changes)
@@ -153,18 +152,11 @@ class QuizzesController < ApplicationController
         if (a[:meta].eql?("delete"))
           answer.destroy
         else
-          update_answer(answer, a)
+          update_content(answer, a)
         end
       end
     end
     return true
-  end
-
-  def update_answer(answer, changes)
-    unless changes[:content].nil?
-      answer.content = changes[:content]
-      answer.save
-    end
   end
 
   def update_all_tags(question, changes)
@@ -174,6 +166,7 @@ class QuizzesController < ApplicationController
         if t[:meta].eql?("new")
           tag = question.tags.new
           @new_tags[t[:id]] = tag
+          question.save
         else
           tag = Tag.find_by(id: t[:id])
         end
@@ -184,15 +177,14 @@ class QuizzesController < ApplicationController
         elsif t[:meta].eql?("remove")
           question.tags.delete(tag)
         end
-        update_tag(tag, t)
+        update_content(tag, t)
       end
     end
     return true
   end
 
-  def update_tag(tag, changes)
-    unless changes[:content].nil?
-      tag.content = changes[:content]
-    end
+  def update_content(record, changes)
+    record.content = changes[:content] unless changes[:content].nil?
+    record.save
   end
 end
