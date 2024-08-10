@@ -61,20 +61,22 @@ class QuizzesController < ApplicationController
     #   answers: { tempId: newId }
     #   tags: { tempId: newId }
     # }
+    
     quiz = current_user.quizzes.find_by(id: params[:id])
     if (quiz.nil?)
       head :not_found
     elsif (params[:quiz].nil?)
     else
+      @new_answers = {}
+      @new_tags = {}
       response = {
         answers: {},
         tags: {}
       }
-      ##
       success = false
       quiz.transaction do 
         update_name(quiz, params)
-        success = update_all_questions(quiz, params, response)
+        success = update_all_questions(quiz, params)
         raise ActiveRecord::Rollback if (success == :not_found)
       end
 
@@ -82,6 +84,12 @@ class QuizzesController < ApplicationController
         head :not_found
       else
         quiz.save
+        @new_answers.each do |k, v|
+          response[:answers][k] = v.id
+        end
+        @new_tags.each do |k, v|
+          response[:tags][k] = v.id
+        end
         puts response
         render json: response
       end
@@ -95,7 +103,7 @@ class QuizzesController < ApplicationController
     end
   end
 
-  def update_all_questions(quiz, params, response)
+  def update_all_questions(quiz, params)
     unless params[:quiz][:questions].nil?
       params[:quiz][:questions].each do |q|
         question = if q[:meta].eql?("new")
@@ -108,7 +116,7 @@ class QuizzesController < ApplicationController
         if (q[:meta].eql?("delete"))
           question.destroy
         else
-          success = update_question(question, q, response)
+          success = update_question(question, q)
           return :not_found if success == :not_found
           question.save
         end
@@ -116,11 +124,11 @@ class QuizzesController < ApplicationController
     end
   end
 
-  def update_question(question, changes, response)
+  def update_question(question, changes)
     update_question_content(question, changes)
-    success = update_all_answers(question, changes, response)
+    success = update_all_answers(question, changes)
     return :not_found if success == :not_found
-    success = update_all_tags(question, changes, response)
+    success = update_all_tags(question, changes)
     return :not_found if success == :not_found
   end
 
@@ -130,13 +138,15 @@ class QuizzesController < ApplicationController
     end
   end
 
-  def update_all_answers(question, changes, response)
+  def update_all_answers(question, changes)
     unless changes[:answers].nil?
       changes[:answers].each do |a|
-        answer = if a[:meta].eql?("new")
-          question.answers.new
+        answer = nil
+        if a[:meta].eql?("new")
+          answer = question.answers.new
+          @new_answers[a[:id]] = answer
         else
-          question.answers.find_by(id: a[:id])
+          answer = question.answers.find_by(id: a[:id])
         end
         return :not_found if answer.nil?
 
@@ -144,8 +154,6 @@ class QuizzesController < ApplicationController
           answer.destroy
         else
           update_answer(answer, a)
-          answer.save
-          response[:answers][a[:id]] = answer.id if a[:meta].eql?("new")
         end
       end
     end
@@ -155,16 +163,19 @@ class QuizzesController < ApplicationController
   def update_answer(answer, changes)
     unless changes[:content].nil?
       answer.content = changes[:content]
+      answer.save
     end
   end
 
-  def update_all_tags(question, changes, response)
+  def update_all_tags(question, changes)
     unless changes[:tags].nil?
       changes[:tags].each do |t|
-        tag = if t[:meta].eql?("new")
-          question.tags.new
+        tag = nil
+        if t[:meta].eql?("new")
+          tag = question.tags.new
+          @new_tags[t[:id]] = tag
         else
-          Tag.find_by(id: t[:id])
+          tag = Tag.find_by(id: t[:id])
         end
         return :not_found if tag.nil?
 
@@ -174,8 +185,6 @@ class QuizzesController < ApplicationController
           question.tags.delete(tag)
         end
         update_tag(tag, t)
-        tag.save
-        response[:tags][t[:id]] = tag.id if t[:meta].eql?("new")
       end
     end
     return true

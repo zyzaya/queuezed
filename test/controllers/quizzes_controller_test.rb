@@ -103,6 +103,7 @@ class QuizzesControllerTest < ActionDispatch::IntegrationTest
         questions: [
           id: question.id,
           answers: [
+            id: "temp1",
             content: expected_content,
             meta: "new"
           ]
