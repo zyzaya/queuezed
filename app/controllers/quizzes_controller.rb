@@ -92,11 +92,8 @@ class QuizzesController < ApplicationController
           end
           convert_meta(question_params, :answers_attributes)
           convert_meta(question_params, :tags_attributes)
-
-          # tag add
         end      
       end
-      # puts params
       begin 
         quiz.update(params[:quiz])
         render(

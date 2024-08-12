@@ -12,6 +12,14 @@ class Question < ApplicationRecord
   accepts_nested_attributes_for :answers, allow_destroy: true
   accepts_nested_attributes_for :tags, allow_destroy: true
 
+  def tags_attributes=(attributes)
+    attributes.each do |a|
+      tag = Tag.find_by(id: a["id"])
+      self.tags << tag unless tag.nil? || self.tags.include?(tag)
+    end
+    super(attributes)
+  end
+
   private
   def init
     update_review
