@@ -97,8 +97,12 @@ class QuizzesController < ApplicationController
         end      
       end
       puts params
-      quiz.update(params[:quiz])
-      render json: quiz.to_json
+      begin 
+        quiz.update(params[:quiz])
+        render json: quiz.to_json
+      rescue ActiveRecord::RecordNotFound => e
+        head :not_found
+      end
     end 
       
 
