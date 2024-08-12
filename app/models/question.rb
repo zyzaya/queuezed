@@ -9,6 +9,9 @@ class Question < ApplicationRecord
   has_many :question_relations, -> { QuestionRelation.active }
   has_many :relations, through: :question_relations, class_name: 'Question'
 
+  accepts_nested_attributes_for :answers, allow_destroy: true
+  accepts_nested_attributes_for :tags, allow_destroy: true
+
   private
   def init
     update_review

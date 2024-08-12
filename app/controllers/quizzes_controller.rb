@@ -29,6 +29,13 @@ class QuizzesController < ApplicationController
   end
 
   def update
+    # only allow valid params: permit
+    # require necessary params: each+require
+    # convert 
+    #   meta: delete/remove -> _destroy: 1
+    #   meta: new -> remove id
+    #   meta: add -> ??? how to add existing tag to question?
+    
     # rails puts json into params automagically
     # format of a save changes is
     # quiz: {
@@ -67,36 +74,78 @@ class QuizzesController < ApplicationController
       head :not_found
     elsif (params[:quiz].nil?)
     else
-      @new_answers = {}
-      @new_tags = {}
-      response = {
-        answers: {},
-        tags: {}
-      }
-      success = false
-      quiz.transaction do 
-        update_name(quiz, params)
-        success = update_all_questions(quiz, params)
-        raise ActiveRecord::Rollback if (success == :not_found)
-      end
+      params.permit! #permit
+      # require
+      # convert
+      unless params[:quiz][:questions].nil?
+        params[:quiz].transform_keys! do |k|
+          k.eql?("questions") ? :questions_attributes : k
+        end
 
-      if (success == :not_found)
-        head :not_found
-      else
-        quiz.save
-        @new_answers.each do |k, v|
-          response[:answers][k] = v.id
+        convert_meta(params[:quiz], :questions_attributes)
+        params[:quiz][:questions_attributes].each do |question_params|
+          question_params.transform_keys! do |k|
+            case k
+            when "answers" then :answers_attributes
+            when "tags" then :tags_attributes
+            else k end
+          end
+          convert_meta(question_params, :answers_attributes)
+          convert_meta(question_params, :tags_attributes)
+
+          # tag add
+        end      
+      end
+      puts params
+      quiz.update(params[:quiz])
+      render json: quiz.to_json
+    end 
+      
+
+
+      # @new_answers = {}
+      # @new_tags = {}
+      # response = {
+      #   answers: {},
+      #   tags: {}
+      # }
+      # success = false
+      # quiz.transaction do 
+      #   update_name(quiz, params)
+      #   success = update_all_questions(quiz, params)
+      #   raise ActiveRecord::Rollback if (success == :not_found)
+      # end
+
+      # if (success == :not_found)
+      #   head :not_found
+      # else
+      #   quiz.save
+      #   @new_answers.each do |k, v|
+      #     response[:answers][k] = v.id
+      #   end
+      #   @new_tags.each do |k, v|
+      #     response[:tags][k] = v.id
+      #   end
+      #   puts response
+      #   render json: response
+      # end
+  end
+
+  private
+  def convert_meta(params, key)
+    unless params[key].nil?
+      params[key].each do |v|
+        if v[:meta].eql?("delete") || v[:meta].eql?("remove")
+          v[:_destroy] = 1
+        elsif v[:meta].eql?("new")
+          v.extract!(:id)
         end
-        @new_tags.each do |k, v|
-          response[:tags][k] = v.id
-        end
-        puts response
-        render json: response
+        v.extract!(:meta)
       end
     end
   end
 
-  private
+  ###
   def update_name(quiz, params)
     unless params[:quiz][:name].nil?
       quiz.name = params[:quiz][:name]

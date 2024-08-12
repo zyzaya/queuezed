@@ -6,6 +6,8 @@ class Quiz < ApplicationRecord
 
   after_initialize :init
 
+  accepts_nested_attributes_for :questions, allow_destroy: true
+
   def init
     self.rank_1_interval = 1.days.to_i
     self.rank_2_interval = 3.days.to_i
