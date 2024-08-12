@@ -99,8 +99,19 @@ class QuizzesController < ApplicationController
       # puts params
       begin 
         quiz.update(params[:quiz])
-        puts quiz.to_json
-        render json: quiz.to_json
+        render(
+          json: quiz,
+          only: [:name],
+          include: {
+            questions: {
+              include: {
+                tags: {
+                  only: [:id, :content]
+                }
+              }
+            }
+          }
+        )
       rescue ActiveRecord::RecordNotFound => e
         head :not_found
       end

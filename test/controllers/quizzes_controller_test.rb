@@ -316,7 +316,19 @@ class QuizzesControllerTest < ActionDispatch::IntegrationTest
     }
     update(quiz.id, body)
     assert_response :ok
-    assert_equal Quiz.find(quiz.id).as_json, JSON.parse(response.body)
+    expected = Quiz.find(quiz.id).as_json(
+      only: [:name],
+      include: {
+        questions: {
+          include: {
+            tags: {
+              only: [:id, :content]
+            }
+          }
+        }
+      }
+    )
+    assert_equal expected, JSON.parse(response.body)
   end
 
   # succesfull requests
