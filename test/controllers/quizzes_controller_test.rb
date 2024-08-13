@@ -223,6 +223,28 @@ class QuizzesControllerTest < ActionDispatch::IntegrationTest
     assert_response :ok
     assert Question.find(question.id).relations.include?(Question.find(relation.id))
   end
+
+  test "remove relation" do
+    quiz = quizzes(:johns)
+    question = questions(:john_one)
+    relation = questions(:john_two)
+    question.relations << relation
+    body = {
+      quiz: {
+        questions: [
+          id: question.id,
+          relations: [
+            id: relation.id,
+            meta: "remove"
+          ]
+        ]
+      }
+    }
+    update(quiz.id, body)
+    assert_response :ok
+    assert_not Question.find(question.id).relations.include?(Question.find(relation.id))
+  end
+
   # invalid ids
   test "responds with 404 to invalid quiz id" do
     body = { quiz: { } }
