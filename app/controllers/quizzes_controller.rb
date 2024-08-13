@@ -48,10 +48,12 @@ class QuizzesController < ApplicationController
               case k
               when "answers" then :answers_attributes
               when "tags" then :tags_attributes
+              when "relations" then :relations_attributes
               else k end
             end
             convert_meta(question_params, :answers_attributes)
             convert_meta(question_params, :tags_attributes)
+            convert_meta(question_params, :relations_attributes)
           end      
         end
         begin 
@@ -96,6 +98,12 @@ class QuizzesController < ApplicationController
               :id,
               :meta,
               :content
+            ]
+          },
+          {
+            relations: [
+              :id,
+              :meta
             ]
           }
         ]

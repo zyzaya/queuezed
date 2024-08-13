@@ -11,11 +11,20 @@ class Question < ApplicationRecord
 
   accepts_nested_attributes_for :answers, allow_destroy: true
   accepts_nested_attributes_for :tags, allow_destroy: true
+  accepts_nested_attributes_for :relations, allow_destroy: true
 
   def tags_attributes=(attributes)
     attributes.each do |a|
       tag = Tag.find_by(id: a["id"])
       self.tags << tag unless tag.nil? || self.tags.include?(tag)
+    end
+    super(attributes)
+  end
+
+  def relations_attributes=(attributes)
+    attributes.each do |a|
+      relation = Question.find_by(id: a["id"])
+      self.relations << relation unless relation.nil? || self.relations.include?(relation)
     end
     super(attributes)
   end

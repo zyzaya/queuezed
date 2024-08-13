@@ -203,6 +203,26 @@ class QuizzesControllerTest < ActionDispatch::IntegrationTest
     assert_equal initial_count - 1, Question.find(question.id).tags.length
     assert_nil Question.find(question.id).tags.find_by(id: tag.id)
   end
+
+  test "add relation" do
+    quiz = quizzes(:johns)
+    question = questions(:john_one)
+    relation = questions(:john_two)
+    body = {
+      quiz: {
+        questions: [
+          id: question.id,
+          relations: [
+            id: relation.id,
+            meta: "add"
+          ]
+        ]
+      }
+    }
+    update(quiz.id, body)
+    assert_response :ok
+    assert Question.find(question.id).relations.include?(Question.find(relation.id))
+  end
   # invalid ids
   test "responds with 404 to invalid quiz id" do
     body = { quiz: { } }
