@@ -288,7 +288,6 @@ class QuizzesControllerTest < ActionDispatch::IntegrationTest
     assert_equal question.to_json, Question.find(question.id).to_json
     assert_equal answer.to_json, Answer.find(answer.id).to_json
   end
-  # valid parameters
   # response
   test "responds with json of the quiz, including tag ids" do
     quiz = quizzes(:johns)

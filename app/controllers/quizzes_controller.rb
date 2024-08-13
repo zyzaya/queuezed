@@ -28,89 +28,80 @@ class QuizzesController < ApplicationController
     end
   end
 
-  def update
-    # only allow valid params: permit
-    # require necessary params: each+require
-    # rails puts json into params automagically
-    # format of a save changes is
-    # quiz: {
-    #  name: "",
-    #  questions: [
-    #   {
-    #     id:,
-    #     meta: new/delete,
-    #     content: "",
-    #     answers: [
-    #       {
-    #         id:,
-    #         meta: new/delete,
-    #         content: "",
-    #       }
-    #     ],
-    #     tags: [
-    #       {
-    #         id:,
-    #         meta: new/add/remove,
-    #         content: "",
-    #       }
-    #     ],
-    #   }
-    #  ]
-    # }
-
-    # response is 
-    # {
-    #   answers: { tempId: newId }
-    #   tags: { tempId: newId }
-    # }
-    
+  def update    
     quiz = current_user.quizzes.find_by(id: params[:id])
     if (quiz.nil?)
       head :not_found
-    elsif (params[:quiz].nil?)
-    else
-      params.permit! #permit
-      # require
-      # convert
-      unless params[:quiz][:questions].nil?
-        params[:quiz].transform_keys! do |k|
-          k.eql?("questions") ? :questions_attributes : k
-        end
-
-        convert_meta(params[:quiz], :questions_attributes)
-        params[:quiz][:questions_attributes].each do |question_params|
-          question_params.transform_keys! do |k|
-            case k
-            when "answers" then :answers_attributes
-            when "tags" then :tags_attributes
-            else k end
+    elsif !params[:quiz.nil?]
+      quiz_params = quiz_update_params
+      if !quiz_params.permitted?
+        head :bad_request
+      else
+        unless quiz_params[:questions].nil?
+          quiz_params.transform_keys! do |k|
+            k.eql?("questions") ? :questions_attributes : k
           end
-          convert_meta(question_params, :answers_attributes)
-          convert_meta(question_params, :tags_attributes)
-        end      
-      end
-      begin 
-        quiz.update(params[:quiz])
-        render(
-          json: quiz,
-          only: [:name],
-          include: {
-            questions: {
-              include: {
-                tags: {
-                  only: [:id, :content]
+  
+          convert_meta(quiz_params, :questions_attributes)
+          quiz_params[:questions_attributes].each do |question_params|
+            question_params.transform_keys! do |k|
+              case k
+              when "answers" then :answers_attributes
+              when "tags" then :tags_attributes
+              else k end
+            end
+            convert_meta(question_params, :answers_attributes)
+            convert_meta(question_params, :tags_attributes)
+          end      
+        end
+        begin 
+          quiz.update(quiz_params)
+          render(
+            json: quiz,
+            only: [:name],
+            include: {
+              questions: {
+                include: {
+                  tags: {
+                    only: [:id, :content]
+                  }
                 }
               }
             }
-          }
-        )
-      rescue ActiveRecord::RecordNotFound => e
-        head :not_found
+          )
+        rescue ActiveRecord::RecordNotFound => e
+          head :not_found
+        end
       end
     end 
   end
 
   private
+  def quiz_update_params
+    params[:quiz].permit(
+        :name,
+        questions: [
+          :id,
+          :meta,
+          :content,
+          {
+            answers: [
+              :id,
+              :meta,
+              :content
+            ]
+          },
+          {
+            tags: [
+              :id,
+              :meta,
+              :content
+            ]
+          }
+        ]
+      )
+  end
+
   def convert_meta(params, key)
     unless params[key].nil?
       params[key].each do |v|
