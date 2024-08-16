@@ -15,7 +15,6 @@ class QuizzesController < ApplicationController
     if (@quiz.nil?)
       head :not_found
     end
-    @quiz = Quiz.find(params[:id])
   end
 
   def destroy
@@ -71,7 +70,7 @@ class QuizzesController < ApplicationController
               }
             }
           )
-        rescue ActiveRecord::RecordNotFound => e
+        rescue ActiveRecord::RecordNotFound
           head :not_found
         end
       end
