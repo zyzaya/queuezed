@@ -2,8 +2,12 @@ class PracticeSessionsController < ApplicationController
   before_action :authenticate_user!
   
   def new
-    @quiz = Quiz.find(params[:quiz_id])
-    @unfinished = @quiz.practice_sessions.where("current < length")
+    @quiz = current_user.quizzes.find_by(id: params[:quiz_id])
+    if (@quiz.nil?)
+      head :not_found
+    else
+      @unfinished = @quiz.practice_sessions.where("current < length")
+    end
   end
 
   def create
