@@ -58,10 +58,13 @@ class PracticeSessionsController < ApplicationController
   end
 
   def show
-    @practice_session = PracticeSession.find(params[:id])
-    @quiz = @practice_session.quiz
-    current_question_ids = @practice_session.order[@practice_session.current].filter { |e| !e.nil? }
-    @question_histories = @practice_session.question_histories
+    @practice_session = PracticeSession.find_by(id: params[:id], quiz_id: current_user.quizzes.ids)
+    if @practice_session.nil?
+      head :not_found
+    else
+      @quiz = @practice_session.quiz
+      @question_histories = @practice_session.question_histories
+    end
   end
   private
 end

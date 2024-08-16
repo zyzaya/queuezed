@@ -16,12 +16,11 @@ class PracticeSessionsControllerTest < ActionDispatch::IntegrationTest
     post quiz_practice_index_path(quizzes(:janes))
     assert_response :not_found
   end
-  # test "should get new" do
-  #   get practice_session_new_url
-  #   assert_response :success
-  # end
 
-  # new does not allow access to other users quizzes
+  test "show does not allow accesing another users practice session" do
+    get practice_path(practice_sessions(:janes))
+    assert_response :not_found
+  end
 
   # create
   #   does not allow access to other users quizzes

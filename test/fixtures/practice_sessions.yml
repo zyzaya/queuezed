@@ -1,1 +1,6 @@
 # Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+johns:
+  quiz: johns
+
+janes:
+  quiz: janes
