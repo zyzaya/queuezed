@@ -11,8 +11,11 @@ class PracticeSessionsController < ApplicationController
   end
 
   def create
-    @quiz = Quiz.find(params[:quiz_id])
-    ids = []
+    @quiz = current_user.quizzes.find_by(id: params[:quiz_id])
+    if (@quiz.nil?)
+      head :not_found
+    else
+      ids = []
     order = []
     text_filter = params[:text_filter].downcase
     tag_filter = params[:tag_filter].split(",").map { |t| t.to_i }
@@ -51,6 +54,7 @@ class PracticeSessionsController < ApplicationController
     current_question_ids = @practice_session.order[0].filter { |e| !e.nil? }
     @questions = Question.includes(:answers).where(id: current_question_ids)
     render 'practice_sessions/show'
+    end
   end
 
   def show
