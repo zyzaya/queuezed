@@ -27,6 +27,7 @@ class PracticeSessionsControllerTest < ActionDispatch::IntegrationTest
     params = {
       text_filter: text_filter,
       tag_filter: "",
+      review_filter: "false",
     }
     post quiz_practice_index_path(quizzes(:johns), params: params)
     practice = PracticeSession.last
@@ -43,7 +44,8 @@ class PracticeSessionsControllerTest < ActionDispatch::IntegrationTest
     tag_filter = "#{tags(:tag_1).id}"
     params = {
       text_filter: "",
-      tag_filter: tag_filter
+      tag_filter: tag_filter,
+      review_filter: "false"
     }
     post quiz_practice_index_path(quizzes(:johns), params: params)
     practice = PracticeSession.last

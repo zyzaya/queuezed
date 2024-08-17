@@ -11,11 +11,12 @@ class PracticeSessionsController < ApplicationController
   end
 
   def create
-    @quiz = current_user.quizzes.find_by(id: params[:quiz_id])
+    practice_params = practice_session_create_params(params)
+    @quiz = current_user.quizzes.find_by(id: practice_params[:quiz_id])
     if (@quiz.nil?)
       head :not_found
     else
-      order = create_order(params)
+      order = create_order(practice_params)
       if order.length <= 0
         flash[:alert] = "Practice has zero (0) questions"
         redirect_to new_quiz_practice_path
@@ -26,8 +27,8 @@ class PracticeSessionsController < ApplicationController
           current: 0, 
           length: order.length, 
           order: order,
-          text_filter: params[:text_filter],
-          tag_filter: params[:tag_filter]
+          text_filter: practice_params[:text_filter],
+          tag_filter: practice_params[:tag_filter]
         )
         current_question_ids = @practice_session.order[0].filter { |e| !e.nil? }
         @questions = Question.includes(:answers).where(id: current_question_ids)
@@ -46,6 +47,11 @@ class PracticeSessionsController < ApplicationController
     end
   end
   private
+  def practice_session_create_params(params)
+    params.require(:quiz_id)
+    params.permit(:quiz_id, :text_filter, :tag_filter, :review_filter)
+  end
+
   def create_order(params)
     questions = filter_review(params[:review_filter].eql?("true"))
     text_filter = params[:text_filter].downcase
