@@ -38,6 +38,23 @@ class PracticeSessionsControllerTest < ActionDispatch::IntegrationTest
       assert_not q.content.downcase.include?(text_filter)
     end
   end
+
+  test "create obeys tag filter" do
+    tag_filter = "#{tags(:tag_1).id}"
+    params = {
+      text_filter: "",
+      tag_filter: tag_filter
+    }
+    post quiz_practice_index_path(quizzes(:johns), params: params)
+    practice = PracticeSession.last
+    practice.questions.each do |q|
+      assert_not_nil q.tags.find_by(id: tags(:tag_1).id)
+    end
+    excluded = quizzes(:johns).questions.where.not(id: practice.questions.ids)
+    excluded.each do |q|
+      assert_nil q.tags.find_by(id: tags(:tag_1).id)
+    end
+  end
   # create
   #   does not allow access to other users quizzes
   #   obeys text filter
