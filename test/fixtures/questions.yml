@@ -32,6 +32,7 @@ john_three:
   times_correct: 0
   rank: 0
   review: false
+  next_review: <%= DateTime.now + 10.days %>
 
 # jane
 jane_one:
