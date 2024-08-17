@@ -55,6 +55,23 @@ class PracticeSessionsControllerTest < ActionDispatch::IntegrationTest
       assert_nil q.tags.find_by(id: tags(:tag_1).id)
     end
   end
+
+  test "create obeys review filter" do
+    params = {
+      text_filter: "",
+      tag_filter: "",
+      review_filter: "true"
+    }
+    post quiz_practice_index_path(quizzes(:johns), params: params)
+    practice = PracticeSession.last
+    practice.questions.each do |q|
+      assert q.review
+    end
+    excluded = quizzes(:johns).questions.where.not(id: practice.questions.ids)
+    excluded.each do |q|
+      assert_not q.review
+    end
+  end
   # create
   #   does not allow access to other users quizzes
   #   obeys text filter
