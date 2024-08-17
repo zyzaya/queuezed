@@ -85,6 +85,17 @@ class PracticeSessionsControllerTest < ActionDispatch::IntegrationTest
       assert q.answers.count > 0
     end
   end
+
+  test "does not create a pracice session with no questions" do
+    expected = PracticeSession.count
+    params = {
+      text_filter: "no questions have this text",
+      tag_filter: "",
+      review_filter: "false"
+    }
+    post quiz_practice_index_path(quizzes(:johns), params: params)
+    assert_equal expected, PracticeSession.count
+  end
   # create
   #   does not allow access to other users quizzes
   #   obeys text filter

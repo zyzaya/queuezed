@@ -42,19 +42,23 @@ class PracticeSessionsController < ApplicationController
           ids += q_ids
         end
       end
-
-      max = order.max { |a, b| a.length <=> b.length }.length
-      order.map { |e| e.fill(nil, e.length, max - e.length) }
-      @practice_session = @quiz.practice_sessions.create(
-        current: 0, 
-        length: order.length, 
-        order: order,
-        text_filter: params[:text_filter],
-        tag_filter: params[:tag_filter]
-      )
-      current_question_ids = @practice_session.order[0].filter { |e| !e.nil? }
-      @questions = Question.includes(:answers).where(id: current_question_ids)
-      render 'practice_sessions/show'
+      if order.length <= 0
+        flash[:alert] = "Practice has zero (0) questions"
+        redirect_to new_quiz_practice_path
+      else
+        max = order.max { |a, b| a.length <=> b.length }.length
+        order.map { |e| e.fill(nil, e.length, max - e.length) }
+        @practice_session = @quiz.practice_sessions.create(
+          current: 0, 
+          length: order.length, 
+          order: order,
+          text_filter: params[:text_filter],
+          tag_filter: params[:tag_filter]
+        )
+        current_question_ids = @practice_session.order[0].filter { |e| !e.nil? }
+        @questions = Question.includes(:answers).where(id: current_question_ids)
+        render 'practice_sessions/show'
+      end
     end
   end
 
