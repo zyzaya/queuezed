@@ -303,7 +303,6 @@ class QuizzesControllerTest < ActionDispatch::IntegrationTest
     quiz = quizzes(:johns)
     question = questions(:john_one)
     answer = answers(:john_one)
-    expected = quiz.name
     modified_name = "modified name"
     modified_content = "modified content"
     body = {
