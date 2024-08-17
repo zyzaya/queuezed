@@ -15,33 +15,7 @@ class PracticeSessionsController < ApplicationController
     if (@quiz.nil?)
       head :not_found
     else
-      puts params
-      ids = []
-      order = []
-      text_filter = params[:text_filter].downcase
-      tag_filter = params[:tag_filter].split(",").map { |t| t.to_i }
-      review_filter = params[:review_filter].eql?("true")
-      questions = if review_filter
-        @quiz.questions.where(review: review_filter)
-      else
-        @quiz.questions
-      end
-      # all questions that 
-      #   have at least one answer
-      #   content contains text_filter
-      #   have all tags in tag_filter
-      # related questions grouped together
-      questions.includes(:relations, :answers, :tags).shuffle.each.with_index do |question|
-        if (!ids.include?(question.id) && # not already selected
-          (!question.answers.empty?) && # has at least one answer
-          (text_filter.eql?("") || question.content.downcase.include?(text_filter)) && 
-          ((tag_filter - question.tags.pluck(:id)).length == 0))
-          # group related questions
-          q_ids = [question.id] + question.relations.pluck(:id)
-          order << q_ids
-          ids += q_ids
-        end
-      end
+      order = create_order(params)
       if order.length <= 0
         flash[:alert] = "Practice has zero (0) questions"
         redirect_to new_quiz_practice_path
@@ -72,4 +46,43 @@ class PracticeSessionsController < ApplicationController
     end
   end
   private
+  def create_order(params)
+    questions = filter_review(params[:review_filter].eql?("true"))
+    text_filter = params[:text_filter].downcase
+    tag_filter = params[:tag_filter].split(",").map { |t| t.to_i }
+    ids = []
+    order = []
+    questions.includes(:relations, :answers, :tags).shuffle.each.with_index do |q|
+      if (!ids.include?(q.id) &&
+        has_answers(q) &&
+        has_text(q, text_filter) &&
+        has_tags(q, tag_filter))
+        # group related questions
+        q_ids = [q.id] + q.relations.pluck(:id)
+        order << q_ids
+        ids += q_ids
+      end
+    end
+    return order
+  end
+
+  def filter_review(review)
+    if review
+      @quiz.questions.where(review: true)
+    else
+      @quiz.questions
+    end
+  end
+
+  def has_answers(question)
+    !question.answers.empty?
+  end
+
+  def has_text(question, filter)
+    filter.eql?("") || question.content.downcase.include?(filter)
+  end
+
+  def has_tags(question, filter)
+    (filter - question.tags.pluck(:id)).length  == 0
+  end
 end
