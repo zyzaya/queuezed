@@ -72,6 +72,19 @@ class PracticeSessionsControllerTest < ActionDispatch::IntegrationTest
       assert_not q.review
     end
   end
+
+  test "create does not include questions without an answer" do
+    params = {
+      text_filter: "",
+      tag_filter: "",
+      review_filter: "false"
+    }
+    post quiz_practice_index_path(quizzes(:johns), params: params)
+    practice = PracticeSession.last
+    practice.questions.each do |q|
+      assert q.answers.count > 0
+    end
+  end
   # create
   #   does not allow access to other users quizzes
   #   obeys text filter

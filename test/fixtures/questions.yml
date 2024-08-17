@@ -23,6 +23,15 @@ john_two:
   rank: 0
   review: true
   next_review: <%= DateTime.now %>
+john_three:
+  quiz: johns
+  content: "This question has no answer"
+  current_streak: 0
+  longest_streak: 0
+  times_taken: 0
+  times_correct: 0
+  rank: 0
+  review: false
 
 # jane
 jane_one:
