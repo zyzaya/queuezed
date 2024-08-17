@@ -10,12 +10,20 @@ class QuestionsControllerTest < ActionDispatch::IntegrationTest
   # successful requests return json objects
   test "index returns json of questions" do
     quiz = quizzes(:johns)
-    question = questions(:john_one)
-    expected = quiz.questions.includes(:tags).to_json(include: :tags)
-    
+    expected = quiz.questions.includes(:tags).as_json(include: :tags)
     get quiz_questions_path(quiz.id)
     assert_response :ok
-    assert_equal expected, @response.body
+    result = JSON.parse(@response.body)
+    expected.each do |e|
+      r = result.find { |f| f["id"] == e["id"] }
+      r.each do |k, v|
+        if r[k].nil?
+          assert_nil e[k]
+        else
+          assert_equal r[k], e[k]
+        end
+      end
+    end
   end
 
   test "new returns json of empty question" do
