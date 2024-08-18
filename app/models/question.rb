@@ -60,6 +60,7 @@ class Question < ApplicationRecord
     correct = incorrect_answers.length == 0
     update_statistics(correct)
     update_srs(correct)
+    update_difficult
     history.correct = correct
     self.save
   end  
@@ -101,5 +102,14 @@ class Question < ApplicationRecord
       self.rank = new_rank
       self.next_review = DateTime.now + self.quiz.interval_duration(new_rank)
     end
+  end
+
+  def update_difficult
+    # marked as difficult when:
+    #   a streak of less than three
+    #   or correct less than 50%
+    self.difficult = 
+      ((self.times_taken >= 3 && self.current_streak < 3) ||
+       (self.times_correct.to_f / self.times_taken.to_f) < 0.5)
   end
 end

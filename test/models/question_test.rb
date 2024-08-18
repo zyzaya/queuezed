@@ -159,4 +159,11 @@ class QuestionTest < ActiveSupport::TestCase
       assert_not answer_history.correct
     end
   end
+
+  test "difficult is set to true when incorrect" do
+    question = questions(:john_one)
+    question.submit_answer(practice_sessions(:johns), [])
+    result = Question.find(question.id)
+    assert result.difficult
+  end
 end
