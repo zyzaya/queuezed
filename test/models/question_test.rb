@@ -132,4 +132,20 @@ class QuestionTest < ActiveSupport::TestCase
     assert_equal initial_count + 1, result.histories.count
     assert result.histories.last.correct
   end
+
+  test "creates answer histories" do
+    question = questions(:john_one)
+    practice_session = practice_sessions(:johns)
+    question.submit_answer(practice_session, correct_answers(question))
+    result = Question.find(question.id)
+    history = QuestionHistory.find_by(
+      question_id: question.id, 
+      practice_session_id: practice_session.id
+    )
+    result.answers.each do |a|
+      answer_history = history.answer_histories.find_by(answer_id: a.id)
+      assert_not_nil answer_history
+      assert answer_history.correct
+    end
+  end
 end
