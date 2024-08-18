@@ -4,7 +4,6 @@ Rails.application.routes.draw do
     resources :questions, only: [:index, :new, :show, :edit, :destroy]
     resources :practice, only: [:show, :new, :create], controller: 'practice_sessions' do
       resources :answers, only: [:new, :create], controller: 'question_histories'
-      resources :practice_questions, only: [:show]
     end
   end
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
