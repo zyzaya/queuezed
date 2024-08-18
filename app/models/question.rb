@@ -63,6 +63,7 @@ class Question < ApplicationRecord
       )
     end
     update_statistics(correct)
+    update_srs(correct)
     self.save
   end  
 
@@ -93,6 +94,15 @@ class Question < ApplicationRecord
       end
     else
       self.current_streak = 0
+    end
+  end
+
+  def update_srs(correct)
+    if self.review
+      new_rank = correct ? self.rank + 1 : self.rank - 1 
+      new_rank = new_rank.clamp(1..Quiz::MAX_RANK)
+      self.rank = new_rank
+      self.next_review = DateTime.now + self.quiz.interval_duration(new_rank)
     end
   end
 end

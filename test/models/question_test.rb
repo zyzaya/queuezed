@@ -86,16 +86,16 @@ class QuestionTest < ActiveSupport::TestCase
   
   test "rank increases when review is true and answer is correct" do
     question = questions(:john_one)
-    question.update(next_review: DateTime.now)
-    initial = question.rank
     now = DateTime.now
+    question.update(next_review: now)
+    initial = question.rank
     DateTime.stub :now, now do
       question.submit_answer(practice_sessions(:johns), correct_answers(question))
+      result = Question.find(question.id)
+      assert_equal initial + 1, result.rank
+      expected_next_review = now + question.quiz.interval_duration(initial + 1)
+      assert_in_delta expected_next_review.utc, result.next_review.utc, 1.seconds
     end
-    result = Question.find(question.id)
-    assert_equal initial + 1, result.rank
-    expected_next_review = question.quiz.interval_duration(initial + 1)
-    assert_equal expected_next_review, result.next_review 
   end
   # test "stubs" do
   #   question = questions(:john_one)
