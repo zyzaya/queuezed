@@ -45,46 +45,8 @@ class QuestionHistoriesController < ApplicationController
       q_ids = given.keys
       Question.transaction do
         @quiz.questions.find(q_ids).each do |q|
-          question_history = q.histories.new(practice_session_id: @practice_session.id)
-          question_correct = true
-          q.answers.each do |a|
-            if given[q.id].keys.include?(a.id)
-              expected = a.content
-              variants = expected.split(" / ")
-              given_answer = given[q.id][a.id]
-              correct = variants.include?(given_answer)
-              question_correct = false if !correct
-              question_history.answer_histories.new(
-                answer_id: a.id,
-                expected: expected,
-                given: given_answer,
-                correct: correct
-              )
-            end
-          end
-          question_history.correct = question_correct
-          q.times_taken += 1
-          q.last_taken = Time.now
-          if (question_correct)
-            q.times_correct += 1
-            q.current_streak += 1
-            if (q.current_streak > q.longest_streak)
-              q.longest_streak = q.current_streak
-            end
-          else
-            q.current_streak = 0
-          end
-          # update difficult
-          if ((q.times_taken >= 3 && q.current_streak < 3) || ((q.times_correct.to_f / q.times_taken.to_f) < 0.5))
-            Tag.find_or_create_by(content: "Difficult").questions << q
-          end
-          # update srs rank, next taken
-          if (q.review)
-            q.rank = question_correct ? q.rank + 1 : q.rank - 1
-            q.rank = q.rank.clamp(0, 5)
-            q.next_review = DateTime.now + @quiz.interval_duration(q.rank)
-          end
-          q.save
+          given_answers = given[q.id].values
+          q.submit_answer(@practice_session, given_answers)
         end
       end
 
