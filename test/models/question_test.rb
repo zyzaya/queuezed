@@ -30,4 +30,11 @@ class QuestionTest < ActiveSupport::TestCase
     question.submit_answer(practice_sessions(:johns), correct_answers(question))
     assert_equal initial + 1, Question.find(question.id).times_correct
   end
+
+  test "submit_answer does not increment times_correct when not correct" do
+    question = questions(:john_one)
+    initial = question.times_correct
+    question.submit_answer(practice_sessions(:johns), ["incorrect1"])
+    assert_equal initial, Question.find(question.id).times_correct
+  end
 end
