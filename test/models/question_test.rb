@@ -1,4 +1,5 @@
 require "test_helper"
+require "minitest/mock"
 
 class QuestionTest < ActiveSupport::TestCase
   # sumbit_answer
@@ -66,4 +67,28 @@ class QuestionTest < ActiveSupport::TestCase
     question.submit_answer(practice_sessions(:johns), correct_answers(question))
     assert_equal initial + 1, Question.find(question.id).longest_streak
   end
+  # review/rank
+  # rank increases when
+  #   review is true
+  #   answer is correct
+  # rank decreases when
+  #   review is true
+  #   answer is not correct
+  # next_review is set when
+  #   answer is given
+  test "review flag is set when past next_review time" do
+    question = questions(:john_one)
+    now = DateTime.now
+    question.update(review: false, next_review: now - 10.days)
+    result = Question.find(question.id)
+    assert result.review
+  end
+  
+  # test "stubs" do
+  #   question = questions(:john_one)
+  #   DateTime.stub :now, "something" do
+  #     puts DateTime.now
+  #     question.stub_test
+  #   end
+  # end
 end
