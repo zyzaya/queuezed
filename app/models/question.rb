@@ -29,10 +29,6 @@ class Question < ApplicationRecord
     super(attributes)
   end
 
-  def stub_test
-    puts DateTime.now
-  end
-
   def submit_answer(practice_session, given)
     history = self.histories.new(practice_session_id: practice_session.id)
     answers = self.answers
@@ -52,7 +48,6 @@ class Question < ApplicationRecord
       end
     end
     incorrect_answers = answers - correct_answers
-    correct = incorrect_answers.length == 0
     incorrect_answers.each.with_index do |a, i|
       g = given[i].nil? ? "" : given[i]
       history.answer_histories.new(
@@ -62,8 +57,10 @@ class Question < ApplicationRecord
         correct: false
       )
     end
+    correct = incorrect_answers.length == 0
     update_statistics(correct)
     update_srs(correct)
+    history.correct = correct
     self.save
   end  
 

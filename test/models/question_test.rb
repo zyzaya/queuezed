@@ -118,4 +118,18 @@ class QuestionTest < ActiveSupport::TestCase
     assert_equal initial, result.rank
     assert_equal next_review, result.next_review
   end
+  # creates question history
+  # marks as correct when correct
+  # creates answer history
+  # marks as (in)correct
+  # creates incorrect answer history for answers
+  #   with no given answer
+  test "creates question history" do
+    question = questions(:john_one)
+    initial_count = question.histories.count
+    question.submit_answer(practice_sessions(:johns), correct_answers(question))
+    result = Question.find(question.id)
+    assert_equal initial_count + 1, result.histories.count
+    assert result.histories.last.correct
+  end
 end
