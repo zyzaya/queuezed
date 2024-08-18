@@ -22,6 +22,13 @@ class QuestionHistoriesController < ApplicationController
 
   def create
     @practice_session = PracticeSession.find_by(id: params[:practice_id], quiz_id: current_user.quizzes.ids)
+    # given[q_id][a_id] = value
+    # given = {
+    #   q_id: {
+    #     a_id: "given text1",
+    #     a_id: "given text2"
+    #   }
+    # }
     if @practice_session.nil?
       head :not_found
     else
