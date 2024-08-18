@@ -7,10 +7,12 @@ class QuestionHistoriesControllerTest < ActionDispatch::IntegrationTest
     sign_in users(:john)
   end
 
-  def submit_answer(id, text)
+  def submit_answer(id, correct)
     practice_id = practice_sessions(:johns)
     params = { given: {} }
-    q_id = Answer.find(id).question.id
+    answer = Answer.find(id)
+    text = correct ? answer.content.split("/")[0].strip : ""
+    q_id = answer.question.id
     params[:given][q_id] = {}
     params[:given][q_id][id] = text
     post practice_answers_path(practice_id, params)
@@ -32,8 +34,16 @@ class QuestionHistoriesControllerTest < ActionDispatch::IntegrationTest
   test "create updates times taken" do
     question = questions(:john_one)
     initial = question.times_taken
-    submit_answer(answers(:john_one).id, "given")
+    submit_answer(answers(:john_one).id, true)
     assert_equal initial + 1, Question.find(question.id).times_taken
+  end
+
+  test "create updates times_correct" do
+    question = questions(:john_one)
+    answer = answers(:john_one)
+    initial = question.times_correct
+    submit_answer(answer.id, true)
+    assert_equal initial + 1, Question.find(question.id).times_correct
   end
 
   test "cannot access another users practice session with new" do
