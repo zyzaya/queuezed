@@ -58,4 +58,12 @@ class QuestionTest < ActiveSupport::TestCase
     question.submit_answer(practice_sessions(:johns), ["incorrect"])
     assert_equal 0, Question.find(question.id).current_streak
   end
+
+  test "longest_streak is updated when surpassed by current_streak" do
+    question = questions(:john_one)
+    initial = 5
+    question.update(current_streak: initial, longest_streak: initial)
+    question.submit_answer(practice_sessions(:johns), correct_answers(question))
+    assert_equal initial + 1, Question.find(question.id).longest_streak
+  end
 end
