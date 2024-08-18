@@ -51,4 +51,11 @@ class QuestionTest < ActiveSupport::TestCase
     question.submit_answer(practice_sessions(:johns), ["incorrect"])
     assert_equal initial, Question.find(question.id).current_streak
   end
+
+  test "current_streak gets reset on incorrect answer" do
+    question = questions(:john_one)
+    question.update(current_streak: 5)
+    question.submit_answer(practice_sessions(:johns), ["incorrect"])
+    assert_equal 0, Question.find(question.id).current_streak
+  end
 end
