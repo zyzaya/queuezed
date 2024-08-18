@@ -29,6 +29,39 @@ class Question < ApplicationRecord
     super(attributes)
   end
 
+  def submit_answer(practice_session, given)
+    history = self.histories.new(practice_session_id: practice_session.id)
+    answers = self.answers
+    correct_answers = []
+    answers.each do |a|
+      variants = a.variants
+      given_answer = given.find { |g| variants.any?(g) }
+      unless given_answer.nil?
+        given.delete(given_answer)
+        correct_answers << a
+        history.answer_histories.new(
+          answer_id: a.id,
+          expected: a.content,
+          given: given_answer,
+          correct: true
+        )
+      end
+    end
+    incorrect_answers = answers - correct_answers
+    correct = incorrect_answers.length == 0
+    incorrect_answers.each.with_index do |a, i|
+      g = given[i].nil? ? "" : given[i]
+      history.answer_histories.new(
+        answer_id: a.id,
+        expected: a.content,
+        given: g,
+        correct: false
+      )
+    end
+    update_statistics(correct)
+    self.save
+  end  
+
   private
   def init
     update_review
@@ -42,6 +75,20 @@ class Question < ApplicationRecord
   def update_review
     if (!self.review && !self.next_review.nil? && self.next_review < DateTime.now)
       self.review = true
+    end
+  end
+
+  def update_statistics(correct)
+    self.times_taken += 1
+    self.last_taken = Time.now
+    if (correct)
+      self.times_correct += 1
+      self.current_streak += 1
+      if (self.current_streak > self.longest_streak)
+        self.longest_streak = self.current_streak
+      end
+    else
+      self.current_streak = 0
     end
   end
 end
