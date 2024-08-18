@@ -118,12 +118,7 @@ class QuestionTest < ActiveSupport::TestCase
     assert_equal initial, result.rank
     assert_equal next_review, result.next_review
   end
-  # creates question history
-  # marks as correct when correct
-  # creates answer history
-  # marks as (in)correct
-  # creates incorrect answer history for answers
-  #   with no given answer
+
   test "creates question history" do
     question = questions(:john_one)
     initial_count = question.histories.count
@@ -146,6 +141,22 @@ class QuestionTest < ActiveSupport::TestCase
       answer_history = history.answer_histories.find_by(answer_id: a.id)
       assert_not_nil answer_history
       assert answer_history.correct
+    end
+  end
+
+  test "creates answer histories even if no answer is given" do
+    question = questions(:john_one)
+    practice_session = practice_sessions(:johns)
+    question.submit_answer(practice_session, [])
+    result = Question.find(question.id)
+    history = QuestionHistory.find_by(
+      question_id: question.id,
+      practice_session_id: practice_session.id
+    )
+    result.answers.each do |a|
+      answer_history = history.answer_histories.find_by(answer_id: a.id)
+      assert_not_nil answer_history
+      assert_not answer_history.correct
     end
   end
 end
