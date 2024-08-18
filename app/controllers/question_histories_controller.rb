@@ -24,29 +24,17 @@ class QuestionHistoriesController < ApplicationController
     @practice_session = PracticeSession.find_by(id: params[:practice_id], quiz_id: current_user.quizzes.ids)
     # given[q_id][a_id] = value
     # given = {
-    #   q_id: {
-    #     a_id: "given text1",
-    #     a_id: "given text2"
-    #   }
+    #   q_id: ["given1", "given2"]
     # }
     if @practice_session.nil?
       head :not_found
     else
       @quiz = @practice_session.quiz
-      # converts ids from string to integers
-      given = params.to_unsafe_hash[:given].map do |k, v|
-        {
-          k.to_i => v.map do |x, y|
-            { x.to_i => y}
-          end.reduce(:merge)
-        }
-      end.reduce(:merge)
-
-      q_ids = given.keys
+      given = params[:given]
+      q_ids = given.keys.map { |id| id.to_i }
       Question.transaction do
         @quiz.questions.find(q_ids).each do |q|
-          given_answers = given[q.id].values
-          q.submit_answer(@practice_session, given_answers)
+          q.submit_answer(@practice_session, given[q.id.to_s])
         end
       end
 

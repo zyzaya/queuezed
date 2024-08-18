@@ -13,8 +13,8 @@ class QuestionHistoriesControllerTest < ActionDispatch::IntegrationTest
     answer = Answer.find(id)
     text = correct ? answer.content.split("/")[0].strip : ""
     q_id = answer.question.id
-    params[:given][q_id] = {}
-    params[:given][q_id][id] = text
+    params[:given][q_id] = []
+    params[:given][q_id] << text
     post practice_answers_path(practice_id, params)
   end
 
