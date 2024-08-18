@@ -111,6 +111,21 @@ class QuestionTest < ActiveSupport::TestCase
       assert_in_delta expected_next_review.utc, result.next_review, 1.seconds
     end
   end
+
+  test "rank does not change if review is false" do
+    question = questions(:john_one)
+    question.update(
+      next_review: DateTime.now + 10.days, 
+      review: false, 
+      rank: 3
+    )
+    initial = question.rank
+    next_review = question.next_review
+    question.submit_answer(practice_sessions(:johns), correct_answers(question))
+    result = Question.find(question.id)
+    assert_equal initial, result.rank
+    assert_equal next_review, result.next_review
+  end
   # test "stubs" do
   #   question = questions(:john_one)
   #   DateTime.stub :now, "something" do
