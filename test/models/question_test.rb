@@ -166,4 +166,14 @@ class QuestionTest < ActiveSupport::TestCase
     result = Question.find(question.id)
     assert result.difficult
   end
+
+  test "difficult is unset with a streak at least 3 and correct at least 50% total" do
+    question = questions(:john_one)
+    question.submit_answer(practice_sessions(:johns), [])
+    1.upto(3) do 
+      question.submit_answer(practice_sessions(:johns), correct_answers(question))
+    end
+    result = Question.find(question.id)
+    assert_not result.difficult
+  end
 end
