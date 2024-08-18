@@ -17,20 +17,7 @@ class QuestionHistoriesControllerTest < ActionDispatch::IntegrationTest
     params[:given][q_id][id] = text
     post practice_answers_path(practice_id, params)
   end
-  # does not allow access to another users stuff
-  # strong parameters
-  # new: 
-  # create: 
-  #  modifies statistics
-  #   times_taken
-  #   last_taken
-  #   times_correct
-  #   current_streak
-  #   srs_rank
-  #   difficult
-  #   rank
-  #   review
-  #  creates answer histories
+
   test "create updates times taken" do
     question = questions(:john_one)
     initial = question.times_taken
@@ -40,10 +27,16 @@ class QuestionHistoriesControllerTest < ActionDispatch::IntegrationTest
 
   test "create updates times_correct" do
     question = questions(:john_one)
-    answer = answers(:john_one)
     initial = question.times_correct
-    submit_answer(answer.id, true)
+    submit_answer(answers(:john_one).id, true)
     assert_equal initial + 1, Question.find(question.id).times_correct
+  end
+
+  test "create updates current_streak" do
+    question = questions(:john_one)
+    initial = question.current_streak
+    submit_answer(answers(:john_one).id, true)
+    assert_equal initial + 1, Question.find(question.id).current_streak
   end
 
   test "cannot access another users practice session with new" do
