@@ -17,4 +17,9 @@ class PracticeSession < ApplicationRecord
     current_ids = self.order[self.current].filter { |e| !e.nil? }
     return Question.includes(:answers).where(id: current_ids)
   end
+
+  def next_question
+    current = (self.current + 1).clamp(1..self.length + 1)
+    self.update(current: current)
+  end
 end

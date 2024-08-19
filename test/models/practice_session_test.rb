@@ -10,4 +10,13 @@ class PracticeSessionTest < ActiveSupport::TestCase
       assert practice.order[practice.current].include?(q.id)
     end
   end
+
+  test "next question increments current" do
+    practice = quizzes(:johns).new_practice
+    initial = practice.current
+    practice.save
+    result = PracticeSession.find(practice.id)
+    result.next_question
+    assert_equal initial + 1, result.current
+  end
 end
