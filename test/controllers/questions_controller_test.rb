@@ -46,12 +46,19 @@ class QuestionsControllerTest < ActionDispatch::IntegrationTest
 
   test "destroy returns json of the destroyed question" do
     question = questions(:john_one)
-    expected = question.to_json.sub(/"deleted_at":null,/, "")
-    
+    expected = question.as_json
     delete "/questions/#{question.id}"
-    result = @response.body.sub(/"deleted_at":".+",/, "")
+    result = JSON.parse(@response.body)
     assert_response :ok
-    assert_equal expected, result
+    result.each do |k, v|
+      if k.eql?("deleted_at")
+        assert_not_nil v
+      elsif result[k].nil?
+        assert_not expected[k]
+      else
+        assert_equal result[k], expected[k]
+      end
+    end
   end
 
   test "destroy destroys question" do
