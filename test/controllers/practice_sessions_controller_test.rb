@@ -8,12 +8,7 @@ class PracticeSessionsControllerTest < ActionDispatch::IntegrationTest
   end
 
   def create_practice_session(text: "", tags: "", review: "")
-    params = {
-      text_filter: text,
-      tag_filter: tags,
-      review_filter: review
-    }
-    post quiz_practice_index_path(quizzes(:johns), params: params)
+    
   end
 
   test "new does not allow accessing another users quiz" do
@@ -29,5 +24,18 @@ class PracticeSessionsControllerTest < ActionDispatch::IntegrationTest
   test "show does not allow accesing another users practice session" do
     get practice_path(practice_sessions(:janes))
     assert_response :not_found
+  end
+
+  test "create creates new practice session" do
+    quiz = quizzes(:johns)
+    initial_count = quiz.practice_sessions.count
+    params = {
+      text_filter: "",
+      tag_filter: "",
+      review: "false"
+    }
+    post quiz_practice_index_path(quizzes(:johns), params: params)
+    result = Quiz.find(quiz.id)
+    assert_equal initial_count + 1, result.practice_sessions.count
   end
 end
