@@ -7,10 +7,6 @@ class PracticeSessionsControllerTest < ActionDispatch::IntegrationTest
     sign_in users(:john)
   end
 
-  def create_practice_session(text: "", tags: "", review: "")
-    
-  end
-
   test "new does not allow accessing another users quiz" do
     get new_quiz_practice_path(quizzes(:janes))
     assert_response :not_found
