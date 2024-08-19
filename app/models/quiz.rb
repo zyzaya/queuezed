@@ -36,4 +36,58 @@ class Quiz < ApplicationRecord
     end
     ActiveSupport::Duration.build(duration) unless duration.nil?
   end
+
+  def new_practice(text_filter: "", tag_filter: [], review: false)
+    order = create_order(
+      text_filter: text_filter, 
+      tag_filter: tag_filter, 
+      review: review
+    )
+    return nil if order.length <= 0
+
+    max = order.max { |a, b| a.length <=> b.length }.length
+    order.map { |e| e.fill(nil, e.length, max - e.length) }
+    return self.practice_sessions.new(
+      current: 0,
+      length: order.length,
+      order: order,
+      text_filter: text_filter,
+      tag_filter: tag_filter
+    )
+  end
+  private
+  def create_order(text_filter: "", tag_filter: "", review: false)
+    questions = filter_review(review)
+    text_filter = text_filter.downcase
+    ids = []
+    order = []
+    questions.includes(:relations, :answers, :tags).shuffle.each.with_index do |q|
+      if (!ids.include?(q.id) &&
+        has_answers(q) &&
+        has_text(q, text_filter) &&
+        has_tags(q, tag_filter))
+        # group related questions
+        q_ids = [q.id] + q.relations.pluck(:id)
+        order << q_ids
+        ids += q_ids
+      end
+    end
+    return order
+  end
+
+  def filter_review(review)
+    review ? self.questions.where(review: true) : self.questions
+  end
+
+  def has_answers(question)
+    !question.answers.empty?
+  end
+
+  def has_text(question, filter)
+    filter.eql?("") || question.content.downcase.include?(filter)
+  end
+
+  def has_tags(question, filter)
+    (filter - question.tags.pluck(:id)).length == 0
+  end
 end
