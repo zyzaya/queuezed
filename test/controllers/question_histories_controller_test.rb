@@ -7,36 +7,25 @@ class QuestionHistoriesControllerTest < ActionDispatch::IntegrationTest
     sign_in users(:john)
   end
 
-  def submit_answer(id, correct)
-    practice_id = practice_sessions(:johns)
+  def submit_answers(question, correct)
     params = { given: {} }
-    answer = Answer.find(id)
-    text = correct ? answer.content.split("/")[0].strip : ""
-    q_id = answer.question.id
-    params[:given][q_id] = []
-    params[:given][q_id] << text
-    post practice_answers_path(practice_id, params)
+    params[:given][question.id] = []
+    question.answers.each do |a|
+      params[:given][question.id] << a.variants[0]
+    end
+    post practice_answers_path(practice_sessions(:johns), params)
   end
 
-  test "create updates times taken" do
+  test "create updates statistics" do
     question = questions(:john_one)
-    initial = question.times_taken
-    submit_answer(answers(:john_one).id, true)
-    assert_equal initial + 1, Question.find(question.id).times_taken
-  end
-
-  test "create updates times_correct" do
-    question = questions(:john_one)
-    initial = question.times_correct
-    submit_answer(answers(:john_one).id, true)
-    assert_equal initial + 1, Question.find(question.id).times_correct
-  end
-
-  test "create updates current_streak" do
-    question = questions(:john_one)
-    initial = question.current_streak
-    submit_answer(answers(:john_one).id, true)
-    assert_equal initial + 1, Question.find(question.id).current_streak
+    initial_times_taken = question.times_taken
+    initial_times_correct = question.times_correct
+    initial_current_streak = question.current_streak
+    submit_answers(question, true)
+    result = Question.find(question.id)
+    assert_equal initial_times_taken + 1, result.times_taken
+    assert_equal initial_times_correct + 1, result.times_correct
+    assert_equal initial_current_streak + 1, result.current_streak
   end
 
   test "cannot access another users practice session with new" do
