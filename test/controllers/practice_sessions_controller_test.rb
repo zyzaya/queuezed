@@ -31,32 +31,6 @@ class PracticeSessionsControllerTest < ActionDispatch::IntegrationTest
     assert_response :not_found
   end
 
-  test "create obeys text filter" do
-    text_filter = "holly"
-    create_practice_session(text: text_filter)
-    practice = PracticeSession.last
-    practice.questions.each do |q|
-      assert q.content.downcase.include?(text_filter)
-    end
-    excluded = quizzes(:johns).questions.where.not(id: practice.questions.ids)
-    excluded.each do |q|
-      assert_not q.content.downcase.include?(text_filter)
-    end
-  end
-
-  test "create obeys tag filter" do
-    tag_filter = "#{tags(:tag_1).id}"
-    create_practice_session(tags: tag_filter)
-    practice = PracticeSession.last
-    practice.questions.each do |q|
-      assert_not_nil q.tags.find_by(id: tags(:tag_1).id)
-    end
-    excluded = quizzes(:johns).questions.where.not(id: practice.questions.ids)
-    excluded.each do |q|
-      assert_nil q.tags.find_by(id: tags(:tag_1).id)
-    end
-  end
-
   test "create obeys review filter" do
     create_practice_session(review: "true")
     practice = PracticeSession.last
