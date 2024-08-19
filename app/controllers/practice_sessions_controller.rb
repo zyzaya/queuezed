@@ -20,15 +20,21 @@ class PracticeSessionsController < ApplicationController
       tag_filter = practice_params[:tag_filter]
       tag_filter = tag_filter.split(",").map { |t| t.to_i }
       review_filter = practice_params[:review_filter]
-      @practice_session = @quiz.new_practice(
+      practice = @quiz.new_practice(
         text_filter: text_filter,
         tag_filter: tag_filter,
         review: review_filter
       )
-      @practice_session.save
-      current_question_ids = @practice_session.order[0].filter { |e| !e.nil? }
-      @questions = Question.includes(:answers).where(id: current_question_ids)
-      render 'practice_sessions/show'
+      if practice.nil?
+        flash[:alert] = "Failed to create practice, no valid questions"
+        redirect_to new_quiz_practice_path(@quiz.id)
+      else
+        practice.save
+        @practice_session = practice
+        current_question_ids = @practice_session.order[0].filter { |e| !e.nil? }
+        @questions = Question.includes(:answers).where(id: current_question_ids)
+        render 'practice_sessions/show'
+      end
     end
   end
 

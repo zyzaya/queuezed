@@ -38,4 +38,17 @@ class PracticeSessionsControllerTest < ActionDispatch::IntegrationTest
     result = Quiz.find(quiz.id)
     assert_equal initial_count + 1, result.practice_sessions.count
   end
+
+  test "does not create practice session if no valid questions" do
+    quiz = quizzes(:johns)
+    initial_count = quiz.practice_sessions.count
+    params = {
+      text_filter: "no question has this text",
+      tag_filter: "",
+      review: false
+    }
+    post quiz_practice_index_path(quiz.id, params: params)
+    result = Quiz.find(quiz.id)
+    assert_equal initial_count, result.practice_sessions.count
+  end
 end
