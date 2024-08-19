@@ -7,15 +7,14 @@ class QuestionHistoriesController < ApplicationController
       head :not_found
     else
       @quiz = @practice_session.quiz
-      @practice_session.update(current: @practice_session.current + 1)
-      if @practice_session.current >= @practice_session.length
+      @practice_session.next_question
+      if @practice_session.finished?
         @correct = @practice_session.question_histories.where(correct: true).count
         @question_histories = @practice_session.question_histories.includes(:question, :answer_histories)
         @total = @question_histories.count
         render 'practice_sessions/feedback'
       else
-        current_question_ids = @practice_session.order[@practice_session.current].filter { |e| !e.nil? }
-        @questions = Question.includes(:answers).where(id: current_question_ids)
+        @questions = @practice_session.current_questions
       end
     end
   end
