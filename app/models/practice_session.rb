@@ -12,4 +12,9 @@ class PracticeSession < ApplicationRecord
   def questions
     return Question.where(id: order.flatten.uniq)
   end
+
+  def current_questions
+    current_ids = self.order[self.current].filter { |e| !e.nil? }
+    return Question.includes(:answers).where(id: current_ids)
+  end
 end
