@@ -40,4 +40,13 @@ class QuizTest < ActiveSupport::TestCase
     excluded = result.questions.where.not(id: result.questions.ids)
     excluded.each { |q| assert_not q.review }
   end
+
+  test "practice session does not include questions without an answer" do
+    practice = quizzes(:johns).new_practice
+    practice.save
+    result = PracticeSession.find(practice.id)
+    result.questions.each do |q|
+      assert q.answers.count > 0
+    end
+  end
 end

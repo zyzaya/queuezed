@@ -31,14 +31,6 @@ class PracticeSessionsControllerTest < ActionDispatch::IntegrationTest
     assert_response :not_found
   end
 
-  test "create does not include questions without an answer" do
-    create_practice_session
-    practice = PracticeSession.last
-    practice.questions.each do |q|
-      assert q.answers.count > 0
-    end
-  end
-
   test "does not create a pracice session with no questions" do
     expected = PracticeSession.count
     create_practice_session(text: "no questions have this text")
