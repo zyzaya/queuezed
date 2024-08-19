@@ -49,4 +49,9 @@ class QuizTest < ActiveSupport::TestCase
       assert q.answers.count > 0
     end
   end
+
+  test "new_practice returns nil if no valid questions are found" do
+    practice = quizzes(:johns).new_practice(text_filter: "no questions have this text")
+    assert_nil practice
+  end
 end

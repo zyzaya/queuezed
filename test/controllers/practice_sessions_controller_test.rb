@@ -30,10 +30,4 @@ class PracticeSessionsControllerTest < ActionDispatch::IntegrationTest
     get practice_path(practice_sessions(:janes))
     assert_response :not_found
   end
-
-  test "does not create a pracice session with no questions" do
-    expected = PracticeSession.count
-    create_practice_session(text: "no questions have this text")
-    assert_equal expected, PracticeSession.count
-  end 
 end
