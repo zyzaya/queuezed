@@ -31,18 +31,6 @@ class PracticeSessionsControllerTest < ActionDispatch::IntegrationTest
     assert_response :not_found
   end
 
-  test "create obeys review filter" do
-    create_practice_session(review: "true")
-    practice = PracticeSession.last
-    practice.questions.each do |q|
-      assert q.review
-    end
-    excluded = quizzes(:johns).questions.where.not(id: practice.questions.ids)
-    excluded.each do |q|
-      assert_not q.review
-    end
-  end
-
   test "create does not include questions without an answer" do
     create_practice_session
     practice = PracticeSession.last

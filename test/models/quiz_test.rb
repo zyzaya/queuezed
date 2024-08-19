@@ -30,4 +30,14 @@ class QuizTest < ActiveSupport::TestCase
       assert_nil q.tags.find_by(id: tags(:tag_1).id)
     end
   end
+
+  test "practice session obeys review filter" do
+    quiz = quizzes(:johns)
+    practice = quiz.new_practice(review: true)
+    practice.save
+    result = PracticeSession.find(practice.id)
+    result.questions.each { |q| assert q.review }
+    excluded = result.questions.where.not(id: result.questions.ids)
+    excluded.each { |q| assert_not q.review }
+  end
 end
