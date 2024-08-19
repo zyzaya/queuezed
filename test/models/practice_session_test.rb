@@ -11,6 +11,13 @@ class PracticeSessionTest < ActiveSupport::TestCase
     end
   end
 
+  test "current_question returns empty if session is finished" do
+    practice = quizzes(:johns).new_practice
+    practice.current = practice.length + 1
+    practice.save
+    assert_empty practice.current_questions
+  end
+
   test "next question increments current" do
     practice = quizzes(:johns).new_practice
     initial = practice.current
