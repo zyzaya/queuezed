@@ -22,4 +22,8 @@ class PracticeSession < ApplicationRecord
     current = (self.current + 1).clamp(1..self.length + 1)
     self.update(current: current)
   end
+
+  def finished?
+    self.current >= self.length
+  end
 end
