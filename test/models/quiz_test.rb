@@ -15,4 +15,19 @@ class QuizTest < ActiveSupport::TestCase
       assert_not q.content.downcase.include?(text_filter)
     end
   end
+
+  test "practice session obeys tag_filter" do
+    quiz = quizzes(:johns)
+    tag_filter = [tags(:tag_1).id]
+    practice = quiz.new_practice(tag_filter: tag_filter)
+    practice.save
+    result = PracticeSession.find(practice.id)
+    result.questions.each do |q|
+      assert_not_nil q.tags.find_by(id: tags(:tag_1).id)
+    end
+    excluded = practice.questions.where.not(id: practice.questions.ids)
+    excluded.each do |q|
+      assert_nil q.tags.find_by(id: tags(:tag_1).id)
+    end
+  end
 end
