@@ -30,19 +30,19 @@
     </div>
     <div class="edit_frame">
       <div class="edit_list" 
-          data-controller="zgrid" 
-          data-zgrid-quiz-id-value=<%= @quiz.id %> 
-          data-zgrid-edit-outlet='.edit[data-controller=edit]'
+          data-controller="edit--zgrid" 
+          data-edit--zgrid-quiz-id-value=<%= @quiz.id %> 
+          data-edit--zgrid-edit-outlet='.edit[data-controller=edit]'
           data-action=
-            "edit:refresh@window->zgrid#refresh
-            edit:selectQuestion@window->zgrid#select
-            edit:selectSibling@window->zgrid#setSelectedToSibling
-            edit:addTag@window->zgrid#addTag
-            edit:removeTag@window->zgrid#removeTag
-            edit:questionContentChange@window->zgrid#questionContentChange
-            filter:updateFilter@window->zgrid#updateFilter">
+            "edit:refresh@window->edit--zgrid#refresh
+            edit:selectQuestion@window->edit--zgrid#select
+            edit:selectSibling@window->edit--zgrid#setSelectedToSibling
+            edit:addTag@window->edit--zgrid#addTag
+            edit:removeTag@window-edit-->zgrid#removeTag
+            edit:questionContentChange@window->edit--zgrid#questionContentChange
+            filter:updateFilter@window->edit--zgrid#updateFilter">
         <%= render 'shared/filter', quiz: @quiz %>
-        <div data-zgrid-target="zgridContainer"></div>
+        <div data-edit--zgrid-target="zgridContainer"></div>
       </div>
       <turbo-frame id="edit_detail" >
       </turbo-frame>
