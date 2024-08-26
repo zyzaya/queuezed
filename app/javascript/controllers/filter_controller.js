@@ -1,5 +1,5 @@
 import { Controller } from '@hotwired/stimulus';
-import TagFilterDisplay from '../edit/TagFilterDisplay';
+import TagFilterDisplay from '../display/TagFilterDisplay';
 
 export default class extends Controller {
   static targets = ['text', 'tagOption', 'tagList', 'tag'];

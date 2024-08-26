@@ -4,7 +4,7 @@ import Data from 'edit/Data';
 import Undo from 'edit/Undo';
 import Change from 'edit/Change';
 import ID from 'edit/ID';
-import AnswerDisplay from '../edit/AnswerDisplay';
+import AnswerDisplay from '../../display/AnswerDisplay';
 
 export default class extends Controller {
   static values = {
