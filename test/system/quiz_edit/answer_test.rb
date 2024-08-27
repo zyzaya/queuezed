@@ -7,6 +7,10 @@ class AnswerTest < ApplicationSystemTestCase
     sign_in users(:john)
   end
 
+  def save_action
+    page.find("#save").click
+  end
+
   def undo_action
     page.find("#undo").click
   end
@@ -96,6 +100,39 @@ class AnswerTest < ApplicationSystemTestCase
     select_question(other.id)
     # redo
     redo_action
+    single_question_edit = single_question_edit_container(question.id)
+    assert_add_answer(initial, single_question_edit)
+  end
+
+  test "add answer -> save -> undo -> save -> redo -> save" do
+    question = questions(:john_one)
+    visit edit_quiz_path(quizzes(:johns))
+    select_question(question.id)
+    single_question_edit = single_question_edit_container(question.id)
+    initial = get_answer_content(single_question_edit)
+    # add answer
+    add_answer(single_question_edit)
+    assert_add_answer(initial, single_question_edit)
+    # save
+    save_action
+    visit edit_quiz_path(quizzes(:johns))
+    select_question(question.id)
+    single_question_edit = single_question_edit_container(question.id)
+    assert_add_answer(initial, single_question_edit)
+    # undo
+    undo_action
+    # save
+    save_action
+    visit edit_quiz_path(quizzes(:johns))
+    select_question(question.id)
+    single_question_edit = single_question_edit_container(question.id)
+    assert_no_change_to_answers(initial, single_question_edit)
+    # redo
+    redo_action
+    # save
+    save_action
+    visit edit_quiz_path(quizzes(:johns))
+    select_question(question.id)
     single_question_edit = single_question_edit_container(question.id)
     assert_add_answer(initial, single_question_edit)
   end
