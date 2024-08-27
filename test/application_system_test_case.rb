@@ -8,4 +8,8 @@ class ApplicationSystemTestCase < ActionDispatch::SystemTestCase
     row = page.find(".zg_row > .zg_td:first-child") { |e| e.text.eql?(content)}
     row.click
   end
+
+  def single_question_edit_container(id)
+    page.find(".single_question_edit[data-edit--single-question-id-value=\"#{id}\"]")
+  end
 end
