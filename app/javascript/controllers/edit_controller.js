@@ -368,7 +368,7 @@ export default class extends Controller {
 
   findQuestionContainer(id) {
     return this.singleQuestionContainerTargets.find(
-      (c) => id === c.dataset.singleQuestionIdValue
+      (c) => id === c.dataset['edit-SingleQuestionIdValue']
     );
   }
 

@@ -5,18 +5,18 @@
     data-edit-quiz-id-value = <%= @quiz.id %>
     data-edit-question-count-value = <%= @quiz.questions.count %>
     data-action="
-      zgrid:setTagCount@window->edit#setTagCount
-      question:load@window->edit#loadQuestion
-      question:delete@window->edit#deleteQuestion
-      question:addTag@window->edit#addTag
-      question:removeTag@window->edit#removeTag
-      question:createTag@window->edit#createTag
-      single-question:load@window->edit#loadSingleQuestion
-      single-question:questionContentChange@window->edit#questionContentChange
-      single-question:addAnswer@window->edit#addAnswer
-      answer:load@window->edit#loadAnswer
-      answer:answerContentChange@window->edit#answerContentChange
-      answer:delete@window->edit#deleteAnswer">
+      edit--zgrid:setTagCount@window->edit#setTagCount
+      edit--question:load@window->edit#loadQuestion
+      edit--question:delete@window->edit#deleteQuestion
+      edit--question:addTag@window->edit#addTag
+      edit--question:removeTag@window->edit#removeTag
+      edit--question:createTag@window->edit#createTag
+      edit--single-question:load@window->edit#loadSingleQuestion
+      edit--single-question:questionContentChange@window->edit#questionContentChange
+      edit--single-question:addAnswer@window->edit#addAnswer
+      edit--answer:load@window->edit#loadAnswer
+      edit--answer:answerContentChange@window->edit#answerContentChange
+      edit--answer:delete@window->edit#deleteAnswer">
     <div class="quiz_info">
       <%= text_field "", "quiz_title", class: "quiz_title", value:"#{@quiz.name}", data: { action:'edit#quizTitleChange', 'edit-target': 'title' }%>
       <div class="question_count" data-edit-target="subtitle"></div>

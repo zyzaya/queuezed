@@ -23,7 +23,7 @@ class QuizEditTest < ApplicationSystemTestCase
     visit edit_quiz_path(quizzes(:johns))
     question = questions(:john_one)
     select_question(question.id)
-    single_question_edit = page.find(".single_question_edit[data-single-question-id-value=\"#{question.id}\"]")
+    single_question_edit = page.find(".single_question_edit[data-edit--single-question-id-value=\"#{question.id}\"]")
     # tags
     expected_tags = question.tags.pluck(:content)
     result_tags = []

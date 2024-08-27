@@ -25,7 +25,7 @@ class AnswerTest < ApplicationSystemTestCase
     question = questions(:john_one)
     visit edit_quiz_path(quiz.id)
     select_question(question.id)
-    single_question_edit = page.find(".single_question_edit[data-single-question-id-value=\"#{question.id}\"]")
+    single_question_edit = page.find(".single_question_edit[data-edit--single-question-id-value=\"#{question.id}\"]")
     initial_answers = single_question_edit.find_all(".answer_content").map do |e|
       e.text
     end

@@ -1,13 +1,13 @@
 <div class="single_question_edit" 
   data-edit-target='singleQuestionContainer'
   data-controller='edit--single-question'
-  data-single-question-id-value='<%= question.id %>'>
+  data-edit--single-question-id-value='<%= question.id %>'>
   <div class="question_header">Question.</div>
   <textarea class="question_content" 
     data-edit-target='questionContent'
     data-edit--single-question-id-value='<%= question.id %>'
     data-edit--single-question-target='info'
-    data-action='change->single-question#questionContentChange'><%= question.content %></textarea>
+    data-action='change->edit--single-question#questionContentChange'><%= question.content %></textarea>
   <div class="answers_header">Answer(s).</div>
   <% question.answers.each do |answer| %>
     <div class="answer_container" 
@@ -22,5 +22,5 @@
       <a class="button delete_answer" data-action="answer#delete">[X]</a>
     </div>
   <% end %>
-  <a class="button add_answer" data-action='single-question#addAnswer'>Add Answer</a>
+  <a class="button add_answer" data-action='edit--single-question#addAnswer'>Add Answer</a>
 </div>
