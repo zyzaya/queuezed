@@ -141,6 +141,7 @@ export default class extends Controller {
     let curr = children[row];
     curr.classList.add('active_question');
     this.currentlySelected = id;
+    this.editOutlet.currentlySelectedValue = id;
     Data.setQuestion(this.csrf, this.quizIdValue, id);
   }
 

@@ -58,19 +58,49 @@ class AnswerTest < ApplicationSystemTestCase
     initial_answers = get_answer_content(single_question_edit)
     # add answer
     add_answer(single_question_edit)
+    result_answers = get_answer_content(single_question_edit)
+    assert_equal initial_answers.length + 1, result_answers.length
+    assert_equal [""], result_answers - initial_answers
     # switch selection
     select_question(other.id)
     # undo
     undo_action
     single_question_edit = single_question_edit_container(question.id)
     result_answers = get_answer_content(single_question_edit)
-    assert_equal inital_answers.length, result_answers.length
+    assert_equal initial_answers.length, result_answers.length
     assert_empty result_answers - initial_answers
     # redo
     redo_action
     single_question_edit = single_question_edit_container(question.id)
     result_answers = get_answer_content(single_question_edit)
-    assert_equal initial_answer.length + 1, result_answers.length
+    assert_equal initial_answers.length + 1, result_answers.length
+    assert_equal [""], result_answers - initial_answers
+  end
+
+  test "add answer -> undo -> switch selection -> redo" do
+    question = questions(:john_one)
+    other = questions(:john_two)
+    visit edit_quiz_path(quizzes(:johns))
+    select_question(question.id)
+    single_question_edit = single_question_edit_container(question.id)
+    initial_answers = get_answer_content(single_question_edit)
+    # add answer
+    add_answer(single_question_edit)
+    result_answers = get_answer_content(single_question_edit)
+    assert_equal initial_answers.length + 1, result_answers.length
+    assert_equal [""], result_answers - initial_answers
+    # undo
+    undo_action
+    result_answers = get_answer_content(single_question_edit)
+    assert_equal initial_answers.length, result_answers.length
+    assert_empty result_answers - initial_answers
+    # switch selection
+    select_question(other.id)
+    # redo
+    redo_action
+    single_question_edit = single_question_edit_container(question.id)
+    result_answers = get_answer_content(single_question_edit)
+    assert_equal initial_answers.length + 1, result_answers.length
     assert_equal [""], result_answers - initial_answers
   end
   # add answer -> undo -> redo
