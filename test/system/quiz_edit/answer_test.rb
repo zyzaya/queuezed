@@ -26,27 +26,35 @@ class AnswerTest < ApplicationSystemTestCase
     end
   end
 
+  def assert_add_answer(initial, single_question_edit)
+    result = get_answer_content(single_question_edit)
+    assert_equal initial.length + 1, result.length
+    assert_equal [""], result - initial
+  end
+
+  def assert_no_change_to_answers(initial, single_question_edit)
+    result = get_answer_content(single_question_edit)
+    assert_equal initial.length, result.length
+    assert_empty result - initial
+    assert_empty initial - result
+  end
+
   test "add answer -> undo -> redo" do
     question = questions(:john_one)
     visit edit_quiz_path(quizzes(:johns))
     select_question(question.id)
     single_question_edit = single_question_edit_container(question.id)
-    initial_answers = get_answer_content(single_question_edit)
+    initial = get_answer_content(single_question_edit)
     # add answer
     add_answer(single_question_edit)
-    result_answers = get_answer_content(single_question_edit)
-    assert_equal initial_answers.length + 1, result_answers.length
-    assert_equal [""], result_answers - initial_answers
+    assert_add_answer(initial, single_question_edit)
     # undo
     undo_action
-    result_answers = get_answer_content(single_question_edit)
-    assert_equal initial_answers.length, result_answers.length
-    assert_empty result_answers - initial_answers
+    assert_no_change_to_answers(initial, single_question_edit)
     # redo
     redo_action
+    assert_add_answer(initial, single_question_edit)
     result_answers = get_answer_content(single_question_edit)
-    assert_equal initial_answers.length + 1, result_answers.length
-    assert_equal [""], result_answers - initial_answers
   end
 
   test "add answer -> switch selection -> undo -> redo" do
@@ -55,26 +63,20 @@ class AnswerTest < ApplicationSystemTestCase
     visit edit_quiz_path(quizzes(:johns))
     select_question(question.id)
     single_question_edit = single_question_edit_container(question.id)
-    initial_answers = get_answer_content(single_question_edit)
+    initial = get_answer_content(single_question_edit)
     # add answer
     add_answer(single_question_edit)
-    result_answers = get_answer_content(single_question_edit)
-    assert_equal initial_answers.length + 1, result_answers.length
-    assert_equal [""], result_answers - initial_answers
+    assert_add_answer(initial, single_question_edit)
     # switch selection
     select_question(other.id)
     # undo
     undo_action
     single_question_edit = single_question_edit_container(question.id)
-    result_answers = get_answer_content(single_question_edit)
-    assert_equal initial_answers.length, result_answers.length
-    assert_empty result_answers - initial_answers
+    assert_no_change_to_answers(initial, single_question_edit)
     # redo
     redo_action
     single_question_edit = single_question_edit_container(question.id)
-    result_answers = get_answer_content(single_question_edit)
-    assert_equal initial_answers.length + 1, result_answers.length
-    assert_equal [""], result_answers - initial_answers
+    assert_add_answer(initial, single_question_edit)
   end
 
   test "add answer -> undo -> switch selection -> redo" do
@@ -83,25 +85,19 @@ class AnswerTest < ApplicationSystemTestCase
     visit edit_quiz_path(quizzes(:johns))
     select_question(question.id)
     single_question_edit = single_question_edit_container(question.id)
-    initial_answers = get_answer_content(single_question_edit)
+    initial = get_answer_content(single_question_edit)
     # add answer
     add_answer(single_question_edit)
-    result_answers = get_answer_content(single_question_edit)
-    assert_equal initial_answers.length + 1, result_answers.length
-    assert_equal [""], result_answers - initial_answers
+    assert_add_answer(initial, single_question_edit)
     # undo
     undo_action
-    result_answers = get_answer_content(single_question_edit)
-    assert_equal initial_answers.length, result_answers.length
-    assert_empty result_answers - initial_answers
+    assert_no_change_to_answers(initial, single_question_edit)
     # switch selection
     select_question(other.id)
     # redo
     redo_action
     single_question_edit = single_question_edit_container(question.id)
-    result_answers = get_answer_content(single_question_edit)
-    assert_equal initial_answers.length + 1, result_answers.length
-    assert_equal [""], result_answers - initial_answers
+    assert_add_answer(initial, single_question_edit)
   end
   # add answer -> undo -> redo
   # add answer -> switch selection -> undo -> redo
