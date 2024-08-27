@@ -50,3 +50,7 @@ body {
   color: var(--main-text-color);
   padding: 5px 10px;
 }
+
+textarea[data-edit--single-question-id-value="1"] {
+  background-color: red;
+}
