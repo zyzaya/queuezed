@@ -20,7 +20,7 @@ const Data = (() => {
         'X-CSRF-Token': csrf,
       },
       credentials: 'same-origin',
-      body: JSON.stringify(changes),
+      body: JSON.stringify({ quiz: changes }),
     }).then((response) => response.json());
   };
 
