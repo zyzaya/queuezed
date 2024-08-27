@@ -5,13 +5,7 @@ class QuizEditTest < ApplicationSystemTestCase
 
   setup do
     sign_in users(:john)
-  end
-  
-  def select_question(id)
-    content = Question.find(id).content
-    row = page.find(".zg_row > .zg_td:first-child") { |e| e.text.eql?(content)}
-    row.click
-  end
+  end  
 
   test "initial load" do
     visit edit_quiz_path(quizzes(:johns))
