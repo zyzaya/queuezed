@@ -20,28 +20,34 @@ class AnswerTest < ApplicationSystemTestCase
     button.click
   end
 
+  def get_answer_content(single_question_edit)
+    single_question_edit.find_all(".answer_content").map do |e|
+      e.text
+    end
+  end
+
   test "add answer -> undo -> redo" do
     quiz = quizzes(:johns)
     question = questions(:john_one)
     visit edit_quiz_path(quiz.id)
     select_question(question.id)
     single_question_edit = page.find(".single_question_edit[data-edit--single-question-id-value=\"#{question.id}\"]")
-    initial_answers = single_question_edit.find_all(".answer_content").map do |e|
-      e.text
-    end
+    initial_answers = get_answer_content(single_question_edit)
+    # add answer
     add_answer(single_question_edit)
-    result_answers = single_question_edit.find_all(".answer_content").map do |e|
-      e.text
-    end
+    result_answers = get_answer_content(single_question_edit)
     assert_equal initial_answers.length + 1, result_answers.length
     assert_equal [""], result_answers - initial_answers
-    
-    
-    # initial answers - result answer = [""]
-    # undo_action
-    # initial answer - result answer = []
-    # redo_action
-    # initial answer - result answer = [""]
+    # undo
+    undo_action
+    result_answers = get_answer_content(single_question_edit)
+    assert_equal initial_answers.length, result_answers.length
+    assert_empty result_answers - initial_answers
+    # redo
+    redo_action
+    result_answers = get_answer_content(single_question_edit)
+    assert_equal initial_answers.length + 1, result_answers.length
+    assert_equal [""], result_answers - initial_answers
   end
   # add answer -> undo -> redo
   # add answer -> switch selection -> undo -> redo
