@@ -418,10 +418,10 @@ class QuizzesControllerTest < ActionDispatch::IntegrationTest
     update(quiz.id, body)
     assert_response :ok
     result = JSON.parse(response.body)
-    question = result["questions"].find { |q| q["id"].eql?(question.id.to_s) }
-    answer = question["answers"].find { |a| a["prev_id"].eql?(initial_id) }
-    assert_equal answer["content"], initial_content
-    assert_equal answer["content"], Answer.find(answer["id"]).content
+    result_question = result["questions"].find { |q| q["id"].eql?(question.id) }
+    result_answer = result_question["answers"].find { |a| a["prev_id"].eql?(initial_id) }
+    assert_equal result_answer["content"], initial_content
+    assert_equal result_answer["content"], Answer.find(result_answer["id"]).content
   end
 
   test "converts temp tag id into real id" do
@@ -429,7 +429,7 @@ class QuizzesControllerTest < ActionDispatch::IntegrationTest
     question = questions(:john_one)
     initial_id = "temp1"
     initial_content = "initial_content"
-    boyd = {
+    body = {
       quiz: {
         questions: [
           {
@@ -448,10 +448,10 @@ class QuizzesControllerTest < ActionDispatch::IntegrationTest
     update(quiz.id, body)
     assert_response :ok
     result = JSON.parse(response.body)
-    question = result["questions"].find { |q| q["id"].eql?(question.id.to_s) }
-    tag = question["tags"].find { |t| t["prev_id"].eql?(initial_id) }
-    assert_equal tag["content"], initial_content
-    assert_equal tag["content"], Answer.find(tag["id"]).content
+    result_question = result["questions"].find { |q| q["id"].eql?(question.id) }
+    result_tag = result_question["tags"].find { |t| t["prev_id"].eql?(initial_id) }
+    assert_equal result_tag["content"], initial_content
+    assert_equal result_tag["content"], Tag.find(result_tag["id"]).content
   end
 
   # succesfull requests
