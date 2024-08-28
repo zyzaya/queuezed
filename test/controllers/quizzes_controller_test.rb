@@ -330,7 +330,7 @@ class QuizzesControllerTest < ActionDispatch::IntegrationTest
     assert_equal answer.to_json, Answer.find(answer.id).to_json
   end
   # response
-  test "responds with json of the quiz, including tag ids" do
+  test "responds with json of the quiz, including tags and answers" do
     quiz = quizzes(:johns)
     question = questions(:john_one)
     answer = answers(:john_one)
@@ -356,11 +356,15 @@ class QuizzesControllerTest < ActionDispatch::IntegrationTest
     }
     update(quiz.id, body)
     assert_response :ok
+    result = JSON.parse(@response.body)
     expected = Quiz.find(quiz.id).as_json(
       only: [:name],
       include: {
         questions: {
           include: {
+            answers: {
+              only: [:id, :content]
+            },
             tags: {
               only: [:id, :content]
             }
