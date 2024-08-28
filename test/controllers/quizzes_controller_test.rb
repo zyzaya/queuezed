@@ -389,8 +389,39 @@ class QuizzesControllerTest < ActionDispatch::IntegrationTest
     update(quiz.id, body)
     assert_response :ok
     result = JSON.parse(response.body)
-    question = result["questions"].find { |q| q["prev_id"].to_s.eql?(initial_id) }
+    question = result["questions"].find { |q| q["prev_id"].eql?(initial_id) }
     assert_equal question["content"], initial_content
+    assert_equal question["content"], Question.find(question["id"]).content
+  end
+
+  test "converts temp answer id into real id" do
+    quiz = quizzes(:johns)
+    question = questions(:john_one)
+    initial_id = "temp1"
+    initial_content = "initial_content"
+    body = {
+      quiz: {
+        questions: [
+          {
+            id: question.id
+            answers: [
+              {
+                meta: 'new',
+                id: initial_id,
+                content: initial_content,
+              }
+            ]
+          }
+        ]
+      }
+    }
+    update(quiz.id, body)
+    assert_response :ok
+    result = JSON.parse(response.body)
+    question = result["questions"].find { |q| q["id"].eql?(question.id.to_s) }
+    answer = question["answers"].find { |a| a["prev_id"].eql?(initial_id) }
+    assert_equal answer["content"], initial_content
+    assert_equal answer["content"], Answer.find(answer["id"]).content
   end
 
   # succesfull requests
