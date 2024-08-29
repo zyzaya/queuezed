@@ -56,9 +56,25 @@ export default class extends Controller {
 
   save(event) {
     let changes = this.change_handler.getChanges(this.idConversion);
-    Data.save(this.csrf, this.quizIdValue, changes).then(
-      (ids) => (this.idConversion = ids)
-    );
+    let ids = {
+      questions: {},
+      answers: {},
+      tags: {},
+    };
+    Data.save(this.csrf, this.quizIdValue, changes).then((data) => {
+      // collect id conversion
+      console.log(data);
+      data.questions.forEach((q) => {
+        if (q.prev_id !== undefined) ids.questions[q.prev_id] = q.id;
+        q.answers.forEach((a) => {
+          if (a.prev_id !== undefined) ids.answers[a.prev_id] = a.id;
+        });
+        q.tags.forEach((t) => {
+          if (t.prev_id !== undefined) ids.tags[t.prev_id] = a.id;
+        });
+      });
+      this.idConversion = ids;
+    });
     this.change_handler.resetChanges();
   }
 
