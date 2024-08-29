@@ -30,6 +30,16 @@ class AnswerTest < ApplicationSystemTestCase
     button.click
   end
 
+  def change_answer_content(id, modify)
+    textarea = answer_container(id).find("textarea")
+    textarea.send_keys(modify)
+  end
+
+  def assert_answer_content(id, value)
+    textarea = answer_container(id).find("textarea")
+    assert_equal value, textarea.value
+  end
+
   def get_answer_content(single_question_edit)
     single_question_edit.find_all(".answer_content").map do |e|
       e.value
@@ -268,6 +278,24 @@ class AnswerTest < ApplicationSystemTestCase
     select_question(question.id)
     single_question_edit = single_question_edit_container(question.id)
     assert_delete_answer(initial, answer, single_question_edit)
+  end
+
+  test "change content -> undo -> redo" do
+    question = questions(:john_one)
+    answer = answers(:john_one)
+    visit edit_quiz_path(quizzes(:johns))
+    select_question(question.id)
+    initial = answer.content
+    modify = "a"
+    # change content
+    change_answer_content(answer.id, modify)
+    assert_answer_content(answer.id, initial + modify)
+    # undo
+    undo_action
+    assert_answer_content(answer.id, initial)
+    # redo
+    redo_action
+    assert_answer_content(answer.id, initial + modify)
   end
   # change content -> undo -> redo
   # change content -> switch selection -> undo -> redo
