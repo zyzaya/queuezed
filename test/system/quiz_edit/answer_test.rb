@@ -201,13 +201,31 @@ class AnswerTest < ApplicationSystemTestCase
     initial = get_answer_content(single_question_edit)
     # delete answer
     delete_answer(answer.id)
-    assert_delete_answer(initial, answer, single_question_edit)
     # switch selection
     select_question(other.id)
     # undo
     undo_action
     single_question_edit = single_question_edit_container(question.id)
     assert_no_change_to_answers(initial, single_question_edit)
+    # redo
+    redo_action
+    single_question_edit = single_question_edit_container(question.id)
+    assert_delete_answer(initial, answer, single_question_edit)
+  end
+
+  test "delete answer -> undo -> switch selection -> redo" do
+    question = questions(:john_one)
+    other = questions(:john_two)
+    answer = answers(:john_one)
+    visit edit_quiz_path(quizzes(:johns))
+    select_question(question.id)
+    single_question_edit = single_question_edit_container(question.id)
+    initial = get_answer_content(single_question_edit)
+    # delete answer -> undo -> switch selection
+    delete_answer(answer.id)
+    undo_action
+    # switch selection
+    select_question(other.id)
     # redo
     redo_action
     single_question_edit = single_question_edit_container(question.id)
