@@ -280,7 +280,7 @@ class AnswerTest < ApplicationSystemTestCase
     assert_delete_answer(initial, answer, single_question_edit)
   end
 
-  test "change content -> undo -> redo" do
+  test "change answer content -> undo -> redo" do
     question = questions(:john_one)
     answer = answers(:john_one)
     visit edit_quiz_path(quizzes(:johns))
@@ -290,6 +290,27 @@ class AnswerTest < ApplicationSystemTestCase
     # change content
     change_answer_content(answer.id, modify)
     assert_answer_content(answer.id, initial + modify)
+    # undo
+    undo_action
+    assert_answer_content(answer.id, initial)
+    # redo
+    redo_action
+    assert_answer_content(answer.id, initial + modify)
+  end
+
+  test "change answer content -> switch selection -> undo -> redo" do
+    question = questions(:john_one)
+    other = questions(:john_two)
+    answer = answers(:john_one)
+    visit edit_quiz_path(quizzes(:johns))
+    select_question(question.id)
+    initial = answer.content
+    modify = "a"
+    # change content
+    change_answer_content(answer.id, modify)
+    assert_answer_content(answer.id, initial + modify)
+    # switch selection
+    select_question(other.id)
     # undo
     undo_action
     assert_answer_content(answer.id, initial)
