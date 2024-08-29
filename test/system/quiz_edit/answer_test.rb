@@ -259,6 +259,25 @@ class AnswerTest < ApplicationSystemTestCase
     assert_delete_answer(initial, answer, single_question_edit)
   end
 
+  test "delete answer -> save -> undo -> save" do
+    question = questions(:john_one)
+    answer = answers(:john_one)
+    visit edit_quiz_path(quizzes(:johns))
+    select_question(question.id)
+    single_question_edit = single_question_edit_container(question.id)
+    initial = get_answer_content(single_question_edit)
+    # delete answer
+    delete_answer(answer.id)
+    # save -> undo -> save -> redo -> save
+    save_action
+    undo_action
+    save_action
+    visit edit_quiz_path(quizzes(:johns))
+    select_question(question.id)
+    single_question_edit = single_question_edit_container(question.id)
+    assert_no_change_to_answers(initial, single_question_edit)
+  end
+
   test "delete answer -> save -> undo -> save -> redo -> save" do
     question = questions(:john_one)
     answer = answers(:john_one)
@@ -394,9 +413,4 @@ class AnswerTest < ApplicationSystemTestCase
     select_question(question.id)
     assert_answer_content(answer.id, initial + modify)
   end
-  # change content -> undo -> redo
-  # change content -> switch selection -> undo -> redo
-  # change content -> undo -> switch selection -> redo
-  # change content -> save
-  # change content -> save -> undo -> save -> redo -> save
 end
