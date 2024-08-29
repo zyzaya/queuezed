@@ -460,7 +460,7 @@ export default class extends Controller {
   // answer controller
   findAnswerContentTextarea(id) {
     return this.answerContentTargets.find(
-      (a) => id === a.parentNode.dataset.answerIdValue
+      (a) => id === a.parentNode.dataset['edit-AnswerIdValue']
     );
   }
 
