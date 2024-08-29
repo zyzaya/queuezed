@@ -248,17 +248,30 @@ class AnswerTest < ApplicationSystemTestCase
     single_question_edit = single_question_edit_container(question.id)
     assert_delete_answer(initial, answer, single_question_edit)
   end
-  # add answer -> undo -> redo
-  # add answer -> switch selection -> undo -> redo
-  # add answer -> undo -> switch selection -> redo
-  # add answer -> save -> undo -> save -> redo -> save
-  # delete answer -> undo -> redo
-  # delete answer -> switch selection -> undo -> redo
-  # delete answer -> undo -> switch selection -> redo
-  # delete answer -> save -> undo -> save -> redo -> save
-  # change content
+
+  test "delete answer -> save -> undo -> save -> redo -> save" do
+    question = questions(:john_one)
+    answer = answers(:john_one)
+    visit edit_quiz_path(quizzes(:johns))
+    select_question(question.id)
+    single_question_edit = single_question_edit_container(question.id)
+    initial = get_answer_content(single_question_edit)
+    # delete answer
+    delete_answer(answer.id)
+    # save -> undo -> save -> redo -> save
+    save_action
+    undo_action
+    save_action
+    redo_action
+    save_action
+    visit edit_quiz_path(quizzes(:johns))
+    select_question(question.id)
+    single_question_edit = single_question_edit_container(question.id)
+    assert_delete_answer(initial, answer, single_question_edit)
+  end
   # change content -> undo -> redo
   # change content -> switch selection -> undo -> redo
   # change content -> undo -> switch selection -> redo
+  # change content -> save
   # change content -> save -> undo -> save -> redo -> save
 end
