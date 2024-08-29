@@ -11,22 +11,24 @@ export default function AnswerDisplay(
   let answer_container = document.createElement('div');
   answer_container.classList.add('answer_container');
   answer_container.dataset.controller = 'answer';
-  answer_container.dataset.answerQuestionIdValue = question_id;
-  answer_container.dataset.answerIdValue = answer_id;
-  answer_container.dataset.answerSingleQuestionOutlet = `.single_question_edit[data-single-question-id-value="${question_id}"]`;
+  answer_container.dataset['edit-AnswerQuestionIdValue'] = question_id;
+  answer_container.dataset['edit-AnswerIdValue'] = answer_id;
+  answer_container.dataset[
+    'edit-AnswerSingleQuestionOutlet'
+  ] = `.single_question_edit[data-single-question-id-value="${question_id}"]`;
 
   let answer_content = document.createElement('textarea');
   answer_content.classList.add('answer_content');
   answer_content.rows = '1';
   answer_content.dataset.editTarget = 'answerContent';
-  answer_content.dataset.answerTarget = 'info';
+  answer_content.dataset['edit-AnswerTarget'] = 'info';
   answer_content.dataset.action = 'answer#answerContentChange';
   answer_content.value = content;
 
   let delete_answer = document.createElement('a');
   delete_answer.classList.add('button');
   delete_answer.classList.add('delete_answer');
-  delete_answer.dataset.action = 'answer#delete';
+  delete_answer.dataset.action = 'edit--answer#delete';
   delete_answer.textContent = '[X]';
 
   answer_container.appendChild(answer_content);

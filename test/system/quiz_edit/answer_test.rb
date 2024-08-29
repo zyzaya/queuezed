@@ -32,7 +32,7 @@ class AnswerTest < ApplicationSystemTestCase
 
   def get_answer_content(single_question_edit)
     single_question_edit.find_all(".answer_content").map do |e|
-      e.text
+      e.value
     end
   end
 
@@ -46,7 +46,7 @@ class AnswerTest < ApplicationSystemTestCase
     result = get_answer_content(single_question_edit)
     assert_equal initial.length - 1, result.length
     assert_not result.include?(answer.content)
-    single_question_edit.assert_no_selector(page.find(".answer_container[data-edit--answer-id-value=\"#{answer.id}\"]"))
+    assert_no_selector(single_question_edit, ".answer_container[data-edit--answer-id-value=\"#{answer.id}\"]")
   end
 
   def assert_no_change_to_answers(initial, single_question_edit)

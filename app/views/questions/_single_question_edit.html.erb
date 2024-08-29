@@ -14,12 +14,12 @@
       data-controller='edit--answer' 
       data-edit--answer-question-id-value='<%= question.id %>'
       data-edit--answer-id-value='<%= answer.id %>'
-      data-edit--answer-single-question-outlet='.single_question_edit[data-single-question-id-value="<%= question.id %>"]'>
+      data-edit--answer-edit--single-question-outlet='.single_question_edit[data-edit--single-question-id-value="<%= question.id %>"]'>
       <textarea class="answer_content" rows="1" 
         data-edit-target='answerContent'
         data-edit--answer-target='info' 
-        data-action="answer#answerContentChange"><%= answer.content %></textarea>
-      <a class="button delete_answer" data-action="answer#delete">[X]</a>
+        data-action="edit--answer#answerContentChange"><%= answer.content %></textarea>
+      <a class="button delete_answer" data-action="edit--answer#delete">[X]</a>
     </div>
   <% end %>
   <a class="button add_answer" data-action='edit--single-question#addAnswer'>Add Answer</a>

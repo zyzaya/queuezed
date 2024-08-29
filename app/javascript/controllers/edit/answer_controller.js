@@ -2,7 +2,7 @@ import { Controller } from '@hotwired/stimulus';
 
 export default class extends Controller {
   static targets = ['info'];
-  static outlets = ['single-question'];
+  static outlets = ['edit--single-question'];
 
   static values = {
     id: String,
@@ -44,7 +44,7 @@ export default class extends Controller {
         questionId: this.questionIdValue,
         answerId: this.idValue,
         current: this.current,
-        parent: this.singleQuestionOutletElement,
+        parent: this.editSingleQuestionOutletElement,
       },
     });
   }
