@@ -24,6 +24,12 @@ class AnswerTest < ApplicationSystemTestCase
     button.click
   end
 
+  def delete_answer(id)
+    container = answer_container(id)
+    button = container.find(".delete_answer")
+    button.click
+  end
+
   def get_answer_content(single_question_edit)
     single_question_edit.find_all(".answer_content").map do |e|
       e.text
@@ -34,6 +40,13 @@ class AnswerTest < ApplicationSystemTestCase
     result = get_answer_content(single_question_edit)
     assert_equal initial.length + 1, result.length
     assert_equal [""], result - initial
+  end
+
+  def assert_delete_answer(initial, answer, single_question_edit)
+    result = get_answer_content(single_question_edit)
+    assert_equal initial.length - 1, result.length
+    assert_not result.include?(answer.content)
+    single_question_edit.assert_no_selector(page.find(".answer_container[data-edit--answer-id-value=\"#{answer.id}\"]"))
   end
 
   def assert_no_change_to_answers(initial, single_question_edit)
@@ -58,7 +71,6 @@ class AnswerTest < ApplicationSystemTestCase
     # redo
     redo_action
     assert_add_answer(initial, single_question_edit)
-    result_answers = get_answer_content(single_question_edit)
   end
 
   test "add answer -> switch selection -> undo -> redo" do
@@ -160,11 +172,28 @@ class AnswerTest < ApplicationSystemTestCase
     single_question_edit = single_question_edit_container(question.id)
     assert_add_answer(initial, single_question_edit)
   end
+
+  test "delete answer -> undo -> redo" do
+    question = questions(:john_one)
+    answer = answers(:john_one)
+    visit edit_quiz_path(quizzes(:johns))
+    select_question(question.id)
+    single_question_edit = single_question_edit_container(question.id)
+    initial = get_answer_content(single_question_edit)
+    # delete answer
+    delete_answer(answer.id)
+    assert_delete_answer(initial, answer, single_question_edit)
+    # undo
+    undo_action
+    assert_no_change_to_answers(initial, single_question_edit)
+    # redo
+    redo_action
+    assert_delete_answer(initial, answer, single_question_edit)
+  end
   # add answer -> undo -> redo
   # add answer -> switch selection -> undo -> redo
   # add answer -> undo -> switch selection -> redo
   # add answer -> save -> undo -> save -> redo -> save
-  # delete answer
   # delete answer -> undo -> redo
   # delete answer -> switch selection -> undo -> redo
   # delete answer -> undo -> switch selection -> redo
