@@ -337,6 +337,23 @@ class AnswerTest < ApplicationSystemTestCase
     redo_action
     assert_answer_content(answer.id, initial + modify)
   end
+
+  test "change answer content -> save" do
+    question = questions(:john_one)
+    answer = answers(:john_one)
+    initial = answer.content
+    modify = "a"
+    visit edit_quiz_path(quizzes(:johns))
+    select_question(question.id)
+    # change content
+    change_answer_content(answer.id, modify)
+    assert_answer_content(answer.id, initial + modify)
+    # save
+    save_action
+    visit edit_quiz_path(quizzes(:johns))
+    select_question(question.id)
+    assert_answer_content(answer.id, initial + modify)
+  end
   # change content -> undo -> redo
   # change content -> switch selection -> undo -> redo
   # change content -> undo -> switch selection -> redo
