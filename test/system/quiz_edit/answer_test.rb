@@ -141,7 +141,24 @@ class AnswerTest < ApplicationSystemTestCase
   end
 
   test "add answer -> save -> undo -> save -> redo -> save" do
-  
+    question = questions(:john_one)
+    visit edit_quiz_path(quizzes(:johns))
+    select_question(question.id)
+    single_question_edit = single_question_edit_container(question.id)
+    initial = get_answer_content(single_question_edit)
+    # add answer
+    add_answer(single_question_edit)
+    assert_add_answer(initial, single_question_edit)
+    # save -> undo -> save -> redo -> save
+    save_action
+    undo_action
+    save_action
+    redo_action
+    save_action
+    visit edit_quiz_path(quizzes(:johns))
+    select_question(question.id)
+    single_question_edit = single_question_edit_container(question.id)
+    assert_add_answer(initial, single_question_edit)
   end
   # add answer -> undo -> redo
   # add answer -> switch selection -> undo -> redo
