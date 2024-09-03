@@ -12,6 +12,11 @@ class TagTest < ApplicationSystemTestCase
     select content, from: "add_tag"
   end
 
+  def remove_tag(content, question_edit)
+    button = question_edit.find(".tag_list > a") { |e| e.text.eql?(content) }
+    button.click
+  end
+
   def get_tags_content(question_edit)
     question_edit.find_all(".tag_list > a").map do |e|
       e.text
@@ -22,6 +27,12 @@ class TagTest < ApplicationSystemTestCase
     result = get_tags_content(question_edit)
     assert_equal initial.length + 1, result.length
     assert_equal [content], result - initial
+  end
+
+  def assert_remove_tag(initial, content, question_edit)
+    result = get_tags_content(question_edit)
+    assert_equal initial.length - 1, result.length
+    assert_equal [content], initial - result
   end
 
   def assert_no_change_to_tags(initial, question_edit)
@@ -151,6 +162,24 @@ class TagTest < ApplicationSystemTestCase
     select_question(question.id)
     question_edit = question_edit_container(question.id)
     assert_add_tag(initial, tag.content, question_edit)
+  end
+
+  test "remove tag -> undo -> redo" do
+    question = questions(:john_one)  
+    tag = tags(:tag_1)
+    visit edit_quiz_path(quizzes(:johns))
+    select_question(question.id)
+    question_edit = question_edit_container(question.id)
+    initial = get_tags_content(question_edit)
+    # remove tag
+    remove_tag(tag.content, question_edit)
+    assert_remove_tag(initial, tag.content, question_edit)
+    # undo
+    undo_action
+    assert_no_change_to_tags(initial, question_edit)
+    # redo
+    redo_action
+    assert_remove_tag(initial, tag.content, question_edit)
   end
 
   # add tag -> undo -> redo
