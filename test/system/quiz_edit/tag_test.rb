@@ -273,6 +273,17 @@ class TagTest < ApplicationSystemTestCase
     redo_action
     assert_create_tag(@new_tag_content)
   end
+
+  test "create tag -> save" do
+    # create tag
+    create_tag(@new_tag_content)
+    assert_create_tag(@new_tag_content)
+    # save
+    save_action
+    visit edit_quiz_path(quizzes(:johns))
+    select_question(@question.id)
+    assert_create_tag(@new_tag_content)
+  end
   # add tag -> undo -> redo
   # add tag -> switch selection -> undo -> redo
   # add tag -> undo -> switch selection -> reo
