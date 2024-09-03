@@ -9,7 +9,9 @@ class AnswerTest < ApplicationSystemTestCase
     @question = questions(:john_one)
     @other = questions(:john_two)
     @answer = answers(:john_one)
+    @initial_answer_content = @answer.content
     @modify_content = "a"
+    @modified_answer_content = @initial_answer_content + @modify_content
     visit edit_quiz_path(quizzes(:johns))
     select_question(@question.id)
     @initial = get_answers_content
@@ -27,9 +29,9 @@ class AnswerTest < ApplicationSystemTestCase
     button.click
   end
 
-  def change_answer_content(id)
+  def change_answer_content(id, modify)
     textarea = answer_container(id).find("textarea")
-    textarea.send_keys(@modify_content)
+    textarea.send_keys(modify)
   end
 
   def get_answers_content
@@ -69,93 +71,60 @@ class AnswerTest < ApplicationSystemTestCase
   end
 
   test "add answer -> switch selection -> undo -> redo" do
-    question = questions(:john_one)
-    other = questions(:john_two)
-    visit edit_quiz_path(quizzes(:johns))
-    select_question(question.id)
-    single_question_edit = single_question_edit_container(question.id)
-    initial = get_answer_content(single_question_edit)
     # add answer
-    add_answer(single_question_edit)
-    assert_add_answer(initial, single_question_edit)
+    add_answer
+    assert_add_answer
     # switch selection
-    select_question(other.id)
+    select_question(@other.id)
     # undo
     undo_action
-    single_question_edit = single_question_edit_container(question.id)
-    assert_no_change_to_answers(initial, single_question_edit)
+    assert_no_change_to_answers
     # redo
     redo_action
-    single_question_edit = single_question_edit_container(question.id)
-    assert_add_answer(initial, single_question_edit)
+    assert_add_answer
   end
 
   test "add answer -> undo -> switch selection -> redo" do
-    question = questions(:john_one)
-    other = questions(:john_two)
-    visit edit_quiz_path(quizzes(:johns))
-    select_question(question.id)
-    single_question_edit = single_question_edit_container(question.id)
-    initial = get_answer_content(single_question_edit)
     # add answer
-    add_answer(single_question_edit)
-    assert_add_answer(initial, single_question_edit)
+    add_answer
+    assert_add_answer
     # undo
     undo_action
-    assert_no_change_to_answers(initial, single_question_edit)
-    # switch selection
-    select_question(other.id)
-    # redo
+    assert_no_change_to_answers
+    # switch selection -> redo
+    select_question(@other.id)
     redo_action
-    single_question_edit = single_question_edit_container(question.id)
-    assert_add_answer(initial, single_question_edit)
+    assert_add_answer
   end
 
   test "add answer -> save" do
-    question = questions(:john_one)
-    visit edit_quiz_path(quizzes(:johns))
-    select_question(question.id)
-    single_question_edit = single_question_edit_container(question.id)
-    initial = get_answer_content(single_question_edit)
     # add answer
-    add_answer(single_question_edit)
-    assert_add_answer(initial, single_question_edit)
+    add_answer
+    assert_add_answer
     # save
     save_action
     visit edit_quiz_path(quizzes(:johns))
-    select_question(question.id)
-    single_question_edit = single_question_edit_container(question.id)
-    assert_add_answer(initial, single_question_edit)
+    select_question(@question.id)
+    assert_add_answer
   end
 
   test "add answer -> save -> undo -> save" do
-    question = questions(:john_one)
-    visit edit_quiz_path(quizzes(:johns))
-    select_question(question.id)
-    single_question_edit = single_question_edit_container(question.id)
-    initial = get_answer_content(single_question_edit)
     # add answer
-    add_answer(single_question_edit)
-    assert_add_answer(initial, single_question_edit)
+    add_answer
+    assert_add_answer
     # save -> undo -> save
     save_action
     undo_action
     save_action
     visit edit_quiz_path(quizzes(:johns))
-    select_question(question.id)
-    single_question_edit = single_question_edit_container(question.id)
-    assert_no_change_to_answers(initial, single_question_edit)
+    select_question(@question.id)
+    assert_no_change_to_answers
   end
 
   test "add answer -> save -> undo -> save -> redo -> save" do
-    question = questions(:john_one)
-    visit edit_quiz_path(quizzes(:johns))
-    select_question(question.id)
-    single_question_edit = single_question_edit_container(question.id)
-    initial = get_answer_content(single_question_edit)
     # add answer
-    add_answer(single_question_edit)
-    assert_add_answer(initial, single_question_edit)
+    add_answer
+    assert_add_answer
     # save -> undo -> save -> redo -> save
     save_action
     undo_action
@@ -163,115 +132,71 @@ class AnswerTest < ApplicationSystemTestCase
     redo_action
     save_action
     visit edit_quiz_path(quizzes(:johns))
-    select_question(question.id)
-    single_question_edit = single_question_edit_container(question.id)
-    assert_add_answer(initial, single_question_edit)
+    select_question(@question.id)
+    assert_add_answer
   end
 
   test "delete answer -> undo -> redo" do
-    question = questions(:john_one)
-    answer = answers(:john_one)
-    visit edit_quiz_path(quizzes(:johns))
-    select_question(question.id)
-    single_question_edit = single_question_edit_container(question.id)
-    initial = get_answer_content(single_question_edit)
     # delete answer
-    delete_answer(answer.id)
-    assert_delete_answer(initial, answer, single_question_edit)
+    delete_answer(@answer.id)
+    assert_delete_answer(@answer.content)
     # undo
     undo_action
-    assert_no_change_to_answers(initial, single_question_edit)
+    assert_no_change_to_answers
     # redo
     redo_action
-    assert_delete_answer(initial, answer, single_question_edit)
+    assert_delete_answer(@answer.content)
   end
 
   test "delete answer -> switch selection -> undo -> redo" do
-    question = questions(:john_one)
-    other = questions(:john_two)
-    answer = answers(:john_one)
-    visit edit_quiz_path(quizzes(:johns))
-    select_question(question.id)
-    single_question_edit = single_question_edit_container(question.id)
-    initial = get_answer_content(single_question_edit)
     # delete answer
-    delete_answer(answer.id)
+    delete_answer(@answer.id)
     # switch selection
-    select_question(other.id)
+    select_question(@other.id)
     # undo
     undo_action
-    single_question_edit = single_question_edit_container(question.id)
-    assert_no_change_to_answers(initial, single_question_edit)
+    assert_no_change_to_answers
     # redo
     redo_action
-    single_question_edit = single_question_edit_container(question.id)
-    assert_delete_answer(initial, answer, single_question_edit)
+    assert_delete_answer(@answer.content)
   end
 
   test "delete answer -> undo -> switch selection -> redo" do
-    question = questions(:john_one)
-    other = questions(:john_two)
-    answer = answers(:john_one)
-    visit edit_quiz_path(quizzes(:johns))
-    select_question(question.id)
-    single_question_edit = single_question_edit_container(question.id)
-    initial = get_answer_content(single_question_edit)
     # delete answer -> undo -> switch selection
-    delete_answer(answer.id)
+    delete_answer(@answer.id)
     undo_action
     # switch selection
-    select_question(other.id)
+    select_question(@other.id)
     # redo
     redo_action
-    single_question_edit = single_question_edit_container(question.id)
-    assert_delete_answer(initial, answer, single_question_edit)
+    assert_delete_answer(@answer.content)
   end
 
   test "delete answer -> save" do
-    question = questions(:john_one)
-    answer = answers(:john_one)
-    visit edit_quiz_path(quizzes(:johns))
-    select_question(question.id)
-    single_question_edit = single_question_edit_container(question.id)
-    initial = get_answer_content(single_question_edit)
     # delete answer
-    delete_answer(answer.id)
+    delete_answer(@answer.id)
     # save
     save_action
     visit edit_quiz_path(quizzes(:johns))
-    select_question(question.id)
-    single_question_edit = single_question_edit_container(question.id)
-    assert_delete_answer(initial, answer, single_question_edit)
+    select_question(@question.id)
+    assert_delete_answer(@answer.content)
   end
 
   test "delete answer -> save -> undo -> save" do
-    question = questions(:john_one)
-    answer = answers(:john_one)
-    visit edit_quiz_path(quizzes(:johns))
-    select_question(question.id)
-    single_question_edit = single_question_edit_container(question.id)
-    initial = get_answer_content(single_question_edit)
     # delete answer
-    delete_answer(answer.id)
+    delete_answer(@answer.id)
     # save -> undo -> save -> redo -> save
     save_action
     undo_action
     save_action
     visit edit_quiz_path(quizzes(:johns))
-    select_question(question.id)
-    single_question_edit = single_question_edit_container(question.id)
-    assert_no_change_to_answers(initial, single_question_edit)
+    select_question(@question.id)
+    assert_no_change_to_answers
   end
 
   test "delete answer -> save -> undo -> save -> redo -> save" do
-    question = questions(:john_one)
-    answer = answers(:john_one)
-    visit edit_quiz_path(quizzes(:johns))
-    select_question(question.id)
-    single_question_edit = single_question_edit_container(question.id)
-    initial = get_answer_content(single_question_edit)
     # delete answer
-    delete_answer(answer.id)
+    delete_answer(@answer.id)
     # save -> undo -> save -> redo -> save
     save_action
     undo_action
@@ -279,115 +204,78 @@ class AnswerTest < ApplicationSystemTestCase
     redo_action
     save_action
     visit edit_quiz_path(quizzes(:johns))
-    select_question(question.id)
-    single_question_edit = single_question_edit_container(question.id)
-    assert_delete_answer(initial, answer, single_question_edit)
+    select_question(@question.id)
+    assert_delete_answer(@answer.content)
   end
 
   test "change answer content -> undo -> redo" do
-    question = questions(:john_one)
-    answer = answers(:john_one)
-    visit edit_quiz_path(quizzes(:johns))
-    select_question(question.id)
-    initial = answer.content
-    modify = "a"
     # change content
-    change_answer_content(answer.id, modify)
-    assert_answer_content(answer.id, initial + modify)
+    change_answer_content(@answer.id, @modify_content)
+    assert_answer_content(@answer.id, @modified_answer_content)
     # undo
     undo_action
-    assert_answer_content(answer.id, initial)
+    assert_answer_content(@answer.id, @initial_answer_content)
     # redo
     redo_action
-    assert_answer_content(answer.id, initial + modify)
+    assert_answer_content(@answer.id, @modified_answer_content)
   end
 
   test "change answer content -> switch selection -> undo -> redo" do
-    question = questions(:john_one)
-    other = questions(:john_two)
-    answer = answers(:john_one)
-    visit edit_quiz_path(quizzes(:johns))
-    select_question(question.id)
-    initial = answer.content
-    modify = "a"
     # change content
-    change_answer_content(answer.id, modify)
-    assert_answer_content(answer.id, initial + modify)
+    change_answer_content(@answer.id, @modify_content)
+    assert_answer_content(@answer.id, @modified_answer_content)
     # switch selection
-    select_question(other.id)
+    select_question(@other.id)
     # undo
     undo_action
-    assert_answer_content(answer.id, initial)
+    assert_answer_content(@answer.id, @initial_answer_content)
     # redo
     redo_action
-    assert_answer_content(answer.id, initial + modify)
+    assert_answer_content(@answer.id, @modified_answer_content)
   end
 
   test "change answer content -> undo -> switch selection -> redo" do
-    answer = answers(:john_one)
-    visit edit_quiz_path(quizzes(:johns))
-    select_question(questions(:john_one).id)
-    initial = answer.content
-    modify = "a"
     # change content
-    change_answer_content(answer.id, modify)
-    assert_answer_content(answer.id, initial + modify)
+    change_answer_content(@answer.id, @modify_content)
+    assert_answer_content(@answer.id, @modified_answer_content)
     # undo
     undo_action
-    assert_answer_content(answer.id, initial)
+    assert_answer_content(@answer.id, @initial_answer_content)
     # switch selection
-    select_question(questions(:john_two).id)
+    select_question(@other.id)
     # redo
     redo_action
-    assert_answer_content(answer.id, initial + modify)
+    assert_answer_content(@answer.id, @modified_answer_content)
   end
 
   test "change answer content -> save" do
-    question = questions(:john_one)
-    answer = answers(:john_one)
-    initial = answer.content
-    modify = "a"
-    visit edit_quiz_path(quizzes(:johns))
-    select_question(question.id)
     # change content
-    change_answer_content(answer.id, modify)
-    assert_answer_content(answer.id, initial + modify)
+    change_answer_content(@answer.id, @modify_content)
+    assert_answer_content(@answer.id, @modified_answer_content)
     # save
     save_action
     visit edit_quiz_path(quizzes(:johns))
-    select_question(question.id)
-    assert_answer_content(answer.id, initial + modify)
+    select_question(@question.id)
+    assert_answer_content(@answer.id, @modified_answer_content)
   end
 
   test "change answer content -> save -> undo -> save" do
-    question = questions(:john_one)
-    answer = answers(:john_one)
-    initial = answer.content
-    modify = "a"
-    visit edit_quiz_path(quizzes(:johns))
-    select_question(question.id)
     # change content
-    change_answer_content(answer.id, modify)
-    assert_answer_content(answer.id, initial + modify)
+    change_answer_content(@answer.id, @modify_content)
+    assert_answer_content(@answer.id, @modified_answer_content)
     # save -> undo -> save
     save_action
     undo_action
     save_action
     visit edit_quiz_path(quizzes(:johns))
-    select_question(question.id)
-    assert_answer_content(answer.id, initial)
+    select_question(@question.id)
+    assert_answer_content(@answer.id, @initial_answer_content)
   end
 
   test "change answer content -> save -> undo -> save -> redo -> save" do
-    question = questions(:john_one)
-    answer = answers(:john_one)
-    initial = answer.content
-    modify = "a"
-    visit edit_quiz_path(quizzes(:johns))
-    select_question(question.id)
     # change content
-    change_answer_content(answer.id, modify)
-    assert_answer_content(answer.id, initial + modify)
+    change_answer_content(@answer.id, @modify_content)
+    assert_answer_content(@answer.id, @modified_answer_content)
     # save -> undo -> save -> redo -> save
     save_action
     undo_action
@@ -395,7 +283,7 @@ class AnswerTest < ApplicationSystemTestCase
     redo_action
     save_action
     visit edit_quiz_path(quizzes(:johns))
-    select_question(question.id)
-    assert_answer_content(answer.id, initial + modify)
+    select_question(@question.id)
+    assert_answer_content(@answer.id, @modified_answer_content)
   end
 end
