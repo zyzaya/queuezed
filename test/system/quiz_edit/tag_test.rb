@@ -7,9 +7,10 @@ class TagTest < ApplicationSystemTestCase
   setup do 
     sign_in users(:john)
     @question = questions(:john_one)
-    @has_tag = tags(:tag_1)
     @other = questions(:john_two)
+    @has_tag = tags(:tag_1)
     @not_has_tag = tags(:tag_2)
+    @new_tag_content = "new tag content"
     visit edit_quiz_path(quizzes(:johns))
     select_question(@question.id)
     @initial = get_tags_content
@@ -25,11 +26,33 @@ class TagTest < ApplicationSystemTestCase
     button.click
   end
 
+  def create_tag(content)
+    container = question_edit_container(@question.id)
+    input = container.find("#create_tag")
+    input.send_keys(content)
+    input.send_keys(:return)
+  end
+
   def get_tags_content
     container = question_edit_container(@question.id)
     container.find_all(".tag_list > a").map do |e|
       e.text
     end
+  end
+
+  def get_add_tag_options
+    container = question_edit_container(@question.id)
+    options = container.find_all("#add_tag > option") do |e|
+      !["-1", "-2"].include?(e)
+    end
+    return options.map { |e| e.text }
+  end
+
+  def get_filter_tag_options
+    options = page.find_all("#edit_add_tag_filter > option") do |e|
+      !["-1", "-2"].include?(e)
+    end
+    return options.map { |e| e.text }
   end
 
   def assert_add_tag(content)
@@ -44,11 +67,20 @@ class TagTest < ApplicationSystemTestCase
     assert_equal [content], @initial - result
   end
 
+  def assert_create_tag(content)
+    assert_add_tag(content)
+    expected = @initial + [content]
+    # add to add tag options
+    assert_equal expected, get_add_tag_options
+    # add to filter by tag options
+    assert_equal expected, get_filter_tag_options
+  end
+
   def assert_no_change_to_tags
     result = get_tags_content
-    assert_equal @initial.length, result.length
-    assert_empty result - @initial
-    assert_empty @initial - result
+    assert_equal result, initial
+    assert_equal result, get_add_tag_options
+    assert_equal result, get_filter_tag_options
   end
 
   test "add tag -> undo -> redo" do
@@ -207,6 +239,17 @@ class TagTest < ApplicationSystemTestCase
     assert_remove_tag(@has_tag.content)
   end
 
+  test "create tag -> undo -> redo" do
+    # create tag
+    create_tag(@new_tag_content)
+    assert_create_tag(@new_tag_content)
+    # undo
+    undo_action
+    assert_no_change_to_tags
+    # redo
+    redo_action
+    assert_create_tag(@new_tag_content)
+  end
   # add tag -> undo -> redo
   # add tag -> switch selection -> undo -> redo
   # add tag -> undo -> switch selection -> reo
