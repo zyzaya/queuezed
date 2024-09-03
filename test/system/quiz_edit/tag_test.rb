@@ -96,11 +96,10 @@ class TagTest < ApplicationSystemTestCase
     # undo
     undo_action
     assert_no_change_to_tags(initial, question_edit)
-    # switch selection
+    # switch selection -> redo
     select_question(other.id)
-    question_edit = question_edit_container(question.id)
-    # redo
     redo_action
+    question_edit = question_edit_container(question.id)
     assert_add_tag(initial, tag.content, question_edit)
   end
 
@@ -201,6 +200,27 @@ class TagTest < ApplicationSystemTestCase
     assert_no_change_to_tags(initial, question_edit)
     # redo
     redo_action
+    assert_remove_tag(initial, tag.content, question_edit)
+  end
+
+  test "remove tag -> undo -> switch selection -> redo" do
+    question = questions(:john_one)
+    other = questions(:john_two)
+    tag = tags(:tag_1)
+    visit edit_quiz_path(quizzes(:johns))
+    select_question(question.id)
+    question_edit = question_edit_container(question.id)
+    initial = get_tags_content(question_edit)
+    # remove tag
+    remove_tag(tag.content, question_edit)
+    assert_remove_tag(initial, tag.content, question_edit)
+    # undo
+    undo_action
+    assert_no_change_to_tags(initial, question_edit)
+    # switch selection -> redo
+    select_question(other.id)
+    redo_action
+    question_edit = question_edit_container(question.id)
     assert_remove_tag(initial, tag.content, question_edit)
   end
 
