@@ -57,7 +57,7 @@ export default class extends Controller {
   }
 
   removeTag(event) {
-    let tagId = event.currentTarget.dataset.questionTagIdValue;
+    let tagId = event.currentTarget.dataset['edit-QuestionTagIdValue'];
     let content = event.currentTarget.text;
     this.dispatch('removeTag', {
       detail: {

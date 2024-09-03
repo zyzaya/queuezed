@@ -63,7 +63,6 @@ export default class extends Controller {
     };
     Data.save(this.csrf, this.quizIdValue, changes).then((data) => {
       // collect id conversion
-      console.log(data);
       data.questions.forEach((q) => {
         if (q.prev_id !== undefined) ids.questions[q.prev_id] = q.id;
         q.answers.forEach((a) => {
@@ -240,7 +239,7 @@ export default class extends Controller {
 
   deleteTagDisplay(id) {
     let tag = document.querySelector(
-      `.button.tag[data-question-tag-id-value="${id}"]`
+      `.button.tag[data-edit--question-tag-id-value="${id}"]`
     );
     if (tag !== null) tag.remove();
   }
@@ -314,6 +313,7 @@ export default class extends Controller {
   }
 
   removeTag(event) {
+    console.log('edit_controller remove tag');
     let selected = this.currentlySelectedValue;
     let tagId = event.detail.tagId;
     let tagContent = event.detail.tagContent;
