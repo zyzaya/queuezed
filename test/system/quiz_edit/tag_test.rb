@@ -12,31 +12,33 @@ class TagTest < ApplicationSystemTestCase
     select content, from: "add_tag"
   end
 
-  def remove_tag(content, question_edit)
-    button = question_edit.find(".tag_list > a") { |e| e.text.eql?(content) }
+  def remove_tag(content, qId)
+    container = question_edit_container(qId)
+    button = container.find(".tag_list > a") { |e| e.text.eql?(content) }
     button.click
   end
 
-  def get_tags_content(question_edit)
-    question_edit.find_all(".tag_list > a").map do |e|
+  def get_tags_content(qId)
+    container = question_edit_container(qId)
+    container.find_all(".tag_list > a").map do |e|
       e.text
     end
   end
 
-  def assert_add_tag(initial, content, question_edit)
-    result = get_tags_content(question_edit)
+  def assert_add_tag(initial, content, qId)
+    result = get_tags_content(qId)
     assert_equal initial.length + 1, result.length
     assert_equal [content], result - initial
   end
 
-  def assert_remove_tag(initial, content, question_edit)
-    result = get_tags_content(question_edit)
+  def assert_remove_tag(initial, content, qId)
+    result = get_tags_content(qId)
     assert_equal initial.length - 1, result.length
     assert_equal [content], initial - result
   end
 
-  def assert_no_change_to_tags(initial, question_edit)
-    result = get_tags_content(question_edit)
+  def assert_no_change_to_tags(initial, qId)
+    result = get_tags_content(qId)
     assert_equal initial.length, result.length
     assert_empty result - initial
     assert_empty initial - result
@@ -47,17 +49,16 @@ class TagTest < ApplicationSystemTestCase
     tag = tags(:tag_2)
     visit edit_quiz_path(quizzes(:johns))
     select_question(question.id)
-    question_edit = question_edit_container(question.id)
-    initial = get_tags_content(question_edit)
+    initial = get_tags_content(question.id)
     # add tag
     add_tag(tag.content)
-    assert_add_tag(initial, tag.content, question_edit)
+    assert_add_tag(initial, tag.content, question.id)
     # undo
     undo_action
-    assert_no_change_to_tags(initial, question_edit)
+    assert_no_change_to_tags(initial, question.id)
     # redo
     redo_action
-    assert_add_tag(initial, tag.content, question_edit)
+    assert_add_tag(initial, tag.content, question.id)
   end
 
   test "add tag -> switch selection -> undo -> redo" do
@@ -66,20 +67,18 @@ class TagTest < ApplicationSystemTestCase
     tag = tags(:tag_2)    
     visit edit_quiz_path(quizzes(:johns))
     select_question(question.id)
-    question_edit = question_edit_container(question.id)
-    initial = get_tags_content(question_edit)
+    initial = get_tags_content(question.id)
     # add tag
     add_tag(tag.content)
-    assert_add_tag(initial, tag.content, question_edit)
+    assert_add_tag(initial, tag.content, question.id)
     # switch selection
     select_question(other.id)
-    question_edit = question_edit_container(question.id)
     # undo
     undo_action
-    assert_no_change_to_tags(initial, question_edit)
+    assert_no_change_to_tags(initial, question.id)
     # redo
     redo_action
-    assert_add_tag(initial, tag.content, question_edit)
+    assert_add_tag(initial, tag.content, question.id)
   end
 
   test "add tag -> undo -> switch selection -> redo" do
@@ -88,19 +87,17 @@ class TagTest < ApplicationSystemTestCase
     tag = tags(:tag_2)
     visit edit_quiz_path(quizzes(:johns))
     select_question(question.id)
-    question_edit = question_edit_container(question.id)
-    initial = get_tags_content(question_edit)
+    initial = get_tags_content(question.id)
     # add tag
     add_tag(tag.content)
-    assert_add_tag(initial, tag.content, question_edit)
+    assert_add_tag(initial, tag.content, question.id)
     # undo
     undo_action
-    assert_no_change_to_tags(initial, question_edit)
+    assert_no_change_to_tags(initial, question.id)
     # switch selection -> redo
     select_question(other.id)
     redo_action
-    question_edit = question_edit_container(question.id)
-    assert_add_tag(initial, tag.content, question_edit)
+    assert_add_tag(initial, tag.content, question.id)
   end
 
   test "add tag -> save" do
@@ -108,17 +105,15 @@ class TagTest < ApplicationSystemTestCase
     tag = tags(:tag_2)
     visit edit_quiz_path(quizzes(:johns))
     select_question(question.id)
-    question_edit = question_edit_container(question.id)
-    initial = get_tags_content(question_edit)
+    initial = get_tags_content(question.id)
     # add tag
     add_tag(tag.content)
-    assert_add_tag(initial, tag.content, question_edit)
+    assert_add_tag(initial, tag.content, question.id)
     # save
     save_action
     visit edit_quiz_path(quizzes(:johns))
     select_question(question.id)
-    question_edit = question_edit_container(question.id)
-    assert_add_tag(initial, tag.content, question_edit)
+    assert_add_tag(initial, tag.content, question.id)
   end
 
   test "add tag -> save -> undo -> save" do
@@ -126,19 +121,17 @@ class TagTest < ApplicationSystemTestCase
     tag = tags(:tag_2)
     visit edit_quiz_path(quizzes(:johns))
     select_question(question.id)
-    question_edit = question_edit_container(question.id)
-    initial = get_tags_content(question_edit)
+    initial = get_tags_content(question.id)
     # add tag
     add_tag(tag.content)
-    assert_add_tag(initial, tag.content, question_edit)
+    assert_add_tag(initial, tag.content, question.id)
     # save -> undo -> save
     save_action
     undo_action
     save_action
     visit edit_quiz_path(quizzes(:johns))
     select_question(question.id)
-    question_edit = question_edit_container(question.id)
-    assert_no_change_to_tags(initial, question_edit)
+    assert_no_change_to_tags(initial, question.id)
   end
 
   test "add tag -> save -> undo -> save -> redo -> save" do
@@ -146,11 +139,10 @@ class TagTest < ApplicationSystemTestCase
     tag = tags(:tag_2)
     visit edit_quiz_path(quizzes(:johns))
     select_question(question.id)
-    question_edit = question_edit_container(question.id)
-    initial = get_tags_content(question_edit)
+    initial = get_tags_content(question.id)
     # add tag
     add_tag(tag.content)
-    assert_add_tag(initial, tag.content, question_edit)
+    assert_add_tag(initial, tag.content, question.id)
     # save -> undo -> save -> redo -> save
     save_action
     undo_action
@@ -159,8 +151,7 @@ class TagTest < ApplicationSystemTestCase
     save_action
     visit edit_quiz_path(quizzes(:johns))
     select_question(question.id)
-    question_edit = question_edit_container(question.id)
-    assert_add_tag(initial, tag.content, question_edit)
+    assert_add_tag(initial, tag.content, question.id)
   end
 
   test "remove tag -> undo -> redo" do
@@ -168,17 +159,16 @@ class TagTest < ApplicationSystemTestCase
     tag = tags(:tag_1)
     visit edit_quiz_path(quizzes(:johns))
     select_question(question.id)
-    question_edit = question_edit_container(question.id)
-    initial = get_tags_content(question_edit)
+    initial = get_tags_content(question.id)
     # remove tag
-    remove_tag(tag.content, question_edit)
-    assert_remove_tag(initial, tag.content, question_edit)
+    remove_tag(tag.content, question.id)
+    assert_remove_tag(initial, tag.content, question.id)
     # undo
     undo_action
-    assert_no_change_to_tags(initial, question_edit)
+    assert_no_change_to_tags(initial, question.id)
     # redo
     redo_action
-    assert_remove_tag(initial, tag.content, question_edit)
+    assert_remove_tag(initial, tag.content, question.id)
   end
 
   test "remove tag -> switch selection -> undo -> redo" do
@@ -187,20 +177,18 @@ class TagTest < ApplicationSystemTestCase
     tag = tags(:tag_1)
     visit edit_quiz_path(quizzes(:johns))
     select_question(question.id)
-    question_edit = question_edit_container(question.id)
-    initial = get_tags_content(question_edit)
+    initial = get_tags_content(question.id)
     # remove tag
-    remove_tag(tag.content, question_edit)
-    assert_remove_tag(initial, tag.content, question_edit)
+    remove_tag(tag.content, question.id)
+    assert_remove_tag(initial, tag.content, question.id)
     # switch selection
     select_question(other.id)
     # undo
     undo_action
-    question_edit = question_edit_container(question.id)
-    assert_no_change_to_tags(initial, question_edit)
+    assert_no_change_to_tags(initial, question.id)
     # redo
     redo_action
-    assert_remove_tag(initial, tag.content, question_edit)
+    assert_remove_tag(initial, tag.content, question.id)
   end
 
   test "remove tag -> undo -> switch selection -> redo" do
@@ -209,19 +197,17 @@ class TagTest < ApplicationSystemTestCase
     tag = tags(:tag_1)
     visit edit_quiz_path(quizzes(:johns))
     select_question(question.id)
-    question_edit = question_edit_container(question.id)
-    initial = get_tags_content(question_edit)
+    initial = get_tags_content(question.id)
     # remove tag
-    remove_tag(tag.content, question_edit)
-    assert_remove_tag(initial, tag.content, question_edit)
+    remove_tag(tag.content, question.id)
+    assert_remove_tag(initial, tag.content, question.id)
     # undo
     undo_action
-    assert_no_change_to_tags(initial, question_edit)
+    assert_no_change_to_tags(initial, question.id)
     # switch selection -> redo
     select_question(other.id)
     redo_action
-    question_edit = question_edit_container(question.id)
-    assert_remove_tag(initial, tag.content, question_edit)
+    assert_remove_tag(initial, tag.content, question.id)
   end
 
   test "remove tag -> save" do
@@ -229,17 +215,15 @@ class TagTest < ApplicationSystemTestCase
     tag = tags(:tag_1)
     visit edit_quiz_path(quizzes(:johns))
     select_question(question.id)
-    question_edit = question_edit_container(question.id)
-    initial = get_tags_content(question_edit)
+    initial = get_tags_content(question.id)
     # remove tag
-    remove_tag(tag.content, question_edit)
-    assert_remove_tag(initial, tag.content, question_edit)
+    remove_tag(tag.content, question.id)
+    assert_remove_tag(initial, tag.content, question.id)
     # save
     save_action
     visit edit_quiz_path(quizzes(:johns))
     select_question(question.id)
-    question_edit = question_edit_container(question.id)
-    assert_remove_tag(initial, tag.content, question_edit)
+    assert_remove_tag(initial, tag.content, question.id)
   end
 
   test "remove tag -> save -> undo -> save" do
@@ -247,19 +231,17 @@ class TagTest < ApplicationSystemTestCase
     tag = tags(:tag_1)
     visit edit_quiz_path(quizzes(:johns))
     select_question(question.id)
-    question_edit = question_edit_container(question.id)
-    initial = get_tags_content(question_edit)
+    initial = get_tags_content(question.id)
     # remove tag
-    remove_tag(tag.content, question_edit)
-    assert_remove_tag(initial, tag.content, question_edit)
+    remove_tag(tag.content, question.id)
+    assert_remove_tag(initial, tag.content, question.id)
     # save -> undo -> save
     save_action
     undo_action
     save_action
     visit edit_quiz_path(quizzes(:johns))
     select_question(question.id)
-    question_edit = question_edit_container(question.id)
-    assert_no_change_to_tags(initial, question_edit)
+    assert_no_change_to_tags(initial, question.id)
   end
 
   test "remove tag -> save -> undo -> save -> redo -> save" do
@@ -267,11 +249,10 @@ class TagTest < ApplicationSystemTestCase
     tag = tags(:tag_1)
     visit edit_quiz_path(quizzes(:johns))
     select_question(question.id)
-    question_edit = question_edit_container(question.id)
-    initial = get_tags_content(question_edit)
+    initial = get_tags_content(question.id)
     # remove tag
-    remove_tag(tag.content, question_edit)
-    assert_remove_tag(initial, tag.content, question_edit)
+    remove_tag(tag.content, question.id)
+    assert_remove_tag(initial, tag.content, question.id)
     # save -> undo -> save -> redo -> save
     save_action
     undo_action
@@ -280,8 +261,7 @@ class TagTest < ApplicationSystemTestCase
     save_action
     visit edit_quiz_path(quizzes(:johns))
     select_question(question.id)
-    question_edit = question_edit_container(question.id)
-    assert_remove_tag(initial, tag.content, question_edit)
+    assert_remove_tag(initial, tag.content, question.id)
   end
 
   # add tag -> undo -> redo
