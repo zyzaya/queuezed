@@ -247,6 +247,19 @@ class TagTest < ApplicationSystemTestCase
     redo_action
     assert_create_tag(@new_tag_content)
   end
+
+  test "create tag -> switch selection -> undo -> redo" do
+    # create tag
+    create_tag(@new_tag_content)
+    assert_create_tag(@new_tag_content)
+    # switch selection -> undo
+    select_question(@other.id)
+    undo_action
+    assert_no_change_to_tags
+    # redo
+    redo_action
+    assert_create_tag(@new_tag_content)
+  end
   # add tag -> undo -> redo
   # add tag -> switch selection -> undo -> redo
   # add tag -> undo -> switch selection -> reo
