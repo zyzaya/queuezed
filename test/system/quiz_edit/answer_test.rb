@@ -1,22 +1,11 @@
 require "application_system_test_case"
+require "test_helper"
 
 class AnswerTest < ApplicationSystemTestCase
   include Devise::Test::IntegrationHelpers
 
   setup do
     sign_in users(:john)
-  end
-
-  def save_action
-    page.find("#save").click
-  end
-
-  def undo_action
-    page.find("#undo").click
-  end
-
-  def redo_action
-    page.find("#redo").click
   end
 
   def add_answer(single_question_edit)  
