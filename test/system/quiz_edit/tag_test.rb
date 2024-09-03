@@ -28,7 +28,7 @@ class TagTest < ApplicationSystemTestCase
     result = get_tags_content
     assert_equal initial.length, result.length
     assert_empty result - initial
-    assert_empty initial - empty
+    assert_empty initial - result
   end
 
   test "add tag -> undo -> redo" do

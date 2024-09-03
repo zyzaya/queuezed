@@ -1,29 +1,29 @@
 <turbo-frame id="edit_detail">
-  <div class="question_detail" data-controller="edit--question" data-question-id-value = <%= @question.id %>>
+  <div class="question_detail" data-controller="edit--question" data-edit--question-id-value = <%= @question.id %>>
     <a class="button delete_question" 
         id="delete_question" 
-        data-action="question#delete">Delete</a>
+        data-action="edit--question#delete">Delete</a>
     <div class="question_tags">
       <hr>
       <div class="question_tag_toolbar" >
         <label for="add_tag">Add Tag</label>
         <select class='add_tag' id='add_tag' name='Add Tag' 
-          data-action="question#addTag" 
+          data-action="edit--question#addTag" 
           data-edit-target="tagOptionList">
           <option value="-1" selected>Select to add</option>
           <option value='-2' disabled>-----</option>
           <% @quiz.tags.order('content').uniq.each do |t| %>
-            <option value=<%= t.id %> data-question-target="tagOption"><%= t.content %></option>
+            <option value=<%= t.id %> data-edit--question-target="tagOption"><%= t.content %></option>
           <% end %>
         </select>
         <label for="create_tag">Create Tag</label>
-        <input type="text" name="Create Tag" id="create_tag" data-action="change->question#createTag">
+        <input type="text" name="Create Tag" id="create_tag" data-action="change->edit--question#createTag">
       </div>
       <hr>
       <div class="tag_list" data-edit-target="tagList">
         <% @question.tags.order('content').each do |t| %>
           <a class="button tag" 
-            data-action="question#removeTag"
+            data-action="edit--question#removeTag"
             data-edit--question-tag-id-value=<%= t.id %> 
             data-edit--question-target="tag"><%= t.content %></a>
         <% end %>

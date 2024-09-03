@@ -26,7 +26,7 @@ export default class extends Controller {
   hasTag(id, content) {
     let existing = this.tagTargets.find((t) => {
       return (
-        t.dataset.questionTagIdValue.toString() === id.toString() &&
+        t.dataset['edit-QuestionTagIdValue'].toString() === id.toString() &&
         t.text === content
       );
     });
