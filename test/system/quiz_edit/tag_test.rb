@@ -48,6 +48,26 @@ class TagTest < ApplicationSystemTestCase
     assert_add_tag(initial, tag.content)
   end
 
+  test "add tag -> switch selection -> undo -> redo" do
+    question = questions(:john_one)
+    other = questions(:john_two)
+    tag = tags(:tag_2)    
+    visit edit_quiz_path(quizzes(:johns))
+    select_question(question.id)
+    initial = get_tags_content
+    # add tag
+    add_tag(tag.content)
+    assert_add_tag(initial, tag.content)
+    # switch selection
+    select_question(other.id)
+    # undo
+    undo_action
+    assert_no_change_to_tags(initial)
+    # redo
+    redo_action
+    assert_add_tag(initial, tag.content)
+  end
+
   # add tag -> undo -> redo
   # add tag -> switch selection -> undo -> redo
   # add tag -> undo -> switch selection -> reo
