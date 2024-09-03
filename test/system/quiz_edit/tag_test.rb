@@ -297,22 +297,19 @@ class TagTest < ApplicationSystemTestCase
     select_question(@question.id)
     assert_no_change_to_tags
   end
-  # add tag -> undo -> redo
-  # add tag -> switch selection -> undo -> redo
-  # add tag -> undo -> switch selection -> reo
-  # add tag -> save
-  # add tag -> save -> undo -> save
-  # add tag -> save -> undo -> save -> redo -> save
-  # remove tag -> undo -> redo
-  # remove tag -> switch selection -> undo -> redo
-  # remove tag -> undo -> switch selection -> reo
-  # remove tag -> save
-  # remove tag -> save -> undo -> save
-  # remove tag -> save -> undo -> save -> redo -> save
-  # create new tag -> undo -> redo
-  # create new tag -> switch selection -> undo -> redo
-  # create new tag -> undo -> switch selection -> reo
-  # create new tag -> save
-  # create new tag -> save -> undo -> save
-  # create new tag -> save -> undo -> save -> redo -> save
+
+  test "create tag -> save -> undo -> save -> redo -> save" do
+    # create tag
+    create_tag(@new_tag_content)
+    assert_create_tag(@new_tag_content)
+    # save -> undo -> save -> redo -> save
+    save_action
+    undo_action
+    save_action
+    redo_action
+    save_action
+    visit edit_quiz_path(quizzes(:johns))
+    select_question(@question.id)
+    assert_create_tag(@new_tag_content)
+  end
 end
