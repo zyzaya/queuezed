@@ -9,6 +9,10 @@ class ApplicationSystemTestCase < ActionDispatch::SystemTestCase
     row.click
   end
 
+  def question_edit_container(id)
+    page.find(".question_detail[data-edit--question-id-value=\"#{id}\"]")
+  end
+
   def single_question_edit_container(id)
     page.find(".single_question_edit[data-edit--single-question-id-value=\"#{id}\"]")
   end

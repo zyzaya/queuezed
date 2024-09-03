@@ -12,20 +12,20 @@ class TagTest < ApplicationSystemTestCase
     select content, from: "add_tag"
   end
 
-  def get_tags_content
-    page.find_all(".tag_list > a").map do |e|
+  def get_tags_content(question_edit)
+    question_edit.find_all(".tag_list > a").map do |e|
       e.text
     end
   end
 
-  def assert_add_tag(initial, content)
-    result = get_tags_content
+  def assert_add_tag(initial, content, question_edit)
+    result = get_tags_content(question_edit)
     assert_equal initial.length + 1, result.length
     assert_equal [content], result - initial
   end
 
-  def assert_no_change_to_tags(initial)
-    result = get_tags_content
+  def assert_no_change_to_tags(initial, question_edit)
+    result = get_tags_content(question_edit)
     assert_equal initial.length, result.length
     assert_empty result - initial
     assert_empty initial - result
@@ -36,36 +36,61 @@ class TagTest < ApplicationSystemTestCase
     tag = tags(:tag_2)
     visit edit_quiz_path(quizzes(:johns))
     select_question(question.id)
-    initial = get_tags_content
+    question_edit = question_edit_container(question.id)
+    initial = get_tags_content(question_edit)
     # add tag
     add_tag(tag.content)
-    assert_add_tag(initial, tag.content)
+    assert_add_tag(initial, tag.content, question_edit)
     # undo
     undo_action
-    assert_no_change_to_tags(initial)
+    assert_no_change_to_tags(initial, question_edit)
     # redo
     redo_action
-    assert_add_tag(initial, tag.content)
+    assert_add_tag(initial, tag.content, question_edit)
   end
 
   test "add tag -> switch selection -> undo -> redo" do
     question = questions(:john_one)
-    other = questions(:john_two)
+    other = questions(:john_three)
     tag = tags(:tag_2)    
     visit edit_quiz_path(quizzes(:johns))
     select_question(question.id)
-    initial = get_tags_content
+    question_edit = question_edit_container(question.id)
+    initial = get_tags_content(question_edit)
     # add tag
     add_tag(tag.content)
-    assert_add_tag(initial, tag.content)
+    assert_add_tag(initial, tag.content, question_edit)
     # switch selection
     select_question(other.id)
+    question_edit = question_edit_container(question.id)
     # undo
     undo_action
-    assert_no_change_to_tags(initial)
+    assert_no_change_to_tags(initial, question_edit)
     # redo
     redo_action
-    assert_add_tag(initial, tag.content)
+    assert_add_tag(initial, tag.content, question_edit)
+  end
+
+  test "add tag -> undo -> switch selection -> redo" do
+    question = questions(:john_one)
+    other = questions(:john_two)
+    tag = tags(:tag_2)
+    visit edit_quiz_path(quizzes(:johns))
+    select_question(question.id)
+    question_edit = question_edit_container(question.id)
+    initial = get_tags_content(question_edit)
+    # add tag
+    add_tag(tag.content)
+    assert_add_tag(initial, tag.content, question_edit)
+    # undo
+    undo_action
+    assert_no_change_to_tags(initial, question_edit)
+    # switch selection
+    select_question(other.id)
+    question_edit = question_edit_container(question.id)
+    # redo
+    redo_action
+    assert_add_tag(initial, tag.content, question_edit)
   end
 
   # add tag -> undo -> redo
