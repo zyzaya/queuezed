@@ -93,6 +93,24 @@ class TagTest < ApplicationSystemTestCase
     assert_add_tag(initial, tag.content, question_edit)
   end
 
+  test "add tag -> save" do
+    question = questions(:john_one)
+    tag = tags(:tag_2)
+    visit edit_quiz_path(quizzes(:johns))
+    select_question(question.id)
+    question_edit = question_edit_container(question.id)
+    initial = get_tags_content(question_edit)
+    # add tag
+    add_tag(tag.content)
+    assert_add_tag(initial, tag.content, question_edit)
+    # save
+    save_action
+    visit edit_quiz_path(quizzes(:johns))
+    select_question(question.id)
+    question_edit = question_edit_container(question.id)
+    assert_add_tag(initial, tag.content, question_edit)
+  end
+
   # add tag -> undo -> redo
   # add tag -> switch selection -> undo -> redo
   # add tag -> undo -> switch selection -> reo
