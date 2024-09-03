@@ -64,87 +64,60 @@ class TagTest < ApplicationSystemTestCase
   end
 
   test "add tag -> switch selection -> undo -> redo" do
-    question = questions(:john_one)
-    other = questions(:john_three)
-    tag = tags(:tag_2)    
-    visit edit_quiz_path(quizzes(:johns))
-    select_question(question.id)
-    initial = get_tags_content(question.id)
     # add tag
-    add_tag(tag.content)
-    assert_add_tag(initial, tag.content, question.id)
+    add_tag(@not_has_tag.content)
+    assert_add_tag(@not_has_tag.content)
     # switch selection
-    select_question(other.id)
+    select_question(@other.id)
     # undo
     undo_action
-    assert_no_change_to_tags(initial, question.id)
+    assert_no_change_to_tags
     # redo
     redo_action
-    assert_add_tag(initial, tag.content, question.id)
+    assert_add_tag(@not_has_tag.content)
   end
 
   test "add tag -> undo -> switch selection -> redo" do
-    question = questions(:john_one)
-    other = questions(:john_two)
-    tag = tags(:tag_2)
-    visit edit_quiz_path(quizzes(:johns))
-    select_question(question.id)
-    initial = get_tags_content(question.id)
     # add tag
-    add_tag(tag.content)
-    assert_add_tag(initial, tag.content, question.id)
+    add_tag(@not_has_tag.content)
+    assert_add_tag(@not_has_tag.content)
     # undo
     undo_action
-    assert_no_change_to_tags(initial, question.id)
+    assert_no_change_to_tags
     # switch selection -> redo
-    select_question(other.id)
+    select_question(@other.id)
     redo_action
-    assert_add_tag(initial, tag.content, question.id)
+    assert_add_tag(@not_has_tag.content)
   end
 
   test "add tag -> save" do
-    question = questions(:john_one)
-    tag = tags(:tag_2)
-    visit edit_quiz_path(quizzes(:johns))
-    select_question(question.id)
-    initial = get_tags_content(question.id)
     # add tag
-    add_tag(tag.content)
-    assert_add_tag(initial, tag.content, question.id)
+    add_tag(@not_has_tag.content)
+    assert_add_tag(@not_has_tag.content)
     # save
     save_action
     visit edit_quiz_path(quizzes(:johns))
-    select_question(question.id)
-    assert_add_tag(initial, tag.content, question.id)
+    select_question(@question.id)
+    assert_add_tag(@not_has_tag.content)
   end
 
   test "add tag -> save -> undo -> save" do
-    question = questions(:john_one)
-    tag = tags(:tag_2)
-    visit edit_quiz_path(quizzes(:johns))
-    select_question(question.id)
-    initial = get_tags_content(question.id)
     # add tag
-    add_tag(tag.content)
-    assert_add_tag(initial, tag.content, question.id)
+    add_tag(@not_has_tag.content)
+    assert_add_tag(@not_has_tag.content)
     # save -> undo -> save
     save_action
     undo_action
     save_action
     visit edit_quiz_path(quizzes(:johns))
-    select_question(question.id)
-    assert_no_change_to_tags(initial, question.id)
+    select_question(@question.id)
+    assert_no_change_to_tags
   end
 
   test "add tag -> save -> undo -> save -> redo -> save" do
-    question = questions(:john_one)
-    tag = tags(:tag_2)
-    visit edit_quiz_path(quizzes(:johns))
-    select_question(question.id)
-    initial = get_tags_content(question.id)
     # add tag
-    add_tag(tag.content)
-    assert_add_tag(initial, tag.content, question.id)
+    add_tag(@not_has_tag.content)
+    assert_add_tag(@not_has_tag.content)
     # save -> undo -> save -> redo -> save
     save_action
     undo_action
@@ -152,109 +125,77 @@ class TagTest < ApplicationSystemTestCase
     redo_action
     save_action
     visit edit_quiz_path(quizzes(:johns))
-    select_question(question.id)
-    assert_add_tag(initial, tag.content, question.id)
+    select_question(@question.id)
+    assert_add_tag(@not_has_tag.content)
   end
 
   test "remove tag -> undo -> redo" do
-    question = questions(:john_one)  
-    tag = tags(:tag_1)
-    visit edit_quiz_path(quizzes(:johns))
-    select_question(question.id)
-    initial = get_tags_content(question.id)
     # remove tag
-    remove_tag(tag.content, question.id)
-    assert_remove_tag(initial, tag.content, question.id)
+    remove_tag(@has_tag.content)
+    assert_remove_tag(@has_tag.content)
     # undo
     undo_action
-    assert_no_change_to_tags(initial, question.id)
+    assert_no_change_to_tags
     # redo
     redo_action
-    assert_remove_tag(initial, tag.content, question.id)
+    assert_remove_tag(@has_tag.content)
   end
 
   test "remove tag -> switch selection -> undo -> redo" do
-    question = questions(:john_one)
-    other = questions(:john_two)
-    tag = tags(:tag_1)
-    visit edit_quiz_path(quizzes(:johns))
-    select_question(question.id)
-    initial = get_tags_content(question.id)
     # remove tag
-    remove_tag(tag.content, question.id)
-    assert_remove_tag(initial, tag.content, question.id)
+    remove_tag(@has_tag.content)
+    assert_remove_tag(@has_tag.content)
     # switch selection
-    select_question(other.id)
+    select_question(@other.id)
     # undo
     undo_action
-    assert_no_change_to_tags(initial, question.id)
+    assert_no_change_to_tags
     # redo
     redo_action
-    assert_remove_tag(initial, tag.content, question.id)
+    assert_remove_tag(@has_tag.content)
   end
 
   test "remove tag -> undo -> switch selection -> redo" do
-    question = questions(:john_one)
-    other = questions(:john_two)
-    tag = tags(:tag_1)
-    visit edit_quiz_path(quizzes(:johns))
-    select_question(question.id)
-    initial = get_tags_content(question.id)
     # remove tag
-    remove_tag(tag.content, question.id)
-    assert_remove_tag(initial, tag.content, question.id)
+    remove_tag(@has_tag.content)
+    assert_remove_tag(@has_tag.content)
     # undo
     undo_action
-    assert_no_change_to_tags(initial, question.id)
+    assert_no_change_to_tags
     # switch selection -> redo
-    select_question(other.id)
+    select_question(@other.id)
     redo_action
-    assert_remove_tag(initial, tag.content, question.id)
+    assert_remove_tag(@has_tag.content)
   end
 
   test "remove tag -> save" do
-    question = questions(:john_one)
-    tag = tags(:tag_1)
-    visit edit_quiz_path(quizzes(:johns))
-    select_question(question.id)
-    initial = get_tags_content(question.id)
     # remove tag
-    remove_tag(tag.content, question.id)
-    assert_remove_tag(initial, tag.content, question.id)
+    remove_tag(@has_tag.content)
+    assert_remove_tag(@has_tag.content)
     # save
     save_action
     visit edit_quiz_path(quizzes(:johns))
-    select_question(question.id)
-    assert_remove_tag(initial, tag.content, question.id)
+    select_question(@question.id)
+    assert_remove_tag(@has_tag.content)
   end
 
   test "remove tag -> save -> undo -> save" do
-    question = questions(:john_one)
-    tag = tags(:tag_1)
-    visit edit_quiz_path(quizzes(:johns))
-    select_question(question.id)
-    initial = get_tags_content(question.id)
     # remove tag
-    remove_tag(tag.content, question.id)
-    assert_remove_tag(initial, tag.content, question.id)
+    remove_tag(@has_tag.content)
+    assert_remove_tag(@has_tag.content)
     # save -> undo -> save
     save_action
     undo_action
     save_action
     visit edit_quiz_path(quizzes(:johns))
-    select_question(question.id)
-    assert_no_change_to_tags(initial, question.id)
+    select_question(@question.id)
+    assert_no_change_to_tags
   end
 
   test "remove tag -> save -> undo -> save -> redo -> save" do
-    question = questions(:john_one)
-    tag = tags(:tag_1)
-    visit edit_quiz_path(quizzes(:johns))
-    select_question(question.id)
-    initial = get_tags_content(question.id)
     # remove tag
-    remove_tag(tag.content, question.id)
-    assert_remove_tag(initial, tag.content, question.id)
+    remove_tag(@has_tag.content)
+    assert_remove_tag(@has_tag.content)
     # save -> undo -> save -> redo -> save
     save_action
     undo_action
@@ -262,8 +203,8 @@ class TagTest < ApplicationSystemTestCase
     redo_action
     save_action
     visit edit_quiz_path(quizzes(:johns))
-    select_question(question.id)
-    assert_remove_tag(initial, tag.content, question.id)
+    select_question(@question.id)
+    assert_remove_tag(@has_tag.content)
   end
 
   # add tag -> undo -> redo
