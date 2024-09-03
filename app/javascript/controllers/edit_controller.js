@@ -69,7 +69,7 @@ export default class extends Controller {
           if (a.prev_id !== undefined) ids.answers[a.prev_id] = a.id;
         });
         q.tags.forEach((t) => {
-          if (t.prev_id !== undefined) ids.tags[t.prev_id] = a.id;
+          if (t.prev_id !== undefined) ids.tags[t.prev_id] = t.id;
         });
       });
       this.idConversion = ids;
