@@ -6,59 +6,61 @@ class TagTest < ApplicationSystemTestCase
 
   setup do 
     sign_in users(:john)
+    @question = questions(:john_one)
+    @has_tag = tags(:tag_1)
+    @other = questions(:john_two)
+    @not_has_tag = tags(:tag_2)
+    visit edit_quiz_path(quizzes(:johns))
+    select_question(@question.id)
+    @initial = get_tags_content
   end
 
   def add_tag(content)
     select content, from: "add_tag"
   end
 
-  def remove_tag(content, qId)
-    container = question_edit_container(qId)
+  def remove_tag(content)
+    container = question_edit_container(@question.id)
     button = container.find(".tag_list > a") { |e| e.text.eql?(content) }
     button.click
   end
 
-  def get_tags_content(qId)
-    container = question_edit_container(qId)
+  def get_tags_content
+    container = question_edit_container(@question.id)
     container.find_all(".tag_list > a").map do |e|
       e.text
     end
   end
 
-  def assert_add_tag(initial, content, qId)
-    result = get_tags_content(qId)
-    assert_equal initial.length + 1, result.length
-    assert_equal [content], result - initial
+  def assert_add_tag(content)
+    result = get_tags_content
+    assert_equal @initial.length + 1, result.length
+    assert_equal [content], result - @initial
   end
 
-  def assert_remove_tag(initial, content, qId)
-    result = get_tags_content(qId)
-    assert_equal initial.length - 1, result.length
-    assert_equal [content], initial - result
+  def assert_remove_tag(content)
+    result = get_tags_content
+    assert_equal @initial.length - 1, result.length
+    assert_equal [content], @initial - result
   end
 
-  def assert_no_change_to_tags(initial, qId)
-    result = get_tags_content(qId)
-    assert_equal initial.length, result.length
-    assert_empty result - initial
-    assert_empty initial - result
+  def assert_no_change_to_tags
+    result = get_tags_content
+    assert_equal @initial.length, result.length
+    assert_empty result - @initial
+    assert_empty @initial - result
   end
 
   test "add tag -> undo -> redo" do
-    question = questions(:john_one)
-    tag = tags(:tag_2)
-    visit edit_quiz_path(quizzes(:johns))
-    select_question(question.id)
-    initial = get_tags_content(question.id)
     # add tag
-    add_tag(tag.content)
-    assert_add_tag(initial, tag.content, question.id)
+    add_tag(@not_has_tag.content)
+    assert_add_tag(@not_has_tag.content)
     # undo
     undo_action
-    assert_no_change_to_tags(initial, question.id)
+    assert_no_change_to_tags
     # redo
     redo_action
-    assert_add_tag(initial, tag.content, question.id)
+    assert_add_tag(@not_has_tag.content)
   end
 
   test "add tag -> switch selection -> undo -> redo" do
