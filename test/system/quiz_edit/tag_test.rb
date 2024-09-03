@@ -182,6 +182,28 @@ class TagTest < ApplicationSystemTestCase
     assert_remove_tag(initial, tag.content, question_edit)
   end
 
+  test "remove tag -> switch selection -> undo -> redo" do
+    question = questions(:john_one)
+    other = questions(:john_two)
+    tag = tags(:tag_1)
+    visit edit_quiz_path(quizzes(:johns))
+    select_question(question.id)
+    question_edit = question_edit_container(question.id)
+    initial = get_tags_content(question_edit)
+    # remove tag
+    remove_tag(tag.content, question_edit)
+    assert_remove_tag(initial, tag.content, question_edit)
+    # switch selection
+    select_question(other.id)
+    # undo
+    undo_action
+    question_edit = question_edit_container(question.id)
+    assert_no_change_to_tags(initial, question_edit)
+    # redo
+    redo_action
+    assert_remove_tag(initial, tag.content, question_edit)
+  end
+
   # add tag -> undo -> redo
   # add tag -> switch selection -> undo -> redo
   # add tag -> undo -> switch selection -> reo
