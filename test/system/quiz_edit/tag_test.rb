@@ -14,6 +14,7 @@ class TagTest < ApplicationSystemTestCase
     visit edit_quiz_path(quizzes(:johns))
     select_question(@question.id)
     @initial = get_tags_content
+    @initial_tag_options = quizzes(:johns).tags.sort.pluck(:content)
   end
 
   def add_tag(content)
@@ -43,33 +44,29 @@ class TagTest < ApplicationSystemTestCase
   def get_add_tag_options
     container = question_edit_container(@question.id)
     options = container.find_all("#add_tag > option") do |e|
-      !["-1", "-2"].include?(e)
+      !["-1", "-2"].include?(e.value)
     end
     return options.map { |e| e.text }
   end
 
   def get_filter_tag_options
     options = page.find_all("#edit_add_tag_filter > option") do |e|
-      !["-1", "-2"].include?(e)
+      !["-1", "-2", "review"].include?(e.value)
     end
     return options.map { |e| e.text }
   end
 
   def assert_add_tag(content)
-    result = get_tags_content
-    assert_equal @initial.length + 1, result.length
-    assert_equal [content], result - @initial
+    assert_equal (@initial + [content]).sort, get_tags_content
   end
 
   def assert_remove_tag(content)
-    result = get_tags_content
-    assert_equal @initial.length - 1, result.length
-    assert_equal [content], @initial - result
+    assert_equal (@initial - [content]).sort, get_tags_content
   end
 
   def assert_create_tag(content)
     assert_add_tag(content)
-    expected = @initial + [content]
+    expected = (@initial_tag_options + [content]).sort
     # add to add tag options
     assert_equal expected, get_add_tag_options
     # add to filter by tag options
@@ -78,9 +75,9 @@ class TagTest < ApplicationSystemTestCase
 
   def assert_no_change_to_tags
     result = get_tags_content
-    assert_equal result, initial
-    assert_equal result, get_add_tag_options
-    assert_equal result, get_filter_tag_options
+    assert_equal @initial, result
+    assert_equal @initial_tag_options, get_add_tag_options
+    assert_equal @initial_tag_options, get_filter_tag_options
   end
 
   test "add tag -> undo -> redo" do
