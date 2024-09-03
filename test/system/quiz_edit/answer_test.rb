@@ -6,10 +6,18 @@ class AnswerTest < ApplicationSystemTestCase
 
   setup do
     sign_in users(:john)
+    @question = questions(:john_one)
+    @other = questions(:john_two)
+    @answer = answers(:john_one)
+    @modify_content = "a"
+    visit edit_quiz_path(quizzes(:johns))
+    select_question(@question.id)
+    @initial = get_answers_content
   end
 
-  def add_answer(single_question_edit)  
-    button = single_question_edit.find(".add_answer")
+  def add_answer  
+    container = single_question_edit_container(@question.id)
+    button = container.find(".add_answer")
     button.click
   end
 
@@ -19,57 +27,45 @@ class AnswerTest < ApplicationSystemTestCase
     button.click
   end
 
-  def change_answer_content(id, modify)
+  def change_answer_content(id)
     textarea = answer_container(id).find("textarea")
-    textarea.send_keys(modify)
+    textarea.send_keys(@modify_content)
   end
 
-  def assert_answer_content(id, value)
-    textarea = answer_container(id).find("textarea")
-    assert_equal value, textarea.value
-  end
-
-  def get_answer_content(single_question_edit)
-    single_question_edit.find_all(".answer_content").map do |e|
+  def get_answers_content
+    container = single_question_edit_container(@question.id)
+    container.find_all(".answer_content").map do |e|
       e.value
     end
   end
 
-  def assert_add_answer(initial, single_question_edit)
-    result = get_answer_content(single_question_edit)
-    assert_equal initial.length + 1, result.length
-    assert_equal [""], result - initial
+  def assert_answer_content(id, content)
+    textarea = answer_container(id).find("textarea")
+    assert_equal content, textarea.value
   end
 
-  def assert_delete_answer(initial, answer, single_question_edit)
-    result = get_answer_content(single_question_edit)
-    assert_equal initial.length - 1, result.length
-    assert_not result.include?(answer.content)
-    assert_no_selector(single_question_edit, ".answer_container[data-edit--answer-id-value=\"#{answer.id}\"]")
+  def assert_add_answer
+    assert_equal @initial + [""], get_answers_content
   end
 
-  def assert_no_change_to_answers(initial, single_question_edit)
-    result = get_answer_content(single_question_edit)
-    assert_equal initial.length, result.length
-    assert_empty result - initial
-    assert_empty initial - result
+  def assert_delete_answer(content)
+    assert_equal @initial - [content], get_answers_content
+  end
+
+  def assert_no_change_to_answers
+    assert_equal @initial, get_answers_content
   end
 
   test "add answer -> undo -> redo" do
-    question = questions(:john_one)
-    visit edit_quiz_path(quizzes(:johns))
-    select_question(question.id)
-    single_question_edit = single_question_edit_container(question.id)
-    initial = get_answer_content(single_question_edit)
     # add answer
-    add_answer(single_question_edit)
-    assert_add_answer(initial, single_question_edit)
+    add_answer
+    assert_add_answer
     # undo
     undo_action
-    assert_no_change_to_answers(initial, single_question_edit)
+    assert_no_change_to_answers
     # redo
     redo_action
-    assert_add_answer(initial, single_question_edit)
+    assert_add_answer
   end
 
   test "add answer -> switch selection -> undo -> redo" do
