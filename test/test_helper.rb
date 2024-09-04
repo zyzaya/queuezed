@@ -16,6 +16,22 @@ module EditActionHelper
   end
 end
 
+module EditGetHelper
+  def get_answers_content
+    container = single_question_edit_container(@question.id)
+    container.find_all(".answer_content").map do |e|
+      e.value
+    end
+  end
+
+  def get_tags_content
+    container = question_edit_container(@question.id)
+    container.find_all(".tag_list > a").map do |e|
+      e.text
+    end
+  end
+end
+
 class ActiveSupport::TestCase
   # Run tests in parallel with specified workers
   parallelize(workers: :number_of_processors)
@@ -25,4 +41,5 @@ class ActiveSupport::TestCase
 
   # Add more helper methods to be used by all tests here...
   include EditActionHelper
+  include EditGetHelper
 end

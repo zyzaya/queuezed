@@ -1,10 +1,13 @@
 require "application_system_test_case"
+require "test_helper"
 
 class QuizEditTest < ApplicationSystemTestCase
   include Devise::Test::IntegrationHelpers
 
   setup do
     sign_in users(:john)
+    @question = questions(:john_one)
+    visit edit_quiz_path(quizzes(:johns))
   end  
 
   test "initial load" do
@@ -20,27 +23,15 @@ class QuizEditTest < ApplicationSystemTestCase
   end
 
   test "select question" do
-    visit edit_quiz_path(quizzes(:johns))
-    question = questions(:john_one)
-    select_question(question.id)
-    single_question_edit = page.find(".single_question_edit[data-edit--single-question-id-value=\"#{question.id}\"]")
+    select_question(@question.id)
     # tags
-    expected_tags = question.tags.pluck(:content)
-    result_tags = []
-    tag_list = page.find(".tag_list")
-    tag_list.assert_selector("a", count: expected_tags.length) do |e|
-      result_tags << e.text
-    end
-    assert_empty expected_tags - result_tags
+    expected_tags = @question.tags.pluck(:content)
+    assert_equal expected_tags, get_tags_content
     # question content
-    textarea = single_question_edit.find(".question_content")
-    assert_equal textarea.text, question.content
+    textarea = single_question_edit_container(@question.id).find(".question_content")
+    assert_equal textarea.text, @question.content
     # answers
-    expected_answers = question.answers.pluck(:content)
-    result_answers = []
-    single_question_edit.assert_selector(".answer_content") do |e|
-      result_answers << e.text
-    end
-    assert_empty expected_answers - result_answers
+    expected_answers = @question.answers.pluck(:content)
+    assert_equal expected_answers, get_answers_content
   end
 end

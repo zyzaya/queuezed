@@ -34,13 +34,6 @@ class AnswerTest < ApplicationSystemTestCase
     textarea.send_keys(modify)
   end
 
-  def get_answers_content
-    container = single_question_edit_container(@question.id)
-    container.find_all(".answer_content").map do |e|
-      e.value
-    end
-  end
-
   def assert_answer_content(id, content)
     textarea = answer_container(id).find("textarea")
     assert_equal content, textarea.value

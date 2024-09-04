@@ -34,13 +34,6 @@ class TagTest < ApplicationSystemTestCase
     input.send_keys(:return)
   end
 
-  def get_tags_content
-    container = question_edit_container(@question.id)
-    container.find_all(".tag_list > a").map do |e|
-      e.text
-    end
-  end
-
   def get_add_tag_options
     container = question_edit_container(@question.id)
     options = container.find_all("#add_tag > option") do |e|
