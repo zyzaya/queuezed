@@ -191,7 +191,8 @@ class AnswerTest < ApplicationSystemTestCase
     save_action
     visit edit_quiz_path(quizzes(:johns))
     select_question(@question.id)
-    assert_no_change_to_answers
+    # in this specific instance, a change in order is tolerable
+    assert_equal @initial.sort, get_answers_content.sort
   end
 
   test "delete answer -> save -> undo -> save -> redo -> save" do

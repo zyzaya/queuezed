@@ -2,7 +2,8 @@ export default function AnswerDisplay(
   parent,
   question_id,
   answer_id,
-  content = ''
+  content = '',
+  index = -1
 ) {
   let obj = {};
 
@@ -33,7 +34,12 @@ export default function AnswerDisplay(
 
   answer_container.appendChild(answer_content);
   answer_container.appendChild(delete_answer);
-  parent.insertBefore(answer_container, add_answer);
+  let answers = parent.querySelectorAll('.answer_container');
+  if (index < 0 || index >= answers.length) {
+    parent.insertBefore(answer_container, add_answer);
+  } else {
+    parent.insertBefore(answer_container, answers[index]);
+  }
 
   obj.focus = () => {
     answer_content.focus();

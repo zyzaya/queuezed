@@ -508,15 +508,24 @@ export default class extends Controller {
     this.undo_handler.add('Change Answer Content', action, reverse);
   }
 
-  deleteAnswerDisplay(id) {
-    let answer = document.querySelector(
+  findAnswerContainer(id) {
+    return document.querySelector(
       `.answer_container[data-edit--answer-id-value="${id}"]`
     );
+  }
+
+  deleteAnswerDisplay(id) {
+    let answer = this.findAnswerContainer(id);
     if (answer !== null) answer.remove();
   }
 
   deleteAnswer(event) {
     let selected = this.currentlySelectedValue;
+    let parent = this.findQuestionContainer(event.detail.questionId);
+    let answer_container = this.findAnswerContainer(event.detail.answerId);
+    let index = Array.from(
+      parent.querySelectorAll('.answer_container')
+    ).indexOf(answer_container);
     let action = () => {
       this.change_handler.deleteAnswer(
         event.detail.questionId,
@@ -546,7 +555,8 @@ export default class extends Controller {
           parent,
           event.detail.questionId,
           event.detail.answerId,
-          event.detail.current
+          event.detail.current,
+          index
         );
       }
     };
