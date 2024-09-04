@@ -7,8 +7,20 @@ class QuizEditTest < ApplicationSystemTestCase
   setup do
     sign_in users(:john)
     @question = questions(:john_one)
+    @initial_title = quizzes(:johns).name
+    @modifier = "a"
+    @modified_title = @initial_title + @modifier
     visit edit_quiz_path(quizzes(:johns))
   end  
+
+  def change_title(modifier)
+    input = page.find("#quiz_title")
+    input.send_keys modifier
+  end
+
+  def assert_title(content)
+    assert_selector("#quiz_title") { |t| t.value == content }
+  end
 
   test "initial load" do
     visit edit_quiz_path(quizzes(:johns))
@@ -34,4 +46,20 @@ class QuizEditTest < ApplicationSystemTestCase
     expected_answers = @question.answers.pluck(:content)
     assert_equal expected_answers, get_answers_content
   end
+
+  test "edit title -> undo -> redo" do
+    change_title(@modifier)
+    assert_title(@modified_title)
+    # undo
+    undo_action
+    assert_title(@initial_title)
+    # redo
+    redo_action
+    assert_title(@modified_title)
+  end
+
+  # edit title -> undo -> redo
+  # edit title -> save
+  # edit title -> save -> undo -> save
+  # edit title -> save undo -> save -> redo -> save
 end
