@@ -58,6 +58,15 @@ class QuizEditTest < ApplicationSystemTestCase
     assert_title(@modified_title)
   end
 
+  test "edit title -> save" do
+    change_title(@modifier)
+    assert_title(@modified_title)
+    # save
+    save_action
+    visit edit_quiz_path(quizzes(:johns))
+    assert_title(@modified_title)
+  end
+
   # edit title -> undo -> redo
   # edit title -> save
   # edit title -> save -> undo -> save
