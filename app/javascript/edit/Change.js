@@ -5,7 +5,7 @@ export default function Change(csrf, quiz_id) {
   };
 
   obj.setQuizTitle = function (title) {
-    changes.quiz_title = title;
+    changes.name = title;
   };
   // answers
   let getAnswer = function (question, answer_id) {
