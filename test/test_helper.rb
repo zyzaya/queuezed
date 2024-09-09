@@ -17,6 +17,13 @@ module EditActionHelper
 end
 
 module EditGetHelper
+  def get_questions_content
+    body = page.find(".zg_body")
+    body.find_all(".zg_row > .zg_td:first-child").map do |e|
+      e.text
+    end
+  end
+
   def get_answers_content
     container = single_question_edit_container(@question.id)
     container.find_all(".answer_content").map do |e|
