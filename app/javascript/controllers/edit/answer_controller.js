@@ -2,7 +2,7 @@ import { Controller } from '@hotwired/stimulus';
 
 export default class extends Controller {
   static targets = ['info'];
-  static outlets = ['edit--single-question'];
+  static outlets = ['single-question'];
 
   static values = {
     id: String,

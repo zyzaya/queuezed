@@ -11,12 +11,12 @@ export default function AnswerDisplay(
 
   let answer_container = document.createElement('div');
   answer_container.classList.add('answer_container');
-  answer_container.dataset.controller = 'answer';
+  answer_container.dataset.controller = 'edit--answer';
   answer_container.dataset['edit-AnswerQuestionIdValue'] = question_id;
   answer_container.dataset['edit-AnswerIdValue'] = answer_id;
   answer_container.dataset[
     'edit-AnswerSingleQuestionOutlet'
-  ] = `.single_question_edit[data-single-question-id-value="${question_id}"]`;
+  ] = `.single_question_edit[data-edit--single-question-id-value="${question_id}"]`;
 
   let answer_content = document.createElement('textarea');
   answer_content.classList.add('answer_content');

@@ -520,6 +520,7 @@ export default class extends Controller {
   }
 
   deleteAnswer(event) {
+    console.log('delete answer');
     let selected = this.currentlySelectedValue;
     let parent = this.findQuestionContainer(event.detail.questionId);
     let answer_container = this.findAnswerContainer(event.detail.answerId);
