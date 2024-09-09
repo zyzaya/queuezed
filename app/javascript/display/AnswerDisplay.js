@@ -23,7 +23,7 @@ export default function AnswerDisplay(
   answer_content.rows = '1';
   answer_content.dataset.editTarget = 'answerContent';
   answer_content.dataset['edit-AnswerTarget'] = 'info';
-  answer_content.dataset.action = 'answer#answerContentChange';
+  answer_content.dataset.action = 'edit--answer#answerContentChange';
   answer_content.value = content;
 
   let delete_answer = document.createElement('a');
