@@ -1,20 +1,23 @@
+<% answers = question.nil? ? [] : question.answers %>
+<% id = question.nil? ? "" : question.id %>
+<% content = question.nil? ? "" : question.content %>
 <div class="single_question_edit" 
   data-edit-target='singleQuestionContainer'
   data-controller='edit--single-question'
-  data-edit--single-question-id-value='<%= question.id %>'>
+  data-edit--single-question-id-value='<%= id %>'>
   <div class="question_header">Question.</div>
   <textarea class="question_content" 
     data-edit-target='questionContent'
-    data-edit--single-question-id-value='<%= question.id %>'
+    data-edit--single-question-id-value='<%= id %>'
     data-edit--single-question-target='info'
-    data-action='change->edit--single-question#questionContentChange'><%= question.content %></textarea>
+    data-action='change->edit--single-question#questionContentChange'><%= content %></textarea>
   <div class="answers_header">Answer(s).</div>
-  <% question.answers.each do |answer| %>
+  <% answers.each do |answer| %>
     <div class="answer_container" 
       data-controller='edit--answer' 
-      data-edit--answer-question-id-value='<%= question.id %>'
+      data-edit--answer-question-id-value='<%= id %>'
       data-edit--answer-id-value='<%= answer.id %>'
-      data-edit--answer-edit--single-question-outlet='.single_question_edit[data-edit--single-question-id-value="<%= question.id %>"]'>
+      data-edit--answer-edit--single-question-outlet='.single_question_edit[data-edit--single-question-id-value="<%= id %>"]'>
       <textarea class="answer_content" rows="1" 
         data-edit-target='answerContent'
         data-edit--answer-target='info' 

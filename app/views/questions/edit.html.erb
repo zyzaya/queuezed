@@ -1,5 +1,8 @@
 <turbo-frame id="edit_detail">
-  <div class="question_detail" data-controller="edit--question" data-edit--question-id-value = <%= @question.id %>>
+  <% tags = @question.nil? ? [] : @question.tags.order(:content) %>
+  <% relations = @question.nil? ? [] : @question.relations %>
+  <% id = @question.nil? ? "" : @question.id%>
+  <div class="question_detail" data-controller="edit--question" data-edit--question-id-value = <%= id %>>
     <a class="button delete_question" 
         id="delete_question" 
         data-action="edit--question#delete">Delete</a>
@@ -21,7 +24,7 @@
       </div>
       <hr>
       <div class="tag_list" data-edit-target="tagList">
-        <% @question.tags.order('content').each do |t| %>
+        <% tags.each do |t| %>
           <a class="button tag" 
             data-action="edit--question#removeTag"
             data-edit--question-tag-id-value=<%= t.id %> 
@@ -34,7 +37,7 @@
     <hr>
     <div class="related_questions_header">Related Questions</div>
     <hr>
-    <% @question.relations.each do |q| %>
+    <% relations.each do |q| %>
       <%= render 'questions/single_question_edit', question: q %>
       <hr>
     <% end %>

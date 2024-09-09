@@ -44,8 +44,7 @@
         <%= render 'shared/filter', quiz: @quiz %>
         <div data-edit--zgrid-target="zgridContainer"></div>
       </div>
-      <turbo-frame id="edit_detail" >
-      </turbo-frame>
+      <%= render template: "questions/edit" %>
     </div>
   </div>
 </div>

@@ -143,6 +143,14 @@ export default class extends Controller {
     this.currentlySelected = id;
     this.editOutlet.currentlySelectedValue = id;
     Data.setQuestion(this.csrf, this.quizIdValue, id);
+    // dispatch set question, recieved by question controller?
+    // tag options (set by quiz load)
+    // q tags (set by populate)
+    // single question content (set by populate)
+    // single question answers (set by populate)
+    // relations
+    // sq content
+    // sq answer
   }
 
   setSelectedToSibling() {
