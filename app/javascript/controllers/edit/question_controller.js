@@ -1,11 +1,21 @@
 import { Controller } from '@hotwired/stimulus';
+import TagDisplay from '../../display/TagDisplay';
+import SingleQuestionDisplay from '../../display/SingleQuestionDisplay';
 
 export default class extends Controller {
   static values = {
     id: String,
   };
 
-  static targets = ['tag', 'tagOption', 'tagOptionList'];
+  static targets = [
+    'tag',
+    'tagList',
+    'tagOption',
+    'tagOptionList',
+    'singleQuestionContainer',
+    'singleStart',
+    'relationStart',
+  ];
 
   connect() {
     this.dispatch('load', {
@@ -90,5 +100,27 @@ export default class extends Controller {
         },
       });
     }
+  }
+
+  set(event) {
+    this.idValue = event.detail.id;
+    this.tagTargets.forEach((t) => t.remove());
+    let tags = event.detail.tags.sort((a, b) => a.content.localeCompare(b));
+    tags.forEach((t) => {
+      let display = TagDisplay(t.id, t.content);
+      this.tagListTarget.appendChild(display);
+    });
+    this.singleQuestionContainerTargets.forEach((c) => c.remove());
+    let single = SingleQuestionDisplay(
+      event.detail.id,
+      event.detail.content,
+      event.detail.answers
+    );
+    this.singleStartTarget.after(single);
+
+    event.detail.relations.forEach((r) => {
+      let relation = SingleQuestionDisplay(r.id, r.content, r.answers);
+      this.relationStartTarget.after(relation);
+    });
   }
 }

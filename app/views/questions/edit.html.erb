@@ -2,7 +2,10 @@
   <% tags = @question.nil? ? [] : @question.tags.order(:content) %>
   <% relations = @question.nil? ? [] : @question.relations %>
   <% id = @question.nil? ? "" : @question.id%>
-  <div class="question_detail" data-controller="edit--question" data-edit--question-id-value = <%= id %>>
+  <div class="question_detail" 
+    data-controller="edit--question" 
+    data-action = "edit--zgrid:setQuestion@window->edit--question#set"
+    data-edit--question-id-value = <%= id %>>
     <a class="button delete_question" 
         id="delete_question" 
         data-action="edit--question#delete">Delete</a>
@@ -23,7 +26,9 @@
         <input type="text" name="Create Tag" id="create_tag" data-action="change->edit--question#createTag">
       </div>
       <hr>
-      <div class="tag_list" data-edit-target="tagList">
+      <div class="tag_list" 
+        data-edit-target="tagList"
+        data-edit--question-target="tagList">
         <% tags.each do |t| %>
           <a class="button tag" 
             data-action="edit--question#removeTag"
@@ -32,10 +37,10 @@
         <% end %>
       </div>
     </div>
-    <hr>
+    <hr data-edit--question-target="singleStart">
     <%= render 'questions/single_question_edit', question: @question %>
     <hr>
-    <div class="related_questions_header">Related Questions</div>
+    <div class="related_questions_header" data-edit--question-target="relationStart">Related Questions</div>
     <hr>
     <% relations.each do |q| %>
       <%= render 'questions/single_question_edit', question: q %>

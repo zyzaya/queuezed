@@ -33,6 +33,7 @@ export default class extends Controller {
     this.currentlySelected = null;
     this.csrf = document.head.querySelector('meta[name=csrf-token]')?.content;
     this.change_handler = Change(this.csrf, this.quizIdValue);
+    this.questions = [];
   }
 
   editOutletConnected(outlet, element) {
@@ -91,6 +92,8 @@ export default class extends Controller {
 
     return Data.getQuestions(this.quizIdValue)
       .then((questions) => {
+        this.questions = questions;
+        console.log(questions);
         let zgrid_data = questions.map((e) => {
           let tags = '';
           e.tags.forEach((t) => {
@@ -142,15 +145,27 @@ export default class extends Controller {
     curr.classList.add('active_question');
     this.currentlySelected = id;
     this.editOutlet.currentlySelectedValue = id;
-    Data.setQuestion(this.csrf, this.quizIdValue, id);
-    // dispatch set question, recieved by question controller?
-    // tag options (set by quiz load)
-    // q tags (set by populate)
-    // single question content (set by populate)
-    // single question answers (set by populate)
-    // relations
-    // sq content
-    // sq answer
+    // Data.setQuestion(this.csrf, this.quizIdValue, id);
+    let question = this.questions.find((q) => q.id.toString() === id);
+    if (question === undefined) return;
+
+    let relations = question.relations.map((e) => {
+      let r = this.questions.find((q) => q.id === e.id);
+      return {
+        id: e.id,
+        content: r.content,
+        answers: r.answers,
+      };
+    });
+    this.dispatch('setQuestion', {
+      detail: {
+        id: question.id,
+        content: question.content,
+        tags: question.tags,
+        answers: question.answers,
+        relations: relations,
+      },
+    });
   }
 
   setSelectedToSibling() {
