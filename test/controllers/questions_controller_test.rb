@@ -10,7 +10,27 @@ class QuestionsControllerTest < ActionDispatch::IntegrationTest
   # successful requests return json objects
   test "index returns json of questions" do
     quiz = quizzes(:johns)
-    expected = quiz.questions.includes(:tags).as_json(include: :tags)
+    expected = quiz.questions.includes(:tags, :answers, :relations)
+    expected = expected.as_json(
+      only: [
+        :id,
+        :content,
+        :last_taken,
+        :next_review,
+        :current_streak,
+        :longest_streak,
+        :times_correct,
+        :times_taken,
+        :rank,
+        :difficult,
+        :review
+      ],
+      include: [
+        tags: { only: [:id, :content] },
+        answers: { only: [:id, :content] },
+        relations: { only: :id }
+      ]
+    )
     get quiz_questions_path(quiz.id)
     assert_response :ok
     result = JSON.parse(@response.body)
