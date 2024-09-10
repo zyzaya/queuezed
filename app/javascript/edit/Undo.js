@@ -1,42 +1,27 @@
-export default function Undo() {
-  let obj = {};
-  let redo = [];
-  let stack = [];
+export default class Undo {
+  static #redo = [];
+  static #stack = [];
 
-  obj.add = function (name, action, reverse, pass = false) {
+  static add(name, action, reverse) {
     action();
-    stack.push({
+    this.#stack.push({
       name,
       action,
       reverse,
-      pass,
     });
-  };
+  }
 
-  obj.undo = function () {
-    if (stack.length > 0) {
-      let pass = true;
-      while (pass) {
-        let element = stack.pop();
-        element.reverse();
-        redo.push(element);
-        pass = element.pass;
-      }
-    }
-  };
+  static undo() {
+    if (this.#stack.length <= 0) return;
+    let element = this.#stack.pop();
+    element.reverse();
+    this.#redo.push(element);
+  }
 
-  obj.redo = function () {
-    if (redo.length > 0) {
-      let pass = true;
-      while (pass) {
-        let element = redo.pop();
-        element.action();
-        stack.push(element);
-        let next = redo.slice(-1)[0];
-        pass = next !== undefined && next.pass;
-      }
-    }
-  };
-
-  return obj;
+  static redo() {
+    if (this.#redo.length <= 0) return;
+    let element = this.#redo.pop();
+    element.action();
+    this.#stack.push(element);
+  }
 }

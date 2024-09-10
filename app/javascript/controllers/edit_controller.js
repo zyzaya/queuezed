@@ -28,7 +28,6 @@ export default class extends Controller {
   initialize() {
     this.title = this.titleTarget.value;
     this.csrf = document.head.querySelector('meta[name=csrf-token]')?.content;
-    this.undo_handler = Undo();
     this.change_handler = Change(this.csrf, this.quizIdValue);
     this.tagCount = {};
     this.idConversion = { answers: {}, tags: {} };
@@ -51,7 +50,7 @@ export default class extends Controller {
       this.titleTarget.value = previous;
       this.title = previous;
     };
-    this.undo_handler.add('Change Quiz Title', action, reverse);
+    Undo.add('Change Quiz Title', action, reverse);
   }
 
   save(event) {
@@ -78,11 +77,11 @@ export default class extends Controller {
   }
 
   undo(event) {
-    this.undo_handler.undo();
+    Undo.undo();
   }
 
   redo(event) {
-    this.undo_handler.redo();
+    Undo.redo();
   }
 
   newQuestion(event) {
@@ -121,7 +120,7 @@ export default class extends Controller {
         this.questionCountValue = count;
       });
     };
-    this.undo_handler.add('Create Question', action, reverse);
+    Undo.add('Create Question', action, reverse);
   }
 
   // question-controller
@@ -177,7 +176,7 @@ export default class extends Controller {
           this.questionCountValue = count;
         });
     };
-    this.undo_handler.add('Delete Question', action, reverse);
+    Undo.add('Delete Question', action, reverse);
   }
 
   loadSingleQuestion(event) {
@@ -309,7 +308,7 @@ export default class extends Controller {
       this.deleteTagDisplay(tagId);
       this.dispatch('removeTag', { detail: event.detail });
     };
-    this.undo_handler.add('Add Tag', action, reverse);
+    Undo.add('Add Tag', action, reverse);
   }
 
   removeTag(event) {
@@ -335,7 +334,7 @@ export default class extends Controller {
       this.addTagDisplay(tagId, tagContent);
       this.dispatch('addTag', { detail: event.detail });
     };
-    this.undo_handler.add('Remove Tag', action, reverse);
+    Undo.add('Remove Tag', action, reverse);
   }
 
   createTag(event) {
@@ -372,7 +371,7 @@ export default class extends Controller {
         },
       });
     };
-    this.undo_handler.add('Create Tag', action, reverse);
+    Undo.add('Create Tag', action, reverse);
   }
 
   // single-question controller
@@ -430,7 +429,7 @@ export default class extends Controller {
         },
       });
     };
-    this.undo_handler.add('Change Question Content', action, reverse);
+    Undo.add('Change Question Content', action, reverse);
   }
 
   addAnswer(event) {
@@ -454,7 +453,7 @@ export default class extends Controller {
         this.deleteAnswerDisplay(answer_id);
       }
     };
-    this.undo_handler.add('Add Answer', action, reverse);
+    Undo.add('Add Answer', action, reverse);
   }
 
   // answer controller
@@ -505,7 +504,7 @@ export default class extends Controller {
         textarea.value = event.detail.previous;
       }
     };
-    this.undo_handler.add('Change Answer Content', action, reverse);
+    Undo.add('Change Answer Content', action, reverse);
   }
 
   findAnswerContainer(id) {
@@ -561,6 +560,6 @@ export default class extends Controller {
         );
       }
     };
-    this.undo_handler.add('Delete Answer', action, reverse);
+    Undo.add('Delete Answer', action, reverse);
   }
 }
