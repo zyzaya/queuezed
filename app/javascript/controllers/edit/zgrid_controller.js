@@ -32,7 +32,6 @@ export default class extends Controller {
     });
     this.currentlySelected = null;
     this.csrf = document.head.querySelector('meta[name=csrf-token]')?.content;
-    this.change_handler = Change(this.csrf, this.quizIdValue);
     this.questions = [];
   }
 

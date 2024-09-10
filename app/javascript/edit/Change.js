@@ -1,70 +1,14 @@
-export default function Change(csrf, quiz_id) {
-  let obj = {};
-  let changes = {
+export default class Change {
+  static #changes = {
     questions: [],
   };
 
-  obj.setQuizTitle = function (title) {
-    changes.name = title;
-  };
-  // answers
-  let getAnswer = function (question, answer_id) {
-    let answer = undefined;
-    if (question.answers == undefined) {
-      question.answers = [];
-    } else {
-      answer = question.answers.find((e) => e.id == answer_id);
-    }
-    if (answer == undefined) {
-      answer = { id: answer_id };
-      question.answers.push(answer);
-    }
-    return answer;
-  };
+  static SetQuizName(name) {
+    this.#changes.name = name;
+  }
 
-  obj.addAnswer = function (question_id, answer_id) {
-    let question = getQuestion(question_id);
-    let answer = getAnswer(question, answer_id);
-    if (answer.meta === 'delete') {
-      answer.meta = '';
-    } else {
-      answer.meta = 'new';
-    }
-  };
-
-  obj.deleteAnswer = function (question_id, answer_id) {
-    let question = getQuestion(question_id);
-    let answer = getAnswer(question, answer_id);
-
-    if (answer.meta === 'new') {
-      question.answers = question.answers.filter((e) => e.id !== answer_id);
-    } else {
-      answer.meta = 'delete';
-    }
-  };
-
-  obj.setAnswerContent = function (question_id, answer_id, content) {
-    let question = getQuestion(question_id);
-    let answer = getAnswer(question, answer_id);
-    answer.content = content;
-  };
-  // questions
-  let getQuestion = function (question_id) {
-    let question = changes.questions.find((e) => e.id == question_id);
-    if (question === undefined) {
-      question = { id: question_id };
-      changes.questions.push(question);
-    }
-    return question;
-  };
-
-  obj.setQuestionContent = function (question_id, content) {
-    let question = getQuestion(question_id);
-    question.content = content;
-  };
-  // tags
-  let getTag = function (question_id, tag_id, content) {
-    let question = getQuestion(question_id);
+  static #getTag(question_id, tag_id, content) {
+    let question = this.#getQuestion(question_id);
     if (question.tags === undefined) question.tags = [];
     let tag = question.tags.find(
       (t) => t.id === tag_id && t.content === content
@@ -77,11 +21,65 @@ export default function Change(csrf, quiz_id) {
       question.tags.push(tag);
     }
     return tag;
-  };
+  }
 
-  obj.addTag = function (question_id, tag_id, content) {
-    let question = getQuestion(question_id);
-    let tag = getTag(question_id, tag_id, content);
+  static #getQuestion(id) {
+    let question = this.#changes.questions.find((e) => e.id === id);
+    if (question === undefined) {
+      question = { id: id };
+      this.#changes.questions.push(question);
+    }
+    return question;
+  }
+
+  static #getAnswer(question, answer_id) {
+    let answer = undefined;
+    if (question.answers == undefined) {
+      question.answers = [];
+    } else {
+      answer = question.answers.find((e) => e.id == answer_id);
+    }
+    if (answer === undefined) {
+      answer = { id: answer_id };
+      question.answers.push(answer);
+    }
+    return answer;
+  }
+
+  static AddAnswer(question_id, answer_id) {
+    let question = this.#getQuestion(question_id);
+    let answer = this.#getAnswer(question, answer_id);
+    answer.meta = answer.meta === 'delete' ? '' : 'new';
+  }
+  static DeleteAnswer(question_id, answer_id) {
+    let question = this.#getQuestion(question_id);
+    let answer = this.#getAnswer(question, answer_id);
+    if (answer.meta === 'new') {
+      question.answers = question.answers.filter((e) => e.id !== answer_id);
+    } else {
+      answer.meta = 'delete';
+    }
+  }
+  static SetAnswerContent(question_id, answer_id, content) {
+    let question = this.#getQuestion(question_id);
+    let answer = this.#getAnswer(question, answer_id);
+    answer.content = content;
+  }
+
+  static AddQuestion(question_id) {
+    console.error('Change.AddQuestion not implemented');
+  }
+  static DeleteQuetion(question_id) {
+    console.error('Change.DeleteQuestion not implemented');
+  }
+  static SetQuestionContent(question_id, content) {
+    let question = this.#getQuestion(question_id);
+    question.content = content;
+  }
+
+  static AddTag(question_id, tag_id, content) {
+    let question = this.#getQuestion(question_id);
+    let tag = this.#getTag(question_id, tag_id, content);
     if (tag.meta === 'remove') {
       question.tags = question.tags.filter(
         (e) => !(e.id === tag_id && e.content === content)
@@ -89,11 +87,19 @@ export default function Change(csrf, quiz_id) {
     } else {
       tag.meta = 'add';
     }
-  };
-
-  obj.removeTag = function (question_id, tag_id, content) {
-    let question = getQuestion(question_id);
-    let tag = getTag(question_id, tag_id, content);
+  }
+  static CreateTag(question_id, tag_id, content) {
+    let question = this.#getQuestion(question_id);
+    let tag = this.#getTag(question_id, tag_id, content);
+    if (tag.meta === 'delete') {
+      question.tags = question.tags.filter((e) => e !== tag);
+    } else {
+      tag.meta = 'new';
+    }
+  }
+  static RemoveTag(question_id, tag_id, content) {
+    let question = this.#getQuestion(question_id);
+    let tag = this.#getTag(question_id, tag_id, content);
     if (tag.meta === 'add') {
       question.tags = question.tags.filter(
         (e) => !(e.id === tag_id && e.content === content)
@@ -101,33 +107,22 @@ export default function Change(csrf, quiz_id) {
     } else {
       tag.meta = 'remove';
     }
-  };
-
-  obj.createTag = function (question_id, tag_id, content) {
-    let question = getQuestion(question_id);
-    let tag = getTag(question_id, tag_id, content);
-    if (tag.meta === 'delete') {
-      question.tags = question.tags.filter((e) => e !== tag);
-    } else {
-      tag.meta = 'new';
-    }
-  };
-
-  obj.deleteTag = function (question_id, tag_id, content) {
-    let question = getQuestion(question_id);
-    let tag = getTag(question_id, tag_id, content);
+  }
+  static DeleteTag(question_id, tag_id, content) {
+    let question = this.#getQuestion(question_id);
+    let tag = this.#getTag(question_id, tag_id, content);
     if (tag.meta === 'new') {
       question.tags = question.tags.filter((e) => e !== tag);
     } else {
       tag.meta = 'delete';
     }
-  };
+  }
 
-  obj.getChanges = function (idConversion = null) {
-    if (idConversion === null) return changes;
+  static GetChanges(idConversion = null) {
+    if (idConversion === null) return this.#changes;
 
     for (const [temp, real] of Object.entries(idConversion.answers)) {
-      changes.questions.forEach((q) => {
+      this.#changes.questions.forEach((q) => {
         if (q.answers !== null) {
           q.answers.forEach((a) => {
             if (a.id === temp) a.id = real;
@@ -137,7 +132,7 @@ export default function Change(csrf, quiz_id) {
     }
 
     for (const [temp, real] of Object.entries(idConversion.tags)) {
-      changes.questions.forEach((q) => {
+      this.#changes.questions.forEach((q) => {
         if (q.tags !== null) {
           q.tags.forEach((t) => {
             if (t.id === temp) t.id = real;
@@ -146,10 +141,12 @@ export default function Change(csrf, quiz_id) {
       });
     }
 
-    return changes;
-  };
+    return this.#changes;
+  }
 
-  obj.resetChanges = () => (changes = { questions: [] });
-
-  return obj;
+  static Reset() {
+    this.#changes = {
+      questions: [],
+    };
+  }
 }

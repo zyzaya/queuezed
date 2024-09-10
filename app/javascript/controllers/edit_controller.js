@@ -28,7 +28,6 @@ export default class extends Controller {
   initialize() {
     this.title = this.titleTarget.value;
     this.csrf = document.head.querySelector('meta[name=csrf-token]')?.content;
-    this.change_handler = Change(this.csrf, this.quizIdValue);
     this.tagCount = {};
     this.idConversion = { answers: {}, tags: {} };
   }
@@ -41,20 +40,20 @@ export default class extends Controller {
     let previous = this.title;
     let current = this.titleTarget.value;
     let action = () => {
-      this.change_handler.setQuizTitle(current);
+      Change.SetQuizName(current);
       this.titleTarget.value = current;
       this.title = current;
     };
     let reverse = () => {
-      this.change_handler.setQuizTitle(previous);
+      Change.SetQuizName(previous);
       this.titleTarget.value = previous;
       this.title = previous;
     };
-    Undo.add('Change Quiz Title', action, reverse);
+    Undo.add('Change Quiz Name', action, reverse);
   }
 
   save(event) {
-    let changes = this.change_handler.getChanges(this.idConversion);
+    let changes = Change.GetChanges(this.idConversion);
     let ids = {
       questions: {},
       answers: {},
@@ -73,7 +72,7 @@ export default class extends Controller {
       });
       this.idConversion = ids;
     });
-    this.change_handler.resetChanges();
+    Change.Reset();
   }
 
   undo(event) {
@@ -88,7 +87,7 @@ export default class extends Controller {
     let question_id = null;
     let selected = this.currentlySelectedValue;
     let count = this.questionCountValue;
-    let changes = this.change_handler.getChanges();
+    let changes = Change.GetChanges();
     Data.newQuestion(this.csrf, this.quizIdValue)
       .then((question) => {
         question_id = question.id;
@@ -129,7 +128,7 @@ export default class extends Controller {
     this.questionContentTarget.selectionStart = 10000;
     this.questionContentTarget.selectionEnd = 10000;
 
-    let changes = this.change_handler.getChanges();
+    let changes = Change.GetChanges();
     changes.questions.forEach((q) => {
       q.tags?.forEach((t) => {
         if (t.meta === 'new') this.addQuestionTagOption(t.id, t.content);
@@ -156,7 +155,7 @@ export default class extends Controller {
   deleteQuestion(event) {
     let question_id = event.detail.id;
     let count = this.questionCountValue;
-    let changes = this.change_handler.getChanges();
+    let changes = Change.GetChanges();
     let action = () => {
       this.dispatch('selectSibling');
       Data.deleteQuestion(this.csrf, this.quizIdValue, question_id).then(() => {
@@ -184,9 +183,9 @@ export default class extends Controller {
       let id = q.parentNode.dataset.singleQuestionIdValue;
       return id === event.detail.questionId;
     });
-    let question = this.change_handler
-      .getChanges()
-      .questions.find((q) => q.id === event.detail.questionId);
+    let question = Change.GetChanges().questions.find(
+      (q) => q.id === event.detail.questionId
+    );
     if (question === undefined) return;
     if (question.content !== undefined) textarea.value = question.content;
     if (question.answers !== undefined) {
@@ -291,7 +290,7 @@ export default class extends Controller {
     let tagContent = event.detail.tagContent;
     let tagId = event.detail.tagId;
     let action = () => {
-      this.change_handler.addTag(event.detail.questionId, tagId, tagContent);
+      Change.AddTag(event.detail.questionId, tagId, tagContent);
       if (this.currentlySelectedValue !== selected) {
         this.dispatch('selectQuestion', { detail: { questionId: selected } });
       }
@@ -300,7 +299,7 @@ export default class extends Controller {
       this.dispatch('addTag', { detail: event.detail });
     };
     let reverse = () => {
-      this.change_handler.removeTag(event.detail.questionId, tagId, tagContent);
+      Change.RemoveTag(event.detail.questionId, tagId, tagContent);
       if (this.currentlySelectedValue !== selected) {
         this.dispatch('selectQuestion', { detail: { questionId: selected } });
       }
@@ -317,7 +316,7 @@ export default class extends Controller {
     let tagId = event.detail.tagId;
     let tagContent = event.detail.tagContent;
     let action = () => {
-      this.change_handler.removeTag(event.detail.questionId, tagId, tagContent);
+      Change.RemoveTag(event.detail.questionId, tagId, tagContent);
       if (this.currentlySelectedValue !== selected) {
         this.dispatch('selectQuestion', { detail: { questionId: selected } });
       }
@@ -326,7 +325,7 @@ export default class extends Controller {
       this.dispatch('removeTag', { detail: event.detail });
     };
     let reverse = () => {
-      this.change_handler.addTag(event.detail.questionId, tagId, tagContent);
+      Change.AddTag(event.detail.questionId, tagId, tagContent);
       if (this.currentlySelectedValue !== selected) {
         this.dispatch('selectQuestion', { detail: { questionId: selected } });
       }
@@ -342,7 +341,7 @@ export default class extends Controller {
     let tagId = ID.next();
     let tagContent = event.detail.tagContent;
     let action = () => {
-      this.change_handler.createTag(event.detail.questionId, tagId, tagContent);
+      Change.CreateTag(event.detail.questionId, tagId, tagContent);
       if (this.currentlySelectedValue !== selected) {
         this.dispatch('selectQuestion', { detail: { questionId: selected } });
       }
@@ -357,7 +356,7 @@ export default class extends Controller {
       });
     };
     let reverse = () => {
-      this.change_handler.deleteTag(event.detail.questionId, tagId, tagContent);
+      Change.DeleteTag(event.detail.questionId, tagId, tagContent);
       if (this.currentlySelectedValue !== selected) {
         this.dispatch('selectQuestion', { detail: { questionId: selected } });
       }
@@ -390,10 +389,7 @@ export default class extends Controller {
   questionContentChange(event) {
     let selected = this.currentlySelectedValue;
     let action = () => {
-      this.change_handler.setQuestionContent(
-        event.detail.questionId,
-        event.detail.current
-      );
+      Change.SetQuestionContent(event.detail.questionId, event.detail.current);
       if (this.currentlySelectedValue !== selected) {
         this.dispatch('selectQuestion', { detail: { questionId: selected } });
       } else {
@@ -410,10 +406,7 @@ export default class extends Controller {
       });
     };
     let reverse = () => {
-      this.change_handler.setQuestionContent(
-        event.detail.questionId,
-        event.detail.previous
-      );
+      Change.SetQuestionContent(event.detail.questionId, event.detail.previous);
       if (this.currentlySelectedValue !== selected) {
         this.dispatch('selectQuestion', { detail: { questionId: selected } });
       } else {
@@ -436,7 +429,7 @@ export default class extends Controller {
     let answer_id = ID.next();
     let selected = this.currentlySelectedValue;
     let action = () => {
-      this.change_handler.addAnswer(event.detail.questionId, answer_id);
+      Change.AddAnswer(event.detail.questionId, answer_id);
       if (this.currentlySelectedValue !== selected) {
         this.dispatch('selectQuestion', { detail: { questionId: selected } });
       } else {
@@ -446,7 +439,7 @@ export default class extends Controller {
       }
     };
     let reverse = () => {
-      this.change_handler.deleteAnswer(event.detail.questionId, answer_id);
+      Change.DeleteAnswer(event.detail.questionId, answer_id);
       if (this.currentlySelectedValue !== selected) {
         this.dispatch('selectQuestion', { detail: { questionId: selected } });
       } else {
@@ -464,9 +457,9 @@ export default class extends Controller {
   }
 
   loadAnswer(event) {
-    let question = this.change_handler
-      .getChanges()
-      .questions.find((q) => q.id === event.detail.questionId);
+    let question = Change.GetChanges().questions.find(
+      (q) => q.id === event.detail.questionId
+    );
     if (question === undefined || question.answers === undefined) return;
     let answer = question.answers.find((a) => a.id === event.detail.answerId);
     if (answer === undefined || answer.content == undefined) return;
@@ -477,7 +470,7 @@ export default class extends Controller {
   answerContentChange(event) {
     let selected = this.currentlySelectedValue;
     let action = () => {
-      this.change_handler.setAnswerContent(
+      Change.SetAnswerContent(
         event.detail.questionId,
         event.detail.answerId,
         event.detail.current
@@ -490,7 +483,7 @@ export default class extends Controller {
       }
     };
     let reverse = () => {
-      this.change_handler.setAnswerContent(
+      Change.SetAnswerContent(
         event.detail.questionId,
         event.detail.answerId,
         event.detail.previous
@@ -527,10 +520,7 @@ export default class extends Controller {
       parent.querySelectorAll('.answer_container')
     ).indexOf(answer_container);
     let action = () => {
-      this.change_handler.deleteAnswer(
-        event.detail.questionId,
-        event.detail.answerId
-      );
+      Change.DeleteAnswer(event.detail.questionId, event.detail.answerId);
       if (this.currentlySelectedValue !== selected) {
         this.dispatch('selectQuestion', { detail: { questionId: selected } });
       } else {
@@ -538,11 +528,8 @@ export default class extends Controller {
       }
     };
     let reverse = () => {
-      this.change_handler.addAnswer(
-        event.detail.questionId,
-        event.detail.answerId
-      );
-      this.change_handler.setAnswerContent(
+      Change.AddAnswer(event.detail.questionId, event.detail.answerId);
+      Change.SetAnswerContent(
         event.detail.questionId,
         event.detail.answerId,
         event.detail.current
