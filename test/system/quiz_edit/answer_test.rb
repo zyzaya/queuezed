@@ -6,13 +6,14 @@ class AnswerTest < ApplicationSystemTestCase
 
   setup do
     sign_in users(:john)
+    @quiz = quizzes(:johns)
     @question = questions(:john_one)
     @other = questions(:john_two)
     @answer = answers(:john_one)
     @initial_answer_content = @answer.content
     @modify_content = "a"
     @modified_answer_content = @initial_answer_content + @modify_content
-    visit edit_quiz_path(quizzes(:johns))
+    visit_edit_page
     select_question(@question.id)
     @initial = get_answers_content
   end
@@ -96,7 +97,7 @@ class AnswerTest < ApplicationSystemTestCase
     assert_add_answer
     # save
     save_action
-    visit edit_quiz_path(quizzes(:johns))
+    visit_edit_page
     select_question(@question.id)
     assert_add_answer
   end
@@ -109,7 +110,7 @@ class AnswerTest < ApplicationSystemTestCase
     save_action
     undo_action
     save_action
-    visit edit_quiz_path(quizzes(:johns))
+    visit_edit_page
     select_question(@question.id)
     assert_no_change_to_answers
   end
@@ -124,7 +125,7 @@ class AnswerTest < ApplicationSystemTestCase
     save_action
     redo_action
     save_action
-    visit edit_quiz_path(quizzes(:johns))
+    visit_edit_page
     select_question(@question.id)
     assert_add_answer
   end
@@ -170,7 +171,7 @@ class AnswerTest < ApplicationSystemTestCase
     delete_answer(@answer.id)
     # save
     save_action
-    visit edit_quiz_path(quizzes(:johns))
+    visit_edit_page
     select_question(@question.id)
     assert_delete_answer(@answer.content)
   end
@@ -182,7 +183,7 @@ class AnswerTest < ApplicationSystemTestCase
     save_action
     undo_action
     save_action
-    visit edit_quiz_path(quizzes(:johns))
+    visit_edit_page
     select_question(@question.id)
     # in this specific instance, a change in order is tolerable
     assert_equal @initial.sort, get_answers_content.sort
@@ -197,7 +198,7 @@ class AnswerTest < ApplicationSystemTestCase
     save_action
     redo_action
     save_action
-    visit edit_quiz_path(quizzes(:johns))
+    visit_edit_page
     select_question(@question.id)
     assert_delete_answer(@answer.content)
   end
@@ -248,7 +249,7 @@ class AnswerTest < ApplicationSystemTestCase
     assert_answer_content(@answer.id, @modified_answer_content)
     # save
     save_action
-    visit edit_quiz_path(quizzes(:johns))
+    visit_edit_page
     select_question(@question.id)
     assert_answer_content(@answer.id, @modified_answer_content)
   end
@@ -261,7 +262,7 @@ class AnswerTest < ApplicationSystemTestCase
     save_action
     undo_action
     save_action
-    visit edit_quiz_path(quizzes(:johns))
+    visit_edit_page
     select_question(@question.id)
     assert_answer_content(@answer.id, @initial_answer_content)
   end
@@ -276,7 +277,7 @@ class AnswerTest < ApplicationSystemTestCase
     save_action
     redo_action
     save_action
-    visit edit_quiz_path(quizzes(:johns))
+    visit_edit_page
     select_question(@question.id)
     assert_answer_content(@answer.id, @modified_answer_content)
   end

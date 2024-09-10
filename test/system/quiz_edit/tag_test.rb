@@ -6,12 +6,13 @@ class TagTest < ApplicationSystemTestCase
 
   setup do 
     sign_in users(:john)
+    @quiz = quizzes(:johns)
     @question = questions(:john_one)
     @other = questions(:john_two)
     @has_tag = tags(:tag_1)
     @not_has_tag = tags(:tag_2)
     @new_tag_content = "new tag content"
-    visit edit_quiz_path(quizzes(:johns))
+    visit_edit_page
     select_question(@question.id)
     @initial = get_tags_content
     @initial_tag_options = quizzes(:johns).tags.sort.pluck(:content)
@@ -118,7 +119,7 @@ class TagTest < ApplicationSystemTestCase
     assert_add_tag(@not_has_tag.content)
     # save
     save_action
-    visit edit_quiz_path(quizzes(:johns))
+    visit_edit_page
     select_question(@question.id)
     assert_add_tag(@not_has_tag.content)
   end
@@ -131,7 +132,7 @@ class TagTest < ApplicationSystemTestCase
     save_action
     undo_action
     save_action
-    visit edit_quiz_path(quizzes(:johns))
+    visit_edit_page
     select_question(@question.id)
     assert_no_change_to_tags
   end
@@ -146,7 +147,7 @@ class TagTest < ApplicationSystemTestCase
     save_action
     redo_action
     save_action
-    visit edit_quiz_path(quizzes(:johns))
+    visit_edit_page
     select_question(@question.id)
     assert_add_tag(@not_has_tag.content)
   end
@@ -196,7 +197,7 @@ class TagTest < ApplicationSystemTestCase
     assert_remove_tag(@has_tag.content)
     # save
     save_action
-    visit edit_quiz_path(quizzes(:johns))
+    visit_edit_page
     select_question(@question.id)
     assert_remove_tag(@has_tag.content)
   end
@@ -209,7 +210,7 @@ class TagTest < ApplicationSystemTestCase
     save_action
     undo_action
     save_action
-    visit edit_quiz_path(quizzes(:johns))
+    visit_edit_page
     select_question(@question.id)
     assert_no_change_to_tags
   end
@@ -224,7 +225,7 @@ class TagTest < ApplicationSystemTestCase
     save_action
     redo_action
     save_action
-    visit edit_quiz_path(quizzes(:johns))
+    visit_edit_page
     select_question(@question.id)
     assert_remove_tag(@has_tag.content)
   end
@@ -273,7 +274,7 @@ class TagTest < ApplicationSystemTestCase
     assert_create_tag(@new_tag_content)
     # save
     save_action
-    visit edit_quiz_path(quizzes(:johns))
+    visit_edit_page
     select_question(@question.id)
     assert_create_tag(@new_tag_content)
   end
@@ -286,7 +287,7 @@ class TagTest < ApplicationSystemTestCase
     save_action
     undo_action
     save_action
-    visit edit_quiz_path(quizzes(:johns))
+    visit_edit_page
     select_question(@question.id)
     assert_no_change_to_tags
   end
@@ -301,7 +302,7 @@ class TagTest < ApplicationSystemTestCase
     save_action
     redo_action
     save_action
-    visit edit_quiz_path(quizzes(:johns))
+    visit_edit_page
     select_question(@question.id)
     assert_create_tag(@new_tag_content)
   end

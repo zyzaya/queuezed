@@ -6,11 +6,12 @@ class QuizEditTest < ApplicationSystemTestCase
 
   setup do
     sign_in users(:john)
+    @quiz = quizzes(:johns)
     @question = questions(:john_one)
     @initial_title = quizzes(:johns).name
     @modifier = "a"
     @modified_title = @initial_title + @modifier
-    visit edit_quiz_path(quizzes(:johns))
+    visit_edit_page
   end  
 
   def change_title(modifier)
@@ -23,7 +24,7 @@ class QuizEditTest < ApplicationSystemTestCase
   end
 
   test "initial load" do
-    visit edit_quiz_path(quizzes(:johns))
+    visit_edit_page
     quiz = quizzes(:johns)
     body = page.find(".zg_body")
     expected_content = quiz.questions.pluck(:content)
@@ -63,7 +64,7 @@ class QuizEditTest < ApplicationSystemTestCase
     assert_title(@modified_title)
     # save
     save_action
-    visit edit_quiz_path(quizzes(:johns))
+    visit_edit_page
     assert_title(@modified_title)
   end
 
@@ -74,7 +75,7 @@ class QuizEditTest < ApplicationSystemTestCase
     save_action
     undo_action
     save_action
-    visit edit_quiz_path(quizzes(:johns))
+    visit_edit_page
     assert_title(@initial_title)
   end
 
@@ -87,7 +88,7 @@ class QuizEditTest < ApplicationSystemTestCase
     save_action
     redo_action
     save_action
-    visit edit_quiz_path(quizzes(:johns))
+    visit_edit_page
     assert_title(@modified_title)
   end
 end

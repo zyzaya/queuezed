@@ -7,7 +7,7 @@ class QuestionTest < ApplicationSystemTestCase
   setup do
     sign_in users(:john)
     @quiz = quizzes(:johns)
-    visit edit_quiz_path(@quiz)
+    visit_edit_page
     @initial = get_questions_content
   end
 
