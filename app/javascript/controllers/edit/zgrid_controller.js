@@ -89,7 +89,7 @@ export default class extends Controller {
       changes = event.detail.changes;
     }
 
-    return Data.getQuestions(this.quizIdValue)
+    return Change.LoadQuestions(this.quizIdValue)
       .then((questions) => {
         this.questions = questions;
         console.log(questions);
@@ -133,7 +133,6 @@ export default class extends Controller {
   }
 
   setSelectedQuestion(id) {
-    id = id.toString();
     let prev = document.querySelector('.active_question');
     if (prev != null) prev.classList.remove('active_question');
     let children = document.querySelectorAll(
@@ -145,7 +144,7 @@ export default class extends Controller {
     this.currentlySelected = id;
     this.editOutlet.currentlySelectedValue = id;
     // Data.setQuestion(this.csrf, this.quizIdValue, id);
-    let question = this.questions.find((q) => q.id.toString() === id);
+    let question = Change.GetQuestion(id);
     if (question === undefined) return;
 
     let relations = question.relations.map((e) => {
