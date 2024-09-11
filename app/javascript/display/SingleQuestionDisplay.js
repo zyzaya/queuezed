@@ -3,9 +3,12 @@ import AnswerDisplay from './AnswerDisplay';
 export default function SingleQuestionDisplay(id, content, answers) {
   let container = document.createElement('div');
   container.classList.add('single_question_edit');
+  container.dataset.action =
+    'edit:setQuestionContent@window->edit--single-question#setContent';
+  container.dataset['controller'] = 'edit--single-question';
   container.dataset['editTarget'] = 'singleQuestionContainer';
   container.dataset['edit-QuestionTarget'] = 'singleQuestionContainer';
-  container.dataset['controller'] = 'edit--single-question';
+  container.dataset['edit-SingleQuestionEdit-ZgridOutlet'] = '.edit_list';
   container.dataset['edit-SingleQuestionIdValue'] = id;
   let header = document.createElement('div');
   header.classList.add('question_header');

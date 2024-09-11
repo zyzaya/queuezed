@@ -12,22 +12,12 @@ export default class extends Controller {
     this.current = this.infoTarget.value;
   }
 
-  connect() {
-    this.dispatch('load', {
-      detail: {
-        parent: this.element,
-        questionId: this.idValue,
-        textarea: this.infoTarget,
-      },
-    });
-  }
-
   questionContentChange(event) {
     this.previous = this.current;
     this.current = this.infoTarget.value;
-    this.dispatch('questionContentChange', {
+    this.dispatch('contentChange', {
       detail: {
-        questionId: this.idValue,
+        id: this.idValue,
         current: this.current,
         previous: this.previous,
         textarea: this.infoTarget,
@@ -42,5 +32,11 @@ export default class extends Controller {
         questionId: this.idValue,
       },
     });
+  }
+
+  setContent(event) {
+    if (this.idValue === event.detail.id) {
+      this.infoTarget.value = event.detail.content;
+    }
   }
 }

@@ -129,10 +129,14 @@ export default class extends Controller {
   }
 
   select(event) {
+    console.log('zgrid.select');
     this.setSelectedQuestion(event.detail.questionId);
   }
 
   setSelectedQuestion(id) {
+    console.log(`select ${id}, c: ${this.currentlySelected}`);
+    if (id === this.currentlySelected) return;
+
     let prev = document.querySelector('.active_question');
     if (prev != null) prev.classList.remove('active_question');
     let children = document.querySelectorAll(

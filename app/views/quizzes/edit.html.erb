@@ -12,7 +12,7 @@
       edit--question:removeTag@window->edit#removeTag
       edit--question:createTag@window->edit#createTag
       edit--single-question:load@window->edit#loadSingleQuestion
-      edit--single-question:questionContentChange@window->edit#questionContentChange
+      edit--single-question:contentChange@window->edit#questionContentChange
       edit--single-question:addAnswer@window->edit#addAnswer
       edit--answer:load@window->edit#loadAnswer
       edit--answer:answerContentChange@window->edit#answerContentChange
@@ -40,7 +40,8 @@
             edit:addTag@window->edit--zgrid#addTag
             edit:removeTag@window-edit-->zgrid#removeTag
             edit:questionContentChange@window->edit--zgrid#questionContentChange
-            filter:updateFilter@window->edit--zgrid#updateFilter">
+            filter:updateFilter@window->edit--zgrid#updateFilter
+            edit--single-question:selectQuestion@window->edit--zgrid#select">
         <%= render 'shared/filter', quiz: @quiz %>
         <div data-edit--zgrid-target="zgridContainer"></div>
       </div>

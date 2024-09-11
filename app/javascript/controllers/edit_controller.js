@@ -388,39 +388,28 @@ export default class extends Controller {
 
   questionContentChange(event) {
     let selected = this.currentlySelectedValue;
+    let id = event.detail.id;
+    let current = event.detail.current;
+    let previous = event.detail.previous;
     let action = () => {
-      Change.SetQuestionContent(event.detail.questionId, event.detail.current);
+      Change.SetQuestionContent(id, current);
       if (this.currentlySelectedValue !== selected) {
         this.dispatch('selectQuestion', { detail: { questionId: selected } });
       } else {
-        let textarea = this.findQuestionContentTextarea(
-          event.detail.questionId
-        );
-        textarea.value = event.detail.current;
+        this.dispatch('setQuestionContent', {
+          detail: { id: id, content: current },
+        });
       }
-      this.dispatch('questionContentChange', {
-        detail: {
-          questionId: event.detail.questionId,
-          questionContent: event.detail.current,
-        },
-      });
     };
     let reverse = () => {
-      Change.SetQuestionContent(event.detail.questionId, event.detail.previous);
+      Change.SetQuestionContent(id, previous);
       if (this.currentlySelectedValue !== selected) {
         this.dispatch('selectQuestion', { detail: { questionId: selected } });
       } else {
-        let textarea = this.findQuestionContentTextarea(
-          event.detail.questionId
-        );
-        textarea.value = event.detail.previous;
+        this.dispatch('setQuestionContent', {
+          detail: { id: id, content: previous },
+        });
       }
-      this.dispatch('questionContentChange', {
-        detail: {
-          questionId: event.detail.questionId,
-          questionContent: event.detail.previous,
-        },
-      });
     };
     Undo.add('Change Question Content', action, reverse);
   }
