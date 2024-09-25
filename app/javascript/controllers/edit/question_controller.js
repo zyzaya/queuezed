@@ -105,7 +105,9 @@ export default class extends Controller {
   set(event) {
     this.idValue = event.detail.id;
     this.tagTargets.forEach((t) => t.remove());
-    let tags = event.detail.tags.sort((a, b) => a.content.localeCompare(b));
+    let tags = event.detail.tags.sort((a, b) =>
+      a.content.localeCompare(b.content)
+    );
     tags.forEach((t) => {
       let display = TagDisplay(t.id, t.content);
       this.tagListTarget.appendChild(display);
