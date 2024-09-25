@@ -71,10 +71,12 @@ export default class Change {
     return answer;
   }
 
-  static AddAnswer(question_id, answer_id) {
+  static AddAnswer(question_id, answer_id, index = -1) {
     let q = this.GetQuestion(question_id);
     if (q.answers === undefined) q.answers = [];
-    q.answers.push({ id: answer_id, content: '' });
+    let a = { id: answer_id, content: '' };
+    if (index === -1) q.answers.push(a);
+    else q.answers.splice(index, 0, a);
 
     let question = this.#getQuestionChanges(question_id);
     let answer = this.#getAnswerChanges(question, answer_id);

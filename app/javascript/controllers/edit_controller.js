@@ -520,7 +520,7 @@ export default class extends Controller {
       }
     };
     let reverse = () => {
-      Change.AddAnswer(event.detail.questionId, event.detail.answerId);
+      Change.AddAnswer(event.detail.questionId, event.detail.answerId, index);
       Change.SetAnswerContent(
         event.detail.questionId,
         event.detail.answerId,
@@ -528,6 +528,7 @@ export default class extends Controller {
       );
       if (this.currentlySelectedValue !== selected) {
         this.dispatch('selectQuestion', { detail: { questionId: selected } });
+        console.log(`move to ${index}`);
       } else {
         let parent = this.findQuestionContainer(event.detail.questionId);
         AnswerDisplay(
