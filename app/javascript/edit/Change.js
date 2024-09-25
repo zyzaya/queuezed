@@ -97,7 +97,7 @@ export default class Change {
 
   static SetAnswerContent(question_id, answer_id, content) {
     let q = this.GetQuestion(question_id);
-    let a = q.answers.find((a) => a.id === answer_id);
+    let a = q.answers.find((a) => a.id == answer_id);
     a.content = content;
 
     let question = this.#getQuestionChanges(question_id);
@@ -130,7 +130,7 @@ export default class Change {
     let tag = this.#getTagChanges(question_id, tag_id, content);
     if (tag.meta === 'remove') {
       question.tags = question.tags.filter(
-        (e) => !(e.id === tag_id && e.content === content)
+        (e) => !(e.id == tag_id && e.content === content)
       );
     } else {
       tag.meta = 'add';
@@ -159,7 +159,7 @@ export default class Change {
     let tag = this.#getTagChanges(question_id, tag_id, content);
     if (tag.meta === 'add') {
       question.tags = question.tags.filter(
-        (e) => !(e.id === tag_id && e.content === content)
+        (e) => !(e.id == tag_id && e.content === content)
       );
     } else {
       tag.meta = 'remove';
@@ -186,7 +186,7 @@ export default class Change {
       this.#changes.questions.forEach((q) => {
         if (q.answers !== null) {
           q.answers.forEach((a) => {
-            if (a.id === temp) a.id = real;
+            if (a.id == temp) a.id = real;
           });
         }
       });
@@ -196,7 +196,7 @@ export default class Change {
       this.#changes.questions.forEach((q) => {
         if (q.tags !== null) {
           q.tags.forEach((t) => {
-            if (t.id === temp) t.id = real;
+            if (t.id == temp) t.id = real;
           });
         }
       });
