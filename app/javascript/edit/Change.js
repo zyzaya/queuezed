@@ -19,13 +19,13 @@ export default class Change {
   static #getAnswer(question_id, answer_id) {
     let question = this.GetQuestion(question_id);
     if (question.answers === undefined) return undefined;
-    return question.answers.find((a) => a.id === answer_id);
+    return question.answers.find((a) => a.id == answer_id);
   }
 
   static #getTag(question_id, tag_id) {
     let question = this.GetQuestion(question_id);
     if (question.tags === undefined) return undefined;
-    return question.tags.find((t) => t.id === tag_id);
+    return question.tags.find((t) => t.id == tag_id);
   }
 
   static SetQuizName(name) {
@@ -36,7 +36,7 @@ export default class Change {
     let question = this.#getQuestionChanges(question_id);
     if (question.tags === undefined) question.tags = [];
     let tag = question.tags.find(
-      (t) => t.id === tag_id && t.content === content
+      (t) => t.id == tag_id && t.content === content
     );
     if (tag === undefined) {
       tag = {
@@ -49,7 +49,7 @@ export default class Change {
   }
 
   static #getQuestionChanges(id) {
-    let question = this.#changes.questions.find((e) => e.id === id);
+    let question = this.#changes.questions.find((e) => e.id == id);
     if (question === undefined) {
       question = { id: id };
       this.#changes.questions.push(question);
@@ -84,12 +84,12 @@ export default class Change {
 
   static DeleteAnswer(question_id, answer_id) {
     let q = this.GetQuestion(question_id);
-    q.answers = q.answers.filter((a) => a.id !== answer_id);
+    q.answers = q.answers.filter((a) => a.id != answer_id);
 
     let question = this.#getQuestionChanges(question_id);
     let answer = this.#getAnswerChanges(question, answer_id);
     if (answer.meta === 'new') {
-      question.answers = question.answers.filter((e) => e.id !== answer_id);
+      question.answers = question.answers.filter((e) => e.id != answer_id);
     } else {
       answer.meta = 'delete';
     }
@@ -145,7 +145,7 @@ export default class Change {
     let question = this.#getQuestionChanges(question_id);
     let tag = this.#getTagChanges(question_id, tag_id, content);
     if (tag.meta === 'delete') {
-      question.tags = question.tags.filter((e) => e !== tag);
+      question.tags = question.tags.filter((e) => e.id != tag.id);
     } else {
       tag.meta = 'new';
     }
@@ -153,7 +153,7 @@ export default class Change {
 
   static RemoveTag(question_id, tag_id, content) {
     let q = this.GetQuestion(question_id);
-    q.tags = q.tags.filter((t) => t.id !== tag_id);
+    q.tags = q.tags.filter((t) => t.id != tag_id);
 
     let question = this.#getQuestionChanges(question_id);
     let tag = this.#getTagChanges(question_id, tag_id, content);
@@ -168,12 +168,12 @@ export default class Change {
 
   static DeleteTag(question_id, tag_id, content) {
     let q = this.GetQuestion(question_id);
-    q.tags = q.tags.filter((t) => t.id !== tag_id);
+    q.tags = q.tags.filter((t) => t.id != tag_id);
 
     let question = this.#getQuestionChanges(question_id);
     let tag = this.#getTagChanges(question_id, tag_id, content);
     if (tag.meta === 'new') {
-      question.tags = question.tags.filter((e) => e !== tag);
+      question.tags = question.tags.filter((e) => e != tag);
     } else {
       tag.meta = 'delete';
     }
