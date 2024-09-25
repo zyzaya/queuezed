@@ -312,7 +312,6 @@ export default class extends Controller {
   }
 
   removeTag(event) {
-    console.log('edit_controller remove tag');
     let selected = this.currentlySelectedValue;
     let tagId = event.detail.tagId;
     let tagContent = event.detail.tagContent;
@@ -504,7 +503,6 @@ export default class extends Controller {
   }
 
   deleteAnswer(event) {
-    console.log('delete answer');
     let selected = this.currentlySelectedValue;
     let parent = this.findQuestionContainer(event.detail.questionId);
     let answer_container = this.findAnswerContainer(event.detail.answerId);
@@ -528,7 +526,6 @@ export default class extends Controller {
       );
       if (this.currentlySelectedValue !== selected) {
         this.dispatch('selectQuestion', { detail: { questionId: selected } });
-        console.log(`move to ${index}`);
       } else {
         let parent = this.findQuestionContainer(event.detail.questionId);
         AnswerDisplay(

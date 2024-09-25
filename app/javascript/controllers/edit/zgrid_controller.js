@@ -92,7 +92,6 @@ export default class extends Controller {
     return Change.LoadQuestions(this.quizIdValue)
       .then((questions) => {
         this.questions = questions;
-        console.log(questions);
         let zgrid_data = questions.map((e) => {
           let tags = '';
           e.tags.forEach((t) => {
@@ -129,12 +128,10 @@ export default class extends Controller {
   }
 
   select(event) {
-    console.log('zgrid.select');
     this.setSelectedQuestion(event.detail.questionId);
   }
 
   setSelectedQuestion(id) {
-    console.log(`select ${id}, c: ${this.currentlySelected}`);
     if (id === this.currentlySelected) return;
 
     let prev = document.querySelector('.active_question');
