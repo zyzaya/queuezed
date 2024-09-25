@@ -294,9 +294,9 @@ export default class extends Controller {
       if (this.currentlySelectedValue !== selected) {
         this.dispatch('selectQuestion', { detail: { questionId: selected } });
       } else {
-        this.modifyTagCount(tagId, tagContent, 1);
         this.addTagDisplay(tagId, tagContent);
       }
+      this.modifyTagCount(tagId, tagContent, 1);
       this.dispatch('addTag', { detail: event.detail });
     };
     let reverse = () => {
@@ -329,9 +329,10 @@ export default class extends Controller {
       Change.AddTag(event.detail.questionId, tagId, tagContent);
       if (this.currentlySelectedValue !== selected) {
         this.dispatch('selectQuestion', { detail: { questionId: selected } });
+      } else {
+        this.addTagDisplay(tagId, tagContent);
       }
       this.modifyTagCount(tagId, tagContent, 1);
-      this.addTagDisplay(tagId, tagContent);
       this.dispatch('addTag', { detail: event.detail });
     };
     Undo.add('Remove Tag', action, reverse);
