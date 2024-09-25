@@ -345,9 +345,10 @@ export default class extends Controller {
       Change.CreateTag(event.detail.questionId, tagId, tagContent);
       if (this.currentlySelectedValue !== selected) {
         this.dispatch('selectQuestion', { detail: { questionId: selected } });
+      } else {
+        this.addTagDisplay(tagId, tagContent);
       }
       this.modifyTagCount(tagId, tagContent, 1);
-      this.addTagDisplay(tagId, tagContent);
       this.dispatch('addTag', {
         detail: {
           questionId: event.detail.questionId,
