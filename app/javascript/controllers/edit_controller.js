@@ -99,36 +99,6 @@ export default class extends Controller {
     Undo.add('New Question', action, reverse);
   }
 
-  // question-controller
-  loadQuestion(event) {
-    this.questionContentTarget.focus();
-    this.questionContentTarget.selectionStart = 10000;
-    this.questionContentTarget.selectionEnd = 10000;
-
-    let changes = Change.GetChanges();
-    changes.questions.forEach((q) => {
-      q.tags?.forEach((t) => {
-        if (t.meta === 'new') this.addQuestionTagOption(t.id, t.content);
-      });
-    });
-
-    let question = changes.questions.find(
-      (q) => q.id === event.detail.questionId
-    );
-
-    if (question !== undefined) {
-      if (question.tags !== undefined) {
-        question.tags.forEach((t) => {
-          if (t.meta === 'add' || t.meta === 'new') {
-            this.addTagDisplay(t.id, t.content);
-          } else if (t.meta === 'remove') {
-            this.deleteTagDisplay(t.id);
-          }
-        });
-      }
-    }
-  }
-
   deleteQuestion(event) {
     let selected = this.currentlySelectedValue;
     let id = event.detail.id;
