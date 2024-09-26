@@ -27,13 +27,11 @@ class QuestionTest < ApplicationSystemTestCase
   end
 
   def assert_delete_question(content)
-    expected = (@initial - [content]).sort
-    result = get_questions_content.sort
-    assert_equal expected, result
+    assert_equal (@initial - [content]).sort, get_questions_content.sort
   end
 
   def assert_no_change_to_questions
-    assert_equal @initial, get_questions_content
+    assert_equal @initial.sort, get_questions_content.sort
   end
 
   test "add question -> undo -> redo" do
@@ -123,6 +121,20 @@ class QuestionTest < ApplicationSystemTestCase
     redo_action
     assert_delete_question(@question.content)
   end
+
+  test ("delete question -> switch selection -> undo -> redo") do
+    # delete question
+    delete_question(@question.id)
+    assert_delete_question(@question.content)
+    # switch selection -> undo
+    select_question(@other.id)
+    undo_action
+    assert_no_change_to_questions
+    # redo
+    redo_action
+    assert_delete_question(@question.content)
+  end
+
   # add question -> undo -> redo
   # add question -> switch selection -> undo -> redo
   # add question -> und -> switch selection -> redo
