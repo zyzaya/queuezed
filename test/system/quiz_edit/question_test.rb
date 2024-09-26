@@ -248,6 +248,20 @@ class QuestionTest < ApplicationSystemTestCase
     select_question(@question.id)
     assert_question_content(@question.id, @modified_question_content)
   end
+
+  test ("change question content -> save -> undo -> save") do
+    select_question(@question.id)
+    # change content
+    change_question_content(@question.id, @modify_content)
+    assert_question_content(@question.id, @modified_question_content)
+    # save -> undo -> save
+    save_action
+    undo_action
+    save_action
+    visit_edit_page
+    select_question(@question.id)
+    assert_question_content(@question.id, @initial_question_content)
+  end
   # add question -> undo -> redo
   # add question -> switch selection -> undo -> redo
   # add question -> und -> switch selection -> redo
