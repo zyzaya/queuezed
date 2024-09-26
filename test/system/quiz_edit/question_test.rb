@@ -93,7 +93,7 @@ class QuestionTest < ApplicationSystemTestCase
     undo_action
     save_action
     visit_edit_page
-    assert_add_question
+    assert_no_change_to_questions
   end
 
   test "add question -> save -> undo -> save -> redo -> save" do

@@ -132,7 +132,7 @@ export default class extends Controller {
   }
 
   setSelectedQuestion(id) {
-    if (id === this.currentlySelected) return;
+    if (id === this.currentlySelected || id === 'null') return;
 
     let prev = document.querySelector('.active_question');
     if (prev != null) prev.classList.remove('active_question');
