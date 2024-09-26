@@ -50,6 +50,20 @@ class QuestionTest < ApplicationSystemTestCase
     assert_add_question
   end
 
+  test "add question -> undo -> switch selection -> redo" do
+    # add question
+    add_question
+    assert_add_question
+    # undo
+    undo_action
+    assert_no_change_to_questions
+    # switch selection
+    select_question(@other.id)
+    # redo
+    redo_action
+    assert_add_question
+  end
+
   # add question -> undo -> redo
   # add question -> switch selection -> undo -> redo
   # add question -> und -> switch selection -> redo
