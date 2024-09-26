@@ -173,7 +173,6 @@ export default class extends Controller {
       });
       this.tagOptionListTarget.insertBefore(option, next);
     }
-    // add to filter display
   }
 
   addTagFilterOption(id, content) {
@@ -363,17 +362,6 @@ export default class extends Controller {
     return this.answerContentTargets.find(
       (a) => id === a.parentNode.dataset['edit-AnswerIdValue']
     );
-  }
-
-  loadAnswer(event) {
-    let question = Change.GetChanges().questions.find(
-      (q) => q.id === event.detail.questionId
-    );
-    if (question === undefined || question.answers === undefined) return;
-    let answer = question.answers.find((a) => a.id === event.detail.answerId);
-    if (answer === undefined || answer.content == undefined) return;
-    let textarea = this.findAnswerContentTextarea(event.detail.answerId);
-    textarea.value = answer.content;
   }
 
   answerContentChange(event) {
