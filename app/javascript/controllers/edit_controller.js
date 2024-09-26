@@ -366,32 +366,28 @@ export default class extends Controller {
 
   answerContentChange(event) {
     let selected = this.currentlySelectedValue;
+    let q_id = event.detail.question_id;
+    let a_id = event.detail.answer_id;
+    let current = event.detail.current;
+    let previous = event.detail.previous;
     let action = () => {
-      Change.SetAnswerContent(
-        event.detail.questionId,
-        event.detail.answerId,
-        event.detail.current
-      );
+      Change.SetAnswerContent(q_id, a_id, current);
       if (this.currentlySelectedValue !== selected) {
         this.dispatch('selectQuestion', { detail: { questionId: selected } });
       } else {
-        let textarea = this.findAnswerContentTextarea(event.detail.answerId);
-        textarea.value = event.detail.current;
+        let textarea = this.findAnswerContentTextarea(a_id);
+        textarea.value = current;
       }
     };
     let reverse = () => {
-      Change.SetAnswerContent(
-        event.detail.questionId,
-        event.detail.answerId,
-        event.detail.previous
-      );
+      Change.SetAnswerContent(q_id, a_id, previous);
       if (this.currentlySelectedValue !== selected) {
         this.dispatch('selectQuestion', {
           detail: { questionId: selected },
         });
       } else {
-        let textarea = this.findAnswerContentTextarea(event.detail.answerId);
-        textarea.value = event.detail.previous;
+        let textarea = this.findAnswerContentTextarea(a_id);
+        textarea.value = previous;
       }
     };
     Undo.add('Change Answer Content', action, reverse);

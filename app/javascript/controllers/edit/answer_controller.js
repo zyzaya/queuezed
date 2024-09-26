@@ -17,13 +17,12 @@ export default class extends Controller {
   answerContentChange(event) {
     this.previous = this.current;
     this.current = this.infoTarget.value;
-    this.dispatch('answerContentChange', {
+    this.dispatch('contentChange', {
       detail: {
-        questionId: this.questionIdValue,
-        answerId: this.idValue,
+        question_id: this.questionIdValue,
+        answer_id: this.idValue,
         current: this.current,
         previous: this.previous,
-        textarea: this.infoTarget,
       },
     });
   }
