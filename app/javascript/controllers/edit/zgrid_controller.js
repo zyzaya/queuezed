@@ -128,7 +128,7 @@ export default class extends Controller {
   }
 
   select(event) {
-    this.setSelectedQuestion(event.detail.questionId);
+    this.setSelectedQuestion(event.detail.id);
   }
 
   setSelectedQuestion(id) {

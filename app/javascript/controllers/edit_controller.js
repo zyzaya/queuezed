@@ -88,13 +88,13 @@ export default class extends Controller {
     let id = ID.next();
     let action = () => {
       Change.AddQuestion(id);
-      this.dispatch('addQuestion', { detail: { id: id } });
-      this.dispatch('selectQuestion', { detail: { questionId: id } });
+      this.dispatch('addQuestion', { detail: { id } });
+      this.dispatch('selectQuestion', { detail: { id } });
     };
     let reverse = () => {
       Change.DeleteQuestion(id);
       this.dispatch('deleteQuestion', { detail: { id: id } });
-      this.dispatch('selectQuestion', { detail: { questionId: selected } });
+      this.dispatch('selectQuestion', { detail: { id: selected } });
     };
     Undo.add('New Question', action, reverse);
   }
@@ -106,12 +106,12 @@ export default class extends Controller {
     let action = () => {
       Change.DeleteQuestion(id);
       this.dispatch('selectSibling');
-      this.dispatch('deleteQuestion', { detail: { id: id } });
+      this.dispatch('deleteQuestion', { detail: { id } });
     };
     let reverse = () => {
       Change.AddQuestion(id, question);
-      this.dispatch('addQuestion', { detail: { id: id } });
-      this.dispatch('selectQuestion', { detail: { questionId: id } });
+      this.dispatch('addQuestion', { detail: { id } });
+      this.dispatch('selectQuestion', { detail: { id } });
     };
     Undo.add('Delete Question', action, reverse);
   }
@@ -208,7 +208,7 @@ export default class extends Controller {
     let action = () => {
       Change.AddTag(question_id, tag_id, content);
       if (this.currentlySelectedValue !== selected) {
-        this.dispatch('selectQuestion', { detail: { questionId: selected } });
+        this.dispatch('selectQuestion', { detail: { id: selected } });
       } else {
         this.addTagDisplay(tag_id, content);
       }
@@ -218,7 +218,7 @@ export default class extends Controller {
     let reverse = () => {
       Change.RemoveTag(question_id, tag_id, content);
       if (this.currentlySelectedValue !== selected) {
-        this.dispatch('selectQuestion', { detail: { questionId: selected } });
+        this.dispatch('selectQuestion', { detail: { id: selected } });
       }
       this.modifyTagCount(tag_id, content, -1);
       this.deleteTagDisplay(tag_id);
@@ -233,7 +233,7 @@ export default class extends Controller {
     let action = () => {
       Change.RemoveTag(question_id, tag_id, content);
       if (this.currentlySelectedValue !== selected) {
-        this.dispatch('selectQuestion', { detail: { questionId: selected } });
+        this.dispatch('selectQuestion', { detail: { id: selected } });
       }
       this.modifyTagCount(tag_id, content, -1);
       this.deleteTagDisplay(tag_id);
@@ -242,7 +242,7 @@ export default class extends Controller {
     let reverse = () => {
       Change.AddTag(question_id, tag_id, content);
       if (this.currentlySelectedValue !== selected) {
-        this.dispatch('selectQuestion', { detail: { questionId: selected } });
+        this.dispatch('selectQuestion', { detail: { id: selected } });
       } else {
         this.addTagDisplay(tag_id, content);
       }
@@ -259,7 +259,7 @@ export default class extends Controller {
     let action = () => {
       Change.CreateTag(question_id, tag_id, content);
       if (this.currentlySelectedValue !== selected) {
-        this.dispatch('selectQuestion', { detail: { questionId: selected } });
+        this.dispatch('selectQuestion', { detail: { id: selected } });
       } else {
         this.addTagDisplay(tag_id, content);
       }
@@ -271,7 +271,7 @@ export default class extends Controller {
     let reverse = () => {
       Change.DeleteTag(question_id, tag_id, content);
       if (this.currentlySelectedValue !== selected) {
-        this.dispatch('selectQuestion', { detail: { questionId: selected } });
+        this.dispatch('selectQuestion', { detail: { id: selected } });
       }
       this.modifyTagCount(tag_id, content, -1);
       this.deleteTagDisplay(tag_id);
@@ -303,7 +303,7 @@ export default class extends Controller {
     let action = () => {
       Change.SetQuestionContent(id, current);
       if (this.currentlySelectedValue !== selected) {
-        this.dispatch('selectQuestion', { detail: { questionId: selected } });
+        this.dispatch('selectQuestion', { detail: { id: selected } });
       } else {
         this.dispatch('setQuestionContent', {
           detail: { id: id, content: current },
@@ -313,7 +313,7 @@ export default class extends Controller {
     let reverse = () => {
       Change.SetQuestionContent(id, previous);
       if (this.currentlySelectedValue !== selected) {
-        this.dispatch('selectQuestion', { detail: { questionId: selected } });
+        this.dispatch('selectQuestion', { detail: { id: selected } });
       } else {
         this.dispatch('setQuestionContent', {
           detail: { id: id, content: previous },
@@ -330,7 +330,7 @@ export default class extends Controller {
     let action = () => {
       Change.AddAnswer(question_id, answer_id);
       if (this.currentlySelectedValue !== selected) {
-        this.dispatch('selectQuestion', { detail: { questionId: selected } });
+        this.dispatch('selectQuestion', { detail: { id: selected } });
       } else {
         let parent = this.findQuestionContainer(question_id);
         let ad = AnswerDisplay(parent, question_id, answer_id);
@@ -340,7 +340,7 @@ export default class extends Controller {
     let reverse = () => {
       Change.DeleteAnswer(question_id, answer_id);
       if (this.currentlySelectedValue !== selected) {
-        this.dispatch('selectQuestion', { detail: { questionId: selected } });
+        this.dispatch('selectQuestion', { detail: { id: selected } });
       } else {
         this.deleteAnswerDisplay(answer_id);
       }
@@ -361,7 +361,7 @@ export default class extends Controller {
     let action = () => {
       Change.SetAnswerContent(question_id, answer_id, current);
       if (this.currentlySelectedValue !== selected) {
-        this.dispatch('selectQuestion', { detail: { questionId: selected } });
+        this.dispatch('selectQuestion', { detail: { id: selected } });
       } else {
         let textarea = this.findAnswerContentTextarea(answer_id);
         textarea.value = current;
@@ -370,9 +370,7 @@ export default class extends Controller {
     let reverse = () => {
       Change.SetAnswerContent(question_id, answer_id, previous);
       if (this.currentlySelectedValue !== selected) {
-        this.dispatch('selectQuestion', {
-          detail: { questionId: selected },
-        });
+        this.dispatch('selectQuestion', { detail: { id: selected } });
       } else {
         let textarea = this.findAnswerContentTextarea(answer_id);
         textarea.value = previous;
@@ -403,7 +401,7 @@ export default class extends Controller {
     let action = () => {
       Change.DeleteAnswer(question_id, answer_id);
       if (this.currentlySelectedValue !== selected) {
-        this.dispatch('selectQuestion', { detail: { questionId: selected } });
+        this.dispatch('selectQuestion', { detail: { id: selected } });
       } else {
         this.deleteAnswerDisplay(answer_id);
       }
@@ -412,7 +410,7 @@ export default class extends Controller {
       Change.AddAnswer(question_id, answer_id, index);
       Change.SetAnswerContent(question_id, answer_id, current);
       if (this.currentlySelectedValue !== selected) {
-        this.dispatch('selectQuestion', { detail: { questionId: selected } });
+        this.dispatch('selectQuestion', { detail: { id: selected } });
       } else {
         let parent = this.findQuestionContainer(question_id);
         AnswerDisplay(parent, question_id, answer_id, current, index);
