@@ -233,6 +233,12 @@ export default class Change {
   static GetChanges(idConversion = null) {
     if (idConversion === null) return this.#changes;
 
+    for (const [temp, real] of Object.entries(idConversion.questions)) {
+      this.#changes.questions.forEach((q) => {
+        if (q.id == temp) q.id = real;
+      });
+    }
+
     for (const [temp, real] of Object.entries(idConversion.answers)) {
       this.#changes.questions.forEach((q) => {
         if (q.answers !== null) {
