@@ -143,8 +143,18 @@ export default class Change {
     }
   }
 
-  static DeleteQuestion(question_id) {
-    console.error('Change.DeleteQuestion not implemented');
+  static DeleteQuestion(id) {
+    let q = this.GetQuestion(id);
+    this.#questions = this.#questions.filter((e) => e.id != id);
+
+    let question = this.#getQuestionChanges(id);
+    if (question.meta === 'add') {
+      this.#changes.questions = this.#changes.questions.filter(
+        (e) => e.id != id
+      );
+    } else {
+      question.meta = 'delete';
+    }
   }
 
   static SetQuestionContent(question_id, content) {
