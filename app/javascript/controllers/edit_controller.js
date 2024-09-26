@@ -366,27 +366,24 @@ export default class extends Controller {
 
   answerContentChange(event) {
     let selected = this.currentlySelectedValue;
-    let q_id = event.detail.question_id;
-    let a_id = event.detail.answer_id;
-    let current = event.detail.current;
-    let previous = event.detail.previous;
+    let { question_id, answer_id, current, previous } = event.detail;
     let action = () => {
-      Change.SetAnswerContent(q_id, a_id, current);
+      Change.SetAnswerContent(question_id, answer_id, current);
       if (this.currentlySelectedValue !== selected) {
         this.dispatch('selectQuestion', { detail: { questionId: selected } });
       } else {
-        let textarea = this.findAnswerContentTextarea(a_id);
+        let textarea = this.findAnswerContentTextarea(answer_id);
         textarea.value = current;
       }
     };
     let reverse = () => {
-      Change.SetAnswerContent(q_id, a_id, previous);
+      Change.SetAnswerContent(question_id, answer_id, previous);
       if (this.currentlySelectedValue !== selected) {
         this.dispatch('selectQuestion', {
           detail: { questionId: selected },
         });
       } else {
-        let textarea = this.findAnswerContentTextarea(a_id);
+        let textarea = this.findAnswerContentTextarea(answer_id);
         textarea.value = previous;
       }
     };
@@ -406,37 +403,28 @@ export default class extends Controller {
 
   deleteAnswer(event) {
     let selected = this.currentlySelectedValue;
-    let parent = this.findQuestionContainer(event.detail.questionId);
-    let answer_container = this.findAnswerContainer(event.detail.answerId);
+    let { question_id, answer_id, current } = event.detail;
+    let parent = this.findQuestionContainer(question_id);
+    let answer_container = this.findAnswerContainer(answer_id);
     let index = Array.from(
       parent.querySelectorAll('.answer_container')
     ).indexOf(answer_container);
     let action = () => {
-      Change.DeleteAnswer(event.detail.questionId, event.detail.answerId);
+      Change.DeleteAnswer(question_id, answer_id);
       if (this.currentlySelectedValue !== selected) {
         this.dispatch('selectQuestion', { detail: { questionId: selected } });
       } else {
-        this.deleteAnswerDisplay(event.detail.answerId);
+        this.deleteAnswerDisplay(answer_id);
       }
     };
     let reverse = () => {
-      Change.AddAnswer(event.detail.questionId, event.detail.answerId, index);
-      Change.SetAnswerContent(
-        event.detail.questionId,
-        event.detail.answerId,
-        event.detail.current
-      );
+      Change.AddAnswer(question_id, answer_id, index);
+      Change.SetAnswerContent(question_id, answer_id, current);
       if (this.currentlySelectedValue !== selected) {
         this.dispatch('selectQuestion', { detail: { questionId: selected } });
       } else {
-        let parent = this.findQuestionContainer(event.detail.questionId);
-        AnswerDisplay(
-          parent,
-          event.detail.questionId,
-          event.detail.answerId,
-          event.detail.current,
-          index
-        );
+        let parent = this.findQuestionContainer(question_id);
+        AnswerDisplay(parent, question_id, answer_id, current, index);
       }
     };
     Undo.add('Delete Answer', action, reverse);

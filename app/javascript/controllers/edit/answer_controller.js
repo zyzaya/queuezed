@@ -30,8 +30,8 @@ export default class extends Controller {
   delete(event) {
     this.dispatch('delete', {
       detail: {
-        questionId: this.questionIdValue,
-        answerId: this.idValue,
+        question_id: this.questionIdValue,
+        answer_id: this.idValue,
         current: this.current,
         parent: this.editSingleQuestionOutletElement,
       },
