@@ -116,26 +116,6 @@ export default class extends Controller {
     Undo.add('Delete Question', action, reverse);
   }
 
-  loadSingleQuestion(event) {
-    let textarea = this.questionContentTargets.find((q) => {
-      let id = q.parentNode.dataset.singleQuestionIdValue;
-      return id === event.detail.questionId;
-    });
-    let question = Change.GetChanges().questions.find(
-      (q) => q.id === event.detail.questionId
-    );
-    if (question === undefined) return;
-    if (question.content !== undefined) textarea.value = question.content;
-    if (question.answers !== undefined) {
-      question.answers.forEach((a) => {
-        if (a.meta === 'new') {
-          AnswerDisplay(event.detail.parent, question.id, a.id); // add answer with id a.id
-        } else if (a.meta === 'delete') {
-          this.deleteAnswerDisplay(a.id);
-        }
-      });
-    }
-  }
   // tags
   setTagCount(event) {
     this.tagCount = event.detail.tagCount;
