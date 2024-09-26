@@ -220,6 +220,14 @@ export default class extends Controller {
     this.zgrid.setRow(qId, question);
   }
 
+  addQuestion(event) {
+    this.zgrid.addRow({ id: event.detail.id });
+  }
+
+  deleteQuestion(event) {
+    this.zgrid.removeRow(event.detail.id);
+  }
+
   questionContentChange(event) {
     let qId = event.detail.questionId;
     let question = this.zgrid.getRow(qId);

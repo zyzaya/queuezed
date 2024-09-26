@@ -84,42 +84,19 @@ export default class extends Controller {
   }
 
   newQuestion(event) {
-    let question_id = null;
     let selected = this.currentlySelectedValue;
-    let count = this.questionCountValue;
-    let changes = Change.GetChanges();
-    Data.newQuestion(this.csrf, this.quizIdValue)
-      .then((question) => {
-        question_id = question.id;
-        this.dispatch('refresh', {
-          detail: { selectedId: question.id, changes: changes },
-        });
-        this.questionCountValue = count + 1;
-      })
-      .then(() => (this.questionCountValue = count + 1));
-    let triggered = false;
+    let id = ID.next();
     let action = () => {
-      if (triggered) {
-        Data.restoreQuestion(this.csrf, this.quizIdValue, question_id).then(
-          () => {
-            this.dispatch('refresh', {
-              detail: { selectedId: question_id, changes: changes },
-            });
-            this.questionCountValue = count + 1;
-          }
-        );
-      }
-      triggered = true;
+      Change.AddQuestion(id);
+      this.dispatch('addQuestion', { detail: { id: id } });
+      this.dispatch('selectQuestion', { detail: { questionId: id } });
     };
     let reverse = () => {
-      Data.deleteQuestion(this.csrf, this.quizIdValue, question_id).then(() => {
-        this.dispatch('refresh', {
-          detail: { selectedId: selected, changes: changes },
-        });
-        this.questionCountValue = count;
-      });
+      Change.DeleteQuestion(id);
+      this.dispatch('deleteQuestion', { detail: { id: id } });
+      this.dispatch('selectQuestion', { detail: { questionId: selected } });
     };
-    Undo.add('Create Question', action, reverse);
+    Undo.add('New Question', action, reverse);
   }
 
   // question-controller

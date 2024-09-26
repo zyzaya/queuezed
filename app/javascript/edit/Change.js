@@ -111,7 +111,7 @@ export default class Change {
     console.error('Change.AddQuestion not implemented');
   }
 
-  static DeleteQuetion(question_id) {
+  static DeleteQuestion(question_id) {
     console.error('Change.DeleteQuestion not implemented');
   }
 
