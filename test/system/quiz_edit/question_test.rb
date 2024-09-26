@@ -86,6 +86,19 @@ class QuestionTest < ApplicationSystemTestCase
     assert_add_question
   end
 
+  test "add question -> save -> undo -> save -> redo -> save" do
+    # add question
+    add_question
+    assert_add_question
+    # save -> undo -> save -> redo -> save
+    save_action
+    undo_action
+    save_action
+    redo_action
+    save_action
+    visit_edit_page
+    assert_add_question
+  end
   # add question -> undo -> redo
   # add question -> switch selection -> undo -> redo
   # add question -> und -> switch selection -> redo
