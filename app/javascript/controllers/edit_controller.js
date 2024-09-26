@@ -135,8 +135,8 @@ export default class extends Controller {
     let question = Change.GetQuestion(id);
     let action = () => {
       Change.DeleteQuestion(id);
-      this.dispatch('deleteQuestion', { detail: { id: id } });
       this.dispatch('selectSibling');
+      this.dispatch('deleteQuestion', { detail: { id: id } });
     };
     let reverse = () => {
       Change.AddQuestion(id, question);
