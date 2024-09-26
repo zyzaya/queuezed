@@ -146,7 +146,7 @@ export default class Change {
         (e) => e.id == question.id
       );
     } else {
-      question.meta = 'add';
+      question.meta = 'new';
     }
   }
 
@@ -155,7 +155,7 @@ export default class Change {
     this.#questions = this.#questions.filter((e) => e.id != id);
 
     let question = this.#getQuestionChanges(id);
-    if (question.meta === 'add') {
+    if (question.meta === 'new') {
       this.#changes.questions = this.#changes.questions.filter(
         (e) => e.id != id
       );
