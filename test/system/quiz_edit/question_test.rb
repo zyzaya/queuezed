@@ -170,6 +170,20 @@ class QuestionTest < ApplicationSystemTestCase
     assert_no_change_to_questions
   end
 
+  test ("delete question -> save -> undo -> save -> redo -> save") do
+    # delete question
+    delete_question(@question.id)
+    assert_delete_question(@question.content)
+    # save -> undo -> save -> redo -> save
+    save_action
+    undo_action
+    save_action
+    redo_action
+    save_action
+    visit_edit_page
+    assert_delete_question(@question.content)
+  end
+
   # add question -> undo -> redo
   # add question -> switch selection -> undo -> redo
   # add question -> und -> switch selection -> redo
