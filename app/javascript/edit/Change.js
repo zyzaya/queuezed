@@ -147,6 +147,7 @@ export default class Change {
       );
     } else {
       question.meta = 'new';
+      if (data !== undefined) question.content = data.content;
     }
   }
 
