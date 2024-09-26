@@ -17,14 +17,6 @@ export default class extends Controller {
     'relationStart',
   ];
 
-  connect() {
-    this.dispatch('load', {
-      detail: {
-        questionId: this.idValue,
-      },
-    });
-  }
-
   delete() {
     this.dispatch('delete', {
       detail: {

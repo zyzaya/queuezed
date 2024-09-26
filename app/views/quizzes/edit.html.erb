@@ -6,15 +6,12 @@
     data-edit-question-count-value = <%= @quiz.questions.count %>
     data-action="
       edit--zgrid:setTagCount@window->edit#setTagCount
-      edit--question:load@window->edit#loadQuestion
       edit--question:delete@window->edit#deleteQuestion
       edit--question:addTag@window->edit#addTag
       edit--question:removeTag@window->edit#removeTag
       edit--question:createTag@window->edit#createTag
-      edit--single-question:load@window->edit#loadSingleQuestion
       edit--single-question:contentChange@window->edit#questionContentChange
       edit--single-question:addAnswer@window->edit#addAnswer
-      edit--answer:load@window->edit#loadAnswer
       edit--answer:answerContentChange@window->edit#answerContentChange
       edit--answer:delete@window->edit#deleteAnswer">
     <div class="quiz_info">
@@ -34,16 +31,14 @@
           data-edit--zgrid-quiz-id-value=<%= @quiz.id %> 
           data-edit--zgrid-edit-outlet='.edit[data-controller=edit]'
           data-action=
-            "edit:refresh@window->edit--zgrid#refresh
-            edit:selectQuestion@window->edit--zgrid#select
+            "edit:selectQuestion@window->edit--zgrid#select
             edit:selectSibling@window->edit--zgrid#setSelectedToSibling
             edit:addQuestion@window->edit--zgrid#addQuestion
             edit:deleteQuestion@window->edit--zgrid#deleteQuestion
             edit:addTag@window->edit--zgrid#addTag
             edit:removeTag@window-edit-->zgrid#removeTag
             edit:questionContentChange@window->edit--zgrid#questionContentChange
-            filter:updateFilter@window->edit--zgrid#updateFilter
-            edit--single-question:selectQuestion@window->edit--zgrid#select">
+            filter:updateFilter@window->edit--zgrid#updateFilter">
         <%= render 'shared/filter', quiz: @quiz %>
         <div data-edit--zgrid-target="zgridContainer"></div>
       </div>
