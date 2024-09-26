@@ -7,6 +7,7 @@ class QuestionTest < ApplicationSystemTestCase
   setup do
     sign_in users(:john)
     @quiz = quizzes(:johns)
+    @other = questions(:john_two)
     visit_edit_page
     @initial = get_questions_content
   end
@@ -27,6 +28,20 @@ class QuestionTest < ApplicationSystemTestCase
     # add question
     add_question
     assert_add_question
+    # undo
+    undo_action
+    assert_no_change_to_questions
+    # redo
+    redo_action
+    assert_add_question
+  end
+
+  test "add question -> switch selection -> undo -> redo" do
+    # add question
+    add_question
+    assert_add_question
+    # switch selection
+    select_question(@other.id)
     # undo
     undo_action
     assert_no_change_to_questions
