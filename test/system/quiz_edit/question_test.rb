@@ -9,6 +9,9 @@ class QuestionTest < ApplicationSystemTestCase
     @quiz = quizzes(:johns)
     @question = questions(:john_one)
     @other = questions(:john_two)
+    @initial_question_content = @question.content
+    @modify_content = "a"
+    @modified_question_content = @initial_question_content + @modify_content
     visit_edit_page
     @initial = get_questions_content
   end
@@ -22,6 +25,11 @@ class QuestionTest < ApplicationSystemTestCase
     page.find("#delete_question").click
   end
 
+  def change_question_content(id, modify)
+    textarea = single_question_textarea(id)
+    textarea.send_keys(modify)
+  end
+
   def assert_add_question
     assert_equal @initial + [""], get_questions_content
   end
@@ -32,6 +40,10 @@ class QuestionTest < ApplicationSystemTestCase
 
   def assert_no_change_to_questions
     assert_equal @initial.sort, get_questions_content.sort
+  end
+
+  def assert_question_content(id, content)
+    assert_equal content, get_single_question_content(id)
   end
 
   test "add question -> undo -> redo" do
@@ -184,6 +196,18 @@ class QuestionTest < ApplicationSystemTestCase
     assert_delete_question(@question.content)
   end
 
+  test "change question content -> undo -> redo" do
+    select_question(@question.id)
+    # change content
+    change_question_content(@question.id, @modify_content)
+    assert_question_content(@question.id, @modified_question_content)
+    # undo
+    undo_action
+    assert_question_content(@question.id, @initial_question_content)
+    # redo
+    redo_action
+    assert_question_content(@question.id, @modified_question_content)
+  end
   # add question -> undo -> redo
   # add question -> switch selection -> undo -> redo
   # add question -> und -> switch selection -> redo

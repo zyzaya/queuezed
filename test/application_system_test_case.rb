@@ -17,6 +17,10 @@ class ApplicationSystemTestCase < ActionDispatch::SystemTestCase
     page.find(".single_question_edit[data-edit--single-question-id-value=\"#{id}\"]")
   end
 
+  def single_question_textarea(id)
+    page.find(".question_content[data-edit--single-question-id-value=\"#{id}\"]")
+  end
+
   def answer_container(id)
     page.find(".answer_container[data-edit--answer-id-value=\"#{id}\"]")
   end

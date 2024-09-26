@@ -31,6 +31,10 @@ module EditGetHelper
     end
   end
 
+  def get_single_question_content(id)
+    return single_question_textarea(id).value
+  end
+
   def get_answers_content
     container = single_question_edit_container(@question.id)
     container.find_all(".answer_content").map do |e|
