@@ -204,25 +204,24 @@ export default class extends Controller {
 
   addTag(event) {
     let selected = this.currentlySelectedValue;
-    let tagContent = event.detail.tagContent;
-    let tagId = event.detail.tagId;
+    let { question_id, tag_id, content } = event.detail;
     let action = () => {
-      Change.AddTag(event.detail.questionId, tagId, tagContent);
+      Change.AddTag(question_id, tag_id, content);
       if (this.currentlySelectedValue !== selected) {
         this.dispatch('selectQuestion', { detail: { questionId: selected } });
       } else {
-        this.addTagDisplay(tagId, tagContent);
+        this.addTagDisplay(tag_id, content);
       }
-      this.modifyTagCount(tagId, tagContent, 1);
+      this.modifyTagCount(tag_id, content, 1);
       this.dispatch('addTag', { detail: event.detail });
     };
     let reverse = () => {
-      Change.RemoveTag(event.detail.questionId, tagId, tagContent);
+      Change.RemoveTag(question_id, tag_id, content);
       if (this.currentlySelectedValue !== selected) {
         this.dispatch('selectQuestion', { detail: { questionId: selected } });
       }
-      this.modifyTagCount(tagId, tagContent, -1);
-      this.deleteTagDisplay(tagId);
+      this.modifyTagCount(tag_id, content, -1);
+      this.deleteTagDisplay(tag_id);
       this.dispatch('removeTag', { detail: event.detail });
     };
     Undo.add('Add Tag', action, reverse);
@@ -230,25 +229,24 @@ export default class extends Controller {
 
   removeTag(event) {
     let selected = this.currentlySelectedValue;
-    let tagId = event.detail.tagId;
-    let tagContent = event.detail.tagContent;
+    let { question_id, tag_id, content } = event.detail;
     let action = () => {
-      Change.RemoveTag(event.detail.questionId, tagId, tagContent);
+      Change.RemoveTag(question_id, tag_id, content);
       if (this.currentlySelectedValue !== selected) {
         this.dispatch('selectQuestion', { detail: { questionId: selected } });
       }
-      this.modifyTagCount(tagId, tagContent, -1);
-      this.deleteTagDisplay(tagId);
+      this.modifyTagCount(tag_id, content, -1);
+      this.deleteTagDisplay(tag_id);
       this.dispatch('removeTag', { detail: event.detail });
     };
     let reverse = () => {
-      Change.AddTag(event.detail.questionId, tagId, tagContent);
+      Change.AddTag(question_id, tag_id, content);
       if (this.currentlySelectedValue !== selected) {
         this.dispatch('selectQuestion', { detail: { questionId: selected } });
       } else {
-        this.addTagDisplay(tagId, tagContent);
+        this.addTagDisplay(tag_id, content);
       }
-      this.modifyTagCount(tagId, tagContent, 1);
+      this.modifyTagCount(tag_id, content, 1);
       this.dispatch('addTag', { detail: event.detail });
     };
     Undo.add('Remove Tag', action, reverse);
@@ -256,37 +254,29 @@ export default class extends Controller {
 
   createTag(event) {
     let selected = this.currentlySelectedValue;
-    let tagId = ID.next();
-    let tagContent = event.detail.tagContent;
+    let tag_id = ID.next();
+    let { question_id, content } = event.detail;
     let action = () => {
-      Change.CreateTag(event.detail.questionId, tagId, tagContent);
+      Change.CreateTag(question_id, tag_id, content);
       if (this.currentlySelectedValue !== selected) {
         this.dispatch('selectQuestion', { detail: { questionId: selected } });
       } else {
-        this.addTagDisplay(tagId, tagContent);
+        this.addTagDisplay(tag_id, content);
       }
-      this.modifyTagCount(tagId, tagContent, 1);
+      this.modifyTagCount(tag_id, content, 1);
       this.dispatch('addTag', {
-        detail: {
-          questionId: event.detail.questionId,
-          tagId: tagId,
-          tagContent: tagContent,
-        },
+        detail: { question_id, tag_id, content },
       });
     };
     let reverse = () => {
-      Change.DeleteTag(event.detail.questionId, tagId, tagContent);
+      Change.DeleteTag(question_id, tag_id, content);
       if (this.currentlySelectedValue !== selected) {
         this.dispatch('selectQuestion', { detail: { questionId: selected } });
       }
-      this.modifyTagCount(tagId, tagContent, -1);
-      this.deleteTagDisplay(tagId);
+      this.modifyTagCount(tag_id, content, -1);
+      this.deleteTagDisplay(tag_id);
       this.dispatch('removeTag', {
-        detail: {
-          questionId: event.detail.questionId,
-          tagId: tagId,
-          tagContent: tagContent,
-        },
+        detail: { question_id, tag_id, content },
       });
     };
     Undo.add('Create Tag', action, reverse);

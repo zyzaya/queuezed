@@ -51,21 +51,21 @@ export default class extends Controller {
 
     this.dispatch('addTag', {
       detail: {
-        questionId: this.idValue,
-        tagId: tagId,
-        tagContent: content,
+        question_id: this.idValue,
+        tag_id: tagId,
+        content: content,
       },
     });
   }
 
   removeTag(event) {
-    let tagId = event.currentTarget.dataset['edit-QuestionTagIdValue'];
+    let tag_id = event.currentTarget.dataset['edit-QuestionTagIdValue'];
     let content = event.currentTarget.text;
     this.dispatch('removeTag', {
       detail: {
-        questionId: this.idValue,
-        tagId: tagId,
-        tagContent: content,
+        question_id: this.idValue,
+        tag_id: tag_id,
+        content: content,
       },
     });
   }
@@ -75,20 +75,20 @@ export default class extends Controller {
     event.currentTarget.value = '';
     if (this.hasTag(content)) return;
 
-    let tagId = this.findTagId(content);
-    if (tagId !== undefined) {
+    let tag_id = this.findTagId(content);
+    if (tag_id !== undefined) {
       this.dispatch('addTag', {
         detail: {
-          questionId: this.idValue,
-          tagId: tagId,
-          tagContent: content,
+          question_id: this.idValue,
+          tag_id: tag_id,
+          content: content,
         },
       });
     } else {
       this.dispatch('createTag', {
         detail: {
-          questionId: this.idValue,
-          tagContent: content,
+          question_id: this.idValue,
+          content: content,
         },
       });
     }

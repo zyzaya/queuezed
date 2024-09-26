@@ -202,19 +202,17 @@ export default class extends Controller {
 
   // local question modifications
   addTag(event) {
-    let qId = event.detail.questionId;
-    let tagId = event.detail.tagId;
-    let question = this.zgrid.getRow(qId);
-    question.tags += ` ${tagId}`;
-    this.zgrid.setRow(qId, question);
+    let { question_id, tag_id } = event.detail;
+    let question = this.zgrid.getRow(question_id);
+    question.tags += ` ${tag_id}`;
+    this.zgrid.setRow(question_id, question);
   }
 
   removeTag(event) {
-    let qId = event.detail.questionId;
-    let tagId = event.detail.tagId;
-    let question = this.zgrid.getRow(qId);
-    question.tags = question.tags.split(' ').filter((t) => t !== tagId);
-    this.zgrid.setRow(qId, question);
+    let { question_id, tag_id } = event.detail;
+    let question = this.zgrid.getRow(question_id);
+    question.tags = question.tags.split(' ').filter((t) => t !== tag_id);
+    this.zgrid.setRow(question_id, question);
   }
 
   addQuestion(event) {
