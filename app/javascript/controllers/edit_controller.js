@@ -334,20 +334,21 @@ export default class extends Controller {
   }
 
   addAnswer(event) {
+    let question_id = event.detail.question_id;
     let answer_id = ID.next();
     let selected = this.currentlySelectedValue;
     let action = () => {
-      Change.AddAnswer(event.detail.questionId, answer_id);
+      Change.AddAnswer(question_id, answer_id);
       if (this.currentlySelectedValue !== selected) {
         this.dispatch('selectQuestion', { detail: { questionId: selected } });
       } else {
-        let parent = this.findQuestionContainer(event.detail.questionId);
-        let ad = AnswerDisplay(parent, event.detail.questionId, answer_id);
+        let parent = this.findQuestionContainer(question_id);
+        let ad = AnswerDisplay(parent, question_id, answer_id);
         ad.focus();
       }
     };
     let reverse = () => {
-      Change.DeleteAnswer(event.detail.questionId, answer_id);
+      Change.DeleteAnswer(question_id, answer_id);
       if (this.currentlySelectedValue !== selected) {
         this.dispatch('selectQuestion', { detail: { questionId: selected } });
       } else {
