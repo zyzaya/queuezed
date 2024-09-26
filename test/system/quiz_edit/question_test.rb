@@ -148,6 +148,16 @@ class QuestionTest < ApplicationSystemTestCase
     assert_delete_question(@question.content)
   end
 
+  test ("delete question -> save") do
+    # delete question
+    delete_question(@question.id)
+    assert_delete_question(@question.content)
+    # save
+    save_action
+    visit_edit_page
+    assert_delete_question(@question.content)
+  end
+
   # add question -> undo -> redo
   # add question -> switch selection -> undo -> redo
   # add question -> und -> switch selection -> redo
