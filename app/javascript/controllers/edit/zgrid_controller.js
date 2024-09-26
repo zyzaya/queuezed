@@ -156,6 +156,8 @@ export default class extends Controller {
         answers: r.answers,
       };
     });
+    console.log(`setting displayed question to`);
+    console.log(question);
     this.dispatch('setQuestion', {
       detail: {
         id: question.id,

@@ -1,8 +1,12 @@
 import Data from 'edit/Data';
 
 export default class Change {
+  // questions, as retrieved from the server with
+  // all local modifications applied
   static #questions = [];
 
+  // all local modifications, in the format accepted
+  // by a post request to the server
   static #changes = {
     questions: [],
   };
@@ -13,7 +17,7 @@ export default class Change {
   }
 
   static GetQuestion(id) {
-    return this.#questions.find((q) => q.id === parseInt(id));
+    return this.#questions.find((q) => q.id == id);
   }
 
   static #getAnswer(question_id, answer_id) {
@@ -107,8 +111,36 @@ export default class Change {
     answer.content = content;
   }
 
-  static AddQuestion(question_id) {
-    console.error('Change.AddQuestion not implemented');
+  static AddQuestion(id) {
+    let q = this.GetQuestion(id);
+    if (q === undefined) {
+      q = {
+        answers: [],
+        content: '',
+        current_streak: 0,
+        difficult: false,
+        id: id,
+        last_taken: null,
+        longest_streak: 0,
+        next_review: '',
+        rank: 0,
+        relations: [],
+        review: false,
+        tags: [],
+        times_taken: 0,
+        times_correct: 0,
+      };
+      this.#questions.push(q);
+    }
+
+    let question = this.#getQuestionChanges(id);
+    if (question.meta === 'delete') {
+      this.#changes.questions = this.#changes.questions.filter(
+        (e) => e.id == question.id
+      );
+    } else {
+      question.meta = 'add';
+    }
   }
 
   static DeleteQuestion(question_id) {
