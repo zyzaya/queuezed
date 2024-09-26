@@ -20,7 +20,7 @@ export default class extends Controller {
     this.zgrid = new zGrid({
       parent: parent,
       data: [],
-      columns: ['id'],
+      columns: [{ id: 'id', visible: false }],
       className: {
         table: 'zg_table',
         th: 'zg_th',
@@ -144,10 +144,9 @@ export default class extends Controller {
     curr.classList.add('active_question');
     this.currentlySelected = id;
     this.editOutlet.currentlySelectedValue = id;
-    // Data.setQuestion(this.csrf, this.quizIdValue, id);
+    // displayed question
     let question = Change.GetQuestion(id);
     if (question === undefined) return;
-
     let relations = question.relations.map((e) => {
       let r = this.questions.find((q) => q.id === e.id);
       return {
@@ -156,8 +155,6 @@ export default class extends Controller {
         answers: r.answers,
       };
     });
-    console.log(`setting displayed question to`);
-    console.log(question);
     this.dispatch('setQuestion', {
       detail: {
         id: question.id,
@@ -170,11 +167,9 @@ export default class extends Controller {
   }
 
   setSelectedToSibling() {
-    let question_id = this.currentlySelected;
+    let id = this.currentlySelected;
     let data = this.zgrid.getData();
-    let current = data.findIndex(
-      (e) => e.id.toString() === question_id.toString()
-    );
+    let current = data.findIndex((e) => e.id == id);
     if (current === -1) return;
     if (current + 1 < data.length) {
       let sibling = data[current + 1];
@@ -223,7 +218,21 @@ export default class extends Controller {
   }
 
   addQuestion(event) {
-    this.zgrid.addRow({ id: event.detail.id });
+    let question = Change.GetQuestion(event.detail.id);
+    if (question === undefined) this.zgrid.addRow({ id: event.detail.id });
+    else {
+      let tags = question.tags.join(' ');
+      this.zgrid.addRow({
+        id: event.detail.id.toString(),
+        review: question.review,
+        tags: tags,
+        content: question.content,
+        current_streak: question.current_streak,
+        longest_streak: question.longest_streak,
+        times_taken: question.times_taken,
+        times_correct: question.times_correct,
+      });
+    }
   }
 
   deleteQuestion(event) {

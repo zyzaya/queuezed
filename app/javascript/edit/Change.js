@@ -111,9 +111,16 @@ export default class Change {
     answer.content = content;
   }
 
-  static AddQuestion(id) {
+  static AddQuestion(id, data) {
     let q = this.GetQuestion(id);
-    if (q === undefined) {
+    if (q !== undefined) {
+      console.error(`Question with id ${id} already exists`);
+      return;
+    }
+
+    if (data !== undefined) {
+      q = data;
+    } else {
       q = {
         answers: [],
         content: '',
@@ -130,8 +137,8 @@ export default class Change {
         times_taken: 0,
         times_correct: 0,
       };
-      this.#questions.push(q);
     }
+    this.#questions.push(q);
 
     let question = this.#getQuestionChanges(id);
     if (question.meta === 'delete') {

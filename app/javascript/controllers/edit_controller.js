@@ -130,27 +130,18 @@ export default class extends Controller {
   }
 
   deleteQuestion(event) {
-    let question_id = event.detail.id;
-    let count = this.questionCountValue;
-    let changes = Change.GetChanges();
+    let selected = this.currentlySelectedValue;
+    let id = event.detail.id;
+    let question = Change.GetQuestion(id);
     let action = () => {
+      Change.DeleteQuestion(id);
+      this.dispatch('deleteQuestion', { detail: { id: id } });
       this.dispatch('selectSibling');
-      Data.deleteQuestion(this.csrf, this.quizIdValue, question_id).then(() => {
-        this.dispatch('refresh', {
-          detail: { changes: changes },
-        });
-        this.questionCountValue = count - 1;
-      });
     };
     let reverse = () => {
-      Data.restoreQuestion(this.csrf, this.quizIdValue, question_id)
-        .then((response) => response.json())
-        .then((question) => {
-          this.dispatch('refresh', {
-            detail: { selectedId: question_id, changes: changes },
-          });
-          this.questionCountValue = count;
-        });
+      Change.AddQuestion(id, question);
+      this.dispatch('addQuestion', { detail: { id: id } });
+      this.dispatch('selectQuestion', { detail: { questionId: id } });
     };
     Undo.add('Delete Question', action, reverse);
   }
