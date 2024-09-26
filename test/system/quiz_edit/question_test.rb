@@ -122,7 +122,7 @@ class QuestionTest < ApplicationSystemTestCase
     assert_add_question
   end
 
-  test ("delete question -> undo -> redo") do
+  test "delete question -> undo -> redo" do
     # delete question
     delete_question(@question.id)
     assert_delete_question(@question.content)
@@ -134,7 +134,7 @@ class QuestionTest < ApplicationSystemTestCase
     assert_delete_question(@question.content)
   end
 
-  test ("delete question -> switch selection -> undo -> redo") do
+  test "delete question -> switch selection -> undo -> redo" do
     # delete question
     delete_question(@question.id)
     assert_delete_question(@question.content)
@@ -147,7 +147,7 @@ class QuestionTest < ApplicationSystemTestCase
     assert_delete_question(@question.content)
   end
 
-  test ("delete question -> undo -> switch selection -> redo") do
+  test "delete question -> undo -> switch selection -> redo" do
     # delete question
     delete_question(@question.id)
     assert_delete_question(@question.content)
@@ -160,7 +160,7 @@ class QuestionTest < ApplicationSystemTestCase
     assert_delete_question(@question.content)
   end
 
-  test ("delete question -> save") do
+  test "delete question -> save" do
     # delete question
     delete_question(@question.id)
     assert_delete_question(@question.content)
@@ -170,7 +170,7 @@ class QuestionTest < ApplicationSystemTestCase
     assert_delete_question(@question.content)
   end
 
-  test ("delete question -> save -> undo -> save") do
+  test "delete question -> save -> undo -> save" do
     # delete question
     delete_question(@question.id)
     assert_delete_question(@question.content)
@@ -182,7 +182,7 @@ class QuestionTest < ApplicationSystemTestCase
     assert_no_change_to_questions
   end
 
-  test ("delete question -> save -> undo -> save -> redo -> save") do
+  test "delete question -> save -> undo -> save -> redo -> save" do
     # delete question
     delete_question(@question.id)
     assert_delete_question(@question.content)
@@ -249,7 +249,7 @@ class QuestionTest < ApplicationSystemTestCase
     assert_question_content(@question.id, @modified_question_content)
   end
 
-  test ("change question content -> save -> undo -> save") do
+  test "change question content -> save -> undo -> save" do
     select_question(@question.id)
     # change content
     change_question_content(@question.id, @modify_content)
@@ -278,22 +278,4 @@ class QuestionTest < ApplicationSystemTestCase
     select_question(@question.id)
     assert_question_content(@question.id, @modified_question_content)
   end
-  # add question -> undo -> redo
-  # add question -> switch selection -> undo -> redo
-  # add question -> und -> switch selection -> redo
-  # add question -> save
-  # add question -> save -> undo -> save
-  # add question -> save -> undo -> redo -> save
-  # delete question -> undo -> redo
-  # delete question -> switch selection -> undo -> redo
-  # delete question -> und -> switch selection -> redo
-  # delete question -> save
-  # delete question -> save -> undo -> save
-  # delete question -> save -> undo -> redo -> save
-  # change question content -> undo -> redo
-  # change question content -> switch selection -> undo -> redo
-  # change question content -> und -> switch selection -> redo
-  # change question content -> save
-  # change question content -> save -> undo -> save
-  # change question content -> save -> undo -> redo -> save
 end
