@@ -54,7 +54,6 @@ export default class extends Controller {
 
   save(event) {
     let changes = Change.GetChanges(this.idConversion);
-    console.log(changes);
     let ids = {
       questions: {},
       answers: {},
@@ -71,8 +70,6 @@ export default class extends Controller {
           if (t.prev_id !== undefined) ids.tags[t.prev_id] = t.id;
         });
       });
-      console.log(data);
-      console.log(ids);
       this.idConversion = ids;
     });
     Change.Reset();

@@ -7,6 +7,7 @@ class QuestionTest < ApplicationSystemTestCase
   setup do
     sign_in users(:john)
     @quiz = quizzes(:johns)
+    @question = questions(:john_one)
     @other = questions(:john_two)
     visit_edit_page
     @initial = get_questions_content
@@ -16,8 +17,19 @@ class QuestionTest < ApplicationSystemTestCase
     page.find("#new_question").click
   end
 
+  def delete_question(id)
+    select_question(id)
+    page.find("#delete_question").click
+  end
+
   def assert_add_question
     assert_equal @initial + [""], get_questions_content
+  end
+
+  def assert_delete_question(content)
+    expected = (@initial - [content]).sort
+    result = get_questions_content.sort
+    assert_equal expected, result
   end
 
   def assert_no_change_to_questions
@@ -98,6 +110,18 @@ class QuestionTest < ApplicationSystemTestCase
     save_action
     visit_edit_page
     assert_add_question
+  end
+
+  test ("delete question -> undo -> redo") do
+    # delete question
+    delete_question(@question.id)
+    assert_delete_question(@question.content)
+    # undo
+    undo_action
+    assert_no_change_to_questions
+    # redo
+    redo_action
+    assert_delete_question(@question.content)
   end
   # add question -> undo -> redo
   # add question -> switch selection -> undo -> redo
