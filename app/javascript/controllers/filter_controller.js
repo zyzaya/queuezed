@@ -5,17 +5,12 @@ export default class extends Controller {
   static targets = ['text', 'tagOption', 'tagList', 'tag'];
 
   updateFilter() {
-    let tagFilter = this.tagTargets.map((t) => t.dataset.id);
-    let reviewFilter = tagFilter.includes('review');
-    tagFilter = tagFilter.filter((t) => t != 'review');
+    let text = this.textTarget.value.toLowerCase();
+    let tag = this.tagTargets.map((t) => t.dataset.id);
+    let review = tag.includes('review');
+    tag = tag.filter((t) => t != 'review');
 
-    this.dispatch('updateFilter', {
-      detail: {
-        tagFilter: tagFilter,
-        textFilter: this.textTarget.value.toLowerCase(),
-        reviewFilter: reviewFilter,
-      },
-    });
+    this.dispatch('updateFilter', { detail: { tag, text, review } });
   }
 
   addTag(event) {

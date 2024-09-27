@@ -181,18 +181,16 @@ export default class extends Controller {
   }
 
   updateFilter(event) {
-    let tagFilter = event.detail.tagFilter;
-    let textFilter = event.detail.textFilter;
-    let reviewFilter = event.detail.reviewFilter;
+    let { tag, text, review } = event.detail;
 
     this.zgrid.reconfigure({
       filter: (row) => {
         let tags = row.tags.split(' ');
         let matches_text_filter =
-          textFilter === '' || row.content.toLowerCase().includes(textFilter);
+          text === '' || row.content.toLowerCase().includes(text);
         let matches_tag_filter =
-          tagFilter.length === 0 || tagFilter.some((f) => tags.includes(f));
-        let matches_review_filter = !reviewFilter || row.review;
+          tag.length === 0 || tag.some((f) => tags.includes(f));
+        let matches_review_filter = !review || row.review;
         return (
           matches_text_filter && matches_tag_filter && matches_review_filter
         );
