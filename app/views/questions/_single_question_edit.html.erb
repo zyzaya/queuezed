@@ -3,7 +3,7 @@
 <% content = question.nil? ? "" : question.content %>
 <div class="single_question_edit" 
   data-controller='edit--single-question'
-  data-action='edit:setQuestionContent@window->edit--single-question#setContent'
+  data-action='edit:questionContentChange@window->edit--single-question#setContent'
   data-edit--single-question-edit--zgrid-outlet='.edit_list'
   data-edit-target='singleQuestionContainer'
   data-edit--question-target='singleQuestionContainer'

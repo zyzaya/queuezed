@@ -305,8 +305,8 @@ export default class extends Controller {
       if (this.currentlySelectedValue !== selected) {
         this.dispatch('selectQuestion', { detail: { id: selected } });
       } else {
-        this.dispatch('setQuestionContent', {
-          detail: { id: id, content: current },
+        this.dispatch('questionContentChange', {
+          detail: { id, content: current },
         });
       }
     };
@@ -315,7 +315,7 @@ export default class extends Controller {
       if (this.currentlySelectedValue !== selected) {
         this.dispatch('selectQuestion', { detail: { id: selected } });
       } else {
-        this.dispatch('setQuestionContent', {
+        this.dispatch('questionContentChange', {
           detail: { id: id, content: previous },
         });
       }
