@@ -44,6 +44,7 @@ class QuestionTest < ApplicationSystemTestCase
 
   def assert_question_content(id, content)
     assert_equal content, get_single_question_content(id)
+    assert_includes get_questions_content, content
   end
 
   test "add question -> undo -> redo" do

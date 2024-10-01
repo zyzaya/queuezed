@@ -20,7 +20,7 @@ export default function SingleQuestionDisplay(id, content, answers) {
   question_content.dataset['edit-SingleQuestionIdValue'] = id;
   question_content.dataset['edit-SingleQuestionTarget'] = 'info';
   question_content.dataset['action'] =
-    'change->edit--single-question#questionContentChange';
+    'edit--single-question#questionContentChange';
   question_content.value = content;
   container.appendChild(question_content);
   let answers_header = document.createElement('div');
