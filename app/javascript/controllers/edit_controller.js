@@ -304,21 +304,19 @@ export default class extends Controller {
       Change.SetQuestionContent(id, current);
       if (this.currentlySelectedValue !== selected) {
         this.dispatch('selectQuestion', { detail: { id: selected } });
-      } else {
-        this.dispatch('questionContentChange', {
-          detail: { id, content: current },
-        });
       }
+      this.dispatch('questionContentChange', {
+        detail: { id, content: current },
+      });
     };
     let reverse = () => {
       Change.SetQuestionContent(id, previous);
       if (this.currentlySelectedValue !== selected) {
         this.dispatch('selectQuestion', { detail: { id: selected } });
-      } else {
-        this.dispatch('questionContentChange', {
-          detail: { id: id, content: previous },
-        });
       }
+      this.dispatch('questionContentChange', {
+        detail: { id: id, content: previous },
+      });
     };
     Undo.add('Change Question Content', action, reverse);
   }
