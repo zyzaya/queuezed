@@ -90,6 +90,23 @@ module EditActionHelper
     textarea = answer_container(id).find("textarea")
     textarea.send_keys(modify)
   end
+
+  def add_tag(content)
+    select content, from: "add_tag"
+  end
+
+  def remove_tag(q_id, content)
+    container = question_edit_container(q_id)
+    button = container.find(".tag_list > a") { |e| e.text.eql?(content) }
+    button.click
+  end
+
+  def create_tag(q_id, content)
+    container = question_edit_container(q_id)
+    input = container.find("#create_tag")
+    input.send_keys(content)
+    input.send_keys(:return)
+  end
 end
 
 module EditGetHelper

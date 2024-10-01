@@ -16,24 +16,7 @@ class TagTest < ApplicationSystemTestCase
     select_question(@question.id)
     @initial = get_tags_content
     @initial_tag_options = quizzes(:johns).tags.sort.pluck(:content)
-  end
-
-  def add_tag(content)
-    select content, from: "add_tag"
-  end
-
-  def remove_tag(content)
-    container = question_edit_container(@question.id)
-    button = container.find(".tag_list > a") { |e| e.text.eql?(content) }
-    button.click
-  end
-
-  def create_tag(content)
-    container = question_edit_container(@question.id)
-    input = container.find("#create_tag")
-    input.send_keys(content)
-    input.send_keys(:return)
-  end
+  end  
 
   def get_add_tag_options
     container = question_edit_container(@question.id)
@@ -154,7 +137,7 @@ class TagTest < ApplicationSystemTestCase
 
   test "remove tag -> undo -> redo" do
     # remove tag
-    remove_tag(@has_tag.content)
+    remove_tag(@question.id, @has_tag.content)
     assert_remove_tag(@has_tag.content)
     # undo
     undo_action
@@ -166,7 +149,7 @@ class TagTest < ApplicationSystemTestCase
 
   test "remove tag -> switch selection -> undo -> redo" do
     # remove tag
-    remove_tag(@has_tag.content)
+    remove_tag(@question.id, @has_tag.content)
     assert_remove_tag(@has_tag.content)
     # switch selection
     select_question(@other.id)
@@ -180,7 +163,7 @@ class TagTest < ApplicationSystemTestCase
 
   test "remove tag -> undo -> switch selection -> redo" do
     # remove tag
-    remove_tag(@has_tag.content)
+    remove_tag(@question.id, @has_tag.content)
     assert_remove_tag(@has_tag.content)
     # undo
     undo_action
@@ -193,7 +176,7 @@ class TagTest < ApplicationSystemTestCase
 
   test "remove tag -> save" do
     # remove tag
-    remove_tag(@has_tag.content)
+    remove_tag(@question.id, @has_tag.content)
     assert_remove_tag(@has_tag.content)
     # save
     save_action
@@ -204,7 +187,7 @@ class TagTest < ApplicationSystemTestCase
 
   test "remove tag -> save -> undo -> save" do
     # remove tag
-    remove_tag(@has_tag.content)
+    remove_tag(@question.id, @has_tag.content)
     assert_remove_tag(@has_tag.content)
     # save -> undo -> save
     save_action
@@ -217,7 +200,7 @@ class TagTest < ApplicationSystemTestCase
 
   test "remove tag -> save -> undo -> save -> redo -> save" do
     # remove tag
-    remove_tag(@has_tag.content)
+    remove_tag(@question.id, @has_tag.content)
     assert_remove_tag(@has_tag.content)
     # save -> undo -> save -> redo -> save
     save_action
@@ -232,7 +215,7 @@ class TagTest < ApplicationSystemTestCase
 
   test "create tag -> undo -> redo" do
     # create tag
-    create_tag(@new_tag_content)
+    create_tag(@question.id, @new_tag_content)
     assert_create_tag(@new_tag_content)
     # undo
     undo_action
@@ -244,7 +227,7 @@ class TagTest < ApplicationSystemTestCase
 
   test "create tag -> switch selection -> undo -> redo" do
     # create tag
-    create_tag(@new_tag_content)
+    create_tag(@question.id, @new_tag_content)
     assert_create_tag(@new_tag_content)
     # switch selection -> undo
     select_question(@other.id)
@@ -257,7 +240,7 @@ class TagTest < ApplicationSystemTestCase
 
   test "create tag -> undo -> switch selection -> redo" do
     # create tag
-    create_tag(@new_tag_content)
+    create_tag(@question.id, @new_tag_content)
     assert_create_tag(@new_tag_content)
     # undo
     undo_action
@@ -270,7 +253,7 @@ class TagTest < ApplicationSystemTestCase
 
   test "create tag -> save" do
     # create tag
-    create_tag(@new_tag_content)
+    create_tag(@question.id, @new_tag_content)
     assert_create_tag(@new_tag_content)
     # save
     save_action
@@ -281,7 +264,7 @@ class TagTest < ApplicationSystemTestCase
 
   test "create tag -> save -> undo -> save" do
     #create tag
-    create_tag(@new_tag_content)
+    create_tag(@question.id, @new_tag_content)
     assert_create_tag(@new_tag_content)
     # save -> undo -> save
     save_action
@@ -294,7 +277,7 @@ class TagTest < ApplicationSystemTestCase
 
   test "create tag -> save -> undo -> save -> redo -> save" do
     # create tag
-    create_tag(@new_tag_content)
+    create_tag(@question.id, @new_tag_content)
     assert_create_tag(@new_tag_content)
     # save -> undo -> save -> redo -> save
     save_action
