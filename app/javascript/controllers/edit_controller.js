@@ -105,11 +105,13 @@ export default class extends Controller {
     let question = Change.GetQuestion(id);
     let action = () => {
       Change.DeleteQuestion(id);
+      question.tags.forEach((t) => this.modifyTagCount(t.id, t.content, -1));
       this.dispatch('selectSibling');
       this.dispatch('deleteQuestion', { detail: { id } });
     };
     let reverse = () => {
       Change.AddQuestion(id, question);
+      question.tags.forEach((t) => this.modifyTagCount(t.id, t.content, 1));
       this.dispatch('addQuestion', { detail: { id } });
       this.dispatch('selectQuestion', { detail: { id } });
     };
@@ -184,7 +186,10 @@ export default class extends Controller {
     } else {
       let next = Array.from(this.tagFilterOptionListTarget.children).find(
         (t) => {
-          return t.value != -1 && content.localeCompare(t.text) <= 0;
+          return (
+            !['-1', '-2', 'review'].includes(t.value) &&
+            content.localeCompare(t.text) <= 0
+          );
         }
       );
       this.tagFilterOptionListTarget.insertBefore(filter, next);

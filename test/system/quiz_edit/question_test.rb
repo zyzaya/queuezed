@@ -103,7 +103,7 @@ class QuestionTest < ApplicationSystemTestCase
     # undo
     undo_action
     assert_no_change_to_questions(@initial)
-    assert_no_change_to_tag_options(@initial_tag_options)
+    assert_no_change_to_tag_options(@question.id, @initial_tag_options)
     # redo
     redo_action
     select_question(@other.id)
