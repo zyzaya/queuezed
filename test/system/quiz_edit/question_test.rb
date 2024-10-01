@@ -180,7 +180,9 @@ class QuestionTest < ApplicationSystemTestCase
   test "delete question -> save -> undo -> save -> redo -> save" do
     # delete question
     delete_question(@question.id)
+    select_question(@other.id)
     assert_delete_question(@initial, @question.content)
+    assert_remove_tag_option(@other.id, @initial_tag_options, @tag.content)
     # save -> undo -> save -> redo -> save
     save_action
     undo_action
@@ -188,7 +190,9 @@ class QuestionTest < ApplicationSystemTestCase
     redo_action
     save_action
     visit_edit_page(@quiz)
+    select_question(@other.id)
     assert_delete_question(@initial, @question.content)
+    assert_remove_tag_option(@other.id, @initial_tag_options, @tag.content)
   end
 
   test "change question content -> undo -> redo" do
