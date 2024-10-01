@@ -23,70 +23,70 @@ class TagTest < ApplicationSystemTestCase
   test "add tag -> undo -> redo" do
     # add tag
     add_tag(@not_has_tag.content)
-    assert_add_tag(@initial, @not_has_tag.content)
+    assert_add_tag(@question.id, @initial, @not_has_tag.content)
     # undo
     undo_action
-    assert_no_change_to_tags(@initial, @initial_tag_options)
+    assert_no_change_to_tags(@question.id, @initial, @initial_tag_options)
     # redo
     redo_action
-    assert_add_tag(@initial, @not_has_tag.content)
+    assert_add_tag(@question.id, @initial, @not_has_tag.content)
   end
 
   test "add tag -> switch selection -> undo -> redo" do
     # add tag
     add_tag(@not_has_tag.content)
-    assert_add_tag(@initial, @not_has_tag.content)
+    assert_add_tag(@question.id, @initial, @not_has_tag.content)
     # switch selection
     select_question(@other.id)
     # undo
     undo_action
-    assert_no_change_to_tags(@initial, @initial_tag_options)
+    assert_no_change_to_tags(@question.id, @initial, @initial_tag_options)
     # redo
     redo_action
-    assert_add_tag(@initial, @not_has_tag.content)
+    assert_add_tag(@question.id, @initial, @not_has_tag.content)
   end
 
   test "add tag -> undo -> switch selection -> redo" do
     # add tag
     add_tag(@not_has_tag.content)
-    assert_add_tag(@initial, @not_has_tag.content)
+    assert_add_tag(@question.id, @initial, @not_has_tag.content)
     # undo
     undo_action
-    assert_no_change_to_tags(@initial, @initial_tag_options)
+    assert_no_change_to_tags(@question.id, @initial, @initial_tag_options)
     # switch selection -> redo
     select_question(@other.id)
     redo_action
-    assert_add_tag(@initial, @not_has_tag.content)
+    assert_add_tag(@question.id, @initial, @not_has_tag.content)
   end
 
   test "add tag -> save" do
     # add tag
     add_tag(@not_has_tag.content)
-    assert_add_tag(@initial, @not_has_tag.content)
+    assert_add_tag(@question.id, @initial, @not_has_tag.content)
     # save
     save_action
     visit_edit_page(@quiz)
     select_question(@question.id)
-    assert_add_tag(@initial, @not_has_tag.content)
+    assert_add_tag(@question.id, @initial, @not_has_tag.content)
   end
 
   test "add tag -> save -> undo -> save" do
     # add tag
     add_tag(@not_has_tag.content)
-    assert_add_tag(@initial, @not_has_tag.content)
+    assert_add_tag(@question.id, @initial, @not_has_tag.content)
     # save -> undo -> save
     save_action
     undo_action
     save_action
     visit_edit_page(@quiz)
     select_question(@question.id)
-    assert_no_change_to_tags(@initial, @initial_tag_options)
+    assert_no_change_to_tags(@question.id, @initial, @initial_tag_options)
   end
 
   test "add tag -> save -> undo -> save -> redo -> save" do
     # add tag
     add_tag(@not_has_tag.content)
-    assert_add_tag(@initial, @not_has_tag.content)
+    assert_add_tag(@question.id, @initial, @not_has_tag.content)
     # save -> undo -> save -> redo -> save
     save_action
     undo_action
@@ -95,76 +95,76 @@ class TagTest < ApplicationSystemTestCase
     save_action
     visit_edit_page(@quiz)
     select_question(@question.id)
-    assert_add_tag(@initial, @not_has_tag.content)
+    assert_add_tag(@question.id, @initial, @not_has_tag.content)
   end
 
   test "remove tag -> undo -> redo" do
     # remove tag
     remove_tag(@question.id, @has_tag.content)
-    assert_remove_tag(@initial, @has_tag.content)
+    assert_remove_tag(@question.id, @initial, @has_tag.content)
     # undo
     undo_action
-    assert_no_change_to_tags(@initial, @initial_tag_options)
+    assert_no_change_to_tags(@question.id, @initial, @initial_tag_options)
     # redo
     redo_action
-    assert_remove_tag(@initial, @has_tag.content)
+    assert_remove_tag(@question.id, @initial, @has_tag.content)
   end
 
   test "remove tag -> switch selection -> undo -> redo" do
     # remove tag
     remove_tag(@question.id, @has_tag.content)
-    assert_remove_tag(@initial, @has_tag.content)
+    assert_remove_tag(@question.id, @initial, @has_tag.content)
     # switch selection
     select_question(@other.id)
     # undo
     undo_action
-    assert_no_change_to_tags(@initial, @initial_tag_options)
+    assert_no_change_to_tags(@question.id, @initial, @initial_tag_options)
     # redo
     redo_action
-    assert_remove_tag(@initial, @has_tag.content)
+    assert_remove_tag(@question.id, @initial, @has_tag.content)
   end
 
   test "remove tag -> undo -> switch selection -> redo" do
     # remove tag
     remove_tag(@question.id, @has_tag.content)
-    assert_remove_tag(@initial, @has_tag.content)
+    assert_remove_tag(@question.id, @initial, @has_tag.content)
     # undo
     undo_action
-    assert_no_change_to_tags(@initial, @initial_tag_options)
+    assert_no_change_to_tags(@question.id, @initial, @initial_tag_options)
     # switch selection -> redo
     select_question(@other.id)
     redo_action
-    assert_remove_tag(@initial, @has_tag.content)
+    assert_remove_tag(@question.id, @initial, @has_tag.content)
   end
 
   test "remove tag -> save" do
     # remove tag
     remove_tag(@question.id, @has_tag.content)
-    assert_remove_tag(@initial, @has_tag.content)
+    assert_remove_tag(@question.id, @initial, @has_tag.content)
     # save
     save_action
     visit_edit_page(@quiz)
     select_question(@question.id)
-    assert_remove_tag(@initial, @has_tag.content)
+    assert_remove_tag(@question.id, @initial, @has_tag.content)
   end
 
   test "remove tag -> save -> undo -> save" do
     # remove tag
     remove_tag(@question.id, @has_tag.content)
-    assert_remove_tag(@initial, @has_tag.content)
+    assert_remove_tag(@question.id, @initial, @has_tag.content)
     # save -> undo -> save
     save_action
     undo_action
     save_action
     visit_edit_page(@quiz)
     select_question(@question.id)
-    assert_no_change_to_tags(@initial, @initial_tag_options)
+    assert_no_change_to_tags(@question.id, @initial, @initial_tag_options)
   end
 
   test "remove tag -> save -> undo -> save -> redo -> save" do
     # remove tag
     remove_tag(@question.id, @has_tag.content)
-    assert_remove_tag(@initial, @has_tag.content)
+    assert_remove_tag(@question.id, @initial, @has_tag.content)
     # save -> undo -> save -> redo -> save
     save_action
     undo_action
@@ -173,7 +173,7 @@ class TagTest < ApplicationSystemTestCase
     save_action
     visit_edit_page(@quiz)
     select_question(@question.id)
-    assert_remove_tag(@initial, @has_tag.content)
+    assert_remove_tag(@question.id, @initial, @has_tag.content)
   end
 
   test "create tag -> undo -> redo" do
@@ -182,7 +182,7 @@ class TagTest < ApplicationSystemTestCase
     assert_create_tag(@question.id, @initial_tag_options, @initial, @new_tag_content)
     # undo
     undo_action
-    assert_no_change_to_tags(@initial, @initial_tag_options)
+    assert_no_change_to_tags(@question.id, @initial, @initial_tag_options)
     # redo
     redo_action
     assert_create_tag(@question.id, @initial_tag_options, @initial, @new_tag_content)
@@ -195,7 +195,7 @@ class TagTest < ApplicationSystemTestCase
     # switch selection -> undo
     select_question(@other.id)
     undo_action
-    assert_no_change_to_tags(@initial, @initial_tag_options)
+    assert_no_change_to_tags(@question.id, @initial, @initial_tag_options)
     # redo
     redo_action
     assert_create_tag(@question.id, @initial_tag_options, @initial, @new_tag_content)
@@ -207,7 +207,7 @@ class TagTest < ApplicationSystemTestCase
     assert_create_tag(@question.id, @initial_tag_options, @initial, @new_tag_content)
     # undo
     undo_action
-    assert_no_change_to_tags(@initial, @initial_tag_options)
+    assert_no_change_to_tags(@question.id, @initial, @initial_tag_options)
     # switch selection -> redo
     select_question(@other.id)
     redo_action
@@ -235,7 +235,7 @@ class TagTest < ApplicationSystemTestCase
     save_action
     visit_edit_page(@quiz)
     select_question(@question.id)
-    assert_no_change_to_tags(@initial, @initial_tag_options)
+    assert_no_change_to_tags(@question.id, @initial, @initial_tag_options)
   end
 
   test "create tag -> save -> undo -> save -> redo -> save" do

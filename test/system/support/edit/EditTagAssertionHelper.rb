@@ -1,14 +1,14 @@
 module EditTagAssertionHelper
-  def assert_add_tag(initial, content)
-    assert_equal (initial + [content]).sort, get_tags_content
+  def assert_add_tag(q_id, initial, content)
+    assert_equal (initial + [content]).sort, get_tags_content(q_id)
   end
 
-  def assert_remove_tag(initial, content)
-    assert_equal (initial - [content]).sort, get_tags_content
+  def assert_remove_tag(q_id, initial, content)
+    assert_equal (initial - [content]).sort, get_tags_content(q_id)
   end
 
   def assert_create_tag(q_id, initial_options, initial_content, content)
-    assert_add_tag(initial_content, content)
+    assert_add_tag(q_id, initial_content, content)
     expected = (initial_options + [content]).sort
     # add to add tag options
     assert_equal expected, get_add_tag_options(q_id)
@@ -16,10 +16,10 @@ module EditTagAssertionHelper
     assert_equal expected, get_filter_tag_options
   end
 
-  def assert_no_change_to_tags(initial_content, initial_options)
-    result = get_tags_content
+  def assert_no_change_to_tags(q_id, initial_content, initial_options)
+    result = get_tags_content(q_id)
     assert_equal initial_content, result
-    assert_no_change_to_tag_options(initial_options)
+    assert_no_change_to_tag_options(q_id, initial_options)
   end
 
   def assert_remove_tag_option(q_id, initial, option)

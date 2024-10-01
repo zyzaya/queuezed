@@ -11,7 +11,7 @@ class QuizEditTest < ApplicationSystemTestCase
     @initial_title = quizzes(:johns).name
     @modifier = "a"
     @modified_title = @initial_title + @modifier
-    visit_edit_page
+    visit_edit_page(@quiz)
   end  
 
   def change_title(modifier)
@@ -24,7 +24,7 @@ class QuizEditTest < ApplicationSystemTestCase
   end
 
   test "initial load" do
-    visit_edit_page
+    visit_edit_page(@quiz)
     quiz = quizzes(:johns)
     body = page.find(".zg_body")
     expected_content = quiz.questions.pluck(:content)
@@ -39,13 +39,13 @@ class QuizEditTest < ApplicationSystemTestCase
     select_question(@question.id)
     # tags
     expected_tags = @question.tags.pluck(:content)
-    assert_equal expected_tags, get_tags_content
+    assert_equal expected_tags, get_tags_content(@question.id)
     # question content
     textarea = single_question_edit_container(@question.id).find(".question_content")
     assert_equal @question.content, textarea.value
     # answers
     expected_answers = @question.answers.pluck(:content)
-    assert_equal expected_answers, get_answers_content
+    assert_equal expected_answers, get_answers_content(@question.id)
   end
 
   test "edit title -> undo -> redo" do
@@ -64,7 +64,7 @@ class QuizEditTest < ApplicationSystemTestCase
     assert_title(@modified_title)
     # save
     save_action
-    visit_edit_page
+    visit_edit_page(@quiz)
     assert_title(@modified_title)
   end
 
@@ -75,7 +75,7 @@ class QuizEditTest < ApplicationSystemTestCase
     save_action
     undo_action
     save_action
-    visit_edit_page
+    visit_edit_page(@quiz)
     assert_title(@initial_title)
   end
 
@@ -88,7 +88,7 @@ class QuizEditTest < ApplicationSystemTestCase
     save_action
     redo_action
     save_action
-    visit_edit_page
+    visit_edit_page(@quiz)
     assert_title(@modified_title)
   end
 end
