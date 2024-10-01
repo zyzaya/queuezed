@@ -17,8 +17,8 @@ module EditActionHelper
     page.find("#redo").click
   end
 
-  def visit_edit_page
-    visit edit_quiz_path(@quiz)
+  def visit_edit_page(quiz)
+    visit edit_quiz_path(quiz)
     # there's a problem where if you select a question inhumanely quick
     # the events don't fire properly on stimulus controllers
     sleep(0.5)

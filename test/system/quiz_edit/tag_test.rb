@@ -12,7 +12,7 @@ class TagTest < ApplicationSystemTestCase
     @has_tag = tags(:tag_1)
     @not_has_tag = tags(:tag_2)
     @new_tag_content = "new tag content"
-    visit_edit_page
+    visit_edit_page(@quiz)
     select_question(@question.id)
     @initial = get_tags_content(@question.id)
     @initial_tag_options = quizzes(:johns).tags.sort.pluck(:content)
@@ -65,7 +65,7 @@ class TagTest < ApplicationSystemTestCase
     assert_add_tag(@initial, @not_has_tag.content)
     # save
     save_action
-    visit_edit_page
+    visit_edit_page(@quiz)
     select_question(@question.id)
     assert_add_tag(@initial, @not_has_tag.content)
   end
@@ -78,7 +78,7 @@ class TagTest < ApplicationSystemTestCase
     save_action
     undo_action
     save_action
-    visit_edit_page
+    visit_edit_page(@quiz)
     select_question(@question.id)
     assert_no_change_to_tags(@initial, @initial_tag_options)
   end
@@ -93,7 +93,7 @@ class TagTest < ApplicationSystemTestCase
     save_action
     redo_action
     save_action
-    visit_edit_page
+    visit_edit_page(@quiz)
     select_question(@question.id)
     assert_add_tag(@initial, @not_has_tag.content)
   end
@@ -143,7 +143,7 @@ class TagTest < ApplicationSystemTestCase
     assert_remove_tag(@initial, @has_tag.content)
     # save
     save_action
-    visit_edit_page
+    visit_edit_page(@quiz)
     select_question(@question.id)
     assert_remove_tag(@initial, @has_tag.content)
   end
@@ -156,7 +156,7 @@ class TagTest < ApplicationSystemTestCase
     save_action
     undo_action
     save_action
-    visit_edit_page
+    visit_edit_page(@quiz)
     select_question(@question.id)
     assert_no_change_to_tags(@initial, @initial_tag_options)
   end
@@ -171,7 +171,7 @@ class TagTest < ApplicationSystemTestCase
     save_action
     redo_action
     save_action
-    visit_edit_page
+    visit_edit_page(@quiz)
     select_question(@question.id)
     assert_remove_tag(@initial, @has_tag.content)
   end
@@ -220,7 +220,7 @@ class TagTest < ApplicationSystemTestCase
     assert_create_tag(@question.id, @initial_tag_options, @initial, @new_tag_content)
     # save
     save_action
-    visit_edit_page
+    visit_edit_page(@quiz)
     select_question(@question.id)
     assert_create_tag(@question.id, @initial_tag_options, @initial, @new_tag_content)
   end
@@ -233,7 +233,7 @@ class TagTest < ApplicationSystemTestCase
     save_action
     undo_action
     save_action
-    visit_edit_page
+    visit_edit_page(@quiz)
     select_question(@question.id)
     assert_no_change_to_tags(@initial, @initial_tag_options)
   end
@@ -248,7 +248,7 @@ class TagTest < ApplicationSystemTestCase
     save_action
     redo_action
     save_action
-    visit_edit_page
+    visit_edit_page(@quiz)
     select_question(@question.id)
     assert_create_tag(@question.id, @initial_tag_options, @initial, @new_tag_content)
   end

@@ -14,7 +14,7 @@ class QuestionTest < ApplicationSystemTestCase
     @initial_question_content = @question.content
     @modify_content = "a"
     @modified_question_content = @initial_question_content + @modify_content
-    visit_edit_page
+    visit_edit_page(@quiz)
     @initial = get_questions_content
   end
 
@@ -64,7 +64,7 @@ class QuestionTest < ApplicationSystemTestCase
     assert_add_question(@initial)
     # save
     save_action
-    visit_edit_page
+    visit_edit_page(@quiz)
     assert_add_question(@initial)
   end
 
@@ -76,7 +76,7 @@ class QuestionTest < ApplicationSystemTestCase
     save_action
     undo_action
     save_action
-    visit_edit_page
+    visit_edit_page(@quiz)
     assert_no_change_to_questions(@initial)
   end
 
@@ -90,7 +90,7 @@ class QuestionTest < ApplicationSystemTestCase
     save_action
     redo_action
     save_action
-    visit_edit_page
+    visit_edit_page(@quiz)
     assert_add_question(@initial)
   end
 
@@ -143,7 +143,7 @@ class QuestionTest < ApplicationSystemTestCase
     assert_delete_question(@initial, @question.content)
     # save
     save_action
-    visit_edit_page
+    visit_edit_page(@quiz)
     assert_delete_question(@initial, @question.content)
   end
 
@@ -155,7 +155,7 @@ class QuestionTest < ApplicationSystemTestCase
     save_action
     undo_action
     save_action
-    visit_edit_page
+    visit_edit_page(@quiz)
     assert_no_change_to_questions(@initial)
   end
 
@@ -169,7 +169,7 @@ class QuestionTest < ApplicationSystemTestCase
     save_action
     redo_action
     save_action
-    visit_edit_page
+    visit_edit_page(@quiz)
     assert_delete_question(@initial, @question.content)
   end
 
@@ -221,7 +221,7 @@ class QuestionTest < ApplicationSystemTestCase
     assert_question_content(@question.id, @modified_question_content)
     # save
     save_action
-    visit_edit_page
+    visit_edit_page(@quiz)
     select_question(@question.id)
     assert_question_content(@question.id, @modified_question_content)
   end
@@ -235,7 +235,7 @@ class QuestionTest < ApplicationSystemTestCase
     save_action
     undo_action
     save_action
-    visit_edit_page
+    visit_edit_page(@quiz)
     select_question(@question.id)
     assert_question_content(@question.id, @initial_question_content)
   end
@@ -251,7 +251,7 @@ class QuestionTest < ApplicationSystemTestCase
     save_action
     redo_action
     save_action
-    visit_edit_page
+    visit_edit_page(@quiz)
     select_question(@question.id)
     assert_question_content(@question.id, @modified_question_content)
   end
