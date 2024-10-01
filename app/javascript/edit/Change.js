@@ -79,8 +79,10 @@ export default class Change {
     let q = this.GetQuestion(question_id);
     if (q.answers === undefined) q.answers = [];
     let a = { id: answer_id, content: '' };
-    if (index === -1) q.answers.push(a);
-    else q.answers.splice(index, 0, a);
+    if (q.answers.find((e) => e.id == answer_id) == undefined) {
+      if (index === -1) q.answers.push(a);
+      else q.answers.splice(index, 0, a);
+    }
 
     let question = this.#getQuestionChanges(question_id);
     let answer = this.#getAnswerChanges(question, answer_id);
@@ -147,7 +149,14 @@ export default class Change {
       );
     } else {
       question.meta = 'new';
-      if (data !== undefined) question.content = data.content;
+      if (data !== undefined) {
+        question.content = data.content;
+        data.answers.forEach((a) => {
+          this.AddAnswer(question.id, a.id);
+          this.SetAnswerContent(question.id, a.id, a.content);
+        });
+        data.tags.forEach((t) => this.AddTag(question.id, t.id, t.content));
+      }
     }
   }
 
@@ -176,7 +185,8 @@ export default class Change {
   static AddTag(question_id, tag_id, content) {
     let q = this.GetQuestion(question_id);
     if (q.tags === undefined) q.tags = [];
-    q.tags.push({ id: tag_id, content: content });
+    if (q.tags.find((e) => e.id == tag_id) == undefined)
+      q.tags.push({ id: tag_id, content: content });
 
     let question = this.#getQuestionChanges(question_id);
     let tag = this.#getTagChanges(question_id, tag_id, content);
@@ -192,7 +202,8 @@ export default class Change {
   static CreateTag(question_id, tag_id, content) {
     let q = this.GetQuestion(question_id);
     if (q.tags === undefined) q.tags = [];
-    q.tags.push({ id: tag_id, content: content });
+    if (q.tags.find((e) => e.id == tag_id) == undefined)
+      q.tags.push({ id: tag_id, content: content });
 
     let question = this.#getQuestionChanges(question_id);
     let tag = this.#getTagChanges(question_id, tag_id, content);
