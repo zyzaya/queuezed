@@ -16,103 +16,72 @@ class QuestionTest < ApplicationSystemTestCase
     @initial = get_questions_content
   end
 
-  def add_question
-    page.find("#new_question").click
-  end
-
-  def delete_question(id)
-    select_question(id)
-    page.find("#delete_question").click
-  end
-
-  def change_question_content(id, modify)
-    textarea = single_question_textarea(id)
-    textarea.send_keys(modify)
-  end
-
-  def assert_add_question
-    assert_equal @initial + [""], get_questions_content
-  end
-
-  def assert_delete_question(content)
-    assert_equal (@initial - [content]).sort, get_questions_content.sort
-  end
-
-  def assert_no_change_to_questions
-    assert_equal @initial.sort, get_questions_content.sort
-  end
-
-  def assert_question_content(id, content)
-    assert_equal content, get_single_question_content(id)
-    assert_includes get_questions_content, content
-  end
-
   test "add question -> undo -> redo" do
     # add question
     add_question
-    assert_add_question
+    assert_add_question(@initial)
     # undo
     undo_action
-    assert_no_change_to_questions
+    assert_no_change_to_questions(@initial)
     # redo
     redo_action
-    assert_add_question
+    assert_add_question(@initial)
   end
 
   test "add question -> switch selection -> undo -> redo" do
     # add question
     add_question
-    assert_add_question
+    assert_add_question(@initial)
     # switch selection
     select_question(@other.id)
     # undo
     undo_action
-    assert_no_change_to_questions
+    assert_no_change_to_questions(@initial)
     # redo
     redo_action
-    assert_add_question
+    assert_add_question(@initial)
   end
 
   test "add question -> undo -> switch selection -> redo" do
     # add question
     add_question
-    assert_add_question
+    assert_add_question(@initial)
     # undo
     undo_action
-    assert_no_change_to_questions
+    assert_no_change_to_questions(@initial)
     # switch selection
     select_question(@other.id)
     # redo
     redo_action
-    assert_add_question
+    assert_add_question(@initial)
   end
 
   test "add question -> save" do
     # add question
     add_question
-    assert_add_question
+    assert_add_question(@initial)
     # save
     save_action
     visit_edit_page
-    assert_add_question
+    assert_add_question(@initial)
   end
 
   test "add question -> save -> undo -> save" do
     # add question
     add_question
-    assert_add_question
+    assert_add_question(@initial)
     # save -> undo -> save
     save_action
     undo_action
     save_action
     visit_edit_page
-    assert_no_change_to_questions
+    assert_no_change_to_questions(@initial)
   end
 
   test "add question -> save -> undo -> save -> redo -> save" do
     # add question
     add_question
-    assert_add_question
+    assert_add_question(@initial)
     # save -> undo -> save -> redo -> save
     save_action
     undo_action
@@ -120,73 +89,75 @@ class QuestionTest < ApplicationSystemTestCase
     redo_action
     save_action
     visit_edit_page
-    assert_add_question
+    assert_add_question(@initial)
   end
 
   test "delete question -> undo -> redo" do
     # delete question
     delete_question(@question.id)
-    assert_delete_question(@question.content)
+    assert_delete_question(@initial, @question.content)
+    # assert_tag_list
+    # assert tags?
     # undo
     undo_action
-    assert_no_change_to_questions
+    assert_no_change_to_questions(@initial)
     # redo
     redo_action
-    assert_delete_question(@question.content)
+    assert_delete_question(@initial, @question.content)
   end
 
   test "delete question -> switch selection -> undo -> redo" do
     # delete question
     delete_question(@question.id)
-    assert_delete_question(@question.content)
+    assert_delete_question(@initial, @question.content)
     # switch selection -> undo
     select_question(@other.id)
     undo_action
-    assert_no_change_to_questions
+    assert_no_change_to_questions(@initial)
     # redo
     redo_action
-    assert_delete_question(@question.content)
+    assert_delete_question(@initial, @question.content)
   end
 
   test "delete question -> undo -> switch selection -> redo" do
     # delete question
     delete_question(@question.id)
-    assert_delete_question(@question.content)
+    assert_delete_question(@initial, @question.content)
     # undo 
     undo_action
-    assert_no_change_to_questions
+    assert_no_change_to_questions(@initial)
     # switch selection -> redo
     select_question(@other.id)
     redo_action
-    assert_delete_question(@question.content)
+    assert_delete_question(@initial, @question.content)
   end
 
   test "delete question -> save" do
     # delete question
     delete_question(@question.id)
-    assert_delete_question(@question.content)
+    assert_delete_question(@initial, @question.content)
     # save
     save_action
     visit_edit_page
-    assert_delete_question(@question.content)
+    assert_delete_question(@initial, @question.content)
   end
 
   test "delete question -> save -> undo -> save" do
     # delete question
     delete_question(@question.id)
-    assert_delete_question(@question.content)
+    assert_delete_question(@initial, @question.content)
     # save -> undo -> save
     save_action
     undo_action
     save_action
     visit_edit_page
-    assert_no_change_to_questions
+    assert_no_change_to_questions(@initial)
   end
 
   test "delete question -> save -> undo -> save -> redo -> save" do
     # delete question
     delete_question(@question.id)
-    assert_delete_question(@question.content)
+    assert_delete_question(@initial, @question.content)
     # save -> undo -> save -> redo -> save
     save_action
     undo_action
@@ -194,7 +165,7 @@ class QuestionTest < ApplicationSystemTestCase
     redo_action
     save_action
     visit_edit_page
-    assert_delete_question(@question.content)
+    assert_delete_question(@initial, @question.content)
   end
 
   test "change question content -> undo -> redo" do

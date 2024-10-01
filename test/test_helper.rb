@@ -2,6 +2,25 @@ ENV["RAILS_ENV"] ||= "test"
 require_relative "../config/environment"
 require "rails/test_help"
 
+module EditQuestionAssertionHelper
+  def assert_add_question(initial)
+    assert_equal initial + [""], get_questions_content
+  end
+
+  def assert_delete_question(initial, content)
+    assert_equal (initial - [content]).sort, get_questions_content.sort
+  end
+
+  def assert_no_change_to_questions(initial)
+    assert_equal initial.sort, get_questions_content.sort
+  end
+
+  def assert_question_content(id, content)
+    assert_equal content, get_single_question_content(id)
+    assert_includes get_questions_content, content
+  end
+end
+
 module EditActionHelper
   def save_action
     page.find("#save").click
@@ -20,6 +39,20 @@ module EditActionHelper
     # there's a problem where if you select a question inhumanely quick
     # the events don't fire properly on stimulus controllers
     sleep(0.5)
+  end
+
+  def add_question
+    page.find("#new_question").click
+  end
+
+  def delete_question(id)
+    select_question(id)
+    page.find("#delete_question").click
+  end
+
+  def change_question_content(id, modify)
+    textarea = single_question_textarea(id)
+    textarea.send_keys(modify)
   end
 end
 
@@ -60,4 +93,5 @@ class ActiveSupport::TestCase
   # Add more helper methods to be used by all tests here...
   include EditActionHelper
   include EditGetHelper
+  include EditQuestionAssertionHelper
 end
