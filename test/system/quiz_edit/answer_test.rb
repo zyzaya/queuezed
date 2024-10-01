@@ -18,90 +18,73 @@ class AnswerTest < ApplicationSystemTestCase
     @initial = get_answers_content
   end
 
-  def assert_answer_content(id, content)
-    textarea = answer_container(id).find("textarea")
-    assert_equal content, textarea.value
-  end
-
-  def assert_add_answer
-    assert_equal @initial + [""], get_answers_content
-  end
-
-  def assert_delete_answer(content)
-    assert_equal @initial - [content], get_answers_content
-  end
-
-  def assert_no_change_to_answers
-    assert_equal @initial, get_answers_content
-  end
-
   test "add answer -> undo -> redo" do
     # add answer
     add_answer(@question.id)
-    assert_add_answer
+    assert_add_answer(@initial)
     # undo
     undo_action
-    assert_no_change_to_answers
+    assert_no_change_to_answers(@initial)
     # redo
     redo_action
-    assert_add_answer
+    assert_add_answer(@initial)
   end
 
   test "add answer -> switch selection -> undo -> redo" do
     # add answer
     add_answer(@question.id)
-    assert_add_answer
+    assert_add_answer(@initial)
     # switch selection
     select_question(@other.id)
     # undo
     undo_action
-    assert_no_change_to_answers
+    assert_no_change_to_answers(@initial)
     # redo
     redo_action
-    assert_add_answer
+    assert_add_answer(@initial)
   end
 
   test "add answer -> undo -> switch selection -> redo" do
     # add answer
     add_answer(@question.id)
-    assert_add_answer
+    assert_add_answer(@initial)
     # undo
     undo_action
-    assert_no_change_to_answers
+    assert_no_change_to_answers(@initial)
     # switch selection -> redo
     select_question(@other.id)
     redo_action
-    assert_add_answer
+    assert_add_answer(@initial)
   end
 
   test "add answer -> save" do
     # add answer
     add_answer(@question.id)
-    assert_add_answer
+    assert_add_answer(@initial)
     # save
     save_action
     visit_edit_page
     select_question(@question.id)
-    assert_add_answer
+    assert_add_answer(@initial)
   end
 
   test "add answer -> save -> undo -> save" do
     # add answer
     add_answer(@question.id)
-    assert_add_answer
+    assert_add_answer(@initial)
     # save -> undo -> save
     save_action
     undo_action
     save_action
     visit_edit_page
     select_question(@question.id)
-    assert_no_change_to_answers
+    assert_no_change_to_answers(@initial)
   end
 
   test "add answer -> save -> undo -> save -> redo -> save" do
     # add answer
     add_answer(@question.id)
-    assert_add_answer
+    assert_add_answer(@initial)
     # save -> undo -> save -> redo -> save
     save_action
     undo_action
@@ -110,19 +93,19 @@ class AnswerTest < ApplicationSystemTestCase
     save_action
     visit_edit_page
     select_question(@question.id)
-    assert_add_answer
+    assert_add_answer(@initial)
   end
 
   test "delete answer -> undo -> redo" do
     # delete answer
     delete_answer(@answer.id)
-    assert_delete_answer(@answer.content)
+    assert_delete_answer(@initial, @answer.content)
     # undo
     undo_action
-    assert_no_change_to_answers
+    assert_no_change_to_answers(@initial)
     # redo
     redo_action
-    assert_delete_answer(@answer.content)
+    assert_delete_answer(@initial, @answer.content)
   end
 
   test "delete answer -> switch selection -> undo -> redo" do
@@ -132,10 +115,10 @@ class AnswerTest < ApplicationSystemTestCase
     select_question(@other.id)
     # undo
     undo_action
-    assert_no_change_to_answers
+    assert_no_change_to_answers(@initial)
     # redo
     redo_action
-    assert_delete_answer(@answer.content)
+    assert_delete_answer(@initial, @answer.content)
   end
 
   test "delete answer -> undo -> switch selection -> redo" do
@@ -146,7 +129,7 @@ class AnswerTest < ApplicationSystemTestCase
     select_question(@other.id)
     # redo
     redo_action
-    assert_delete_answer(@answer.content)
+    assert_delete_answer(@initial, @answer.content)
   end
 
   test "delete answer -> save" do
@@ -156,7 +139,7 @@ class AnswerTest < ApplicationSystemTestCase
     save_action
     visit_edit_page
     select_question(@question.id)
-    assert_delete_answer(@answer.content)
+    assert_delete_answer(@initial, @answer.content)
   end
 
   test "delete answer -> save -> undo -> save" do
@@ -183,7 +166,7 @@ class AnswerTest < ApplicationSystemTestCase
     save_action
     visit_edit_page
     select_question(@question.id)
-    assert_delete_answer(@answer.content)
+    assert_delete_answer(@initial, @answer.content)
   end
 
   test "change answer content -> undo -> redo" do
