@@ -18,23 +18,6 @@ class AnswerTest < ApplicationSystemTestCase
     @initial = get_answers_content
   end
 
-  def add_answer  
-    container = single_question_edit_container(@question.id)
-    button = container.find(".add_answer")
-    button.click
-  end
-
-  def delete_answer(id)
-    container = answer_container(id)
-    button = container.find(".delete_answer")
-    button.click
-  end
-
-  def change_answer_content(id, modify)
-    textarea = answer_container(id).find("textarea")
-    textarea.send_keys(modify)
-  end
-
   def assert_answer_content(id, content)
     textarea = answer_container(id).find("textarea")
     assert_equal content, textarea.value
@@ -54,7 +37,7 @@ class AnswerTest < ApplicationSystemTestCase
 
   test "add answer -> undo -> redo" do
     # add answer
-    add_answer
+    add_answer(@question.id)
     assert_add_answer
     # undo
     undo_action
@@ -66,7 +49,7 @@ class AnswerTest < ApplicationSystemTestCase
 
   test "add answer -> switch selection -> undo -> redo" do
     # add answer
-    add_answer
+    add_answer(@question.id)
     assert_add_answer
     # switch selection
     select_question(@other.id)
@@ -80,7 +63,7 @@ class AnswerTest < ApplicationSystemTestCase
 
   test "add answer -> undo -> switch selection -> redo" do
     # add answer
-    add_answer
+    add_answer(@question.id)
     assert_add_answer
     # undo
     undo_action
@@ -93,7 +76,7 @@ class AnswerTest < ApplicationSystemTestCase
 
   test "add answer -> save" do
     # add answer
-    add_answer
+    add_answer(@question.id)
     assert_add_answer
     # save
     save_action
@@ -104,7 +87,7 @@ class AnswerTest < ApplicationSystemTestCase
 
   test "add answer -> save -> undo -> save" do
     # add answer
-    add_answer
+    add_answer(@question.id)
     assert_add_answer
     # save -> undo -> save
     save_action
@@ -117,7 +100,7 @@ class AnswerTest < ApplicationSystemTestCase
 
   test "add answer -> save -> undo -> save -> redo -> save" do
     # add answer
-    add_answer
+    add_answer(@question.id)
     assert_add_answer
     # save -> undo -> save -> redo -> save
     save_action

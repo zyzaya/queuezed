@@ -54,6 +54,23 @@ module EditActionHelper
     textarea = single_question_textarea(id)
     textarea.send_keys(modify)
   end
+
+  def add_answer(q_id) 
+    container = single_question_edit_container(q_id)
+    button = container.find(".add_answer")
+    button.click
+  end
+
+  def delete_answer(id)
+    container = answer_container(id)
+    button = container.find(".delete_answer")
+    button.click
+  end
+
+  def change_answer_content(id, modify)
+    textarea = answer_container(id).find("textarea")
+    textarea.send_keys(modify)
+  end
 end
 
 module EditGetHelper
