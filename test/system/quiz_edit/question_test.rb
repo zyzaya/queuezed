@@ -114,14 +114,19 @@ class QuestionTest < ApplicationSystemTestCase
   test "delete question -> switch selection -> undo -> redo" do
     # delete question
     delete_question(@question.id)
+    select_question(@other.id)
     assert_delete_question(@initial, @question.content)
+    assert_remove_tag_option(@other.id, @initial_tag_options, @tag.content)
     # switch selection -> undo
     select_question(@other.id)
     undo_action
     assert_no_change_to_questions(@initial)
+    assert_no_change_to_tag_options(@question.id, @initial_tag_options)
     # redo
     redo_action
+    select_question(@other.id)
     assert_delete_question(@initial, @question.content)
+    assert_remove_tag_option(@other.id, @initial_tag_options, @tag.content)
   end
 
   test "delete question -> undo -> switch selection -> redo" do
