@@ -40,6 +40,32 @@ module EditAnswerAssertionHelper
   end
 end
 
+module EditTagAssertionHelper
+  def assert_add_tag(initial, content)
+    assert_equal (initial + [content]).sort, get_tags_content
+  end
+
+  def assert_remove_tag(initial, content)
+    assert_equal (initial - [content]).sort, get_tags_content
+  end
+
+  def assert_create_tag(initial_options, initial_content, content)
+    assert_add_tag(initial_content, content)
+    expected = (initial_options + [content]).sort
+    # add to add tag options
+    assert_equal expected, get_add_tag_options
+    # add to filter by tag options
+    assert_equal expected, get_filter_tag_options
+  end
+
+  def assert_no_change_to_tags(initial_content, initial_options)
+    result = get_tags_content
+    assert_equal initial_content, result
+    assert_equal initial_options, get_add_tag_options
+    assert_equal initial_options, get_filter_tag_options
+  end
+end
+
 module EditActionHelper
   def save_action
     page.find("#save").click
@@ -134,6 +160,21 @@ module EditGetHelper
       e.text
     end
   end
+
+  def get_add_tag_options
+    container = question_edit_container(@question.id)
+    options = container.find_all("#add_tag > option") do |e|
+      !["-1", "-2"].include?(e.value)
+    end
+    return options.map { |e| e.text }
+  end
+
+  def get_filter_tag_options
+    options = page.find_all("#edit_add_tag_filter > option") do |e|
+      !["-1", "-2", "review"].include?(e.value)
+    end
+    return options.map { |e| e.text }
+  end
 end
 
 class ActiveSupport::TestCase
@@ -148,4 +189,5 @@ class ActiveSupport::TestCase
   include EditGetHelper
   include EditQuestionAssertionHelper
   include EditAnswerAssertionHelper
+  include EditTagAssertionHelper
 end
