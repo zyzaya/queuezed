@@ -26,22 +26,22 @@ module EditGetHelper
     return single_question_textarea(id).value
   end
 
-  def get_answers_content
-    container = single_question_edit_container(@question.id)
+  def get_answers_content(q_id)
+    container = single_question_edit_container(q_id)
     container.find_all(".answer_content").map do |e|
       e.value
     end
   end
 
-  def get_tags_content
-    container = question_edit_container(@question.id)
+  def get_tags_content(q_id)
+    container = question_edit_container(q_id)
     container.find_all(".tag_list > a").map do |e|
       e.text
     end
   end
 
-  def get_add_tag_options
-    container = question_edit_container(@question.id)
+  def get_add_tag_options(q_id)
+    container = question_edit_container(q_id)
     options = container.find_all("#add_tag > option") do |e|
       !["-1", "-2"].include?(e.value)
     end

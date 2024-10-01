@@ -14,7 +14,7 @@ class TagTest < ApplicationSystemTestCase
     @new_tag_content = "new tag content"
     visit_edit_page
     select_question(@question.id)
-    @initial = get_tags_content
+    @initial = get_tags_content(@question.id)
     @initial_tag_options = quizzes(:johns).tags.sort.pluck(:content)
   end  
 
@@ -179,56 +179,56 @@ class TagTest < ApplicationSystemTestCase
   test "create tag -> undo -> redo" do
     # create tag
     create_tag(@question.id, @new_tag_content)
-    assert_create_tag(@initial_tag_options, @initial, @new_tag_content)
+    assert_create_tag(@question.id, @initial_tag_options, @initial, @new_tag_content)
     # undo
     undo_action
     assert_no_change_to_tags(@initial, @initial_tag_options)
     # redo
     redo_action
-    assert_create_tag(@initial_tag_options, @initial, @new_tag_content)
+    assert_create_tag(@question.id, @initial_tag_options, @initial, @new_tag_content)
   end
 
   test "create tag -> switch selection -> undo -> redo" do
     # create tag
     create_tag(@question.id, @new_tag_content)
-    assert_create_tag(@initial_tag_options, @initial, @new_tag_content)
+    assert_create_tag(@question.id, @initial_tag_options, @initial, @new_tag_content)
     # switch selection -> undo
     select_question(@other.id)
     undo_action
     assert_no_change_to_tags(@initial, @initial_tag_options)
     # redo
     redo_action
-    assert_create_tag(@initial_tag_options, @initial, @new_tag_content)
+    assert_create_tag(@question.id, @initial_tag_options, @initial, @new_tag_content)
   end
 
   test "create tag -> undo -> switch selection -> redo" do
     # create tag
     create_tag(@question.id, @new_tag_content)
-    assert_create_tag(@initial_tag_options, @initial, @new_tag_content)
+    assert_create_tag(@question.id, @initial_tag_options, @initial, @new_tag_content)
     # undo
     undo_action
     assert_no_change_to_tags(@initial, @initial_tag_options)
     # switch selection -> redo
     select_question(@other.id)
     redo_action
-    assert_create_tag(@initial_tag_options, @initial, @new_tag_content)
+    assert_create_tag(@question.id, @initial_tag_options, @initial, @new_tag_content)
   end
 
   test "create tag -> save" do
     # create tag
     create_tag(@question.id, @new_tag_content)
-    assert_create_tag(@initial_tag_options, @initial, @new_tag_content)
+    assert_create_tag(@question.id, @initial_tag_options, @initial, @new_tag_content)
     # save
     save_action
     visit_edit_page
     select_question(@question.id)
-    assert_create_tag(@initial_tag_options, @initial, @new_tag_content)
+    assert_create_tag(@question.id, @initial_tag_options, @initial, @new_tag_content)
   end
 
   test "create tag -> save -> undo -> save" do
     #create tag
     create_tag(@question.id, @new_tag_content)
-    assert_create_tag(@initial_tag_options, @initial, @new_tag_content)
+    assert_create_tag(@question.id, @initial_tag_options, @initial, @new_tag_content)
     # save -> undo -> save
     save_action
     undo_action
@@ -241,7 +241,7 @@ class TagTest < ApplicationSystemTestCase
   test "create tag -> save -> undo -> save -> redo -> save" do
     # create tag
     create_tag(@question.id, @new_tag_content)
-    assert_create_tag(@initial_tag_options, @initial, @new_tag_content)
+    assert_create_tag(@question.id, @initial_tag_options, @initial, @new_tag_content)
     # save -> undo -> save -> redo -> save
     save_action
     undo_action
@@ -250,6 +250,6 @@ class TagTest < ApplicationSystemTestCase
     save_action
     visit_edit_page
     select_question(@question.id)
-    assert_create_tag(@initial_tag_options, @initial, @new_tag_content)
+    assert_create_tag(@question.id, @initial_tag_options, @initial, @new_tag_content)
   end
 end

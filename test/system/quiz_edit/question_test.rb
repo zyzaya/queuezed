@@ -9,6 +9,8 @@ class QuestionTest < ApplicationSystemTestCase
     @quiz = quizzes(:johns)
     @question = questions(:john_one)
     @other = questions(:john_two)
+    @tag = tags(:tag_1)
+    @initial_tag_options = @quiz.tags.sort.pluck(:content)
     @initial_question_content = @question.content
     @modify_content = "a"
     @modified_question_content = @initial_question_content + @modify_content
@@ -95,15 +97,18 @@ class QuestionTest < ApplicationSystemTestCase
   test "delete question -> undo -> redo" do
     # delete question
     delete_question(@question.id)
+    select_question(@other.id)
     assert_delete_question(@initial, @question.content)
-    # assert_tag_list
-    # assert tags?
+    assert_remove_tag_option(@other.id, @initial_tag_options, @tag.content)
     # undo
     undo_action
     assert_no_change_to_questions(@initial)
+    assert_no_change_to_tag_options(@initial_tag_options)
     # redo
     redo_action
+    select_question(@other.id)
     assert_delete_question(@initial, @question.content)
+    assert_remove_tag_option(@other.id, @initial_tag_options, @tag.content)
   end
 
   test "delete question -> switch selection -> undo -> redo" do
