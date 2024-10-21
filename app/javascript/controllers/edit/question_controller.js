@@ -115,6 +115,7 @@ export default class extends Controller {
     event.detail.relations.forEach((r) => {
       let relation = SingleQuestionDisplay(r.id, r.content, r.answers);
       this.relationStartTarget.after(relation);
+      relation.after(document.createElement('hr'));
     });
   }
 }

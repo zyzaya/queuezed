@@ -132,6 +132,13 @@
   text-align: center;
 }
 
+.related_toolbar {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: min-content min-content;
+  gap: 4px;
+}
+
 .single_question_edit {
   display: flex;
   flex-direction: column;

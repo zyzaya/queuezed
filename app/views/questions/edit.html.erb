@@ -40,11 +40,24 @@
     <hr data-edit--question-target="singleStart">
     <%= render 'questions/single_question_edit', question: @question %>
     <hr>
-    <div class="related_questions_header" data-edit--question-target="relationStart">Related Questions</div>
-    <hr>
+    <div class="related_questions_header">Related Questions</div>
+    <div class="related_toolbar">
+      <label for="add_related">Add Relation</label>
+      <select name="add_related" id="add_related">
+        <option value='-1' selected>Select to add</option>
+        <option value='-2' disabled>-----</option>
+        <% @quiz.questions.order(:content).each do |q| %>
+          <option value=<%= q.id%>><%= q.content%></option>
+        <% end %>
+      </select>
+      <div>
+        <label for="limit_add_related">Limit to shown questions</label>
+        <input type="checkbox" name="limit_add_related" id="limit_add_related">
+      </div>
+    </div>
+    <hr data-edit--question-target="relationStart">
     <% relations.each do |q| %>
       <%= render 'questions/single_question_edit', question: q %>
-      <hr>
     <% end %>
   </div>
 </turbo-frame>
