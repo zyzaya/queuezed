@@ -113,7 +113,7 @@ export default class extends Controller {
     this.singleStartTarget.after(single);
 
     event.detail.relations.forEach((r) => {
-      let relation = SingleQuestionDisplay(r.id, r.content, r.answers);
+      let relation = SingleQuestionDisplay(r.id, r.content, r.answers, true);
       this.relationStartTarget.after(relation);
       relation.after(document.createElement('hr'));
     });

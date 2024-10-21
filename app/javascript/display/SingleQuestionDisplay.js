@@ -1,6 +1,11 @@
 import AnswerDisplay from './AnswerDisplay';
 
-export default function SingleQuestionDisplay(id, content, answers) {
+export default function SingleQuestionDisplay(
+  id,
+  content,
+  answers,
+  related = false
+) {
   let container = document.createElement('div');
   container.classList.add('single_question_edit');
   container.dataset.action =
@@ -14,6 +19,13 @@ export default function SingleQuestionDisplay(id, content, answers) {
   header.classList.add('question_header');
   header.innerHTML = 'Question.';
   container.appendChild(header);
+  if (related) {
+    let remove_as_related = document.createElement('button');
+    remove_as_related.classList.add('button');
+    remove_as_related.classList.add('remove_as_related');
+    remove_as_related.innerText = 'Remove from related';
+    header.appendChild(remove_as_related);
+  }
   let question_content = document.createElement('textarea');
   question_content.classList.add('question_content');
   question_content.dataset['editTarget'] = 'questionContent';
