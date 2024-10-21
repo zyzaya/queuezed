@@ -37,6 +37,7 @@ export default class extends Controller {
 
   editOutletConnected(outlet, element) {
     element.dataset.editCurrentlySelectedValue = this.currentlySelected;
+    this.refresh();
   }
 
   zgridContainerTargetConnected(element) {
@@ -79,7 +80,6 @@ export default class extends Controller {
       ],
       searchbox: false,
     });
-    this.refresh();
   }
 
   refresh(event) {

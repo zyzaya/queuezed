@@ -103,8 +103,6 @@ export default class extends Controller {
     let selected = this.currentlySelectedValue;
     let id = event.detail.id;
     let question = Change.GetQuestion(id);
-    console.log('deleting question');
-    console.log(question);
 
     let action = () => {
       Change.DeleteQuestion(id);
@@ -113,8 +111,6 @@ export default class extends Controller {
       this.dispatch('deleteQuestion', { detail: { id } });
     };
     let reverse = () => {
-      console.log('undeleting question');
-      console.log(question);
       Change.AddQuestion(id, question);
       question.tags.forEach((t) => this.modifyTagCount(t.id, t.content, 1));
       this.dispatch('addQuestion', { detail: { id } });
@@ -138,7 +134,7 @@ export default class extends Controller {
         this.tagCount[id] += 1;
       }
     } else if (delta < 0) {
-      if (this.tagCount[id] === 1) {
+      if (this.tagCount[id] == 1) {
         delete this.tagCount[id];
         this.deleteTagOption(id);
       } else {
