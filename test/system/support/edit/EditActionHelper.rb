@@ -73,7 +73,6 @@ module EditActionHelper
   end
 
   def filter_by_text(text)
-    page.find("#limit_add_related").check()
     input = page.find("#edit_filter")
     input.send_keys(text)
     input.send_keys(:return)
