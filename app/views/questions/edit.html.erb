@@ -4,7 +4,10 @@
   <% id = @question.nil? ? "" : @question.id%>
   <div class="question_detail" 
     data-controller="edit--question" 
-    data-action = "edit--zgrid:setQuestion@window->edit--question#set"
+    data-action = 
+      "edit--zgrid:setQuestion@window->edit--question#set
+      edit--zgrid:updateFilteredQuestionList@window->edit--question#updateFilteredQuestionList
+      edit--zgrid:updateQuestionList@window->edit--question#updateQuestionList"
     data-edit--question-id-value = <%= id %>>
     <a class="button delete_question" 
         id="delete_question" 
@@ -43,16 +46,16 @@
     <div class="related_questions_header">Related Questions</div>
     <div class="related_toolbar">
       <label for="add_related">Add Relation</label>
-      <select name="add_related" id="add_related">
+      <select name="add_related" id="add_related" data-edit--question-target="addRelatedList">
         <option value='-1' selected>Select to add</option>
         <option value='-2' disabled>-----</option>
         <% @quiz.questions.order(:content).each do |q| %>
-          <option value=<%= q.id%>><%= q.content%></option>
+          <option value=<%= q.id%> data-edit--question-target="addRelatedOption"><%= q.content%></option>
         <% end %>
       </select>
       <div>
         <label for="limit_add_related">Limit to shown questions</label>
-        <input type="checkbox" name="limit_add_related" id="limit_add_related">
+        <input type="checkbox" name="limit_add_related" id="limit_add_related" data-edit--question-target="limitRelated" data-action="edit--question#enableRelatedLimit">
       </div>
     </div>
     <hr data-edit--question-target="relationStart">

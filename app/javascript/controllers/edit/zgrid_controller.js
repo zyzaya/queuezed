@@ -37,7 +37,11 @@ export default class extends Controller {
 
   editOutletConnected(outlet, element) {
     element.dataset.editCurrentlySelectedValue = this.currentlySelected;
-    this.refresh();
+    this.refresh().then(() => {
+      this.dispatch('updateQuestionList', {
+        detail: { data: this.zgrid.getData() },
+      });
+    });
   }
 
   zgridContainerTargetConnected(element) {
@@ -195,6 +199,10 @@ export default class extends Controller {
           matches_text_filter && matches_tag_filter && matches_review_filter
         );
       },
+    });
+
+    this.dispatch('updateFilteredQuestionList', {
+      detail: { data: this.zgrid.getData() },
     });
   }
 

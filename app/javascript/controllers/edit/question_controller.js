@@ -1,6 +1,7 @@
 import { Controller } from '@hotwired/stimulus';
 import TagDisplay from '../../display/TagDisplay';
 import SingleQuestionDisplay from '../../display/SingleQuestionDisplay';
+import RelatedOptionDisplay from '../../display/RelatedOptionDisplay';
 
 export default class extends Controller {
   static values = {
@@ -15,6 +16,9 @@ export default class extends Controller {
     'singleQuestionContainer',
     'singleStart',
     'relationStart',
+    'addRelatedList',
+    'addRelatedOption',
+    'limitRelated',
   ];
 
   delete() {
@@ -117,5 +121,40 @@ export default class extends Controller {
       this.relationStartTarget.after(relation);
       relation.after(document.createElement('hr'));
     });
+  }
+
+  // related questions
+  updateQuestionList(event) {
+    this.question_list = event.detail.data.sort((a, b) =>
+      a['content'].localeCompare(b['content'])
+    );
+    if (this.filtered_question_list === undefined)
+      this.filtered_question_list = event.detail.data;
+  }
+
+  updateFilteredQuestionList(event) {
+    this.filtered_question_list = event.detail.data.sort((a, b) =>
+      a['content'].localeCompare(b['content'])
+    );
+    if (this.limitRelatedTarget.checked) {
+      this.setAddRelatedOptions(this.filtered_question_list);
+    }
+  }
+
+  setAddRelatedOptions(questions) {
+    this.addRelatedOptionTargets.forEach((e) => e.remove());
+    questions.forEach((e) => {
+      this.addRelatedListTarget.appendChild(
+        RelatedOptionDisplay(e['id'], e['content'])
+      );
+    });
+  }
+
+  enableRelatedLimit(event) {
+    if (event.currentTarget.checked) {
+      this.setAddRelatedOptions(this.filtered_question_list);
+    } else {
+      this.setAddRelatedOptions(this.question_list);
+    }
   }
 }
