@@ -61,4 +61,13 @@ module EditGetHelper
     end
     return options.map { |e| e.text }
   end
+
+  def get_related_questions(q_id)
+    count = 0
+    related = page.find_all(".single_question_edit") do |e|
+      e['data-edit--single-question-id-value'].to_s != q_id.to_s
+    end
+    
+    return related.map { |e| e['data-edit--single-question-id-value']}
+  end
 end
