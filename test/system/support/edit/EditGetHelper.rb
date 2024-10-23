@@ -54,4 +54,11 @@ module EditGetHelper
     end
     return options.map { |e| e.text }
   end
+
+  def get_add_related_options
+    options = page.find_all("#add_related > option") do |e|
+      !["-1", "-2"].include?(e.value)
+    end
+    return options.map { |e| e.text }
+  end
 end
