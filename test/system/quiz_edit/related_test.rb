@@ -15,10 +15,15 @@ class RelatedTest < ApplicationSystemTestCase
 
   test "add relation select displays all potential questions" do
     expected = @quiz.questions.order(:content).pluck(:content)
-    result = get_add_related_options
-    assert_equal expected, result
+    assert_equal expected, get_add_related_options
   end
 
   test "add relation select can be limited" do
+    filter = "Reverse"
+    filter_by_text(filter)
+    expected = @quiz.questions.order(:content).pluck(:content).filter do |q|
+      q.include?(filter)
+    end
+    assert_equal expected, get_add_related_options
   end
 end
