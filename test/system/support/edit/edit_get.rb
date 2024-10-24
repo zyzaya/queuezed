@@ -1,4 +1,4 @@
-module EditGetHelper
+module EditGet
   def question_edit_container(id)
     page.find(".question_detail[data-edit--question-id-value=\"#{id}\"]")
   end

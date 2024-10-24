@@ -1,4 +1,4 @@
-module EditAnswerAssertionHelper
+module AnswerAssertions
   def assert_answer_content(id, content)
     textarea = answer_container(id).find("textarea")
     assert_equal content, textarea.value
