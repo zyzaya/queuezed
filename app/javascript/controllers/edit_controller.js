@@ -442,7 +442,7 @@ export default class extends Controller {
     let reverse = () => {
       Change.RemoveRelated(question_id, related_id);
       if (this.currentlySelectedValue !== selected) {
-        this.dispatch('selectQuestion', { deatil: { id: selected } });
+        this.dispatch('selectQuestion', { detail: { id: selected } });
       } else {
         this.findQuestionContainer(related_id).remove();
       }
