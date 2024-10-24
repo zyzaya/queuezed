@@ -1,4 +1,4 @@
-module EditTagAssertionHelper
+module TagAssertions
   def assert_add_tag(q_id, initial, content)
     assert_equal (initial + [content]).sort, get_tags_content(q_id)
   end

@@ -1,8 +1,16 @@
 require "application_system_test_case"
 require "test_helper"
+require "system/support/edit/edit_actions"
+require "system/support/edit/edit_get"
+require "system/support/edit/question_assertions"
+require "system/support/edit/tag_assertions"
 
 class QuestionTest < ApplicationSystemTestCase
   include Devise::Test::IntegrationHelpers
+  include EditActions
+  include EditGet
+  include QuestionAssertions
+  include TagAssertions
 
   setup do
     sign_in users(:john)

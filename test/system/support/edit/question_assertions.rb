@@ -1,4 +1,4 @@
-module EditQuestionAssertionHelper
+module QuestionAssertions
   def assert_add_question(initial)
     assert_equal initial + [""], get_questions_content
   end
