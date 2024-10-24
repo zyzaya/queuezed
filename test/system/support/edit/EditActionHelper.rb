@@ -81,4 +81,9 @@ module EditActionHelper
   def add_relation(content)
     select content, from: "add_related"
   end
+
+  def remove_relation(id)
+    container = single_question_edit_container(id)
+    container.find(".remove_as_related").click
+  end
 end

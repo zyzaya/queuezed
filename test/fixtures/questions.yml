@@ -4,6 +4,7 @@
 john_one:
   quiz: johns
   tags: tag_1
+  relations: john_three
   content: "Reverse of: Holly"
   current_streak: 0
   longest_streak: 0

@@ -9,6 +9,7 @@ class RelatedTest < ApplicationSystemTestCase
     @quiz = quizzes(:johns)
     @question = questions(:john_one)
     @other = questions(:john_two)
+    @related = questions(:john_three)
     @add_relation_options = 
       @quiz
         .questions
@@ -16,7 +17,6 @@ class RelatedTest < ApplicationSystemTestCase
         .where
         .not(id: @question.id)
         .pluck(:content)
-
     visit_edit_page(@quiz)
     select_question(@question.id)
     @initial = get_relations(@question.id)
@@ -121,6 +121,17 @@ class RelatedTest < ApplicationSystemTestCase
     assert_add_relation(@question.id, @other.id, @initial)
   end
 
+  test "remove relation -> undo -> redo" do
+    # remove relation
+    remove_relation(@related.id)
+    assert_remove_relation(@question.id, @related.id, @initial)
+    # undo
+    undo_action
+    assert_no_change_to_relations(@question.id, @initial)
+    # redo
+    redo_action
+    assert_remove_relation(@question.id, @related.id, @initial)
+  end
   # add relation -> undo -> redo
   # add relation -> switch selection -> undo -> redo
   # add relation -> undo -> switch selection -> redo
