@@ -119,7 +119,6 @@ export default class extends Controller {
     event.detail.relations.forEach((r) => {
       let relation = SingleQuestionDisplay(r.id, r.content, r.answers, true);
       this.relationStartTarget.after(relation);
-      relation.after(document.createElement('hr'));
     });
   }
 
@@ -155,6 +154,18 @@ export default class extends Controller {
       this.setAddRelatedOptions(this.filtered_question_list);
     } else {
       this.setAddRelatedOptions(this.question_list);
+    }
+  }
+
+  addRelated(event) {
+    let related_id = event.target.value;
+    if (related_id != this.idValue) {
+      this.dispatch('addRelated', {
+        detail: {
+          question_id: this.idValue,
+          related_id: related_id,
+        },
+      });
     }
   }
 }

@@ -46,7 +46,9 @@
     <div class="related_questions_header">Related Questions</div>
     <div class="related_toolbar">
       <label for="add_related">Add Relation</label>
-      <select name="add_related" id="add_related" data-edit--question-target="addRelatedList">
+      <select name="add_related" id="add_related" 
+        data-edit--question-target="addRelatedList"
+        data-action="edit--question#addRelated">
         <option value='-1' selected>Select to add</option>
         <option value='-2' disabled>-----</option>
         <% @quiz.questions.order(:content).each do |q| %>
@@ -58,7 +60,7 @@
         <input type="checkbox" name="limit_add_related" id="limit_add_related" data-edit--question-target="limitRelated" data-action="edit--question#enableRelatedLimit">
       </div>
     </div>
-    <hr data-edit--question-target="relationStart">
+    <hr data-edit--question-target="relationStart" data-edit-target="relationStart">
     <% relations.each do |q| %>
       <%= render 'questions/single_question_edit', question: q %>
     <% end %>

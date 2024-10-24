@@ -6,6 +6,7 @@ import ID from 'edit/ID';
 import AnswerDisplay from '../display/AnswerDisplay';
 import TagDisplay from '../display/TagDisplay';
 import TagOptionDisplay from '../display/TagOptionDisplay';
+import SingleQuestionDisplay from '../display/SingleQuestionDisplay';
 
 export default class extends Controller {
   static values = {
@@ -23,6 +24,7 @@ export default class extends Controller {
     'tagList',
     'tagOptionList',
     'tagFilterOptionList',
+    'relationStart',
   ];
 
   initialize() {
@@ -421,5 +423,23 @@ export default class extends Controller {
       }
     };
     Undo.add('Delete Answer', action, reverse);
+  }
+
+  // related
+  addRelated(event) {
+    let selected = this.currentlySelectedValue;
+    let { question_id, related_id } = event.detail;
+    let action = () => {
+      Change.AddRelated(question_id, related_id);
+      if (this.currentlySelectedValue !== selected) {
+        this.dispatch('selectQuestion', { detail: { id: selected } });
+      } else {
+        let r = Change.GetQuestion(related_id);
+        let display = SingleQuestionDisplay(r.id, r.content, r.answers, true);
+        this.relationStartTarget.after(display);
+      }
+    };
+    let reverse = () => {};
+    Undo.add('Add Related', action, reverse);
   }
 }

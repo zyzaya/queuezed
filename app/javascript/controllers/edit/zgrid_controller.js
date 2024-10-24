@@ -152,7 +152,7 @@ export default class extends Controller {
     let question = Change.GetQuestion(id);
     if (question === undefined) return;
     let relations = question.relations.map((e) => {
-      let r = this.questions.find((q) => q.id === e.id);
+      let r = this.questions.find((q) => q.id == e.id);
       return {
         id: e.id,
         content: r.content,

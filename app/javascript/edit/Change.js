@@ -75,6 +75,36 @@ export default class Change {
     return answer;
   }
 
+  static #getRelationChanges(question, relation_id) {
+    let relation = undefined;
+    if (question.relations == undefined) {
+      question.relations = [];
+    } else {
+      relation = question.relations.find((e) => e.id == relation_id);
+    }
+    if (relation === undefined) {
+      relation = { id: relation_id };
+      question.relations.push(relation);
+    }
+    return relation;
+  }
+
+  static AddRelated(question_id, relation_id) {
+    let q = this.GetQuestion(question_id);
+    if (q.relations === undefined) q.relations = [];
+    let r = { id: relation_id };
+    if (q.relations.find((e) => e.id == relation_id) == undefined) {
+      q.relations.push(r);
+    }
+
+    let question = this.#getQuestionChanges(question_id);
+    let relation = this.#getRelationChanges(question, relation_id);
+
+    relation.meta = relation.meta === 'delete' ? '' : 'add';
+    console.log(this.#questions);
+    console.log(this.#changes);
+  }
+
   static AddAnswer(question_id, answer_id, index = -1) {
     let q = this.GetQuestion(question_id);
     if (q.answers === undefined) q.answers = [];
