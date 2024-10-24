@@ -120,6 +120,8 @@ export default class extends Controller {
       let relation = SingleQuestionDisplay(r.id, r.content, r.answers, true);
       this.relationStartTarget.after(relation);
     });
+
+    this.updateAddRelatedOptions();
   }
 
   // related questions
@@ -143,14 +145,20 @@ export default class extends Controller {
   setAddRelatedOptions(questions) {
     this.addRelatedOptionTargets.forEach((e) => e.remove());
     questions.forEach((e) => {
-      this.addRelatedListTarget.appendChild(
-        RelatedOptionDisplay(e['id'], e['content'])
-      );
+      if (e['id'] != this.idValue) {
+        this.addRelatedListTarget.appendChild(
+          RelatedOptionDisplay(e['id'], e['content'])
+        );
+      }
     });
   }
 
   enableRelatedLimit(event) {
-    if (event.currentTarget.checked) {
+    this.updateAddRelatedOptions();
+  }
+
+  updateAddRelatedOptions() {
+    if (this.limitRelatedTarget.checked) {
       this.setAddRelatedOptions(this.filtered_question_list);
     } else {
       this.setAddRelatedOptions(this.question_list);

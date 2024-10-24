@@ -9,6 +9,14 @@ class RelatedTest < ApplicationSystemTestCase
     @quiz = quizzes(:johns)
     @question = questions(:john_one)
     @other = questions(:john_two)
+    @add_related_options = 
+      @quiz
+        .questions
+        .order(:content)
+        .where
+        .not(id: @question.id)
+        .pluck(:content)
+
     visit_edit_page(@quiz)
     select_question(@question.id)
     @initial = get_related_questions(@question.id)
@@ -16,14 +24,14 @@ class RelatedTest < ApplicationSystemTestCase
 
   test "add relation select displays all potential questions" do
     expected = @quiz.questions.order(:content).pluck(:content)
-    assert_equal expected, get_add_related_options
+    assert_equal @add_related_options, get_add_related_options
   end
 
   test "add relation select can be limited" do
     filter = "Reverse"
     filter_by_text(filter)
     page.find("#limit_add_related").check()
-    expected = @quiz.questions.order(:content).pluck(:content).filter do |q|
+    expected = @add_related_options.filter do |q|
       q.include?(filter)
     end
     assert_equal expected, get_add_related_options
@@ -32,8 +40,7 @@ class RelatedTest < ApplicationSystemTestCase
   test "add relation select is not limited if check not selected" do
     filter = "Reverse"
     filter_by_text(filter)
-    expected = @quiz.questions.order(:content).pluck(:content)
-    assert_equal expected, get_add_related_options
+    assert_equal @add_related_options, get_add_related_options
   end
 
   test "add related -> undo -> redo" do
