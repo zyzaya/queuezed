@@ -1,8 +1,12 @@
 require "application_system_test_case"
 require "test_helper"
+require "system/support/edit/edit_actions"
+require "system/support/edit/edit_get"
 
 class QuizEditTest < ApplicationSystemTestCase
   include Devise::Test::IntegrationHelpers
+  include EditActions
+  include EditGet
 
   setup do
     sign_in users(:john)
