@@ -62,17 +62,25 @@ class Quiz < ApplicationRecord
     ids = []
     order = []
     questions.includes(:relations, :answers, :tags).shuffle.each.with_index do |q|
-      if (!ids.include?(q.id) &&
-        has_answers(q) &&
-        has_text(q, text_filter) &&
-        has_tags(q, tag_filter))
+      if (matches_filters(q, ids, text_filter, tag_filter))
         # group related questions
-        q_ids = [q.id] + q.relations.pluck(:id)
+        related_ids = q.relations.filter do |r|
+          matches_filters(r, ids, text_filter, tag_filter)
+        end
+        related_ids = related_ids.map { |r| r.id }
+        q_ids = [q.id] + related_ids
         order << q_ids
         ids += q_ids
       end
     end
     return order
+  end
+
+  def matches_filters(question, existing, text_filter, tag_filter)
+    !existing.include?(question.id) &&
+      has_answers(question) &&
+      has_text(question, text_filter) &&
+      has_tags(question, tag_filter)
   end
 
   def filter_review(review)
