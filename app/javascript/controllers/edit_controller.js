@@ -439,7 +439,14 @@ export default class extends Controller {
         this.relationStartTarget.after(display);
       }
     };
-    let reverse = () => {};
+    let reverse = () => {
+      Change.RemoveRelated(question_id, related_id);
+      if (this.currentlySelectedValue !== selected) {
+        this.dispatch('selectQuestion', { deatil: { id: selected } });
+      } else {
+        this.findQuestionContainer(related_id).remove();
+      }
+    };
     Undo.add('Add Related', action, reverse);
   }
 }

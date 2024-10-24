@@ -101,8 +101,21 @@ export default class Change {
     let relation = this.#getRelationChanges(question, relation_id);
 
     relation.meta = relation.meta === 'delete' ? '' : 'add';
-    console.log(this.#questions);
-    console.log(this.#changes);
+  }
+
+  static RemoveRelated(question_id, relation_id) {
+    let q = this.GetQuestion(question_id);
+    q.relations = q.relations.filter((r) => r.id != relation_id);
+
+    let question = this.#getQuestionChanges(question_id);
+    let relation = this.#getRelationChanges(question, relation_id);
+    if (relation.meta === 'add') {
+      question.relations = question.relations.filter(
+        (e) => e.id != relation_id
+      );
+    } else {
+      relation.meta = 'delete';
+    }
   }
 
   static AddAnswer(question_id, answer_id, index = -1) {
