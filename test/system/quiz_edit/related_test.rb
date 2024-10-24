@@ -169,6 +169,19 @@ class RelatedTest < ApplicationSystemTestCase
     select_question(@question.id)
     assert_remove_relation(@question.id, @relation.id, @initial)
   end
+
+  test "remove relation -> save -> undo -> save" do
+    # remove relation
+    remove_relation(@relation.id)
+    assert_remove_relation(@question.id, @relation.id, @initial)
+    # save -> undo -> save
+    save_action
+    undo_action
+    save_action
+    visit_edit_page(@quiz)
+    select_question(@question.id)
+    assert_no_change_to_relations(@question.id, @initial)
+  end
   # add relation -> undo -> redo
   # add relation -> switch selection -> undo -> redo
   # add relation -> undo -> switch selection -> redo
