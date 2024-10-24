@@ -93,6 +93,19 @@ class RelatedTest < ApplicationSystemTestCase
     assert_add_relation(@question.id, @other.id, @initial)
   end
 
+  test "add relation -> save -> undo -> save" do
+    # add relation
+    add_relation(@other.content)
+    assert_add_relation(@question.id, @other.id, @initial)
+    # save -> undo -> save
+    save_action
+    undo_action
+    save_action
+    visit_edit_page(@quiz)
+    select_question(@question.id)
+    assert_no_change_to_relations(@question.id, @initial)
+  end
+
   # add relation -> undo -> redo
   # add relation -> switch selection -> undo -> redo
   # add relation -> undo -> switch selection -> redo
