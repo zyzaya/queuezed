@@ -7,6 +7,7 @@ class PracticeTest < ApplicationSystemTestCase
   setup do 
     sign_in users(:john)
     @quiz = quizzes(:johns)
+    @valid_questions = @quiz.questions.filter { |q| !q.answers.empty? }
     visit new_quiz_practice_path(@quiz)
   end
 
@@ -18,7 +19,7 @@ class PracticeTest < ApplicationSystemTestCase
     practice = PracticeSession.find(id);
     assert_equal "", practice.text_filter
     assert_equal [], practice.tag_filter
-    assert_equal practice.questions.pluck(:id).sort, @quiz.questions.pluck(:id).sort
+    assert_equal @valid_questions, result
   end
 
   test "create a practice session with a tag filter" do

@@ -15,8 +15,8 @@
     <div class="tagFilter">
       <div>Filter by tag:</div>
       <div class="tagContainer">
-        <% session.tag_filter.split(",").each do |t| %>
-          <span class="tag"><%= session.quiz.tags.find(t.to_i).content %></span>
+        <% session.tag_filter.each do |t| %>
+          <span class="tag"><%= session.quiz.tags.find(t).content %></span>
         <% end %>
       </div>
     </div>
