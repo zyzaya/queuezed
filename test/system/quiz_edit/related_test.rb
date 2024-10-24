@@ -9,7 +9,7 @@ class RelatedTest < ApplicationSystemTestCase
     @quiz = quizzes(:johns)
     @question = questions(:john_one)
     @other = questions(:john_two)
-    @related = questions(:john_three)
+    @relation = questions(:john_three)
     @add_relation_options = 
       @quiz
         .questions
@@ -123,14 +123,26 @@ class RelatedTest < ApplicationSystemTestCase
 
   test "remove relation -> undo -> redo" do
     # remove relation
-    remove_relation(@related.id)
-    assert_remove_relation(@question.id, @related.id, @initial)
+    remove_relation(@relation.id)
+    assert_remove_relation(@question.id, @relation.id, @initial)
     # undo
     undo_action
     assert_no_change_to_relations(@question.id, @initial)
     # redo
     redo_action
-    assert_remove_relation(@question.id, @related.id, @initial)
+    assert_remove_relation(@question.id, @relation.id, @initial)
+  end
+
+  test "remove relation -> switch selection -> undo -> redo" do
+    # remove relation
+    remove_relation(@relation.id)
+    assert_remove_relation(@question.id, @relation.id, @initial)
+    # switch selection -> undo
+    select_question(@other.id)
+    undo_action
+    # redo
+    redo_action
+    assert_remove_relation(@question.id, @relation.id, @initial)
   end
   # add relation -> undo -> redo
   # add relation -> switch selection -> undo -> redo
