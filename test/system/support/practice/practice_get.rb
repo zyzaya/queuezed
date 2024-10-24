@@ -1,4 +1,4 @@
-module PracticeGetHelper
+module PracticeGet
   def get_practice(q_id, initial)
     sessions = Quiz.find(q_id).practice_sessions.pluck(:id)
     id = (sessions - initial)[0]

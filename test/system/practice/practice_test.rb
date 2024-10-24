@@ -1,8 +1,12 @@
 require "application_system_test_case"
 require "test_helper"
+require "system/support/practice/practice_actions"
+require "system/support/practice/practice_get"
 
 class PracticeTest < ApplicationSystemTestCase
   include Devise::Test::IntegrationHelpers
+  include PracticeActions
+  include PracticeGet
 
   setup do 
     sign_in users(:john)
@@ -13,7 +17,7 @@ class PracticeTest < ApplicationSystemTestCase
   end
 
   test "create a practice session with no filters" do
-    click_button('Start')
+    start_practice
     practice = get_practice(@quiz.id, @initial_sessions)
     assert_equal "", practice.text_filter
     assert_equal [], practice.tag_filter
@@ -21,7 +25,7 @@ class PracticeTest < ApplicationSystemTestCase
   end
 
   test "create a practice session with a tag filter" do
-    
+
   end
   
   test "create a practice session with a text filter" do
