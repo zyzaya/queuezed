@@ -15,7 +15,7 @@ export default class extends Controller {
     'tagOptionList',
     'singleQuestionContainer',
     'singleStart',
-    'relationStart',
+    'relationContainer',
     'addRelatedList',
     'addRelatedOption',
     'limitRelated',
@@ -118,7 +118,7 @@ export default class extends Controller {
 
     event.detail.relations.forEach((r) => {
       let relation = SingleQuestionDisplay(r.id, r.content, r.answers, true);
-      this.relationStartTarget.after(relation);
+      this.relationContainerTarget.appendChild(relation);
     });
 
     this.updateAddRelatedOptions();

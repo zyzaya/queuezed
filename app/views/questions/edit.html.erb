@@ -60,9 +60,12 @@
         <input type="checkbox" name="limit_add_related" id="limit_add_related" data-edit--question-target="limitRelated" data-action="edit--question#enableRelatedLimit">
       </div>
     </div>
-    <hr data-edit--question-target="relationStart" data-edit-target="relationStart">
-    <% relations.each do |q| %>
-      <%= render 'questions/single_question_edit', question: q %>
-    <% end %>
+    <hr>
+    <div class="relationContainer" data-edit--question-target="relationContainer" data-edit-target="relationContainer">
+      <% relations.each do |q| %>
+        <%= render 'questions/single_question_edit', question: q %>
+      <% end %>
+    </div>
+    
   </div>
 </turbo-frame>

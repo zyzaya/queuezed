@@ -24,7 +24,7 @@ export default class extends Controller {
     'tagList',
     'tagOptionList',
     'tagFilterOptionList',
-    'relationStart',
+    'relationContainer',
   ];
 
   initialize() {
@@ -436,7 +436,7 @@ export default class extends Controller {
       } else {
         let r = Change.GetQuestion(related_id);
         let display = SingleQuestionDisplay(r.id, r.content, r.answers, true);
-        this.relationStartTarget.after(display);
+        this.relationContainerTarget.appendChild(display);
       }
     };
     let reverse = () => {
