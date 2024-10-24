@@ -449,4 +449,29 @@ export default class extends Controller {
     };
     Undo.add('Add Related', action, reverse);
   }
+
+  removeRelation(event) {
+    let selected = this.currentlySelectedValue;
+    let question_id = this.currentlySelectedValue;
+    let related_id = event.detail.id;
+    let action = () => {
+      Change.RemoveRelated(question_id, related_id);
+      if (this.currentlySelectedValue !== selected) {
+        this.dispatch('selectQuestion', { detail: { id: selected } });
+      } else {
+        this.findQuestionContainer(related_id).remove();
+      }
+    };
+    let reverse = () => {
+      Change.AddRelated(question_id, related_id);
+      if (this.currentlySelectedValue !== selected) {
+        this.dispatch('selectQuestion', { detail: { id: selected } });
+      } else {
+        let r = Change.GetQuestion(related_id);
+        let display = SingleQuestionDisplay(r.id, r.content, r.answers, true);
+        this.relationContainerTarget.appendChild(display);
+      }
+    };
+    Undo.add('Remove Relation', action, reverse);
+  }
 }

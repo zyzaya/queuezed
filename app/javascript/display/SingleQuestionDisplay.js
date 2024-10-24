@@ -24,6 +24,8 @@ export default function SingleQuestionDisplay(
     remove_as_related.classList.add('button');
     remove_as_related.classList.add('remove_as_related');
     remove_as_related.innerText = 'Remove from related';
+    remove_as_related.dataset['action'] =
+      'edit--single-question#removeAsRelation';
     header.appendChild(remove_as_related);
   }
   let question_content = document.createElement('textarea');

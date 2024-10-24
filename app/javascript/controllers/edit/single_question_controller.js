@@ -38,4 +38,12 @@ export default class extends Controller {
       this.infoTarget.value = event.detail.content;
     }
   }
+
+  removeAsRelation(event) {
+    this.dispatch('removeAsRelation', {
+      detail: {
+        id: this.idValue,
+      },
+    });
+  }
 }
