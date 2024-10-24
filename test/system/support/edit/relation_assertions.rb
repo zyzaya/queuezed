@@ -1,4 +1,4 @@
-module EditRelationAssertionHelper
+module RelationAssertions
   def assert_add_relation(q_id, related_id, initial)
     assert_equal initial + [related_id.to_s], get_relations(q_id)
   end
