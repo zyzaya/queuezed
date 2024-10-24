@@ -5,6 +5,7 @@ require "system/support/edit/EditGetHelper"
 require "system/support/edit/EditQuestionAssertionHelper"
 require "system/support/edit/EditTagAssertionHelper"
 require "system/support/edit/EditRelationAssertionHelper"
+require "system/support/practice/PracticeGetHelper"
 
 class ApplicationSystemTestCase < ActionDispatch::SystemTestCase
   driven_by :selenium, using: :chrome, screen_size: [1400, 1400]
@@ -15,4 +16,6 @@ class ApplicationSystemTestCase < ActionDispatch::SystemTestCase
   include EditAnswerAssertionHelper
   include EditRelationAssertionHelper
   include EditTagAssertionHelper
+
+  include PracticeGetHelper
 end
