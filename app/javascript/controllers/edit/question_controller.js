@@ -165,8 +165,18 @@ export default class extends Controller {
     }
   }
 
+  hasRelated(id) {
+    let existing = this.singleQuestionContainerTargets.find((c) => {
+      return c.dataset['edit-SingleQuestionIdValue'] == id;
+    });
+    return existing !== undefined;
+  }
+
   addRelated(event) {
     let related_id = event.target.value;
+    event.currentTarget.value = '-1';
+    if (related_id == '-1' || this.hasRelated(related_id)) return;
+
     if (related_id != this.idValue) {
       this.dispatch('addRelated', {
         detail: {
