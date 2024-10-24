@@ -78,7 +78,7 @@ module EditActionHelper
     input.send_keys(:return)
   end
 
-  def add_related(content)
+  def add_relation(content)
     select content, from: "add_related"
   end
 end

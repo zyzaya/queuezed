@@ -9,7 +9,7 @@ class RelatedTest < ApplicationSystemTestCase
     @quiz = quizzes(:johns)
     @question = questions(:john_one)
     @other = questions(:john_two)
-    @add_related_options = 
+    @add_relation_options = 
       @quiz
         .questions
         .order(:content)
@@ -19,50 +19,50 @@ class RelatedTest < ApplicationSystemTestCase
 
     visit_edit_page(@quiz)
     select_question(@question.id)
-    @initial = get_related_questions(@question.id)
+    @initial = get_relations(@question.id)
   end
 
   test "add relation select displays all potential questions" do
     expected = @quiz.questions.order(:content).pluck(:content)
-    assert_equal @add_related_options, get_add_related_options
+    assert_equal @add_relation_options, get_add_relation_options
   end
 
   test "add relation select can be limited" do
     filter = "Reverse"
     filter_by_text(filter)
     page.find("#limit_add_related").check()
-    expected = @add_related_options.filter do |q|
+    expected = @add_relation_options.filter do |q|
       q.include?(filter)
     end
-    assert_equal expected, get_add_related_options
+    assert_equal expected, get_add_relation_options
   end
 
   test "add relation select is not limited if check not selected" do
     filter = "Reverse"
     filter_by_text(filter)
-    assert_equal @add_related_options, get_add_related_options
+    assert_equal @add_relation_options, get_add_relation_options
   end
 
-  test "add related -> undo -> redo" do
-    # add related
-    add_related(@other.content)
-    assert_add_related(@question.id, @other.id, @initial)
+  test "add relation -> undo -> redo" do
+    # add relation
+    add_relation(@other.content)
+    assert_add_relation(@question.id, @other.id, @initial)
     # undo
     undo_action
-    assert_no_change_to_related(@question.id, @initial)
+    assert_no_change_to_relations(@question.id, @initial)
     # redo
     redo_action
-    assert_add_related(@question.id, @other.id, @initial)
+    assert_add_relation(@question.id, @other.id, @initial)
   end
 
-  # add related -> undo -> redo
-  # add related -> switch selection -> undo -> redo
-  # add related -> undo -> switch selection -> undo -> redo
-  # add related -> save 
-  # add related -> save -> undo -> save
-  # add related -> save -> undo -> save -> redo -> save
-  # edit content of related
-  # add answer of related
-  # remove answer of related
-  # edit content of answer in related
+  # add relation -> undo -> redo
+  # add relation -> switch selection -> undo -> redo
+  # add relation -> undo -> switch selection -> undo -> redo
+  # add relation -> save 
+  # add relation -> save -> undo -> save
+  # add relation -> save -> undo -> save -> redo -> save
+  # edit content of relation
+  # add answer of relation
+  # remove answer of relation
+  # edit content of answer in relation
 end

@@ -55,14 +55,14 @@ module EditGetHelper
     return options.map { |e| e.text }
   end
 
-  def get_add_related_options
+  def get_add_relation_options
     options = page.find_all("#add_related > option") do |e|
       !["-1", "-2"].include?(e.value)
     end
     return options.map { |e| e.text }
   end
 
-  def get_related_questions(q_id)
+  def get_relations(q_id)
     count = 0
     related = page.find_all(".single_question_edit") do |e|
       e['data-edit--single-question-id-value'].to_s != q_id.to_s
