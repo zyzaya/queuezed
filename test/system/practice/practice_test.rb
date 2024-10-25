@@ -25,7 +25,12 @@ class PracticeTest < ApplicationSystemTestCase
   end
 
   test "create a practice session with a tag filter" do
-
+    tag = @quiz.tags.first
+    add_practice_tag_filter(tag.content)
+    start_practice
+    practice = get_practice(@quiz.id, @initial_sessions)
+    assert_equal [tag.id], practice.tag_filter
+    assert practice.questions.all? { |q| q.tags.include?(tag) }
   end
   
   test "create a practice session with a text filter" do
