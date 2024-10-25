@@ -37,7 +37,7 @@ class Question < ApplicationRecord
       variants = a.variants
       given_answer = given.find { |g| variants.any?(g) }
       unless given_answer.nil?
-        given.delete(given_answer)
+        given.delete_at(given.index(given_answer))
         correct_answers << a
         history.answer_histories.new(
           answer_id: a.id,

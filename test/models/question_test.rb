@@ -50,7 +50,7 @@ class QuestionTest < ActiveSupport::TestCase
     question = questions(:john_one)
     initial = question.times_correct
     question.submit_answer(practice_sessions(:johns), correct_answers(question))
-    assert_equal initial, Question.find(question.id).times_correct + 1
+    assert_equal initial + 1, Question.find(question.id).times_correct
   end
 
   test "submit_answer does not increment current_streak when incorrect" do
