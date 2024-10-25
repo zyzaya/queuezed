@@ -50,6 +50,6 @@ class PracticeSessionsController < ApplicationController
   private
   def practice_session_create_params(params)
     params.require(:quiz_id)
-    params.permit(:quiz_id, :text_filter, :tag_filter, :review_filter)
+    params.permit(:authenticity_token, :commit, :quiz_id, :text_filter, :tag_filter, :review_filter)
   end
 end

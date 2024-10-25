@@ -2,14 +2,14 @@
   <%= render "shared/header"%>
   <div class="practice" 
     data-controller="practice--start"
-    data-action="filter:updateFilter@window->start-practice#updateFilter">
+    data-action="filter:updateFilter@window->practice--start#updateFilter">
      <div class="practice_new">
       <%= render "shared/filter", quiz: @quiz %>
       <div class="practice_buttons">
         <%= form_with(url: quiz_practice_index_path, class: 'practice_start', data: {turbo: false}) do |form| %>
-          <%= form.hidden_field :text_filter, value: '', data: {'start-practice-target': 'textFilter'} %>
-          <%= form.hidden_field :tag_filter, value: '', data: {'start-practice-target': 'tagFilter'} %>
-          <%= form.hidden_field :review_filter, value: false, data: {'start-practice-target': 'reviewFilter'} %>
+          <%= form.hidden_field :text_filter, value: '', data: {'practice--start-target': 'textFilter'} %>
+          <%= form.hidden_field :tag_filter, value: '', data: {'practice--start-target': 'tagFilter'} %>
+          <%= form.hidden_field :review_filter, value: false, data: {'practice--start-target': 'reviewFilter'} %>
           <%= form.submit "Start", class: 'button' %>
         <% end %>
         <%= link_to 'Cancel', :back, class: 'practice_cancel button' %>
