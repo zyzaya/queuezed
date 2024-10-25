@@ -34,6 +34,11 @@ class PracticeTest < ApplicationSystemTestCase
   end
   
   test "create a practice session with a text filter" do
-
+    text = "reverse"
+    add_practice_text_filter(text)
+    start_practice
+    practice = get_practice(@quiz.id, @initial_sessions)
+    assert_equal text, practice.text_filter
+    assert practice.questions.all? { |q| q.content.downcase.include?(text) }
   end
 end

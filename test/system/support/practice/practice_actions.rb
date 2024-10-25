@@ -8,7 +8,7 @@ module PracticeActions
   end
 
   def add_practice_text_filter(text)
-    input = page.find("edit_filter")
+    input = page.find("#edit_filter")
     input.send_keys(text)
     input.send_keys(:return)
   end
