@@ -46,6 +46,13 @@ class QuestionTest < ActiveSupport::TestCase
     assert_equal initial + 1, Question.find(question.id).current_streak
   end
 
+  test "can submit multiple of the same answer" do
+    question = questions(:john_one)
+    initial = question.times_correct
+    question.submit_answer(practice_sessions(:johns), correct_answers(question))
+    assert_equal initial, Question.find(question.id).times_correct + 1
+  end
+
   test "submit_answer does not increment current_streak when incorrect" do
     question = questions(:john_one)
     initial = question.current_streak
