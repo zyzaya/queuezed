@@ -2,11 +2,13 @@ require "application_system_test_case"
 require "test_helper"
 require "system/support/practice/practice_actions"
 require "system/support/practice/practice_get"
+require "system/support/practice/practice_assertions"
 
 class PracticeTest < ApplicationSystemTestCase
   include Devise::Test::IntegrationHelpers
   include PracticeActions
   include PracticeGet
+  include PracticeAssertions
 
   setup do 
     sign_in users(:john)
@@ -40,5 +42,17 @@ class PracticeTest < ApplicationSystemTestCase
     practice = get_practice(@quiz.id, @initial_sessions)
     assert_equal text, practice.text_filter
     assert practice.questions.all? { |q| q.content.downcase.include?(text) }
+  end
+
+  test "answer a question correctly" do
+    start_practice
+    given = submit_answers(true)
+    assert_immediate_feedback(given)
+  end
+
+  test "answer a question incorrectly" do
+    start_practice
+    given = submit_answers(false)
+    assert_immediate_feedback(given)
   end
 end

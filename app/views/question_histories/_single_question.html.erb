@@ -2,7 +2,7 @@
   <h1 class="question_content">Q. <%= question.content %></h1>
   <% question.answers.each_with_index do |answer, i| %>
     <div class="answer_container">
-      <%= form.text_field "given[#{question.id}][#{answer.id}]",
+      <%= form.text_field "given[#{question.id}][]",
         autocomplete: 'off', 
         class: "answer_input", 
         data: {"practice-target": "input",
