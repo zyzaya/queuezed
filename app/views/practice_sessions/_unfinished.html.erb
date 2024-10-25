@@ -8,10 +8,10 @@
       <span>Filter by text:</span><span><%= session.text_filter%></span>
     </div>
   <% end %>
-  <% unless session.text_filter.eql?("") || session.tag_filter.eql?("") %>
+  <% unless session.text_filter.eql?("") || session.tag_filter.eql?([]) %>
     <hr>
   <% end %>
-  <% unless session.tag_filter.eql?("") %>
+  <% unless session.tag_filter.eql?([]) %>
     <div class="tagFilter">
       <div>Filter by tag:</div>
       <div class="tagContainer">
