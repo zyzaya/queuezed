@@ -19,11 +19,13 @@ class PracticeSessionsController < ApplicationController
       text_filter = practice_params[:text_filter]
       tag_filter = practice_params[:tag_filter]
       tag_filter = tag_filter.split(",").map { |t| t.to_i }
-      review_filter = practice_params[:review_filter]
+      review_filter = practice_params[:review_filter] == "true"
+      difficult_filter = practice_params[:difficult_filter] == "true"
       practice = @quiz.new_practice(
         text_filter: text_filter,
         tag_filter: tag_filter,
-        review: review_filter
+        review: review_filter,
+        difficult: difficult_filter
       )
       if practice.nil?
         flash[:alert] = "Failed to create practice, no valid questions"
@@ -53,6 +55,6 @@ class PracticeSessionsController < ApplicationController
   private
   def practice_session_create_params(params)
     params.require(:quiz_id)
-    params.permit(:authenticity_token, :commit, :quiz_id, :text_filter, :tag_filter, :review_filter)
+    params.permit(:authenticity_token, :commit, :quiz_id, :text_filter, :tag_filter, :review_filter, :difficult_filter)
   end
 end

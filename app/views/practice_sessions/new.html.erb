@@ -10,6 +10,7 @@
           <%= form.hidden_field :text_filter, value: '', data: {'practice--start-target': 'textFilter'} %>
           <%= form.hidden_field :tag_filter, value: '', data: {'practice--start-target': 'tagFilter'} %>
           <%= form.hidden_field :review_filter, value: false, data: {'practice--start-target': 'reviewFilter'} %>
+          <%= form.hidden_field :difficult_filter, value: false, data: {'practice--start-target': 'difficultFilter'} %>
           <%= form.submit "Start", class: 'button' %>
         <% end %>
         <%= link_to 'Cancel', :back, class: 'practice_cancel button' %>

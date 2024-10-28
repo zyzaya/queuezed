@@ -37,11 +37,12 @@ class Quiz < ApplicationRecord
     ActiveSupport::Duration.build(duration) unless duration.nil?
   end
 
-  def new_practice(text_filter: "", tag_filter: [], review: false)
+  def new_practice(text_filter: "", tag_filter: [], review: false, difficult: false)
     order = create_order(
       text_filter: text_filter, 
       tag_filter: tag_filter, 
-      review: review
+      review: review,
+      difficult: difficult
     )
     return nil if order.length <= 0
 
@@ -56,8 +57,9 @@ class Quiz < ApplicationRecord
     )
   end
   private
-  def create_order(text_filter: "", tag_filter: "", review: false)
-    questions = filter_review(review)
+  def create_order(text_filter: "", tag_filter: "", review: false, difficult: false)
+    questions = filter_review_and_difficult(review, difficult)
+    puts questions.length
     text_filter = text_filter.downcase
     ids = []
     order = []
@@ -83,8 +85,24 @@ class Quiz < ApplicationRecord
       has_tags(question, tag_filter)
   end
 
-  def filter_review(review)
-    review ? self.questions.where(review: true) : self.questions
+  def filter_review_and_difficult(review, difficult)
+    puts "#{review}, #{difficult}"
+    
+    if review == false then puts "asdfasdfgasdgf" end
+
+    if review && difficult
+      puts "review and difficult"
+      return self.questions.where(review: true, difficult: true)
+    elsif review && !difficult
+      puts "review and not difficult"
+      return self.questions.where(review: true)
+    elsif difficult && !review
+      puts "difficult and not review"
+      return self.questions.where(difficult: true)
+    else
+      puts "not difficult and not review"
+      return self.questions
+    end
   end
 
   def has_answers(question)
