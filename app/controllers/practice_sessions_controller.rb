@@ -30,10 +30,7 @@ class PracticeSessionsController < ApplicationController
         redirect_to new_quiz_practice_path(@quiz.id)
       else
         practice.save
-        @practice_session = practice
-        current_question_ids = @practice_session.order[0].filter { |e| !e.nil? }
-        @questions = Question.includes(:answers).where(id: current_question_ids)
-        render 'practice_sessions/show'
+        redirect_to action: "show", id: practice.id
       end
     end
   end
@@ -44,7 +41,13 @@ class PracticeSessionsController < ApplicationController
       head :not_found
     else
       @quiz = @practice_session.quiz
-      @question_histories = @practice_session.question_histories
+      @questions = @practice_session.current_questions
+      if (@practice_session.finished?)
+        @correct = @practice_session.question_histories.where(correct: true).count
+        @question_histories = @practice_session.question_histories.includes(:question, :answer_histories)
+        @total = @question_histories.count
+        render 'practice_sessions/feedback'
+      end
     end
   end
   private
