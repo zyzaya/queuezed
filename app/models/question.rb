@@ -76,8 +76,8 @@ class Question < ApplicationRecord
   end
 
   def update_review
-    if (!self.review && !self.next_review.nil? && self.next_review < DateTime.now)
-      self.review = true
+    unless self.next_review.nil?
+      self.review = self.next_review < DateTime.now
     end
   end
 
