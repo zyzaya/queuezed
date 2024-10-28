@@ -47,12 +47,28 @@ class PracticeTest < ApplicationSystemTestCase
   test "answer a question correctly" do
     start_practice
     given = submit_answers(true)
-    assert_immediate_feedback(given)
+    assert_question_feedback(given)
   end
 
   test "answer a question incorrectly" do
     start_practice
     given = submit_answers(false)
-    assert_immediate_feedback(given)
+    assert_question_feedback(given)
+  end
+
+  test "feedback" do
+    start_practice
+    practice = get_practice(@quiz.id, @initial_sessions)
+    length = practice.questions.count
+    given = []
+    1.upto(length) do |_|
+      given << submit_answers(true)
+      page.find(".immediate_feedback_next").click
+      # wait for page / turbo to fully load
+      sleep(0.5)
+    end
+    given.each do |g|
+      assert_question_feedback(g)
+    end
   end
 end

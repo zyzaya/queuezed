@@ -1,5 +1,5 @@
 module PracticeAssertions
-  def assert_immediate_feedback(given)
+  def assert_question_feedback(given)
     given.each do |_, answers|
       answers.each do |v|
         if (v[:correct].split(" / ").include?(v[:input]))
