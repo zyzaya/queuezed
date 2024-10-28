@@ -54,16 +54,20 @@ export default class extends Controller {
           visible: false,
         },
         {
-          id: 'review',
-          visible: false,
-        },
-        {
           id: 'tags',
           visible: false,
         },
         {
           id: 'content',
           name: 'Question',
+        },
+        {
+          id: 'review',
+          visible: true,
+        },
+        {
+          id: 'difficult',
+          visible: true,
         },
         {
           id: 'current_streak',
@@ -111,6 +115,7 @@ export default class extends Controller {
           return {
             id: e.id.toString(),
             review: e.review,
+            difficult: e.difficult,
             tags: tags,
             content: content,
             current_streak: e.current_streak,
@@ -186,7 +191,7 @@ export default class extends Controller {
   }
 
   updateFilter(event) {
-    let { tag, text, review } = event.detail;
+    let { tag, text, review, difficult } = event.detail;
 
     this.zgrid.reconfigure({
       filter: (row) => {
@@ -195,9 +200,13 @@ export default class extends Controller {
           text === '' || row.content.toLowerCase().includes(text);
         let matches_tag_filter =
           tag.length === 0 || tag.some((f) => tags.includes(f));
-        let matches_review_filter = !review || row.review;
+        let matches_review_filter = !review || row.review === 'true';
+        let matches_difficult_filter = !difficult || row.difficult === 'true';
         return (
-          matches_text_filter && matches_tag_filter && matches_review_filter
+          matches_text_filter &&
+          matches_tag_filter &&
+          matches_review_filter &&
+          matches_difficult_filter
         );
       },
     });

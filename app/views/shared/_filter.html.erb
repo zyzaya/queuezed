@@ -10,6 +10,7 @@
       data-edit-target="tagFilterOptionList">
       <option value="-1" selected>Select to add</option>
       <option value="-2" disabled>-----</option>
+      <option value="difficult" data-filter-target="tagOption">Difficult</option>
       <option value="review" data-filter-target="tagOption">Review</option>
       <option value="-2" disabled>-----</option>
       <% quiz.tags.order('content').uniq.each do |t| %>

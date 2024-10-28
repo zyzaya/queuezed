@@ -8,9 +8,10 @@ export default class extends Controller {
     let text = this.textTarget.value.toLowerCase();
     let tag = this.tagTargets.map((t) => t.dataset.id);
     let review = tag.includes('review');
-    tag = tag.filter((t) => t != 'review');
+    let difficult = tag.includes('difficult');
+    tag = tag.filter((t) => !['review', 'difficult'].includes(t));
 
-    this.dispatch('updateFilter', { detail: { tag, text, review } });
+    this.dispatch('updateFilter', { detail: { tag, text, review, difficult } });
   }
 
   addTag(event) {
