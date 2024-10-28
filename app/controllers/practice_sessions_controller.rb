@@ -6,7 +6,7 @@ class PracticeSessionsController < ApplicationController
     if (@quiz.nil?)
       head :not_found
     else
-      @unfinished = @quiz.practice_sessions.where("current < length")
+      @unfinished = @quiz.practice_sessions.order(:created_at).where("current < length")
     end
   end
 

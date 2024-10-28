@@ -71,4 +71,11 @@ class PracticeTest < ApplicationSystemTestCase
       assert_question_feedback(g)
     end
   end
+
+  test "continue" do
+    start_practice
+    practice = get_practice(@quiz.id, @initial_sessions)
+    visit new_quiz_practice_path(@quiz)
+    assert page.has_selector?(".button[href=\"#{practice_path(practice)}\"]")
+  end
 end

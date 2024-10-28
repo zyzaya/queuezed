@@ -1,7 +1,7 @@
 <div class="unfinished">
   <div class="unfinished_header">
     <div class="progress"><%= "#{session.current} / #{session.length}"%></div>
-    <%= link_to 'Continue', "", class: "button" %>
+    <%= link_to 'Continue', practice_path(session), class: "button" %>
   </div>
   <% unless session.text_filter.eql?("") %>
     <div class="textFilter">
