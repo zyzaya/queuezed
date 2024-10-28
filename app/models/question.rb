@@ -110,6 +110,6 @@ class Question < ApplicationRecord
     #   or correct less than 50%
     self.difficult = 
       ((self.times_taken >= 3 && self.current_streak < 3) ||
-       (self.times_correct.to_f / self.times_taken.to_f) < 0.5)
+       (self.times_correct.to_f / self.times_taken.to_f) <= 0.5)
   end
 end
