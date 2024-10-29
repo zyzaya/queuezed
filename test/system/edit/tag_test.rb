@@ -258,4 +258,13 @@ class TagTest < ApplicationSystemTestCase
     select_question(@question.id)
     assert_create_tag(@question.id, @initial_tag_options, @initial, @new_tag_content)
   end
+
+  test "create tag -> switch selection -> add created tag" do
+    # create tag
+    create_tag(@question.id, @new_tag_content)
+    select_question(@other.id)
+    initial_tags = get_tags_content(@other.id)
+    add_tag(@new_tag_content)
+    assert_add_tag(@other.id, initial_tags, @new_tag_content)
+  end
 end
