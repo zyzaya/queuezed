@@ -28,7 +28,11 @@ export default class extends Controller {
         tr: 'zg_row',
         td: 'zg_td',
       },
+      dataAttrribute: {
+        thead: { action: 'click->edit--zgrid#updateSelectionDisplay' },
+      },
       onClick: (col, row, colName, data) => this.setSelectedQuestion(data.id),
+      onSort: () => this.updateSelectionDisplay(this.currentlySelected),
     });
     this.currentlySelected = null;
     this.csrf = document.head.querySelector('meta[name=csrf-token]')?.content;
@@ -144,14 +148,7 @@ export default class extends Controller {
     if (id === this.currentlySelected || id === 'null' || id === undefined)
       return;
 
-    let prev = document.querySelector('.active_question');
-    if (prev != null) prev.classList.remove('active_question');
-    let children = document.querySelectorAll(
-      '.zg_body > .zg_row:not(.zgrid_hidden)'
-    );
-    let row = this.zgrid.getData().findIndex((e) => e.id === id);
-    let curr = children[row];
-    curr.classList.add('active_question');
+    this.updateSelectionDisplay(id);
     this.currentlySelected = id;
     this.editOutlet.currentlySelectedValue = id;
     // displayed question
@@ -174,6 +171,17 @@ export default class extends Controller {
         relations: relations,
       },
     });
+  }
+
+  updateSelectionDisplay(id) {
+    let prev = document.querySelector('.active_question');
+    if (prev != null) prev.classList.remove('active_question');
+    let children = document.querySelectorAll(
+      '.zg_body > .zg_row:not(.zgrid_hidden)'
+    );
+    let row = this.zgrid.getData().findIndex((e) => e.id === id);
+    let curr = children[row];
+    curr.classList.add('active_question');
   }
 
   setSelectedToSibling() {
