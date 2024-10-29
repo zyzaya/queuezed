@@ -240,6 +240,7 @@ export default class extends Controller {
         id: event.detail.id.toString(),
         review: question.review,
         tags: tags,
+        difficult: question.difficult,
         content: question.content,
         current_streak: question.current_streak,
         longest_streak: question.longest_streak,
