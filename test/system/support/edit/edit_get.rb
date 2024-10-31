@@ -50,7 +50,7 @@ module EditGet
 
   def get_filter_tag_options
     options = page.find_all("#edit_add_tag_filter > option") do |e|
-      !["-1", "-2", "review"].include?(e.value)
+      !["-1", "-2", "review", "difficult"].include?(e.value)
     end
     return options.map { |e| e.text }
   end
