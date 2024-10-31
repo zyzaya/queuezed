@@ -253,5 +253,8 @@ export default class extends Controller {
     let question = this.zgrid.getRow(id);
     question.content = content;
     this.zgrid.setRow(id, question);
+    this.dispatch('updateQuestionList', {
+      detail: { data: this.zgrid.getData() },
+    });
   }
 }
