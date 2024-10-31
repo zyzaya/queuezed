@@ -1,6 +1,7 @@
-type FilterCallback = (row: Record<string, string>) => boolean;
+type Row = Record<string, any>;
+type FilterCallback = (row: Row) => boolean;
 type CompareEntries = (a: string, b: string) => number;
-type CompareRows = (a: Record<string, string>, b: Record<string, string>) => number;
+type CompareRows = (a: Row, b: Row) => number;
 type CustomClassElementNames = {
     filterContainer?: string;
     filter?: string;
@@ -16,6 +17,7 @@ type CustomClassElementNames = {
     thead?: string;
     tbody?: string;
     td?: string;
+    selected?: string;
 };
 type CustomDataAttributeElementNames = {
     filterContainer?: Record<string, string>;
@@ -32,6 +34,7 @@ type CustomDataAttributeElementNames = {
     thead?: Record<string, string>;
     tbody?: Record<string, string>;
     td?: Record<string, string>;
+    selected?: Record<string, string>;
 };
 type ColumnConfiguration = {
     /**
@@ -95,7 +98,7 @@ type Configuration = {
      *
      * Values that are not explicitly defined are set to an empty string.
      */
-    data?: Array<Record<string, string> | Array<string>>;
+    data?: Array<Row | Array<string>>;
     /**
      * Defines how pagination functions in the grid.
      * Default value is false.
@@ -118,6 +121,11 @@ type Configuration = {
      */
     filter?: string | FilterCallback;
     /**
+     * Enables or disables selections
+     * Default value is true.
+     */
+    selection?: boolean;
+    /**
      * Indicates if the default search box elements should be displayed.
      * Default value is true.
      */
@@ -137,8 +145,8 @@ type Configuration = {
     /**
      * Fires when the data is sorted through the ui.
      * Does not trigger if the data is sorted programmatically.
-     * @param column The column the data is sorted by.
-     * @param ascending If the data is sorted in ascending order
+     * @param column The id of the column the data is sorted by.
+     * @param ascending If the data is sorted in ascending order. Null if the data is switched to unsorted
      */
     onSort?: (column: string, ascending: boolean) => void;
     /**
@@ -148,7 +156,7 @@ type Configuration = {
      * @param columnName The name, as defined in the configuration, of the column clicked.
      * @param data The row, as key-value pairs. Key is the name of the column, value is the value of the record for that column. This includes hidden columns.
      */
-    onClick?: (column: number, row: number, columnName: string, data: Record<string, string>) => void;
+    onClick?: (column: number, row: number, columnName: string, data: Row) => void;
     className?: CustomClassElementNames;
     dataAttribute?: CustomDataAttributeElementNames;
 };
@@ -158,6 +166,8 @@ declare class zGrid {
     private data;
     private pagination;
     private filter;
+    private selection;
+    private selected;
     private showFilter;
     private sortConfig;
     private parent;
@@ -198,23 +208,34 @@ declare class zGrid {
     private configureUI;
     reconfigure(config: Partial<Configuration>): void;
     /**
-     * Adds a row with the specified data
-     * @param data The data to of the row, in the same format as configuration
+     * Sets the selected row
+     * @param id The id value of the row to select
+     * @returns The data of the row selected, or null or no row matches the id
      */
-    addRow(data: Record<string, string> | Array<string>): void;
+    setSelected(id: any): Row | null;
+    /**
+     * Gets the selected row.
+     * @returns The data of the currently selected row or null if no row is selected
+     */
+    getSelected(): Row | null;
+    /**
+     * Adds a row with the specified data
+     * @param data The data of the row, in the same format as configuration
+     */
+    addRow(data: Row | Array<string>): void;
     /**
      * Gets the data of a specific row
      * @param id The value of the id column
      * @returns An object representing the found row, or undefined if no row is found
      */
-    getRow(id: string): Record<string, string>;
+    getRow(id: any): Row;
     /**
      * Modifies the data in a single row
      * @param id The id of row to change
      * @param data The data to set the row to in the same format as configuration
      * with the exception that if no id is defined it will keep its original id
      */
-    setRow(id: string, data: Record<string, string> | Array<string>): void;
+    setRow(id: any, data: Row | Array<string>): void;
     /**
      * Removes a row
      * @param id  The value of the id column
@@ -222,14 +243,22 @@ declare class zGrid {
      * keys are column ids, and the values are what is in the column.
      * If no row is found returns undefined.
      */
-    removeRow(id: string): Record<string, string> | undefined;
+    removeRow(id: any): Row | undefined;
     /**
      * Changes the value of a specific cell
-     * @param id The value of the id column
-     * @param column The column of the cell to change
-     * @param value The value to chagne the cell to
+     * @param id The value of the id column of the row to change
+     * @param column The column id of the cell to change
+     * @param value The value to change the cell to
      */
-    setCell(id: string, column: string, value: string): void;
+    setCell(id: any, column: string, value: string): void;
+    /**
+     * Gets the data stored in zgrid, ignoring filter
+     * sorting, and pagination
+     * @returns An array of objects. Each element of the array is a single row.
+     * The objects are key-value pairs where the key is the name of a column and
+     * the value is what is in that cell
+     */
+    getRawData(): Array<Row>;
     /**
      * Gets the currently displayed data, after filtering
      * sorting, and pagination are applied.
@@ -237,7 +266,7 @@ declare class zGrid {
      * The objects are key-value pairs where the key is the name of a column and
      * the value is what is in that cell.
      */
-    getData(): Array<Record<string, string>>;
+    getData(): Array<Row>;
     get page(): number;
     set page(page: number);
     /**
@@ -277,14 +306,14 @@ declare class zGrid {
     /**
      * Sorts the data by the named column. If the configuration for that
      * column has a sort function that function is used to sort it. Otherwise it uses
-     * Javascript's localeCompare.
+     * Javascript's comparison operators.
      * @param column The name of the column to sort by.
      */
     sort(column: string): void;
     /**
         * Sorts the data by the named column. If the configuration for that
      * column has a sort function that function is used to sort it. Otherwise it uses
-     * Javascript's localeCompare.
+     * Javascript's comparison operators.
      * @param column The name of the column to sort by.
      * @param ascending Whether to sort in ascending or descending order.
      */
