@@ -25,6 +25,7 @@ class RelationTest < ApplicationSystemTestCase
         .pluck(:content)
     visit_edit_page(@quiz)
     select_question(@question.id)
+    sleep(0.3)
     @initial = get_relations(@question.id)
   end
 
