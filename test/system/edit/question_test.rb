@@ -285,4 +285,14 @@ class QuestionTest < ApplicationSystemTestCase
     select_question(@question.id)
     assert_question_content(@question.id, @modified_question_content)
   end
+  
+  test "changing question content changes add relation options" do
+    expected = @quiz.questions.where.not(id: [@question.id, @other.id]).pluck(:content)
+    expected << (@question.content + @modify_content)
+    expected.sort!
+    select_question(@question.id)
+    change_question_content(@question.id, @modify_content)
+    select_question(@other.id)
+    assert_equal expected, get_add_relation_options()
+  end
 end
