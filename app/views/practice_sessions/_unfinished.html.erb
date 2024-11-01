@@ -1,27 +1,32 @@
-<div class="unfinished">
-  <div class="unfinished_header">
-    <div class="progress"><%= "#{session.current} / #{session.length}"%></div>
-    <%= link_to 'Continue', practice_path(session), class: "button" %>
-  </div>
-  <% unless session.text_filter.eql?("") %>
-    <div class="textFilter">
-      <span>Filter by text:</span><span><%= session.text_filter%></span>
-    </div>
-  <% end %>
-  <% unless session.text_filter.eql?("") || session.tag_filter.eql?([]) %>
-    <hr>
-  <% end %>
-  <% unless session.tag_filter.eql?([]) %>
-    <div class="tagFilter">
-      <div>Filter by tag:</div>
-      <div class="tagContainer">
-        <% session.tag_filter.each do |t| %>
-          <span class="tag"><%= session.quiz.tags.find(t).content %></span>
-        <% end %>
+<turbo-frame id=<%= "unfinished_#{session.id}"%>>
+  <% if !session.finished? %>
+    <div class="unfinished">
+      <div class="unfinished_header">
+        <div class="progress"><%= "#{session.current} / #{session.length}"%></div>
+        <%= button_to 'Remove', practice_finish_path(session), class: "button" %>
+        <%= link_to 'Continue', practice_path(session), class: "button" %>
       </div>
+      <% unless session.text_filter.eql?("") %>
+        <div class="textFilter">
+          <span>Filter by text:</span><span><%= session.text_filter%></span>
+        </div>
+      <% end %>
+      <% unless session.text_filter.eql?("") || session.tag_filter.eql?([]) %>
+        <hr>
+      <% end %>
+      <% unless session.tag_filter.eql?([]) %>
+        <div class="tagFilter">
+          <div>Filter by tag:</div>
+          <div class="tagContainer">
+            <% session.tag_filter.each do |t| %>
+              <span class="tag"><%= session.quiz.tags.find(t).content %></span>
+            <% end %>
+          </div>
+        </div>
+      <% end %>
+      <% unless session.limit.eql?(-1) %>
+        <div class="limit"><%= "Limit: #{session.limit}"%></div>
+      <% end %>
     </div>
   <% end %>
-  <% unless session.limit.eql?(-1) %>
-    <div class="limit"><%= "Limit: #{session.limit}"%></div>
-  <% end %>
-</div>
+</turbo-frame>

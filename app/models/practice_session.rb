@@ -28,4 +28,8 @@ class PracticeSession < ApplicationRecord
   def finished?
     self.current >= self.length
   end
+
+  def finish
+    self.update(current: self.length)
+  end
 end

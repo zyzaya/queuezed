@@ -6,6 +6,8 @@ Rails.application.routes.draw do
       resources :answers, only: [:new, :create], controller: 'question_histories'
     end
   end
+
+  post 'practice/:id/finish', to: 'practice_sessions#finish', as: :practice_finish
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
 
   # Defines the root path route ("/")

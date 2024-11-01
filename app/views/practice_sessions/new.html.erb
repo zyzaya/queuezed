@@ -22,14 +22,12 @@
         <% end %>
       </div>
     </div>
-    <% if @unfinished.count > 0 %>
-      <div class="practice_continue">
-        <div class="continue_info">You have unfinished sessions:</div>  
-        <% @unfinished.each do |session| %>
-          <%= render "unfinished", session: session %>
-        <% end %>
-      </div>
-    <% end %>
+    <div class="practice_continue">
+      <div class="continue_info">In progress practice:</div>  
+      <% @unfinished.each do |session| %>
+        <%= render "unfinished", session: session %>
+      <% end %>
+    </div>
   </div>  
 </div>
 <%= stylesheet_link_tag "practice_sessions/create", "data-turbo-track": "reload" %>

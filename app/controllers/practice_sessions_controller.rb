@@ -55,6 +55,16 @@ class PracticeSessionsController < ApplicationController
       end
     end
   end
+
+  def finish
+    @practice_session = PracticeSession.find_by(id: params[:id], quiz_id: current_user.quizzes.ids)
+    if (@practice_session.nil?)
+      head :not_found
+    else
+      @practice_session.finish()
+    end
+    render partial: 'unfinished', locals: { session: @practice_session }
+  end
   private
   def practice_session_create_params(params)
     params.require(:quiz_id)
