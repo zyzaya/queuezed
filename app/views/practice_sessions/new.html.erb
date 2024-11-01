@@ -11,11 +11,11 @@
           <%= form.hidden_field :tag_filter, value: '', data: {'practice--start-target': 'tagFilter'} %>
           <%= form.hidden_field :review_filter, value: false, data: {'practice--start-target': 'reviewFilter'} %>
           <%= form.hidden_field :difficult_filter, value: false, data: {'practice--start-target': 'difficultFilter'} %>
-          <div>
-            <%= form.label :limit, "Max questions" %>
+          <div class = "limit_container">
+            <%= form.label :limit, "Limit" %>
             <%= form.number_field :limit, min: 1, step: 1 %>
           </div>
-          <div class="div">
+          <div>
             <%= form.submit "Start", class: 'button' %>
             <%= link_to 'Cancel', :back, class: 'practice_cancel button' %>
           </div>

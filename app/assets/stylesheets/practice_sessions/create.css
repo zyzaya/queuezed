@@ -5,6 +5,7 @@
   flex-direction: column;
   gap: 16px;
   color: var(--main-text-color);
+  align-items: center;
 }
 
 .practice_new {
@@ -13,7 +14,7 @@
 }
 
 .practice_buttons > form {
-  padding: 8px;
+  padding: 4px;
   margin: auto;
   white-space: nowrap;
 }
@@ -25,7 +26,9 @@
   gap: 8px;
 }
 
-.practice_buttons > form > div {
+.limit_container {
+  width: 100%;
+  display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 4px;
 }

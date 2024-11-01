@@ -21,4 +21,7 @@
       </div>
     </div>
   <% end %>
+  <% unless session.limit.eql?(-1) %>
+    <div class="limit"><%= "Limit: #{session.limit}"%></div>
+  <% end %>
 </div>
