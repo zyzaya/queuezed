@@ -49,12 +49,14 @@ class Quiz < ApplicationRecord
 
     max = order.max { |a, b| a.length <=> b.length }.length
     order.map { |e| e.fill(nil, e.length, max - e.length) }
+    limit_column = limit == false ? -1 : limit
     return self.practice_sessions.new(
       current: 0,
       length: order.length,
       order: order,
       text_filter: text_filter,
-      tag_filter: tag_filter
+      tag_filter: tag_filter,
+      limit: limit_column
     )
   end
   private

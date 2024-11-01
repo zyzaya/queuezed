@@ -21,7 +21,8 @@ class PracticeSessionsController < ApplicationController
       tag_filter = tag_filter.split(",").map { |t| t.to_i }
       review_filter = practice_params[:review_filter] == "true"
       difficult_filter = practice_params[:difficult_filter] == "true"
-      limit = practice_params[:limit].eql?("") ?  false : practice_params[:limit]
+      limit = practice_params[:limit]
+      limit = false if (!limit || limit.eql?("") || limit.to_i <= 0)
       practice = @quiz.new_practice(
         text_filter: text_filter,
         tag_filter: tag_filter,

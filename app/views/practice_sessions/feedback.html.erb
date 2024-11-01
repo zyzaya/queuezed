@@ -12,7 +12,7 @@
     <div class="feedback_toolbar">
       <%= button_to "Retry", 
         quiz_practice_index_path(@quiz.id), 
-        params: {text_filter: @practice_session.text_filter, tag_filter: @practice_session.tag_filter.join(",")}, 
+        params: {text_filter: @practice_session.text_filter, tag_filter: @practice_session.tag_filter.join(","), limit: @practice_session.limit }, 
         data: {turbo: false},
         class: "button" %>
       <%= link_to "Home", "/", class: "button" %>

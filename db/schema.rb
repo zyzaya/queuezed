@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2024_10_24_220732) do
+ActiveRecord::Schema[7.2].define(version: 2024_11_01_195558) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -45,6 +45,7 @@ ActiveRecord::Schema[7.2].define(version: 2024_10_24_220732) do
     t.integer "order", default: [], array: true
     t.integer "tag_filter", default: [], array: true
     t.string "text_filter"
+    t.integer "limit", default: -1
     t.index ["quiz_id"], name: "index_practice_sessions_on_quiz_id"
   end
 
