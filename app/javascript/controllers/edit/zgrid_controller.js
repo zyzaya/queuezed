@@ -11,7 +11,7 @@ export default class extends Controller {
     quizId: String,
   };
 
-  static targets = ['zgridContainer'];
+  static targets = ['zgridContainer', 'questionCount'];
   static outlets = ['edit'];
 
   initialize() {
@@ -127,6 +127,7 @@ export default class extends Controller {
         });
         this.dispatch('setTagCount', { detail: { tagCount: tagCount } });
         this.zgrid.reconfigure({ data: zgrid_data });
+        this.updateQuestionTotal();
       })
       .then(() => {
         if (event !== undefined && event.detail.selectedId !== undefined) {
@@ -205,6 +206,7 @@ export default class extends Controller {
       },
     });
 
+    this.updateQuestionTotal();
     this.dispatch('updateFilteredQuestionList', {
       detail: { data: this.zgrid.getData() },
     });
@@ -242,10 +244,12 @@ export default class extends Controller {
         times_correct: question.times_correct,
       });
     }
+    this.updateQuestionTotal();
   }
 
   deleteQuestion(event) {
     this.zgrid.removeRow(event.detail.id);
+    this.updateQuestionTotal();
   }
 
   questionContentChange(event) {
@@ -256,5 +260,11 @@ export default class extends Controller {
     this.dispatch('updateQuestionList', {
       detail: { data: this.zgrid.getData() },
     });
+  }
+
+  updateQuestionTotal() {
+    let displayed = this.zgrid.getData().length;
+    let total = this.zgrid.getRawData().length;
+    this.questionCountTarget.innerText = `${displayed} / ${total} questions`;
   }
 }

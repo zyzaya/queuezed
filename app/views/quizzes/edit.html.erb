@@ -42,6 +42,7 @@
             edit:questionContentChange@window->edit--zgrid#questionContentChange
             filter:updateFilter@window->edit--zgrid#updateFilter">
         <%= render 'shared/filter', quiz: @quiz %>
+        <div class="edit_displayed_count" data-edit--zgrid-target="questionCount"></div>
         <div data-edit--zgrid-target="zgridContainer"></div>
       </div>
       <%= render template: "questions/edit" %>

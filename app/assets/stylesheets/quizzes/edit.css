@@ -76,6 +76,11 @@
   gap: 6px;
 }
 
+.edit_displayed_count {
+  align-self: flex-end;
+  padding: 2px 5px;
+}
+
 #edit_detail {
   background-color: var(--tertiary-bg-color-dark);
   color: var(--main-text-color);
