@@ -1,13 +1,15 @@
 .quizzes_edit {
   display: grid;
-  grid-template-rows: min-content;
+  grid-template-rows: minmax(0, min-content);
 }
 
 .edit {
   justify-self: center;
   background-color: var(--secondary-bg-color);
   display: grid;
-  grid-template-rows: min-content min-content 1fr;
+  grid-template-rows: min-content min-content minmax(0, 1fr);
+  height: 100%;
+  overflow: hidden;
   column-gap: 16px;
   width: 100%;
   margin: 8px;
@@ -65,7 +67,9 @@
   gap: 3px;
   background-color: var(--tertiary-bg-color-dark);
   border: 1px solid black;
-  color: var(--main-text-color)
+  color: var(--main-text-color);
+  height: 100%;
+  overflow: hidden;
 }
 
 .quiz_tag_list {
@@ -79,6 +83,10 @@
 .edit_displayed_count {
   align-self: flex-end;
   padding: 2px 5px;
+}
+
+.edit_zgrid {
+  overflow-y: auto;
 }
 
 #edit_detail {
