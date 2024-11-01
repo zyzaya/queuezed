@@ -15,8 +15,13 @@ export default class extends Controller {
   }
 
   answerContentChange(event) {
+    let content = this.infoTarget.value
+      .trim()
+      .split(/ *\/ */)
+      .join(' / ');
+
     this.previous = this.current;
-    this.current = this.infoTarget.value;
+    this.current = content;
     this.dispatch('contentChange', {
       detail: {
         question_id: this.questionIdValue,
