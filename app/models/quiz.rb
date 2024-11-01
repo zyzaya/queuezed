@@ -37,12 +37,13 @@ class Quiz < ApplicationRecord
     ActiveSupport::Duration.build(duration) unless duration.nil?
   end
 
-  def new_practice(text_filter: "", tag_filter: [], review: false, difficult: false)
+  def new_practice(text_filter: "", tag_filter: [], review: false, difficult: false, limit: false)
     order = create_order(
       text_filter: text_filter, 
       tag_filter: tag_filter, 
       review: review,
-      difficult: difficult
+      difficult: difficult,
+      limit: limit
     )
     return nil if order.length <= 0
 
@@ -57,11 +58,12 @@ class Quiz < ApplicationRecord
     )
   end
   private
-  def create_order(text_filter: "", tag_filter: "", review: false, difficult: false)
-    questions = filter_review_and_difficult(review, difficult)
+  def create_order(text_filter: "", tag_filter: "", review: false, difficult: false, limit: false)
+    questions = filter_review_and_difficult(review, difficult, limit)
     text_filter = text_filter.downcase
     ids = []
     order = []
+    ## shuffle questions, 
     questions.includes(:relations, :answers, :tags).shuffle.each.with_index do |q|
       if (matches_filters(q, ids, text_filter, tag_filter))
         # group related questions
@@ -74,6 +76,7 @@ class Quiz < ApplicationRecord
         ids += q_ids
       end
     end
+
     return order
   end
 
@@ -84,16 +87,21 @@ class Quiz < ApplicationRecord
       has_tags(question, tag_filter)
   end
 
-  def filter_review_and_difficult(review, difficult)
-    if review && difficult
-      return self.questions.where(review: true, difficult: true)
-    elsif review && !difficult
-      return self.questions.where(review: true)
-    elsif difficult && !review
-      return self.questions.where(difficult: true)
-    else
-      return self.questions
-    end
+  def filter_review_and_difficult(review, difficult, limit)
+    # if review && difficult
+    #   return self.questions.where(review: true, difficult: true)
+    # elsif review && !difficult
+    #   return self.questions.where(review: true)
+    # elsif difficult && !review
+    #   return self.questions.where(difficult: true)
+    # else
+    #   return self.questions
+    # end
+    ret = self.questions
+    ret = ret.where(review: true) if review
+    ret = ret.where(difficult: true) if difficult
+    ret = ret.limit(limit) if limit != false
+    return ret
   end
 
   def has_answers(question)

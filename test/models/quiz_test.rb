@@ -54,4 +54,9 @@ class QuizTest < ActiveSupport::TestCase
     practice = quizzes(:johns).new_practice(text_filter: "no questions have this text")
     assert_nil practice
   end
+
+  test "new_practice obeys limit" do
+    practice = quizzes(:johns).new_practice(limit: 1)
+    assert practice.questions.length, 1
+  end
 end
