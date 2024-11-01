@@ -474,4 +474,8 @@ export default class extends Controller {
     };
     Undo.add('Remove Relation', action, reverse);
   }
+
+  setQuestionCount(event) {
+    this.subtitleTarget.innerText = `${event.detail.total} questions`;
+  }
 }

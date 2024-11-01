@@ -6,6 +6,7 @@
     data-edit-question-count-value = <%= @quiz.questions.count %>
     data-action="
       edit--zgrid:setTagCount@window->edit#setTagCount
+      edit--zgrid:updateQuestionCount@window->edit#setQuestionCount
       edit--question:delete@window->edit#deleteQuestion
       edit--question:addTag@window->edit#addTag
       edit--question:removeTag@window->edit#removeTag
