@@ -8,8 +8,8 @@ export default function SingleQuestionDisplay(
 ) {
   let container = document.createElement('div');
   container.classList.add('single_question_edit');
-  container.dataset.action =
-    'edit:questionContentChange@window->edit--single-question#setContent';
+  container.dataset.action = `edit:questionContentChange@window->edit--single-question#setContent
+    keydown.alt+a->edit--single-question#addAnswer`;
   container.dataset['controller'] = 'edit--single-question';
   container.dataset['editTarget'] = 'singleQuestionContainer';
   container.dataset['edit-QuestionTarget'] = 'singleQuestionContainer';
