@@ -2,7 +2,7 @@ class QuizzesController < ApplicationController
   before_action :authenticate_user!
 
   def index
-    @quizzes = current_user.quizzes
+    @quizzes = current_user.quizzes.order(:created_at)
   end
 
   def create
