@@ -47,4 +47,16 @@ class PracticeSessionsControllerTest < ActionDispatch::IntegrationTest
     result = Quiz.find(quiz.id)
     assert_equal initial_count, result.practice_sessions.count
   end
+
+  test "can limit question count of practice session" do
+    quiz = quizzes(:johns)
+    params = {
+      text_filter: "",
+      tag_filter: "",
+      review: "false",
+      limit: 1
+    }
+    post quiz_practice_index_path(quiz.id, params: params)
+    assert_equal 1, quiz.practice_sessions.last.questions.length
+  end
 end
