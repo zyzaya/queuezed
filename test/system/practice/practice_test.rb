@@ -16,6 +16,7 @@ class PracticeTest < ApplicationSystemTestCase
     @valid_questions = @quiz.questions.filter { |q| !q.answers.empty? }
     @initial_sessions = @quiz.practice_sessions.pluck(:id)
     visit new_quiz_practice_path(@quiz)
+    sleep(0.3)
   end
 
   test "create a practice session with no filters" do
