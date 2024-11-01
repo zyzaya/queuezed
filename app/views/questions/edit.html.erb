@@ -8,7 +8,8 @@
       "edit--zgrid:setQuestion@window->edit--question#set
       edit--zgrid:updateFilteredQuestionList@window->edit--question#updateFilteredQuestionList
       edit--zgrid:updateQuestionList@window->edit--question#updateQuestionList
-      keydown.alt+shift+q->edit--question#delete"
+      keydown.alt+shift+q->edit--question#delete
+      keydown.alt+t@window->edit--question#focusCreateTag"
     data-edit--question-id-value = <%= id %>>
     <a class="button delete_question" 
         id="delete_question" 
@@ -27,7 +28,7 @@
           <% end %>
         </select>
         <label for="create_tag">Create Tag</label>
-        <input type="text" name="Create Tag" id="create_tag" data-action="change->edit--question#createTag">
+        <input type="text" name="Create Tag" id="create_tag" data-action="change->edit--question#createTag" data-edit--question-target="createTag">
       </div>
       <hr>
       <div class="tag_list" 

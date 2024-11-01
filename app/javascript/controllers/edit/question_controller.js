@@ -19,7 +19,12 @@ export default class extends Controller {
     'addRelatedList',
     'addRelatedOption',
     'limitRelated',
+    'createTag',
   ];
+
+  focusCreateTag(event) {
+    this.createTagTarget.focus();
+  }
 
   delete() {
     this.dispatch('delete', {

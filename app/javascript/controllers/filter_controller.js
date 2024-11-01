@@ -49,4 +49,8 @@ export default class extends Controller {
     });
     return existing !== undefined;
   }
+
+  focus(event) {
+    this.textTarget.focus();
+  }
 }
