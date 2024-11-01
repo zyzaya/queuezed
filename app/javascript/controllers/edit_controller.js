@@ -25,6 +25,7 @@ export default class extends Controller {
     'tagOptionList',
     'tagFilterOptionList',
     'relationContainer',
+    'saveButton',
   ];
 
   initialize() {
@@ -32,6 +33,19 @@ export default class extends Controller {
     this.csrf = document.head.querySelector('meta[name=csrf-token]')?.content;
     this.tagCount = {};
     this.idConversion = { questions: {}, answers: {}, tags: {} };
+    this.usaved_changes = false;
+  }
+
+  beforeunload(event) {
+    if (this.unsaved_changes) {
+      event.preventDefault();
+      event.returnValue = true;
+    }
+  }
+
+  updateChanges(value) {
+    this.unsaved_changes = value;
+    this.saveButtonTarget.innerText = value ? 'save*' : 'save';
   }
 
   questionCountValueChanged() {
@@ -75,6 +89,7 @@ export default class extends Controller {
       this.idConversion = ids;
     });
     Change.Reset();
+    this.updateChanges(false);
   }
 
   undo(event) {
@@ -88,12 +103,15 @@ export default class extends Controller {
   newQuestion(event) {
     let selected = this.currentlySelectedValue;
     let id = ID.next();
+    let unsaved = this.unsaved_changes;
     let action = () => {
+      this.updateChanges(true);
       Change.AddQuestion(id);
       this.dispatch('addQuestion', { detail: { id } });
       this.dispatch('selectQuestion', { detail: { id } });
     };
     let reverse = () => {
+      this.updateChanges(unsaved);
       Change.DeleteQuestion(id);
       this.dispatch('deleteQuestion', { detail: { id: id } });
       this.dispatch('selectQuestion', { detail: { id: selected } });
@@ -103,16 +121,19 @@ export default class extends Controller {
 
   deleteQuestion(event) {
     let selected = this.currentlySelectedValue;
+    let unsaved = this.unsaved_changes;
     let id = event.detail.id;
     let question = Change.GetQuestion(id);
 
     let action = () => {
+      this.updateChanges(true);
       Change.DeleteQuestion(id);
       question.tags.forEach((t) => this.modifyTagCount(t.id, t.content, -1));
       this.dispatch('selectSibling');
       this.dispatch('deleteQuestion', { detail: { id } });
     };
     let reverse = () => {
+      this.updateChanges(unsaved);
       Change.AddQuestion(id, question);
       question.tags.forEach((t) => this.modifyTagCount(t.id, t.content, 1));
       this.dispatch('addQuestion', { detail: { id } });
@@ -212,8 +233,10 @@ export default class extends Controller {
 
   addTag(event) {
     let selected = this.currentlySelectedValue;
+    let unsaved = this.unsaved_changes;
     let { question_id, tag_id, content } = event.detail;
     let action = () => {
+      this.updateChanges(true);
       Change.AddTag(question_id, tag_id, content);
       if (this.currentlySelectedValue !== selected) {
         this.dispatch('selectQuestion', { detail: { id: selected } });
@@ -224,6 +247,7 @@ export default class extends Controller {
       this.dispatch('addTag', { detail: event.detail });
     };
     let reverse = () => {
+      this.updateChanges(unsaved);
       Change.RemoveTag(question_id, tag_id, content);
       if (this.currentlySelectedValue !== selected) {
         this.dispatch('selectQuestion', { detail: { id: selected } });
@@ -237,8 +261,10 @@ export default class extends Controller {
 
   removeTag(event) {
     let selected = this.currentlySelectedValue;
+    let unsaved = this.unsaved_changes;
     let { question_id, tag_id, content } = event.detail;
     let action = () => {
+      this.updateChanges(true);
       Change.RemoveTag(question_id, tag_id, content);
       if (this.currentlySelectedValue !== selected) {
         this.dispatch('selectQuestion', { detail: { id: selected } });
@@ -248,6 +274,7 @@ export default class extends Controller {
       this.dispatch('removeTag', { detail: event.detail });
     };
     let reverse = () => {
+      this.updateChanges(unsaved);
       Change.AddTag(question_id, tag_id, content);
       if (this.currentlySelectedValue !== selected) {
         this.dispatch('selectQuestion', { detail: { id: selected } });
@@ -262,9 +289,11 @@ export default class extends Controller {
 
   createTag(event) {
     let selected = this.currentlySelectedValue;
+    let unsaved = this.unsaved_changes;
     let tag_id = ID.next();
     let { question_id, content } = event.detail;
     let action = () => {
+      this.updateChanges(true);
       Change.CreateTag(question_id, tag_id, content);
       if (this.currentlySelectedValue !== selected) {
         this.dispatch('selectQuestion', { detail: { id: selected } });
@@ -277,6 +306,7 @@ export default class extends Controller {
       });
     };
     let reverse = () => {
+      this.updateChanges(unsaved);
       Change.DeleteTag(question_id, tag_id, content);
       if (this.currentlySelectedValue !== selected) {
         this.dispatch('selectQuestion', { detail: { id: selected } });
@@ -305,10 +335,12 @@ export default class extends Controller {
 
   questionContentChange(event) {
     let selected = this.currentlySelectedValue;
+    let unsaved = this.unsaved_changes;
     let id = event.detail.id;
     let current = event.detail.current;
     let previous = event.detail.previous;
     let action = () => {
+      this.updateChanges(true);
       Change.SetQuestionContent(id, current);
       if (this.currentlySelectedValue !== selected) {
         this.dispatch('selectQuestion', { detail: { id: selected } });
@@ -318,6 +350,7 @@ export default class extends Controller {
       });
     };
     let reverse = () => {
+      this.updateChanges(unsaved);
       Change.SetQuestionContent(id, previous);
       if (this.currentlySelectedValue !== selected) {
         this.dispatch('selectQuestion', { detail: { id: selected } });
@@ -330,10 +363,12 @@ export default class extends Controller {
   }
 
   addAnswer(event) {
+    let unsaved = this.unsaved_changes;
     let question_id = event.detail.question_id;
     let answer_id = ID.next();
     let selected = this.currentlySelectedValue;
     let action = () => {
+      this.updateChanges(true);
       Change.AddAnswer(question_id, answer_id);
       if (this.currentlySelectedValue !== selected) {
         this.dispatch('selectQuestion', { detail: { id: selected } });
@@ -344,6 +379,7 @@ export default class extends Controller {
       }
     };
     let reverse = () => {
+      this.updateChanges(unsaved);
       Change.DeleteAnswer(question_id, answer_id);
       if (this.currentlySelectedValue !== selected) {
         this.dispatch('selectQuestion', { detail: { id: selected } });
@@ -362,9 +398,11 @@ export default class extends Controller {
   }
 
   answerContentChange(event) {
+    let unsaved = this.unsaved_changes;
     let selected = this.currentlySelectedValue;
     let { question_id, answer_id, current, previous } = event.detail;
     let action = () => {
+      this.updateChanges(true);
       Change.SetAnswerContent(question_id, answer_id, current);
       if (this.currentlySelectedValue !== selected) {
         this.dispatch('selectQuestion', { detail: { id: selected } });
@@ -374,6 +412,7 @@ export default class extends Controller {
       }
     };
     let reverse = () => {
+      this.updateChanges(unsaved);
       Change.SetAnswerContent(question_id, answer_id, previous);
       if (this.currentlySelectedValue !== selected) {
         this.dispatch('selectQuestion', { detail: { id: selected } });
@@ -397,6 +436,7 @@ export default class extends Controller {
   }
 
   deleteAnswer(event) {
+    let unsaved = this.unsaved_changes;
     let selected = this.currentlySelectedValue;
     let { question_id, answer_id, current } = event.detail;
     let parent = this.findQuestionContainer(question_id);
@@ -405,6 +445,7 @@ export default class extends Controller {
       parent.querySelectorAll('.answer_container')
     ).indexOf(answer_container);
     let action = () => {
+      this.updateChanges(true);
       Change.DeleteAnswer(question_id, answer_id);
       if (this.currentlySelectedValue !== selected) {
         this.dispatch('selectQuestion', { detail: { id: selected } });
@@ -413,6 +454,7 @@ export default class extends Controller {
       }
     };
     let reverse = () => {
+      this.updateChanges(unsaved);
       Change.AddAnswer(question_id, answer_id, index);
       Change.SetAnswerContent(question_id, answer_id, current);
       if (this.currentlySelectedValue !== selected) {
@@ -427,9 +469,11 @@ export default class extends Controller {
 
   // related
   addRelated(event) {
+    let unsaved = this.unsaved_changes;
     let selected = this.currentlySelectedValue;
     let { question_id, related_id } = event.detail;
     let action = () => {
+      this.updateChanges(true);
       Change.AddRelated(question_id, related_id);
       if (this.currentlySelectedValue !== selected) {
         this.dispatch('selectQuestion', { detail: { id: selected } });
@@ -440,6 +484,7 @@ export default class extends Controller {
       }
     };
     let reverse = () => {
+      this.updateChanges(unsaved);
       Change.RemoveRelated(question_id, related_id);
       if (this.currentlySelectedValue !== selected) {
         this.dispatch('selectQuestion', { detail: { id: selected } });
@@ -451,10 +496,12 @@ export default class extends Controller {
   }
 
   removeRelation(event) {
+    let unsaved = this.usaved_changes;
     let selected = this.currentlySelectedValue;
     let question_id = this.currentlySelectedValue;
     let related_id = event.detail.id;
     let action = () => {
+      this.updateChanges(true);
       Change.RemoveRelated(question_id, related_id);
       if (this.currentlySelectedValue !== selected) {
         this.dispatch('selectQuestion', { detail: { id: selected } });
@@ -463,6 +510,7 @@ export default class extends Controller {
       }
     };
     let reverse = () => {
+      this.updateChanges(unsaved);
       Change.AddRelated(question_id, related_id);
       if (this.currentlySelectedValue !== selected) {
         this.dispatch('selectQuestion', { detail: { id: selected } });
