@@ -65,4 +65,15 @@ quiz3 = user.quizzes.new(name: 'This is a quiz with an extremely long name to te
   user.quizzes.new(name: "quiz ##{n}")
 end
 
+quiz_large = user.quizzes.new(name: 'Many Questions')
+tag_odd = Tag.find_or_create_by(content: 'odd')
+tag_div_by_9 = Tag.find_or_create_by(content: 'divisible by 9')
+0.upto(99) do |n|
+  q = Question.new(content: "First: #{n}")
+  q.tags << tag_odd if n % 2 == 0
+  q.tags << tag_div_by_9 if n % 9 == 0
+  q.answers.new(content: "#{n}")
+  quiz_large.questions << q
+end
+
 user.save
