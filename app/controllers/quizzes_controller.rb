@@ -36,7 +36,7 @@ class QuizzesController < ApplicationController
     #   prev_id: 
     #   answers: 
     # ]
-    quiz = current_user.quizzes.find_by(id: params[:id])
+    quiz = current_user.quizzes.includes(questions: [:answers, :tags]).find_by(id: params[:id])
     if (quiz.nil?)
       head :not_found
     elsif !params[:quiz.nil?]
