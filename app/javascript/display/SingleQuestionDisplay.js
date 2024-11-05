@@ -30,6 +30,7 @@ export default function SingleQuestionDisplay(
   }
   let question_content = document.createElement('textarea');
   question_content.classList.add('question_content');
+  question_content.id = `question_content#${id}`;
   question_content.dataset['editTarget'] = 'questionContent';
   question_content.dataset['edit-SingleQuestionIdValue'] = id;
   question_content.dataset['edit-SingleQuestionTarget'] = 'info';

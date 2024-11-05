@@ -9,7 +9,7 @@
   data-edit--question-target='singleQuestionContainer'
   data-edit--single-question-id-value='<%= id %>'>
   <div class="question_header">Question.</div>
-  <textarea class="question_content" 
+  <textarea class="question_content" id=<%= "question_content##{id}"%>
     data-edit-target='questionContent'
     data-edit--single-question-id-value='<%= id %>'
     data-edit--single-question-target='info'

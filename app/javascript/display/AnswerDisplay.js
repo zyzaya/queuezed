@@ -20,6 +20,7 @@ export default function AnswerDisplay(
   answer_container.dataset.action = 'keydown.alt+shift+a->edit--answer#delete';
 
   let answer_content = document.createElement('textarea');
+  answer_content.id = `answer_content#${answer_id}`;
   answer_content.classList.add('answer_content');
   answer_content.rows = '1';
   answer_content.dataset.editTarget = 'answerContent';
