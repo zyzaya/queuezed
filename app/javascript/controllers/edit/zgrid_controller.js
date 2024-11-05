@@ -21,7 +21,7 @@ export default class extends Controller {
       parent: parent,
       data: [],
       columns: [{ id: 'id', visible: false }],
-      pagination: 20,
+      pagination: 15,
       className: {
         table: 'zg_table',
         th: 'zg_th',
