@@ -1,12 +1,4 @@
 <div class="header">
-  <div class="flash">
-    <% if flash[:notice] %>
-      <p class="notice"><%= notice %></p>
-    <% end %>
-    <% if flash[:alert] %>
-      <p class="alert"><%= alert %></p>
-    <% end %>
-  </div>
   <div class="header_info">
     <div></div>
     <%= link_to "queuezed", quizzes_path, class: "header_title" %>
