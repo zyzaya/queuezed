@@ -201,3 +201,7 @@
   width: min-content;
   align-self: center;
 }
+
+.question_hidden {
+  display: none;
+}

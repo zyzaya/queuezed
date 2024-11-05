@@ -104,29 +104,34 @@ export default class extends Controller {
   }
 
   set(event) {
-    this.idValue = event.detail.id;
-    this.tagTargets.forEach((t) => t.remove());
-    let tags = event.detail.tags.sort((a, b) =>
-      a.content.localeCompare(b.content)
-    );
-    tags.forEach((t) => {
-      let display = TagDisplay(t.id, t.content);
-      this.tagListTarget.appendChild(display);
-    });
-    this.singleQuestionContainerTargets.forEach((c) => c.remove());
-    let single = SingleQuestionDisplay(
-      event.detail.id,
-      event.detail.content,
-      event.detail.answers
-    );
-    this.singleStartTarget.after(single);
+    if (event.detail.id === '') {
+      this.element.classList.add('question_hidden');
+    } else {
+      this.element.classList.remove('question_hidden');
+      this.idValue = event.detail.id;
+      this.tagTargets.forEach((t) => t.remove());
+      let tags = event.detail.tags.sort((a, b) =>
+        a.content.localeCompare(b.content)
+      );
+      tags.forEach((t) => {
+        let display = TagDisplay(t.id, t.content);
+        this.tagListTarget.appendChild(display);
+      });
+      this.singleQuestionContainerTargets.forEach((c) => c.remove());
+      let single = SingleQuestionDisplay(
+        event.detail.id,
+        event.detail.content,
+        event.detail.answers
+      );
+      this.singleStartTarget.after(single);
 
-    event.detail.relations.forEach((r) => {
-      let relation = SingleQuestionDisplay(r.id, r.content, r.answers, true);
-      this.relationContainerTarget.appendChild(relation);
-    });
+      event.detail.relations.forEach((r) => {
+        let relation = SingleQuestionDisplay(r.id, r.content, r.answers, true);
+        this.relationContainerTarget.appendChild(relation);
+      });
 
-    this.updateAddRelatedOptions();
+      this.updateAddRelatedOptions();
+    }
   }
 
   // related questions

@@ -2,7 +2,7 @@
   <% tags = @question.nil? ? [] : @question.tags.order(:content) %>
   <% relations = @question.nil? ? [] : @question.relations %>
   <% id = @question.nil? ? "" : @question.id%>
-  <div class="question_detail" 
+  <div class="<%= @question.nil? ? "question_detail question_hidden" : "question_detail" %>"
     data-controller="edit--question" 
     data-action = 
       "edit--zgrid:setQuestion@window->edit--question#set
