@@ -46,3 +46,23 @@
   border-top: 2px solid var(--secondary-bg-color-dark);
   border-bottom: 2px solid var(--secondary-bg-color-dark);
 }
+
+.zg_page {
+  background-color: var(--interact-color);
+  color: var(--main-text-color);
+  border-color: var(--interact-color);
+  cursor: pointer;
+  padding: 3px 7px;
+  white-space: nowrap;
+  text-decoration: none;
+  border-style: none;
+}
+
+.zg_page:hover {
+  border: 1px solid var(--interact-color-dark);
+  background-color: var(--interact-color-dark);
+}
+
+.zg_page:active {
+  background-color: var(--interact-color-dark);
+}
