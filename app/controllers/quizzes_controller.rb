@@ -36,7 +36,7 @@ class QuizzesController < ApplicationController
     #   prev_id: 
     #   answers: 
     # ]
-    quiz = current_user.quizzes.includes(questions: [:answers, :tags]).find_by(id: params[:id])
+    quiz = current_user.quizzes.find_by(id: params[:id])
     if (quiz.nil?)
       head :not_found
     elsif !params[:quiz.nil?]
@@ -64,9 +64,10 @@ class QuizzesController < ApplicationController
             convert_meta(question_params, :relations_attributes)
           end      
         end
-        begin 
+        begin
           id_conversions = create_new_records(quiz, new_records)
           quiz.update(quiz_params)
+          quiz = current_user.quizzes.includes(questions: [:answers, :tags]).find_by(id: params[:id])
           result = inject_id_conversion(quiz, id_conversions)
           render(json: result)
         rescue ActiveRecord::RecordNotFound
@@ -169,13 +170,15 @@ class QuizzesController < ApplicationController
     }
     return ids if params["questions"].nil?
     
+    question_ids = params["questions"].map { |q| q["id"] }
+    questions = quiz.questions.where(id: question_ids)
     params["questions"].each do |q|
       question = nil
       if q["meta"].eql?("new")
         question = quiz.questions.create(content: q["content"])
         ids[:questions] << { id: question.id, prev_id: q["id"]}
       else
-        question = quiz.questions.find(q["id"])
+        question = questions.find(q["id"])
       end
       unless q["answers"].nil?
         q["answers"].each do |a|
@@ -221,6 +224,9 @@ class QuizzesController < ApplicationController
     end
     id_conversions[:tags].each do |t|
       question = result["questions"].find { |e| e["id"].eql?(t[:question_id]) }
+      # puts question
+      # puts ""
+      # puts t
       tag = question["tags"].find { |e| e["id"].eql?(t[:id]) }
       tag["prev_id"] = t[:prev_id]
     end
