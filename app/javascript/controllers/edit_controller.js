@@ -211,7 +211,7 @@ export default class extends Controller {
       let next = Array.from(this.tagFilterOptionListTarget.children).find(
         (t) => {
           return (
-            !['-1', '-2', 'review'].includes(t.value) &&
+            !['-1', '-2', 'review', 'difficult'].includes(t.value) &&
             content.localeCompare(t.text) <= 0
           );
         }
