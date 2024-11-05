@@ -44,9 +44,11 @@
             edit:addQuestion@window->edit--zgrid#addQuestion
             edit:deleteQuestion@window->edit--zgrid#deleteQuestion
             edit:addTag@window->edit--zgrid#addTag
-            edit:removeTag@window-edit-->zgrid#removeTag
+            edit:removeTag@window->edit--zgrid#removeTag
             edit:questionContentChange@window->edit--zgrid#questionContentChange
-            filter:updateFilter@window->edit--zgrid#updateFilter">
+            filter:updateFilter@window->edit--zgrid#updateFilter
+            keydown.alt+n@window->edit--zgrid#nextQuestion
+            keydown.alt+shift+n@window->edit--zgrid#previousQuestion">
         <%= render 'shared/filter', quiz: @quiz %>
         <div class="edit_displayed_count" data-edit--zgrid-target="questionCount"></div>
         <div class="edit_zgrid" data-edit--zgrid-target="zgridContainer"></div>
