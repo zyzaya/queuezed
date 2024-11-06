@@ -49,48 +49,8 @@ export default class extends Controller {
 
   zgridContainerTargetConnected(element) {
     element.replaceChildren();
-    this.zgrid.reconfigure({
-      parent: element,
-      columns: [
-        {
-          id: 'id',
-          visible: false,
-        },
-        {
-          id: 'tags',
-          visible: false,
-        },
-        {
-          id: 'content',
-          name: 'Question',
-        },
-        {
-          id: 'review',
-          visible: false,
-        },
-        {
-          id: 'difficult',
-          visible: false,
-        },
-        {
-          id: 'current_streak',
-          name: 'Current Streak',
-        },
-        {
-          id: 'longest_streak',
-          name: 'Longest Streak',
-        },
-        {
-          id: 'times_taken',
-          name: 'Times Taken',
-        },
-        {
-          id: 'times_correct',
-          name: 'Times Correct',
-        },
-      ],
-      searchbox: false,
-    });
+    this.zgrid.reconfigure({ parent: element });
+    this.updateVisibleColumns();
   }
 
   refresh(event) {
@@ -301,5 +261,55 @@ export default class extends Controller {
       data = this.zgrid.getData();
       this.setSelectedQuestion(data[data.length - 1].id);
     }
+  }
+
+  updateVisibleColumns() {
+    let size = window.matchMedia('(min-width: 800px)');
+    let large_size = this.element.offsetWidth >= 600 || size.matches;
+    this.zgrid.reconfigure({
+      columns: [
+        {
+          id: 'id',
+          visible: false,
+        },
+        {
+          id: 'tags',
+          visible: false,
+        },
+        {
+          id: 'content',
+          name: 'Question',
+        },
+        {
+          id: 'review',
+          visible: false,
+        },
+        {
+          id: 'difficult',
+          visible: false,
+        },
+        {
+          id: 'current_streak',
+          name: 'Current Streak',
+          visible: large_size,
+        },
+        {
+          id: 'longest_streak',
+          name: 'Longest Streak',
+          visible: large_size,
+        },
+        {
+          id: 'times_taken',
+          name: 'Times Taken',
+          visible: large_size,
+        },
+        {
+          id: 'times_correct',
+          name: 'Times Correct',
+          visible: large_size,
+        },
+      ],
+      searchbox: false,
+    });
   }
 }

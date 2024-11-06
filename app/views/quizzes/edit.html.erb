@@ -52,7 +52,8 @@
             edit:questionContentChange@window->edit--zgrid#questionContentChange
             filter:updateFilter@window->edit--zgrid#updateFilter
             keydown.alt+n@window->edit--zgrid#nextQuestion
-            keydown.alt+shift+n@window->edit--zgrid#previousQuestion">
+            keydown.alt+shift+n@window->edit--zgrid#previousQuestion
+            resize@window->edit--zgrid#updateVisibleColumns">
         <%= render 'shared/filter', quiz: @quiz %>
         <div class="edit_displayed_count" data-edit--zgrid-target="questionCount"></div>
         <div class="edit_zgrid" data-edit--zgrid-target="zgridContainer"></div>
