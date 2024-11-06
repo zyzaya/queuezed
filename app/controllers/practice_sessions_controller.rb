@@ -17,7 +17,9 @@ class PracticeSessionsController < ApplicationController
       head :not_found
     else
       text_filter = practice_params[:text_filter]
+      text_filter = '' if text_filter.nil?
       tag_filter = practice_params[:tag_filter]
+      tag_filter = '' if tag_filter.nil?
       tag_filter = tag_filter.split(",").map { |t| t.to_i }
       review_filter = practice_params[:review_filter] == "true"
       difficult_filter = practice_params[:difficult_filter] == "true"

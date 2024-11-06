@@ -15,7 +15,7 @@
   </div>
   <div>
     <%= link_to 'Practice', new_quiz_practice_path(quiz), class: 'quiz_practice button' %>
-    <button class="quiz_difficult button">Difficult</button>
-    <button class="quiz_review button">Review</button>
+    <%= button_to 'Difficult', quiz_practice_index_path(quiz), class: 'quiz_difficult button', params: { difficult_filter: 'true' }%>
+    <%= button_to 'Review', quiz_practice_index_path(quiz), class: 'quiz_review button', params: { review_filter: 'true' }%>
   </div>
 </div>
