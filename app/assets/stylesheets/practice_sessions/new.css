@@ -52,12 +52,30 @@
 .immediate_feedback {
   display: grid;
   row-gap: 15px;
+  width: min-content;
+  margin: auto;
+}
+
+.answer_feedback {
+  display: flex;
+  flex-direction: column;
+  row-gap: 5px;
 }
 
 .feedback_container {
+  display: flex;
+  flex-direction: column;
+  row-gap: 5px;
+}
+
+.answer_given {
   display: grid;
-  justify-content: center;
-  grid-template-columns: 1fr min-content 1fr;
+  grid-template-columns: 1fr min-content;
+}
+
+.answer_expected {
+  display: grid;
+  grid-template-columns: min-content 1fr;
 }
 
 .feedback_container > .answer_input {
@@ -73,22 +91,22 @@
   align-self: center;
 }
 
-.feedback_container.correct > input:disabled {
+.feedback_container.correct input:disabled {
   border: 1px solid green;
 }
 
-.feedback_container.correct > .answer_symbol {
+.feedback_container.correct .answer_symbol {
   background-color: green;
   border-radius:  0 10px 10px 0;
 }
 
-.feedback_container.incorrect > input:disabled {
+.feedback_container.incorrect input:disabled {
   border: 1px solid var(--invalid-color);
   background-color: white;
   color: black;
 }
 
-.feedback_container.incorrect > .answer_symbol {
+.feedback_container.incorrect .answer_symbol {
   background-color: var(--invalid-color);
 }
 

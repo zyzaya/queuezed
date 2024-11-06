@@ -3,11 +3,18 @@
   <div class="answer_feedback">
     <% question_history.answer_histories.each do |history| %>
       <div class="feedback_container <%= history.correct ? "correct" : "incorrect" %>">
-        <input class="answer_input" id=<%= "given##{history.id}"%> type="text" value="<%= history.given %>" disabled>
-        <div class="answer_symbol"><%= history.correct ? "✓" : "x" %></div>
-        <% unless history.correct %>
-          <input class="answer_input" id=<%= "expected##{history.id}"%> type="text" value="<%= history.expected %>" disabled>
-        <% end %>
+        <div class="answer_given">
+          <input class="answer_input" id=<%= "given##{history.id}"%> type="text" value="<%= history.given %>" disabled>
+          <% if history.correct %>
+            <div class="answer_symbol">✓</div>
+          <% end %>
+        </div>
+        <div class="answer_expected">
+          <% unless history.correct %>
+            <div class="answer_symbol">x</div>
+            <input class="answer_input" id=<%= "expected##{history.id}"%> type="text" value="<%= history.expected %>" disabled>
+          <% end %>
+        </div>
       </div>  
     <% end %>
   </div>
