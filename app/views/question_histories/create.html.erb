@@ -1,5 +1,7 @@
 <turbo-frame class="immediate_feedback" id="input">
-  <%= render 'practice_sessions/progress', practice_session: @practice_session %>
+  <div class="practice_progress_bar">
+    <%= "#{@practice_session.current} / #{@practice_session.length}"%>
+  </div>
   <div class="immediate_feedback">
     <% @question_histories.each do |h| %>
       <%= render 'question_histories/single_question_feedback', question_history: h, practice_session: @practice_session %>
