@@ -4,7 +4,7 @@
       <div class="unfinished_header">
         <div class="progress"><%= "#{session.current} / #{session.length}"%></div>
         <%= button_to 'Remove', practice_finish_path(session), class: "button" %>
-        <%= link_to 'Continue', practice_path(session), class: "button" %>
+        <%= link_to 'Continue', practice_path(session), class: "button", data: {turbo: false } %>
       </div>
       <% unless session.text_filter.eql?("") %>
         <div class="textFilter">
