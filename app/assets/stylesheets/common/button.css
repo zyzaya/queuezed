@@ -1,4 +1,6 @@
 .button {
+  font-size: 15px;
+  font-family: 'Times New Roman', Times, serif;
   background-color: var(--interact-color);
   color: var(--main-text-color);
   border-color: var(--interact-color);
@@ -15,4 +17,8 @@
 
 .button:active {
   box-shadow: 1px 1px 0px 2px inset var(--interact-color-dark);
+}
+
+.button_to > .button {
+  height: 100%;
 }

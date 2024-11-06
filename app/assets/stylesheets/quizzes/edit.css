@@ -43,13 +43,13 @@
 .practice_toolbar {
   display: flex;
   gap: 5px;
-  margin: 2px;
+  padding-bottom: 4px;
 }
 
 .toolbar {
   display: grid;
   grid-template-columns: repeat(4, min-content);
-  padding: 8px 0;
+  padding: 4px 0;
   column-gap: 5px;
   width: 100%;
   justify-content: center;
