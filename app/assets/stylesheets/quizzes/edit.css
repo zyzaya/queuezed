@@ -22,7 +22,8 @@
   justify-items: center;
   align-items: center;
   display: grid;
-  grid-template-rows: 1fr 1fr 1fr;
+  grid-template-rows: repeat(3, min-content);
+  gap: 5px;
   border-bottom: 3px solid var(--secondary-bg-color-dark);
 }
 
@@ -39,9 +40,10 @@
   border: none;
 }
 
-.quiz_practice {
-  height: min-content;
-  margin-bottom: 5px;
+.practice_toolbar {
+  display: flex;
+  gap: 5px;
+  margin: 2px;
 }
 
 .toolbar {

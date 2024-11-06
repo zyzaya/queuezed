@@ -25,7 +25,11 @@
     <div class="quiz_info">
       <%= text_field "", "quiz_title", class: "quiz_title", value:"#{@quiz.name}", data: { action:'edit#quizTitleChange', 'edit-target': 'title' }%>
       <div class="question_count" data-edit-target="subtitle"></div>
-      <%= link_to 'Practice', new_quiz_practice_path(@quiz.id), class: 'quiz_practice button' %>
+      <div class="practice_toolbar">
+        <%= link_to 'Practice', new_quiz_practice_path(@quiz.id), class: 'quiz_practice button' %>
+        <%= button_to 'Difficult', quiz_practice_index_path(@quiz), class: 'quiz_difficult button', params: { difficult_filter: 'true' }%>
+        <%= button_to 'Review', quiz_practice_index_path(@quiz), class: 'quiz_review button', params: { review_filter: 'true' }%>
+      </div>
     </div>
     <div class="toolbar">
       <a class="button" id="undo" data-action="edit#undo">undo</a>
