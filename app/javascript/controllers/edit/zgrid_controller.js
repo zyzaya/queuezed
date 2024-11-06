@@ -197,8 +197,8 @@ export default class extends Controller {
           text === '' || row.content.toLowerCase().includes(text);
         let matches_tag_filter =
           tag.length === 0 || tag.some((f) => tags.includes(f));
-        let matches_review_filter = !review || row.review === 'true';
-        let matches_difficult_filter = !difficult || row.difficult === 'true';
+        let matches_review_filter = !review || row.review;
+        let matches_difficult_filter = !difficult || row.difficult;
         return (
           matches_text_filter &&
           matches_tag_filter &&
