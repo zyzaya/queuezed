@@ -57,11 +57,25 @@
   border-bottom: 3px solid var(--secondary-bg-color-dark);
 }
 
-.edit_frame {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  margin: 5px;
+@media (max-width: 800px) {
+  .edit_frame {
+    display: flex;
+    flex-wrap: wrap;
+    margin: 5px;
+  }
+  
+  .edit_frame > * {
+    flex-grow: 1;
+  }
 }
+
+@media (min-width: 800px) {
+  .edit_frame {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
 
 .edit_list {
   display: flex;
@@ -70,7 +84,6 @@
   background-color: var(--tertiary-bg-color-dark);
   border: 1px solid black;
   color: var(--main-text-color);
-  height: 100%;
   overflow: hidden;
 }
 
