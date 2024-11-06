@@ -236,13 +236,11 @@ export default class extends Controller {
   nextQuestion(event) {
     let data = this.zgrid.getData();
     let index = data.findIndex((e) => e.id == this.currentlySelected);
-    let page_count = Math.ceil(this.zgrid.getRawData().length / 14);
     if (index === -1) return;
-    console.log(`${this.zgrid.page}, ${page_count}`);
 
     if (index < data.length - 1) {
       this.setSelectedQuestion(data[index + 1].id);
-    } else if (this.zgrid.page < page_count) {
+    } else if (this.zgrid.page < this.zgrid.totalPages) {
       this.zgrid.page = this.zgrid.page + 1;
       data = this.zgrid.getData();
       this.setSelectedQuestion(data[0].id);
