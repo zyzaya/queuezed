@@ -29,6 +29,7 @@ export default class extends Controller {
         tr: 'zg_row',
         td: 'zg_td',
         paginationButton: 'zg_page',
+        paginationCurrent: 'zg_current',
         selected: 'active_question',
       },
       onClick: (col, row, colName, data) => this.setSelectedQuestion(data.id),
