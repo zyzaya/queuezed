@@ -56,6 +56,8 @@ class Quiz < ApplicationRecord
       order: order,
       text_filter: text_filter,
       tag_filter: tag_filter,
+      difficult: difficult,
+      review: review,
       limit: limit_column
     )
   end
