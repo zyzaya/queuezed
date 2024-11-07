@@ -53,14 +53,17 @@ export default class extends Controller {
   }
 
   quizTitleChange(event) {
+    let unsaved = this.unsaved_changes;
     let previous = this.title;
     let current = this.titleTarget.value;
     let action = () => {
+      this.updateChanges(true);
       Change.SetQuizName(current);
       this.titleTarget.value = current;
       this.title = current;
     };
     let reverse = () => {
+      this.updateChanges(unsaved);
       Change.SetQuizName(previous);
       this.titleTarget.value = previous;
       this.title = previous;
@@ -97,7 +100,7 @@ export default class extends Controller {
   }
 
   redo(event) {
-    Undo.redo();
+    console.log('redo');
   }
 
   newQuestion(event) {
