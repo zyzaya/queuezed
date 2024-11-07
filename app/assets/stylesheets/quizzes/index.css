@@ -4,12 +4,14 @@
 }
 
 .quiz_new {
-  height: 64px;
-  line-height: 64px;
-  font-size: 32px;
-  margin-top: 5px;
   width: min-content;
   justify-self: center;
+  margin-top: 5px;
+}
+
+.quiz_new > .button {
+  height: 64px;
+  font-size: 32px;
 }
 
 .quizzes_container {
