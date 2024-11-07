@@ -97,10 +97,12 @@ export default class extends Controller {
 
   undo(event) {
     Undo.undo();
+    event.preventDefault();
   }
 
   redo(event) {
-    console.log('redo');
+    Undo.redo();
+    event.preventDefault();
   }
 
   newQuestion(event) {
