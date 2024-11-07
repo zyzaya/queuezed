@@ -6,7 +6,7 @@ class QuestionsController < ApplicationController
     if @quiz.nil?
       head :not_found
     else
-      @questions = @quiz.questions.includes(:tags, :answers, :relations).order(:id)
+      @questions = @quiz.questions.includes(:tags, :answers, :relations).order(:created_at)
       render(
         json: @questions, 
         only: [

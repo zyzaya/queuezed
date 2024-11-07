@@ -29,6 +29,7 @@ export default class extends Controller {
         tr: 'zg_row',
         td: 'zg_td',
         paginationButton: 'zg_page',
+        paginationCurrent: 'zg_current',
         selected: 'active_question',
       },
       onClick: (col, row, colName, data) => this.setSelectedQuestion(data.id),
@@ -105,15 +106,18 @@ export default class extends Controller {
   }
 
   setSelectedQuestion(id) {
-    if (id === this.currentlySelected || id === 'null' || id === undefined)
-      return;
+    if (id === this.currentlySelected) return;
 
     this.zgrid.setSelected(id);
     this.currentlySelected = id;
     this.editOutlet.currentlySelectedValue = id;
     // displayed question
     let question = Change.GetQuestion(id);
-    if (question === undefined) return;
+    if (question === undefined) {
+      this.dispatch('setQuestion', { detail: { id: null } });
+      return;
+    }
+
     let relations = question.relations.map((e) => {
       let r = this.questions.find((q) => q.id == e.id);
       return {
@@ -152,9 +156,16 @@ export default class extends Controller {
 
     this.zgrid.reconfigure({
       filter: (row) => {
+        let q = Change.GetQuestion(row.id);
+        let answer_content = '';
+        if (q.answers !== undefined) {
+          answer_content = q.answers.reduce((a, c) => (a += c.content), '');
+        }
         let tags = row.tags.split(' ');
         let matches_text_filter =
-          text === '' || row.content.toLowerCase().includes(text);
+          text === '' ||
+          row.content.toLowerCase().includes(text) ||
+          answer_content.toLowerCase().includes(text);
         let matches_tag_filter =
           tag.length === 0 || tag.some((f) => tags.includes(f));
         let matches_review_filter = !review || row.review;
@@ -195,7 +206,7 @@ export default class extends Controller {
     else {
       let tags = question.tags.join(' ');
       this.zgrid.addRow({
-        id: event.detail.id.toString(),
+        id: event.detail.id,
         review: question.review,
         tags: tags,
         difficult: question.difficult,
@@ -206,6 +217,7 @@ export default class extends Controller {
         times_correct: question.times_correct,
       });
     }
+    this.zgrid.page = this.zgrid.totalPages;
     this.updateQuestionCount();
   }
 
@@ -236,13 +248,11 @@ export default class extends Controller {
   nextQuestion(event) {
     let data = this.zgrid.getData();
     let index = data.findIndex((e) => e.id == this.currentlySelected);
-    let page_count = Math.ceil(this.zgrid.getRawData().length / 14);
     if (index === -1) return;
-    console.log(`${this.zgrid.page}, ${page_count}`);
 
     if (index < data.length - 1) {
       this.setSelectedQuestion(data[index + 1].id);
-    } else if (this.zgrid.page < page_count) {
+    } else if (this.zgrid.page < this.zgrid.totalPages) {
       this.zgrid.page = this.zgrid.page + 1;
       data = this.zgrid.getData();
       this.setSelectedQuestion(data[0].id);

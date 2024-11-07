@@ -52,7 +52,6 @@
 .immediate_feedback {
   display: grid;
   row-gap: 15px;
-  width: min-content;
   margin: auto;
 }
 
@@ -60,6 +59,8 @@
   display: flex;
   flex-direction: column;
   row-gap: 5px;
+  width: min-content;
+  margin: auto;
 }
 
 .feedback_container {

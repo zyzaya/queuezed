@@ -104,7 +104,7 @@ export default class extends Controller {
   }
 
   set(event) {
-    if (event.detail.id === '') {
+    if (event.detail.id === '' || event.detail.id === null) {
       this.element.classList.add('question_hidden');
     } else {
       this.element.classList.remove('question_hidden');
@@ -124,6 +124,7 @@ export default class extends Controller {
         event.detail.answers
       );
       this.singleStartTarget.after(single);
+      single.getElementsByClassName('question_content')[0].focus();
 
       event.detail.relations.forEach((r) => {
         let relation = SingleQuestionDisplay(r.id, r.content, r.answers, true);

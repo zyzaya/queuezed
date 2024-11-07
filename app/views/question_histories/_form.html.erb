@@ -1,5 +1,7 @@
 <turbo-frame id="input">
-  <%= render 'practice_sessions/progress', practice_session: @practice_session %>
+  <div class="practice_progress_bar">
+    <%= "#{@practice_session.current + 1} / #{@practice_session.length}"%>
+  </div>
   <div class="practice_form" 
     data-controller="practice"
     data-action="keydown->practice#ChangeAnswer">

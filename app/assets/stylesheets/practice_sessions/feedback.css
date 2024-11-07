@@ -47,6 +47,7 @@
 .single_question_feedback {
   display: grid;
   grid-template-columns: 1fr 1fr;
+  column-gap: 4px;
   padding: 5px 10px;
   border-bottom: 1px solid var(--tertiary-bg-color);
 }
@@ -54,7 +55,6 @@
 .question_content {
   text-align: center;
   color: var(--main-text-color);
-  text-wrap: nowrap;
   font-size: large;
   justify-self: start;
 }

@@ -66,3 +66,7 @@
 .zg_page:active {
   background-color: var(--interact-color-dark);
 }
+
+.zg_current {
+  background-color: var(--interact-color-dark);
+}

@@ -7,7 +7,6 @@ class QuestionHistoriesController < ApplicationController
       head :not_found
     else
       @quiz = @practice_session.quiz
-      @practice_session.next_question
       if @practice_session.finished?
         redirect_to practice_path(@practice_session)
       else
@@ -28,14 +27,14 @@ class QuestionHistoriesController < ApplicationController
       @quiz = @practice_session.quiz
       given = params[:given]
       q_ids = given.keys.map { |id| id.to_i }
+      current_question_ids = @practice_session.order[@practice_session.current].filter { |e| !e.nil? }
+      @question_histories = @practice_session.question_histories.where(question_id: current_question_ids)
       Question.transaction do
         @quiz.questions.find(q_ids).each do |q|
           q.submit_answer(@practice_session, given[q.id.to_s])
         end
+        @practice_session.next_question
       end
-
-      current_question_ids = @practice_session.order[@practice_session.current].filter { |e| !e.nil? }
-      @question_histories = @practice_session.question_histories.where(question_id: current_question_ids)
     end
   end
   private
