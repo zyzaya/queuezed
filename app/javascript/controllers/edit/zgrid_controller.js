@@ -203,7 +203,7 @@ export default class extends Controller {
     else {
       let tags = question.tags.join(' ');
       this.zgrid.addRow({
-        id: event.detail.id.toString(),
+        id: event.detail.id,
         review: question.review,
         tags: tags,
         difficult: question.difficult,
@@ -214,6 +214,7 @@ export default class extends Controller {
         times_correct: question.times_correct,
       });
     }
+    this.zgrid.page = this.zgrid.totalPages;
     this.updateQuestionCount();
   }
 
