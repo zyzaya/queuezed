@@ -106,15 +106,18 @@ export default class extends Controller {
   }
 
   setSelectedQuestion(id) {
-    if (id === this.currentlySelected || id === 'null' || id === undefined)
-      return;
+    if (id === this.currentlySelected) return;
 
     this.zgrid.setSelected(id);
     this.currentlySelected = id;
     this.editOutlet.currentlySelectedValue = id;
     // displayed question
     let question = Change.GetQuestion(id);
-    if (question === undefined) return;
+    if (question === undefined) {
+      this.dispatch('setQuestion', { detail: { id: null } });
+      return;
+    }
+
     let relations = question.relations.map((e) => {
       let r = this.questions.find((q) => q.id == e.id);
       return {

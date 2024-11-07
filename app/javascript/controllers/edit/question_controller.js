@@ -104,7 +104,7 @@ export default class extends Controller {
   }
 
   set(event) {
-    if (event.detail.id === '') {
+    if (event.detail.id === '' || event.detail.id === null) {
       this.element.classList.add('question_hidden');
     } else {
       this.element.classList.remove('question_hidden');
