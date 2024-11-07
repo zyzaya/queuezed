@@ -153,9 +153,16 @@ export default class extends Controller {
 
     this.zgrid.reconfigure({
       filter: (row) => {
+        let q = Change.GetQuestion(row.id);
+        let answer_content = '';
+        if (q.answers !== undefined) {
+          answer_content = q.answers.reduce((a, c) => (a += c.content), '');
+        }
         let tags = row.tags.split(' ');
         let matches_text_filter =
-          text === '' || row.content.toLowerCase().includes(text);
+          text === '' ||
+          row.content.toLowerCase().includes(text) ||
+          answer_content.toLowerCase().includes(text);
         let matches_tag_filter =
           tag.length === 0 || tag.some((f) => tags.includes(f));
         let matches_review_filter = !review || row.review;
