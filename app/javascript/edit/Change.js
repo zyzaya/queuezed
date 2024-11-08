@@ -89,33 +89,41 @@ export default class Change {
     return relation;
   }
 
-  static AddRelated(question_id, relation_id) {
-    let q = this.GetQuestion(question_id);
+  static #addRelation(id_1, id_2) {
+    let q = this.GetQuestion(id_1);
     if (q.relations === undefined) q.relations = [];
-    let r = { id: relation_id };
-    if (q.relations.find((e) => e.id == relation_id) == undefined) {
+    let r = { id: id_2 };
+    if (q.relations.find((e) => e.id == id_2) == undefined) {
       q.relations.push(r);
     }
 
-    let question = this.#getQuestionChanges(question_id);
-    let relation = this.#getRelationChanges(question, relation_id);
+    let question = this.#getQuestionChanges(id_1);
+    let relation = this.#getRelationChanges(question, id_2);
 
     relation.meta = relation.meta === 'delete' ? '' : 'add';
   }
 
-  static RemoveRelated(question_id, relation_id) {
-    let q = this.GetQuestion(question_id);
-    q.relations = q.relations.filter((r) => r.id != relation_id);
+  static AddRelated(question_id, relation_id) {
+    this.#addRelation(question_id, relation_id);
+    this.#addRelation(relation_id, question_id);
+  }
 
-    let question = this.#getQuestionChanges(question_id);
-    let relation = this.#getRelationChanges(question, relation_id);
+  static #removeRelation(id_1, id_2) {
+    let q = this.GetQuestion(id_1);
+    q.relations = q.relations.filter((r) => r.id != id_2);
+
+    let question = this.#getQuestionChanges(id_1);
+    let relation = this.#getRelationChanges(question, id_2);
     if (relation.meta === 'add') {
-      question.relations = question.relations.filter(
-        (e) => e.id != relation_id
-      );
+      question.relations = question.relations.filter((e) => e.id != id_2);
     } else {
       relation.meta = 'delete';
     }
+  }
+
+  static RemoveRelated(question_id, relation_id) {
+    this.#removeRelation(question_id, relation_id);
+    this.#removeRelation(relation_id, question_id);
   }
 
   static AddAnswer(question_id, answer_id, index = -1) {
