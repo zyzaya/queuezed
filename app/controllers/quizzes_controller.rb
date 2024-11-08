@@ -65,11 +65,15 @@ class QuizzesController < ApplicationController
           end      
         end
         begin
-          id_conversions = create_new_records(quiz, new_records)
-          quiz.update(quiz_params)
-          quiz = current_user.quizzes.includes(questions: [:answers, :tags]).find_by(id: params[:id])
-          result = inject_id_conversion(quiz, id_conversions)
-          render(json: result)
+          quiz.transaction do
+            id_conversions = create_new_records(quiz, new_records)
+            quiz.update!(quiz_params)
+            quiz = current_user.quizzes.includes(questions: [:answers, :tags]).find_by(id: params[:id])
+            result = inject_id_conversion(quiz, id_conversions)
+            render(json: result)
+          end
+        rescue ActiveRecord::StatementInvalid
+          head :internal_server_error
         rescue ActiveRecord::RecordNotFound
           head :not_found
         end
@@ -224,9 +228,6 @@ class QuizzesController < ApplicationController
     end
     id_conversions[:tags].each do |t|
       question = result["questions"].find { |e| e["id"].eql?(t[:question_id]) }
-      # puts question
-      # puts ""
-      # puts t
       tag = question["tags"].find { |e| e["id"].eql?(t[:id]) }
       tag["prev_id"] = t[:prev_id]
     end
