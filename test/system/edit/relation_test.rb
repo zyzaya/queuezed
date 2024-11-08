@@ -204,4 +204,17 @@ class RelationTest < ApplicationSystemTestCase
     select_question(@question.id)
     assert_remove_relation(@question.id, @relation.id, @initial)
   end
+
+  test "adding 'a' as a relation to 'b' adds 'b' as a relation to 'a'" do
+    # setup
+    select_question(@other.id)
+    initial_other = get_relations(@other.id)
+    # add relation
+    select_question(@question.id)
+    sleep(0.5)
+    add_relation(@other.content)
+    assert_add_relation(@question.id, @other.id, @initial)
+    select_question(@other.id)
+    assert_add_relation(@other.id, @question.id, initial_other)
+  end
 end
