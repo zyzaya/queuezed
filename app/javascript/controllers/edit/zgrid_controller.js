@@ -215,7 +215,10 @@ export default class extends Controller {
   removeTag(event) {
     let { question_id, tag_id } = event.detail;
     let question = this.zgrid.getRow(question_id);
-    question.tags = question.tags.split(' ').filter((t) => t !== tag_id);
+    question.tags = question.tags
+      .split(' ')
+      .filter((t) => t !== tag_id)
+      .join(' ');
     this.zgrid.setRow(question_id, question);
   }
 
