@@ -33,6 +33,10 @@ export default class extends Controller {
         selected: 'active_question',
       },
       onClick: (col, row, colName, data) => this.setSelectedQuestion(data.id),
+      onPageChange: (page) =>
+        this.dispatch('updateFilteredQuestionList', {
+          detail: { data: this.zgrid.getData() },
+        }),
     });
     this.currentlySelected = null;
     this.csrf = document.head.querySelector('meta[name=csrf-token]')?.content;
@@ -43,6 +47,9 @@ export default class extends Controller {
     element.dataset.editCurrentlySelectedValue = this.currentlySelected;
     this.refresh().then(() => {
       this.dispatch('updateQuestionList', {
+        detail: { data: this.zgrid.getRawData() },
+      });
+      this.dispatch('updateFilteredQuestionList', {
         detail: { data: this.zgrid.getData() },
       });
     });
@@ -237,7 +244,7 @@ export default class extends Controller {
     question.content = content;
     this.zgrid.setRow(id, question);
     this.dispatch('updateQuestionList', {
-      detail: { data: this.zgrid.getData() },
+      detail: { data: this.zgrid.getRawData() },
     });
   }
 
