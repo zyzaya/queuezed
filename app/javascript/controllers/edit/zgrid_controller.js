@@ -98,7 +98,12 @@ export default class extends Controller {
         } else if (this.currentlySelected !== null) {
           this.setSelectedQuestion(this.currentlySelected);
         }
-      });
+      })
+      .catch((err) =>
+        this.dispatch('setFlash', {
+          detail: { alert: `Failed to load questions: ${err.message}` },
+        })
+      );
   }
 
   select(event) {

@@ -18,9 +18,10 @@ const Data = (() => {
   };
 
   let getQuestions = function (quiz_id) {
-    return fetch(quiz_questions_path(quiz_id)).then((response) =>
-      response.json()
-    );
+    return fetch(quiz_questions_path(quiz_id)).then((response) => {
+      if (!response.ok) throw new Error(response.statusText);
+      return response.json();
+    });
   };
 
   return {

@@ -13,7 +13,10 @@
   </head>
 
   <body>
-    <div class="flash" data-controller="flash" data-action="edit:setFlash@window->flash#set">
+    <div class="flash" 
+      data-controller="flash" 
+      data-action="edit:setFlash@window->flash#set
+        edit--zgrid:setFlash@window->flash#set">
       <% if flash[:notice] %>
         <p class="notice"><%= notice %></p>
       <% end %>
