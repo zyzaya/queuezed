@@ -79,6 +79,10 @@ export default class extends Controller {
       tags: {},
     };
     Data.save(this.csrf, this.quizIdValue, changes)
+      .then((response) => {
+        if (!response.ok) throw new Error(response.statusText);
+        return response.json();
+      })
       .then((data) => {
         // collect id conversion
         data.questions.forEach((q) => {
@@ -95,7 +99,9 @@ export default class extends Controller {
         this.updateChanges(false);
       })
       .catch((err) => {
-        this.dispatch('setFlash', { detail: { alert: 'failed save' } });
+        this.dispatch('setFlash', {
+          detail: { alert: `Failed to save: ${err.message}` },
+        });
       });
   }
 

@@ -36,9 +36,7 @@ class QuizzesController < ApplicationController
     #   prev_id: 
     #   answers: 
     # ]
-    flash.now[:alert] = "hello"
-    head :internal_server_error
-    
+
     quiz = current_user.quizzes.find_by(id: params[:id])
     if (quiz.nil?)
       head :not_found
