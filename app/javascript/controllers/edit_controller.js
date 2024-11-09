@@ -78,21 +78,25 @@ export default class extends Controller {
       answers: {},
       tags: {},
     };
-    Data.save(this.csrf, this.quizIdValue, changes).then((data) => {
-      // collect id conversion
-      data.questions.forEach((q) => {
-        if (q.prev_id !== undefined) ids.questions[q.prev_id] = q.id;
-        q.answers.forEach((a) => {
-          if (a.prev_id !== undefined) ids.answers[a.prev_id] = a.id;
+    Data.save(this.csrf, this.quizIdValue, changes)
+      .then((data) => {
+        // collect id conversion
+        data.questions.forEach((q) => {
+          if (q.prev_id !== undefined) ids.questions[q.prev_id] = q.id;
+          q.answers.forEach((a) => {
+            if (a.prev_id !== undefined) ids.answers[a.prev_id] = a.id;
+          });
+          q.tags.forEach((t) => {
+            if (t.prev_id !== undefined) ids.tags[t.prev_id] = t.id;
+          });
         });
-        q.tags.forEach((t) => {
-          if (t.prev_id !== undefined) ids.tags[t.prev_id] = t.id;
-        });
+        this.idConversion = ids;
+        Change.Reset();
+        this.updateChanges(false);
+      })
+      .catch((err) => {
+        this.dispatch('setFlash', { detail: { alert: 'failed save' } });
       });
-      this.idConversion = ids;
-    });
-    Change.Reset();
-    this.updateChanges(false);
   }
 
   undo(event) {
