@@ -5,13 +5,6 @@ const Data = (() => {
   let new_quiz_question_path = (quiz_id) => `/quizzes/${quiz_id}/questions/new`;
   let question_path = (id) => `/questions/${id}`;
 
-  let setQuestion = function (csrf, quiz_id, question_id) {
-    Turbo.visit(edit_question_path(question_id), {
-      frame: 'edit_detail',
-      action: 'replace',
-    });
-  };
-
   let save = function (csrf, quiz_id, changes) {
     return fetch(quiz_path(quiz_id), {
       method: 'PATCH',
@@ -24,38 +17,6 @@ const Data = (() => {
     });
   };
 
-  let newQuestion = function (csrf, quiz_id) {
-    return fetch(new_quiz_question_path(quiz_id))
-      .then((response) => response.json())
-      .then((question) => {
-        setQuestion(csrf, quiz_id, question.id);
-        return question;
-      });
-  };
-
-  let deleteQuestion = function (csrf, quiz_id, question_id) {
-    return fetch(question_path(question_id), {
-      method: 'DELETE',
-      headers: {
-        'Content-Type': 'application/json',
-        'X-CSRF-Token': csrf,
-      },
-      credentials: 'same-origin',
-    });
-  };
-
-  let restoreQuestion = function (csrf, quiz_id, question_id) {
-    return fetch(question_path(question_id), {
-      method: 'PATCH',
-      headers: {
-        'Content-Type': 'application/json',
-        'X-CSRF-Token': csrf,
-      },
-      credentials: 'same-origin',
-      body: JSON.stringify({ restore: true }),
-    });
-  };
-
   let getQuestions = function (quiz_id) {
     return fetch(quiz_questions_path(quiz_id)).then((response) =>
       response.json()
@@ -64,10 +25,6 @@ const Data = (() => {
 
   return {
     save,
-    newQuestion,
-    deleteQuestion,
-    restoreQuestion,
-    setQuestion,
     getQuestions,
   };
 })();
