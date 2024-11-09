@@ -38,6 +38,10 @@ export default class extends Controller {
         this.dispatch('updateFilteredQuestionList', {
           detail: { data: this.zgrid.getData() },
         }),
+      onSort: (col, asc) =>
+        this.dispatch('updateFilteredQuestionList', {
+          detail: { data: this.zgrid.getData() },
+        }),
     });
     this.currentlySelected = null;
     this.csrf = document.head.querySelector('meta[name=csrf-token]')?.content;
