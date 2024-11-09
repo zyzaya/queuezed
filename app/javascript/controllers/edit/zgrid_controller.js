@@ -165,6 +165,8 @@ export default class extends Controller {
     } else if (current - 1 >= 0) {
       let sibling = data[current - 1];
       this.setSelectedQuestion(sibling['id']);
+    } else if (data.length === 1) {
+      this.setSelectedQuestion(null);
     }
   }
 
