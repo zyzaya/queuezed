@@ -85,7 +85,6 @@
   border: 1px solid black;
   color: var(--main-text-color);
   overflow: hidden;
-  max-width: 800px;
 }
 
 .quiz_tag_list {
