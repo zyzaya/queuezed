@@ -68,6 +68,9 @@ class QuizzesController < ApplicationController
         begin
           quiz.transaction do
             id_conversions = create_new_records(quiz, new_records)
+            convert_new_tag_ids(quiz_params, id_conversions)
+            puts ""
+            puts quiz_params
             quiz.update!(quiz_params)
             quiz = current_user.quizzes.includes(questions: [:answers, :tags]).find_by(id: params[:id])
             result = inject_id_conversion(quiz, id_conversions)
@@ -199,6 +202,20 @@ class QuizzesController < ApplicationController
       end
     end
     return ids
+  end
+
+  def convert_new_tag_ids(params, id_conversions)
+    return if params[:questions_attributes].nil?
+
+    id_conversions[:tags].each do |convert|
+      params[:questions_attributes].each do |q|
+        unless q[:tags_attributes].nil?
+          q[:tags_attributes].each do |t|
+            t[:id] = convert[:id] if t[:id].eql?(convert[:prev_id])
+          end
+        end
+      end
+    end
   end
 
   def inject_id_conversion(quiz, id_conversions)
