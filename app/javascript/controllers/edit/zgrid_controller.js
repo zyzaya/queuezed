@@ -20,7 +20,7 @@ export default class extends Controller {
     this.zgrid = new zGrid({
       parent: parent,
       data: [],
-      columns: [{ id: 'id', visible: false }],
+      columns: ['id'],
       pagination: 14,
       className: {
         table: 'zg_table',
@@ -32,6 +32,7 @@ export default class extends Controller {
         paginationCurrent: 'zg_current',
         selected: 'active_question',
       },
+      searchbox: false,
       onClick: (col, row, colName, data) => this.setSelectedQuestion(data.id),
       onPageChange: (page) =>
         this.dispatch('updateFilteredQuestionList', {
@@ -290,48 +291,16 @@ export default class extends Controller {
     let large_size = this.element.offsetWidth >= 600 || size.matches;
     this.zgrid.reconfigure({
       columns: [
-        {
-          id: 'id',
-          visible: false,
-        },
-        {
-          id: 'tags',
-          visible: false,
-        },
-        {
-          id: 'content',
-          name: 'Question',
-        },
-        {
-          id: 'review',
-          visible: false,
-        },
-        {
-          id: 'difficult',
-          visible: false,
-        },
-        {
-          id: 'current_streak',
-          name: 'Current Streak',
-          visible: large_size,
-        },
-        {
-          id: 'longest_streak',
-          name: 'Longest Streak',
-          visible: large_size,
-        },
-        {
-          id: 'times_taken',
-          name: 'Times Taken',
-          visible: large_size,
-        },
-        {
-          id: 'times_correct',
-          name: 'Times Correct',
-          visible: large_size,
-        },
+        { id: 'id', visible: false },
+        { id: 'tags', visible: false },
+        { id: 'content', name: 'Question' },
+        { id: 'review', visible: false },
+        { id: 'difficult', visible: false },
+        { id: 'current_streak', name: 'Current Streak', visible: large_size },
+        { id: 'longest_streak', name: 'Longest Streak', visible: large_size },
+        { id: 'times_taken', name: 'Times Taken', visible: large_size },
+        { id: 'times_correct', name: 'Times Correct', visible: large_size },
       ],
-      searchbox: false,
     });
   }
 }

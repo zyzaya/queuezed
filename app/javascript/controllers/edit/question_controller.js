@@ -145,9 +145,10 @@ export default class extends Controller {
   }
 
   updateFilteredQuestionList(event) {
-    this.filtered_question_list = event.detail.data.sort((a, b) =>
-      a['content'].localeCompare(b['content'])
-    );
+    this.filtered_question_list = event.detail.data;
+    // .sort((a, b) =>
+    //   a['content'].localeCompare(b['content'])
+    // );
     if (this.limitRelatedTarget.checked) {
       this.setAddRelatedOptions(this.filtered_question_list);
     }
