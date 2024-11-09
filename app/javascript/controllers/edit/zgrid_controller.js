@@ -293,7 +293,7 @@ export default class extends Controller {
       columns: [
         { id: 'id', visible: false },
         { id: 'tags', visible: false },
-        { id: 'content', name: 'Question' },
+        { id: 'content', name: 'Question', sort: (a, b) => a.localeCompare(b) },
         { id: 'review', visible: false },
         { id: 'difficult', visible: false },
         { id: 'current_streak', name: 'Current Streak', visible: large_size },
