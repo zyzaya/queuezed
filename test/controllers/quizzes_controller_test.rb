@@ -479,4 +479,40 @@ class QuizzesControllerTest < ActionDispatch::IntegrationTest
     put "/quizzes/#{quizzes(:janes).id}"
     assert_response :not_found
   end
+
+  test "add relation to newly added questions" do
+    quiz = quizzes(:johns)
+    content_1 = "test1"
+    content_2 = "test2"
+    body = {
+      quiz: {
+        questions: [
+          {
+            id: 'n1',
+            content: content_1,
+            meta: 'new',
+            relations: [
+              id: 'n2',
+              meta: 'add'
+            ]
+          },
+          {
+            id: 'n2',
+            content: content_2,
+            meta: 'new',
+            relations: [
+              id: 'n1',
+              meta: 'add'
+            ]
+          }
+        ]
+      }
+    }
+    update(quiz.id, body)
+    assert_response :ok
+    q1 = quiz.questions.find_by(content: content_1)
+    q2 = quiz.questions.find_by(content: content_2)
+    assert_not_nil q1.relations.find_by(content: content_2)
+    assert_not_nil q2.relations.find_by(content: content_1)
+  end
 end
