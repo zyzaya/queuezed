@@ -2,7 +2,7 @@ class Quiz < ApplicationRecord
   MAX_RANK = 5
   belongs_to :user
   has_many :questions, -> { Question.active }, dependent: :destroy
-  has_many :tags, through: :questions
+  has_many :tags, -> { distinct }, through: :questions
   has_many :practice_sessions, dependent: :destroy
 
   after_initialize :init

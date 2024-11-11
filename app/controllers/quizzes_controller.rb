@@ -37,7 +37,7 @@ class QuizzesController < ApplicationController
     #   answers: 
     # ]
 
-    quiz = current_user.quizzes.find_by(id: params[:id])
+    quiz = current_user.quizzes.includes(:questions).find_by(id: params[:id])
     if (quiz.nil?)
       head :not_found
     elsif !params[:quiz.nil?]
@@ -45,30 +45,18 @@ class QuizzesController < ApplicationController
       if !quiz_params.permitted?
         head :bad_request
       else
-        new_records = extract_new_records(quiz_params)
-        unless quiz_params[:questions].nil?
-          quiz_params.transform_keys! do |k|
-            k.eql?("questions") ? :questions_attributes : k
-          end
-  
-          convert_meta(quiz_params, :questions_attributes)
-          quiz_params[:questions_attributes].each do |question_params|
-            question_params.transform_keys! do |k|
-              case k
-              when "answers" then :answers_attributes
-              when "tags" then :tags_attributes
-              when "relations" then :relations_attributes
-              else k end
-            end
-            convert_meta(question_params, :answers_attributes)
-            convert_meta(question_params, :tags_attributes)
-            convert_meta(question_params, :relations_attributes)
-          end      
-        end
+        # create new records from params
+        # remove parameters with meta = 'new' from params
+        # update ids of remaining parameters with ids of new records
+        # update quiz
+        # inject old ids into result
+        
         begin
           quiz.transaction do
-            id_conversions = create_new_records(quiz, new_records)
-            convert_new_tag_ids(quiz_params, id_conversions)
+            id_conversions = create_new_records(quiz, quiz_params)
+            remove_new(quiz_params)
+            convert_to_new_ids(quiz_params, id_conversions)
+            convert_to_attributes(quiz_params)
             quiz.update!(quiz_params)
             quiz = current_user.quizzes.includes(questions: [:answers, :tags]).find_by(id: params[:id])
             result = inject_id_conversion(quiz, id_conversions)
@@ -115,6 +103,28 @@ class QuizzesController < ApplicationController
       )
   end
 
+  def convert_to_attributes(quiz_params)
+    unless quiz_params[:questions].nil?
+      quiz_params.transform_keys! do |k|
+        k.eql?("questions") ? :questions_attributes : k
+      end
+
+      convert_meta(quiz_params, :questions_attributes)
+      quiz_params[:questions_attributes].each do |question_params|
+        question_params.transform_keys! do |k|
+          case k
+          when "answers" then :answers_attributes
+          when "tags" then :tags_attributes
+          when "relations" then :relations_attributes
+          else k end
+        end
+        convert_meta(question_params, :answers_attributes)
+        convert_meta(question_params, :tags_attributes)
+        convert_meta(question_params, :relations_attributes)
+      end      
+    end
+  end
+
   def convert_meta(params, key)
     unless params[key].nil?
       params[key].each do |v|
@@ -126,46 +136,6 @@ class QuizzesController < ApplicationController
         v.extract!(:meta)
       end
     end
-  end
-
-  def extract_new_records(params)
-    result = {}
-    return result if params["questions"].nil? 
-
-    params["questions"].each do |q|
-      if (q["meta"].eql?('new'))
-        result["questions"] = [] if result["questions"].nil?
-        result["questions"] << q
-        params["questions"].delete(q)
-      else
-        new_q = {}
-        unless q["answers"].nil?
-          q["answers"].each do |a|
-            if (a["meta"].eql?('new'))
-              new_q["id"] = q["id"]
-              new_q["answers"] = [] if new_q["answers"].nil?
-              new_q["answers"] << a
-              q["answers"].delete(a)
-            end
-          end
-        end
-        unless q["tags"].nil?
-          q["tags"].each do |t|
-            if (t["meta"].eql?('new'))
-              new_q["id"] = q["id"]
-              new_q["tags"] = [] if new_q["tags"].nil?
-              new_q["tags"] << t
-              q["tags"].delete(t)
-            end
-          end
-        end
-        unless new_q.eql?({})
-          result["questions"] = [] if result["questions"].nil?
-          result["questions"] << new_q
-        end
-      end
-    end
-    return result
   end
 
   def create_new_records(quiz, params)
@@ -188,29 +158,59 @@ class QuizzesController < ApplicationController
       end
       unless q["answers"].nil?
         q["answers"].each do |a|
-          answer = question.answers.create(content: a["content"])
-          ids[:answers] << { question_id: question.id, id: answer.id, prev_id: a["id"] }
+          if (a["meta"].eql?("new"))
+            answer = question.answers.create(content: a["content"])
+            ids[:answers] << { question_id: question.id, id: answer.id, prev_id: a["id"] }
+          end
         end
       end
       unless q["tags"].nil?
         q["tags"].each do |t|
-          tag = question.tags.create(content: t["content"])
-          ids[:tags] << { question_id: question.id, id: tag.id, prev_id: t["id"] }
+          if t["meta"].eql?("new")
+            tag = question.tags.create(content: t["content"])
+            ids[:tags] << { question_id: question.id, id: tag.id, prev_id: t["id"] }
+          end
         end
       end
     end
     return ids
   end
 
-  def convert_new_tag_ids(params, id_conversions)
-    return if params[:questions_attributes].nil?
+  def remove_new(params)
+    return if params["questions"].nil?
 
-    id_conversions[:tags].each do |convert|
-      params[:questions_attributes].each do |q|
-        unless q[:tags_attributes].nil?
-          q[:tags_attributes].each do |t|
-            t[:id] = convert[:id] if t[:id].eql?(convert[:prev_id])
-          end
+    params["questions"].delete_if do |q|
+      unless q["answers"].nil?
+        q["answers"].delete_if { |a| a["meta"].eql?("new") }
+      end
+      unless q["tags"].nil?
+        q["tags"].delete_if { |t| t["meta"].eql?("new") }
+      end
+
+      q["meta"].eql?("new") && (q["answers"].nil? || q["answers"].empty?) && (q["tags"].nil? || q["tags"].empty?)
+    end
+  end
+
+  def convert_to_new_ids(params, id_conversions)
+    return if params["questions"].nil?
+
+    params["questions"].each do |q|
+      q_id = id_conversions[:questions].find { |e| q["id"].eql?(e[:prev_id]) }
+      q.extract!("meta") if q["meta"].eql?("new")
+      q["id"] = q_id[:id] unless q_id.nil?
+
+      unless q["answers"].nil?
+        q["answers"].each do |a|
+          a_id = id_conversions[:answers].find { |e| a["id"].eql?(e[:prev_id]) }
+          a.extract!("meta") if a["meta"].eql?("new")
+          a["id"] = a_id[:id] unless a_id.nil?
+        end
+      end
+      unless q["tags"].nil?
+        q["tags"].each do |t|
+          t_id = id_conversions[:tags].find { |e| t["id"].eql?(e[:prev_id]) }
+          t.extract!("meat") if t["meta"].eql?("new")
+          t["id"] = t_id[:id] unless t_id.nil?
         end
       end
     end

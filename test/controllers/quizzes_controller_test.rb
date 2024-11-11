@@ -530,9 +530,11 @@ class QuizzesControllerTest < ActionDispatch::IntegrationTest
             content: 'one',
             meta: 'new',
             tags: [
-              id: initial_tag_id,
-              content: tag_content,
-              meta: 'create'
+              {
+                id: initial_tag_id,
+                content: tag_content,
+                meta: 'new'
+              }
             ]
           },
           {
@@ -540,9 +542,11 @@ class QuizzesControllerTest < ActionDispatch::IntegrationTest
             content: 'two',
             meta: 'new',
             tags: [
-              id: initial_tag_id,
-              content: tag_content,
-              meta: 'add',
+              {
+                id: initial_tag_id,
+                content: tag_content,
+                meta: 'add'
+              }
             ]
           },
           {
