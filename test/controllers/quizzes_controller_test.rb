@@ -480,7 +480,7 @@ class QuizzesControllerTest < ActionDispatch::IntegrationTest
     assert_response :not_found
   end
 
-  test "add relation to newly added questions" do
+  test "add relation to newly created questions" do
     quiz = quizzes(:johns)
     content_1 = "test1"
     content_2 = "test2"
@@ -514,5 +514,58 @@ class QuizzesControllerTest < ActionDispatch::IntegrationTest
     q2 = quiz.questions.find_by(content: content_2)
     assert_not_nil q1.relations.find_by(content: content_2)
     assert_not_nil q2.relations.find_by(content: content_1)
+  end
+
+  test "add newly created tag to newly created questions" do
+    tag_content = "t1"
+    initial_tag_id = 'n4'
+    initial_q_ids = ["n1", "n2", "n3"]
+    quiz = quizzes(:johns)
+    initial_tags = quiz.tags.pluck(:content).sort
+    body = {
+      quiz:{
+        questions: [
+          {
+            id: initial_q_ids[0],
+            content: 'one',
+            meta: 'new',
+            tags: [
+              id: initial_tag_id,
+              content: tag_content,
+              meta: 'create'
+            ]
+          },
+          {
+            id: initial_q_ids[1],
+            content: 'two',
+            meta: 'new',
+            tags: [
+              id: initial_tag_id,
+              content: tag_content,
+              meta: 'add',
+            ]
+          },
+          {
+            id: initial_q_ids[2],
+            content: 'three',
+            meta: 'new',
+            tags: [
+              id: initial_tag_id,
+              content: tag_content,
+              meta: 'add'
+            ]
+          }
+        ]
+      }
+    }
+    update(quiz.id, body)
+    assert_response :ok
+    result = JSON.parse(response.body)
+    assert_equal (initial_tags + [tag_content]).sort, quiz.tags.pluck(:content).sort
+    tag = quiz.tags.find_by(content: tag_content)
+    tag_id = tag.id
+    questions = result["questions"].find_all { |q| initial_q_ids.include?(q["prev_id"]) }
+    q_ids = questions.map { |q| q["id"] }
+    assert_equal q_ids, Tag.find(tag_id).questions.pluck(:id)
   end
 end
