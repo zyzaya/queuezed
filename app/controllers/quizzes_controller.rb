@@ -187,7 +187,10 @@ class QuizzesController < ApplicationController
         q["tags"].delete_if { |t| t["meta"].eql?("new") }
       end
 
-      q["meta"].eql?("new") && (q["answers"].nil? || q["answers"].empty?) && (q["tags"].nil? || q["tags"].empty?)
+      q["meta"].eql?("new") &&
+        (q["answers"].nil? || q["answers"].empty?) &&
+        (q["tags"].nil? || q["tags"].empty?) &&
+        (q["relations"].nil? || q["relations"].empty?)
     end
   end
 
@@ -209,8 +212,15 @@ class QuizzesController < ApplicationController
       unless q["tags"].nil?
         q["tags"].each do |t|
           t_id = id_conversions[:tags].find { |e| t["id"].eql?(e[:prev_id]) }
-          t.extract!("meat") if t["meta"].eql?("new")
+          t.extract!("meta") if t["meta"].eql?("new")
           t["id"] = t_id[:id] unless t_id.nil?
+        end
+      end
+      unless q["relations"].nil?
+        q["relations"].each do |r|
+          r_id = id_conversions[:questions].find { |e| r["id"].eql?(e[:prev_id]) }
+          r.extract!("meta") if r["meta"].eql?("new")
+          r["id"] = r_id[:id] unless r_id.nil?
         end
       end
     end
