@@ -271,7 +271,7 @@ export default class Change {
 
     let question = this.#getQuestionChanges(question_id);
     let tag = this.#getTagChanges(question_id, tag_id, content);
-    if (tag.meta === 'add') {
+    if (tag.meta === 'add' || tag.meta === 'new') {
       question.tags = question.tags.filter(
         (e) => !(e.id == tag_id && e.content === content)
       );
@@ -287,7 +287,7 @@ export default class Change {
     let question = this.#getQuestionChanges(question_id);
     let tag = this.#getTagChanges(question_id, tag_id, content);
     if (tag.meta === 'new') {
-      question.tags = question.tags.filter((e) => e != tag);
+      question.tags = question.tags.filter((e) => e.id != tag_id);
     } else {
       tag.meta = 'delete';
     }
