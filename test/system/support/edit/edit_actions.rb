@@ -7,6 +7,7 @@ module EditActions
   
   def save_action
     page.find("#save").click
+    sleep(0.5)
   end
 
   def undo_action
