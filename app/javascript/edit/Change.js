@@ -211,7 +211,6 @@ export default class Change {
         // data.relations.forEach((r) => this.AddRelated(question_id, r.id));
       }
     }
-    console.log(this.#changes);
   }
 
   static DeleteQuestion(id) {
@@ -229,7 +228,6 @@ export default class Change {
     } else {
       question.meta = 'delete';
     }
-    console.log(this.#changes);
   }
 
   static SetQuestionContent(question_id, content) {

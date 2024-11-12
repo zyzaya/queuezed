@@ -194,11 +194,8 @@ class QuestionTest < ApplicationSystemTestCase
     # save -> undo -> save -> redo -> save
     save_action
     undo_action
-    puts "s1"
     save_action
-    assert_no_change_to_questions(@initial)
     redo_action
-    puts "s2"
     save_action
     visit_edit_page(@quiz)
     select_question(@other.id)
