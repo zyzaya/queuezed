@@ -32,7 +32,7 @@ export default class extends Controller {
     this.title = this.titleTarget.value;
     this.csrf = document.head.querySelector('meta[name=csrf-token]')?.content;
     this.tagCount = {};
-    this.idConversion = { questions: {}, answers: {}, tags: {} };
+    this.id_conversion = { questions: {}, answers: {}, tags: {} };
   }
 
   beforeunload(event) {
@@ -68,12 +68,7 @@ export default class extends Controller {
   }
 
   save(event) {
-    let changes = Change.GetChanges(this.idConversion);
-    let ids = {
-      questions: {},
-      answers: {},
-      tags: {},
-    };
+    let changes = Change.GetChanges(this.id_conversion);
     Data.save(this.csrf, this.quizIdValue, changes)
       .then((response) => {
         if (!response.ok) throw new Error(response.statusText);
@@ -82,15 +77,17 @@ export default class extends Controller {
       .then((data) => {
         // collect id conversion
         data.questions.forEach((q) => {
-          if (q.prev_id !== undefined) ids.questions[q.prev_id] = q.id;
+          if (q.prev_id !== undefined)
+            this.id_conversion.questions[q.prev_id] = q.id;
           q.answers.forEach((a) => {
-            if (a.prev_id !== undefined) ids.answers[a.prev_id] = a.id;
+            if (a.prev_id !== undefined)
+              this.id_conversion.answers[a.prev_id] = a.id;
           });
           q.tags.forEach((t) => {
-            if (t.prev_id !== undefined) ids.tags[t.prev_id] = t.id;
+            if (t.prev_id !== undefined)
+              this.id_conversion.tags[t.prev_id] = t.id;
           });
         });
-        this.idConversion = ids;
         Change.Reset();
         Undo.reset_changes();
         this.updateChanges();

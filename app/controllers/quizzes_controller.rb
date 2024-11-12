@@ -49,6 +49,8 @@ class QuizzesController < ApplicationController
         # update ids of remaining parameters with ids of new records
         # update quiz
         # inject old ids into result
+        puts quiz_params
+
         begin
           quiz.transaction do
             id_conversions = create_new_records(quiz, quiz_params)
@@ -58,6 +60,7 @@ class QuizzesController < ApplicationController
             quiz.update!(quiz_params)
             quiz = current_user.quizzes.includes(questions: [:answers, :tags]).find_by(id: params[:id])
             result = inject_id_conversion(quiz, id_conversions)
+            puts JSON.pretty_generate(result)
             render(json: result)
           end
         rescue ActiveRecord::StatementInvalid
