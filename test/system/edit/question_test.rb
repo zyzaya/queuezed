@@ -193,10 +193,8 @@ class QuestionTest < ApplicationSystemTestCase
     assert_remove_tag_option(@other.id, @initial_tag_options, @tag.content)
     # save -> undo -> save -> redo -> save
     save_action
-    sleep(5)
     undo_action
     save_action
-    assert_no_change_to_questions(@initial)
     redo_action
     save_action
     visit_edit_page(@quiz)

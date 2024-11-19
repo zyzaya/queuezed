@@ -198,7 +198,10 @@ export default class Change {
       this.#changes.questions = this.#changes.questions.filter(
         (e) => e.id != question.id
       );
-      data.relations.forEach((r) => this.AddRelated(question.id, r.id));
+      data.relations.forEach((r) => {
+        let other = this.GetQuestion(r.id);
+        other.relations.push({ id: data.id });
+      });
     } else {
       question.meta = 'new';
       if (data !== undefined) {
@@ -211,7 +214,6 @@ export default class Change {
         data.relations.forEach((r) => this.AddRelated(question_id, r.id));
       }
     }
-    console.log(this.#changes);
   }
 
   static DeleteQuestion(id) {
@@ -229,7 +231,6 @@ export default class Change {
     } else {
       question.meta = 'delete';
     }
-    console.log(this.#changes);
   }
 
   static SetQuestionContent(question_id, content) {
