@@ -198,7 +198,7 @@ export default class Change {
       this.#changes.questions = this.#changes.questions.filter(
         (e) => e.id != question.id
       );
-      // data.relations.forEach((r) => this.AddRelated(question.id, r.id));
+      data.relations.forEach((r) => this.AddRelated(question.id, r.id));
     } else {
       question.meta = 'new';
       if (data !== undefined) {
@@ -208,7 +208,7 @@ export default class Change {
           this.SetAnswerContent(question.id, a.id, a.content);
         });
         data.tags.forEach((t) => this.AddTag(question.id, t.id, t.content));
-        // data.relations.forEach((r) => this.AddRelated(question_id, r.id));
+        data.relations.forEach((r) => this.AddRelated(question_id, r.id));
       }
     }
     console.log(this.#changes);
@@ -217,9 +217,9 @@ export default class Change {
   static DeleteQuestion(id) {
     let q = this.GetQuestion(id);
     this.#questions = this.#questions.filter((e) => e.id != id);
-    // this.#questions.forEach((q) => {
-    //   q.relations = q.relations.filter((r) => r.id != id);
-    // });
+    this.#questions.forEach((q) => {
+      q.relations = q.relations.filter((r) => r.id != id);
+    });
 
     let question = this.#getQuestionChanges(id);
     if (question.meta === 'new') {
