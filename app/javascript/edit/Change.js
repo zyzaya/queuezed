@@ -211,7 +211,7 @@ export default class Change {
           this.SetAnswerContent(question.id, a.id, a.content);
         });
         data.tags.forEach((t) => this.AddTag(question.id, t.id, t.content));
-        data.relations.forEach((r) => this.AddRelated(question_id, r.id));
+        data.relations.forEach((r) => this.AddRelated(question.id, r.id));
       }
     }
   }
