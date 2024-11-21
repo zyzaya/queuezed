@@ -113,7 +113,6 @@ export default class extends Controller {
     if (event.detail.id === '' || event.detail.id === null) {
       this.element.classList.add('question_hidden');
     } else {
-      console.log(event.detail);
       this.element.classList.remove('question_hidden');
       this.idValue = event.detail.id;
       // tags
@@ -166,9 +165,6 @@ export default class extends Controller {
 
   updateFilteredQuestionList(event) {
     this.filtered_question_list = event.detail.data;
-    // .sort((a, b) =>
-    //   a['content'].localeCompare(b['content'])
-    // );
     if (this.limitRelatedTarget.checked) {
       this.setAddRelatedOptions(this.filtered_question_list);
     }
