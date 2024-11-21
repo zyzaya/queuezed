@@ -4,21 +4,30 @@
   background-color: var(--interact-color);
   color: var(--main-text-color);
   border-color: var(--interact-color);
-  cursor: pointer;
   padding: 3px 7px;
   white-space: nowrap;
   text-decoration: none;
   border-style: none;
 }
 
-.button:hover {
+.button:not([disabled]) {
+  cursor: pointer;
+}
+
+.button:hover:not([disabled]) {
   box-shadow: 1px 1px 0px 2px var(--interact-color-dark);
 }
 
-.button:active {
+.button:active:not([disabled]) {
   box-shadow: 1px 1px 0px 2px inset var(--interact-color-dark);
 }
 
 .button_to > .button {
   height: 100%;
+}
+
+.button:disabled {
+  border: 1px solid #999999;
+  background-color: #cccccc;
+  color: #666666;
 }

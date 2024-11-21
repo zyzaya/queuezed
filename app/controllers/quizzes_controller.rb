@@ -15,6 +15,9 @@ class QuizzesController < ApplicationController
 
   def edit
     @quiz = current_user.quizzes.find_by(id: params[:id])
+    @difficult_count = @quiz.questions.where(difficult: true).count
+    @review_count = @quiz.questions.where(review: true).count
+
     if (@quiz.nil?)
       head :not_found
     end
