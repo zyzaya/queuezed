@@ -15,7 +15,11 @@
   </div>
   <div>
     <%= link_to 'Practice', new_quiz_practice_path(quiz), class: 'quiz_practice button' %>
-    <%= button_to "Difficult (#{difficult_count})", quiz_practice_index_path(quiz), class: 'quiz_difficult button', params: { difficult_filter: 'true' }, disabled: (difficult_count == 0)  %>
-    <%= button_to "Review (#{review_count})", quiz_practice_index_path(quiz), class: 'quiz_review button', params: { review_filter: 'true' }, disabled: (review_count == 0) %>
+    <% unless difficult_count == 0 %>
+      <%= button_to "Difficult (#{difficult_count})", quiz_practice_index_path(quiz), class: 'quiz_difficult button', params: { difficult_filter: 'true' } %>
+    <% end %>
+    <% unless review_count == 0 %>
+      <%= button_to "Review (#{review_count})", quiz_practice_index_path(quiz), class: 'quiz_review button', params: { review_filter: 'true' }, disabled: (review_count == 0) %>
+    <% end %>
   </div>
 </div>
