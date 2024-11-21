@@ -9,7 +9,6 @@
   display: grid;
   grid-template-rows: min-content 1fr;
   width: 100%;
-  max-width: 800px;
   margin: 8px;
 }
 
@@ -37,11 +36,22 @@
   margin-bottom: 4px;
 }
 
-.feedback_questions {
-  display: flex;
-  flex-direction: column;
-  width: 100%;
-  margin: auto;
+@media (max-width: 800px) {
+  .feedback_questions {
+    display: grid;
+    grid-template-columns: 1fr;
+    width: 100%;
+    margin: auto;
+  }
+}
+
+@media (min-width: 1000px) {
+  .feedback_questions {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    width: 100%;
+    margin: auto;
+  }
 }
 
 .single_question_feedback {
@@ -108,7 +118,6 @@
 
 .feedback_container.correct .answer_symbol {
   background-color: var(--valid-color);
-  border-radius: 0 10px 10px 0;
 }
 
 .feedback_container.incorrect input:disabled {
