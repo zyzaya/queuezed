@@ -20,7 +20,8 @@ class QuestionsController < ApplicationController
           :times_taken,
           :rank,
           :difficult,
-          :review
+          :review,
+          :mastered
         ],
         include: [
           tags: { only: [:id, :content] }, 

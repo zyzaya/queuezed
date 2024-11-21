@@ -144,12 +144,18 @@ export default class extends Controller {
       this.correctTarget.innerText = `${event.detail.times_correct} / ${event.detail.times_taken}`;
       this.longestStreakTarget.innerText = event.detail.longest_streak;
       this.currentStreakTarget.innerText = event.detail.current_streak;
-      this.rankTarget.innerText = event.detail.rank;
-      let localDate = new Date(event.detail.next_review);
-      this.reviewTarget.innerText = localDate.toLocaleString(undefined, {
-        dateStyle: 'medium',
-        timeStyle: 'short',
-      });
+
+      if (event.detail.mastered) {
+        this.rankTarget.innerText = 'mastered';
+        this.reviewTarget.innerText = 'never';
+      } else {
+        this.rankTarget.innerText = event.detail.rank;
+        let localDate = new Date(event.detail.next_review);
+        this.reviewTarget.innerText = localDate.toLocaleString(undefined, {
+          dateStyle: 'medium',
+          timeStyle: 'short',
+        });
+      }
       this.difficultTarget.innerText = event.detail.difficult ? 'yes' : 'no';
     }
   }
