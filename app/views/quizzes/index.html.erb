@@ -3,7 +3,11 @@
   <%= button_to "New Quiz", quizzes_path(), form_class: "quiz_new", class: "button", data:{ turbo: false } %>
   <div class="quizzes_container">
     <% @quizzes.each do |q| %>
-      <%= render 'quizzes/quiz', quiz: q %>
+      <%= render 'quizzes/quiz', 
+        quiz: q, 
+        difficult_count: (@difficult_counts[q.id] || 0), 
+        review_count: (@review_counts[q.id] || 0)
+      %>
     <% end %>
   </div>
 </div>

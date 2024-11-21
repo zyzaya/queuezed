@@ -2,7 +2,10 @@ class QuizzesController < ApplicationController
   before_action :authenticate_user!
 
   def index
-    @quizzes = current_user.quizzes.order(:created_at)
+    @quizzes = current_user.quizzes.includes(:questions).order(:created_at)
+    @difficult_counts = Question.where(quiz_id: @quizzes, difficult: true).group(:quiz_id).count
+    @review_counts = Question.where(quiz_id: @quizzes, review: true).group(:quiz_id).count
+    puts @difficult_counts
   end
 
   def create
