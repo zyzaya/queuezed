@@ -5,7 +5,6 @@ class QuizzesController < ApplicationController
     @quizzes = current_user.quizzes.includes(:questions).order(:created_at)
     @difficult_counts = Question.where(quiz_id: @quizzes, difficult: true).group(:quiz_id).count
     @review_counts = Question.where(quiz_id: @quizzes, review: true).group(:quiz_id).count
-    puts @difficult_counts
   end
 
   def create
@@ -15,11 +14,11 @@ class QuizzesController < ApplicationController
 
   def edit
     @quiz = current_user.quizzes.find_by(id: params[:id])
-    @difficult_count = @quiz.questions.where(difficult: true).count
-    @review_count = @quiz.questions.where(review: true).count
-
     if (@quiz.nil?)
       head :not_found
+    else
+      @difficult_count = @quiz.questions.where(difficult: true).count
+      @review_count = @quiz.questions.where(review: true).count
     end
   end
 
