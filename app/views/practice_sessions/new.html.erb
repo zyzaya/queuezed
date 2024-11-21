@@ -4,28 +4,39 @@
     data-controller="practice--start"
     data-action="filter:updateFilter@window->practice--start#updateFilter">
      <div class="practice_new">
-      <%= render "shared/filter", quiz: @quiz %>
-      <div class="practice_buttons">
-        <%= form_with(url: quiz_practice_index_path, class: 'practice_start', data: {turbo: false}) do |form| %>
-          <%= form.hidden_field :text_filter, value: '', data: {'practice--start-target': 'textFilter'} %>
-          <%= form.hidden_field :tag_filter, value: '', data: {'practice--start-target': 'tagFilter'} %>
-          <%= form.hidden_field :review_filter, value: false, data: {'practice--start-target': 'reviewFilter'} %>
-          <%= form.hidden_field :difficult_filter, value: false, data: {'practice--start-target': 'difficultFilter'} %>
-          <div class = "limit_container">
-            <%= form.label :limit, "Limit" %>
-            <%= form.number_field :limit, min: 1, step: 1 %>
-          </div>
-          <div>
-            <%= form.submit "Start", class: 'button' %>
-          </div>
-        <% end %>
+      <div class="practice_header">
+        <div class="practice_title"><%= @quiz.name %></div>
+        <div class="practice_subtitle">
+          <%= @quiz.questions_count %> questions
+          <%= link_to 'Edit 🖉', edit_quiz_path(@quiz), class: 'quiz_edit button' %>
+        </div>
+      </div>
+      <div class="practice_form">
+        <%= render "shared/filter", quiz: @quiz %>
+        <div class="practice_buttons">
+          <%= form_with(url: quiz_practice_index_path, class: 'practice_start', data: {turbo: false}) do |form| %>
+            <%= form.hidden_field :text_filter, value: '', data: {'practice--start-target': 'textFilter'} %>
+            <%= form.hidden_field :tag_filter, value: '', data: {'practice--start-target': 'tagFilter'} %>
+            <%= form.hidden_field :review_filter, value: false, data: {'practice--start-target': 'reviewFilter'} %>
+            <%= form.hidden_field :difficult_filter, value: false, data: {'practice--start-target': 'difficultFilter'} %>
+            <div class = "limit_container">
+              <%= form.label :limit, "Limit" %>
+              <%= form.number_field :limit, min: 1, step: 1 %>
+            </div>
+            <div>
+              <%= form.submit "Start", class: 'button' %>
+            </div>
+          <% end %>
+        </div>
       </div>
     </div>
     <div class="practice_continue">
       <div class="continue_info">In progress practice:</div>  
-      <% @unfinished.each do |session| %>
-        <%= render "unfinished", session: session %>
-      <% end %>
+      <div class="practice_unfinished">
+        <% @unfinished.each do |session| %>
+          <%= render "unfinished", session: session %>
+        <% end %>
+      </div>
     </div>
   </div>  
 </div>
