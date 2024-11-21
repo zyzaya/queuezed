@@ -20,6 +20,12 @@ export default class extends Controller {
     'addRelatedOption',
     'limitRelated',
     'createTag',
+    'correct',
+    'longestStreak',
+    'currentStreak',
+    'rank',
+    'review',
+    'difficult',
   ];
 
   focusCreateTag(event) {
@@ -107,8 +113,10 @@ export default class extends Controller {
     if (event.detail.id === '' || event.detail.id === null) {
       this.element.classList.add('question_hidden');
     } else {
+      console.log(event.detail);
       this.element.classList.remove('question_hidden');
       this.idValue = event.detail.id;
+      // tags
       this.tagTargets.forEach((t) => t.remove());
       let tags = event.detail.tags.sort((a, b) =>
         a.content.localeCompare(b.content)
@@ -117,6 +125,7 @@ export default class extends Controller {
         let display = TagDisplay(t.id, t.content);
         this.tagListTarget.appendChild(display);
       });
+      // relations
       this.singleQuestionContainerTargets.forEach((c) => c.remove());
       let single = SingleQuestionDisplay(
         event.detail.id,
@@ -132,6 +141,17 @@ export default class extends Controller {
       });
 
       this.updateAddRelatedOptions();
+      // statistics
+      this.correctTarget.innerText = `${event.detail.times_correct} / ${event.detail.times_taken}`;
+      this.longestStreakTarget.innerText = event.detail.longest_streak;
+      this.currentStreakTarget.innerText = event.detail.current_streak;
+      this.rankTarget.innerText = event.detail.rank;
+      let localDate = new Date(event.detail.next_review);
+      this.reviewTarget.innerText = localDate.toLocaleString(undefined, {
+        dateStyle: 'medium',
+        timeStyle: 'short',
+      });
+      this.difficultTarget.innerText = event.detail.difficult ? 'yes' : 'no';
     }
   }
 

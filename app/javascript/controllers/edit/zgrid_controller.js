@@ -143,14 +143,10 @@ export default class extends Controller {
         answers: r.answers,
       };
     });
+    let detail = { ...question };
+    detail.relations = relations;
     this.dispatch('setQuestion', {
-      detail: {
-        id: question.id,
-        content: question.content,
-        tags: question.tags,
-        answers: question.answers,
-        relations: relations,
-      },
+      detail,
     });
   }
 
