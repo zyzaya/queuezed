@@ -1,0 +1,5 @@
+class AddMasteredToQuestion < ActiveRecord::Migration[7.2]
+  def change
+    add_column :questions, :mastered, :boolean, default: false
+  end
+end
