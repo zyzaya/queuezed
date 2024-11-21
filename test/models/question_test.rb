@@ -183,4 +183,15 @@ class QuestionTest < ActiveSupport::TestCase
     result = Question.find(question.id)
     assert_not result.difficult
   end
+
+  test "mastered is set to true if at max rank and review" do
+    question = questions(:john_one)
+    now = DateTime.now
+    question.update(next_review: now, rank: 5)
+    DateTime.stub :now, now do
+      question.submit_answer(practice_sessions(:johns), correct_answers(question))
+      assert question.mastered
+      assert_nil question.next_review
+    end
+  end
 end
