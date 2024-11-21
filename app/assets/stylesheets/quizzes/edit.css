@@ -141,6 +141,11 @@
   width: min-content;
 }
 
+.question_statistics {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+}
+
 .tag_list {
   grid-area: 2 / 1 / -1 / -1;
   display: flex;
