@@ -125,7 +125,7 @@ class QuizzesController < ApplicationController
       end
       # tags
       q["tags"]&.each do |t|
-        update_tag(question, t, ids)
+        update_tag(quiz, question, t, ids)
       end
       # meta: new, delete
     end
@@ -178,10 +178,10 @@ class QuizzesController < ApplicationController
     end
   end
 
-  def update_tag(question, t, ids)
+  def update_tag(quiz, question, t, ids)
     t_id = ids[:tags].find { |e| e[:prev_id].eql?(t["id"]) }
     t_id = t_id.nil? ? t["id"] : t_id[:id]
-    tag = question.tags.find { |e| e.id == t_id }
+    tag = quiz.tags.find { |e| e.id == t_id }
     raise ActiveRecord::RecordNotFound.new if tag.nil? && !t["meta"].eql?("new") && !t["meta"].eql?("add")
     if t["meta"].eql?("new") || t["meta"].eql?("add")
       if tag.nil?
