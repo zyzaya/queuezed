@@ -99,8 +99,9 @@ class QuizzesController < ApplicationController
                   end
                 elsif a["meta"].eql?("delete")
                   answer&.soft_destroy
+                else
+                  answer.update(content: a["content"]) unless a["content"].nil?
                 end
-                answer.content = a["content"] unless a["content"].nil?
               end
               # tags
               q["tags"]&.each do |t|
