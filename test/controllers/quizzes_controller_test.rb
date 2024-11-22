@@ -372,7 +372,11 @@ class QuizzesControllerTest < ActionDispatch::IntegrationTest
         }
       }
     )
-    assert_equal expected, JSON.parse(response.body)
+    assert_equal(
+      expected, 
+      result,
+      "expected:\n#{JSON.pretty_generate(expected)}\nactual:\n#{JSON.pretty_generate(result)}}"
+    )
   end
   # temp ids
   test "converts temp question id into real id" do

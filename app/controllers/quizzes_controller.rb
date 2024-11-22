@@ -41,7 +41,7 @@ class QuizzesController < ApplicationController
     #   prev_id: 
     #   answers: 
     # ]
-    quiz = current_user.quizzes.includes(:questions).find_by(id: params[:id])
+    quiz = current_user.quizzes.find_by(id: params[:id])
     if (quiz.nil?)
       head :not_found
     elsif !params[:quiz.nil?]
@@ -71,7 +71,6 @@ class QuizzesController < ApplicationController
               tags: [],
             }
             quiz.name = quiz_params["name"] unless quiz_params["name"].nil?
-            puts quiz_params
             quiz_params["questions"]&.each do |q|
               question = Question.find_by(quiz_id: quiz.id, id: q["id"])
               raise ActiveRecord::RecordNotFound if question.nil? && !q["meta"].eql?("new")
@@ -139,9 +138,11 @@ class QuizzesController < ApplicationController
                 end
               end
             end
-
-            puts ids
             quiz.save
+            result_quiz = current_user
+              .quizzes
+              .includes(questions: [:answers, :tags])
+              .find_by(id: quiz.id)
             result = inject_id_conversion(quiz, ids)
             render(json: result)
           end
