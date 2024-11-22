@@ -617,6 +617,7 @@ class QuizzesControllerTest < ActionDispatch::IntegrationTest
         ]
       }
     }
+    update(quiz.id, body)
     result = Question.find(question.id)
     assert_nil result.deleted_at
   end

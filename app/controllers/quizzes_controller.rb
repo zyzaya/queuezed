@@ -150,29 +150,28 @@ class QuizzesController < ApplicationController
     }
     return ids if params["questions"].nil?
     
-    question_ids = params["questions"].map { |q| q["id"] }
-    questions = quiz.questions.where(id: question_ids)
     params["questions"].each do |q|
-      question = nil
-      if q["meta"].eql?("new")
-        question = quiz.questions.create(content: q["content"])
-        ids[:questions] << { id: question.id, prev_id: q["id"]}
+      next unless q["meta"].eql?("new")
+
+      question = Question.find_or_create_by(quiz_id: quiz.id, id: q["id"])
+      if (q["id"] == question.id)
+        question.restore  
       else
-        question = questions.find(q["id"])
-      end
-      unless q["answers"].nil?
-        q["answers"].each do |a|
-          if (a["meta"].eql?("new"))
-            answer = question.answers.create(content: a["content"])
-            ids[:answers] << { question_id: question.id, id: answer.id, prev_id: a["id"] }
+        ids[:questions] << { id: question.id, prev_id: q["id"]}
+        unless q["answers"].nil?
+          q["answers"].each do |a|
+            if (a["meta"].eql?("new"))
+              answer = question.answers.create(content: a["content"])
+              ids[:answers] << { question_id: question.id, id: answer.id, prev_id: a["id"] }
+            end
           end
         end
-      end
-      unless q["tags"].nil?
-        q["tags"].each do |t|
-          if t["meta"].eql?("new")
-            tag = question.tags.create(content: t["content"])
-            ids[:tags] << { question_id: question.id, id: tag.id, prev_id: t["id"] }
+        unless q["tags"].nil?
+          q["tags"].each do |t|
+            if t["meta"].eql?("new")
+              tag = question.tags.create(content: t["content"])
+              ids[:tags] << { question_id: question.id, id: tag.id, prev_id: t["id"] }
+            end
           end
         end
       end
