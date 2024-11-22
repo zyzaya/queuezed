@@ -5,7 +5,7 @@ class Question < ApplicationRecord
   belongs_to :quiz, counter_cache: true
   has_and_belongs_to_many :tags
   has_many :answers, -> { Answer.active }, dependent: :destroy
-  has_many :histories, dependent: :destroy, class_name: 'QuestionHistory'
+  has_many :histories, -> { QuestionHistory.active }, dependent: :destroy, class_name: 'QuestionHistory'
   has_many :question_relations, -> { QuestionRelation.active }
   has_many :relations, through: :question_relations, class_name: 'Question'
 
