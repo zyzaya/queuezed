@@ -69,6 +69,7 @@ class Question < ApplicationRecord
     update_statistics(correct)
     update_srs(correct)
     update_difficult
+    update_review
     history.correct = correct
     self.save
   end  
