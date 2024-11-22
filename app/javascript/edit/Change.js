@@ -303,7 +303,7 @@ export default class Change {
 
   static #parseId(id) {
     let parsed = parseInt(id);
-    return parsed === NaN ? id : parsed;
+    return isNaN(parsed) ? id : parsed;
   }
 
   static #parseIds() {
