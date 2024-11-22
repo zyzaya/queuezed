@@ -133,7 +133,7 @@ class QuizzesController < ApplicationController
     unless params[key].nil?
       params[key].each do |v|
         if v[:meta].eql?("delete") || v[:meta].eql?("remove")
-          v[:_destroy] = 1
+          v[:_soft_destroy] = 1
         elsif v[:meta].eql?("new")
           v.extract!(:id)
         end

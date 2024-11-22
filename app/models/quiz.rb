@@ -9,6 +9,15 @@ class Quiz < ApplicationRecord
 
   accepts_nested_attributes_for :questions, allow_destroy: true
 
+  def questions_attributes=(attributes)
+    attributes.keep_if do |a|
+      soft_destroy = a["_soft_destroy"].eql?(1)
+      Question.find_by(id: a["id"])&.soft_destroy if soft_destroy
+      !soft_destroy
+    end
+    super(attributes)
+  end
+
   def init
     self.rank_1_interval = 1.days.to_i
     self.rank_2_interval = 3.days.to_i
