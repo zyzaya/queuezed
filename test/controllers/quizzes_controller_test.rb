@@ -591,4 +591,33 @@ class QuizzesControllerTest < ActionDispatch::IntegrationTest
     result = Question.find(question.id)
     assert_not_nil result.deleted_at
   end
+
+  test "restore" do
+    quiz = quizzes(:johns)
+    question = questions(:john_one)
+    body = {
+      quiz: {
+        questions: [
+          {
+            id: question.id,
+            meta: 'delete'
+          }
+        ]
+      }
+    }
+    update(quiz.id, body)
+    assert_response :ok
+    body = {
+      quiz: {
+        questions: [
+          {
+            id: question.id,
+            meta: 'new'
+          }
+        ]
+      }
+    }
+    result = Question.find(question.id)
+    assert_nil result.deleted_at
+  end
 end
