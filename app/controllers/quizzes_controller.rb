@@ -41,7 +41,10 @@ class QuizzesController < ApplicationController
     #   prev_id: 
     #   answers: 
     # ]
-    quiz = current_user.quizzes.find_by(id: params[:id])
+    quiz = current_user
+      .quizzes
+      .includes(questions: [:answers, :tags])
+      .find_by(id: params[:id])
     if (quiz.nil?)
       head :not_found
     elsif !params[:quiz.nil?]
@@ -139,9 +142,10 @@ class QuizzesController < ApplicationController
   end
 
   def update_question(quiz, q, ids)
-    question = Question.find_by(quiz_id: quiz.id, id: q["id"])
+    question = quiz.questions.find { |e| e.id == q["id"] }
     raise ActiveRecord::RecordNotFound if question.nil? && !q["meta"].eql?("new")
     if q["meta"].eql?("new")
+      question = Question.find_by(quiz_id: quiz.id, id: q["id"])  
       if (question.nil?)
         question = quiz.questions.create(content: q["content"])
         ids[:questions] << {id: question.id, prev_id: q["id"] }
@@ -157,9 +161,10 @@ class QuizzesController < ApplicationController
   end
 
   def update_answer(question, a, ids)
-    answer = Answer.find_by(question_id: question.id, id: a["id"])
+    answer = question.answers.find { |e| e.id == a["id"] }
     raise ActiveRecord::RecordNotFound if answer.nil? && !a["meta"].eql?("new")
     if a["meta"].eql?("new")
+      answer = Answer.find_by(question_id: question.id, id: a["id"])
       if (answer.nil?)
         answer = question.answers.create(content: a["content"])
         ids[:answers] << {question_id: question.id, id: answer.id, prev_id: a["id"]}
@@ -176,7 +181,7 @@ class QuizzesController < ApplicationController
   def update_tag(question, t, ids)
     t_id = ids[:tags].find { |e| e[:prev_id].eql?(t["id"]) }
     t_id = t_id.nil? ? t["id"] : t_id[:id]
-    tag = Tag.find_by(id: t_id)
+    tag = question.tags.find { |e| e.id == t_id }
     raise ActiveRecord::RecordNotFound.new if tag.nil? && !t["meta"].eql?("new") && !t["meta"].eql?("add")
     if t["meta"].eql?("new") || t["meta"].eql?("add")
       if tag.nil?
@@ -193,7 +198,7 @@ class QuizzesController < ApplicationController
   def update_relation(quiz, question, r, ids)
     r_id = ids[:questions].find { |e| e[:prev_id].eql?(r["id"]) }
     r_id = r_id.nil? ? r["id"] : r_id[:id]
-    relation = Question.find_by(quiz_id: quiz.id, id: r_id)
+    relation = quiz.questions.find { |e| e.id == r_id }
     if r["meta"].eql?("new") || r["meta"].eql?("add")
       question.relations << relation unless relation.nil?
     elsif r["meta"].eql?("delete") || r["meta"].eql?("remove")
