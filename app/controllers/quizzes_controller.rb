@@ -63,7 +63,7 @@ class QuizzesController < ApplicationController
               .quizzes
               .includes(questions: [:answers, :tags])
               .find_by(id: quiz.id)
-            result = inject_id_conversion(quiz, ids)
+            result = inject_id_conversion(result_quiz, ids)
             render(json: result)
           end
         rescue ActiveRecord::StatementInvalid
