@@ -92,7 +92,7 @@ class QuizzesController < ApplicationController
                 raise ActiveRecord::RecordNotFound if answer.nil? && !a["meta"].eql?("new")
                 if a["meta"].eql?("new")
                   if (answer.nil?)
-                    answer = question.answers.create
+                    answer = question.answers.create(content: a["content"])
                     ids[:answers] << {question_id: question.id, id: answer.id, prev_id: a["id"]}
                   else
                     answer.restore
