@@ -113,7 +113,7 @@ class QuizzesController < ApplicationController
         k.eql?("questions") ? :questions_attributes : k
       end
 
-      convert_meta(quiz_params, :questions_attributes)
+      convert_meta(quiz_params, :questions_attributes, true)
       quiz_params[:questions_attributes].each do |question_params|
         question_params.transform_keys! do |k|
           case k
@@ -122,18 +122,22 @@ class QuizzesController < ApplicationController
           when "relations" then :relations_attributes
           else k end
         end
-        convert_meta(question_params, :answers_attributes)
-        convert_meta(question_params, :tags_attributes)
-        convert_meta(question_params, :relations_attributes)
+        convert_meta(question_params, :answers_attributes, true)
+        convert_meta(question_params, :tags_attributes, false)
+        convert_meta(question_params, :relations_attributes, false)
       end      
     end
   end
 
-  def convert_meta(params, key)
+  def convert_meta(params, key, soft_destroy)
     unless params[key].nil?
       params[key].each do |v|
         if v[:meta].eql?("delete") || v[:meta].eql?("remove")
-          v[:_soft_destroy] = 1
+          if soft_destroy
+            v[:_soft_destroy] = 1
+          else
+            v[:_destroy] = 1
+          end
         elsif v[:meta].eql?("new")
           v.extract!(:id)
         end
