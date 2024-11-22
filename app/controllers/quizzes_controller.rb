@@ -57,79 +57,7 @@ class QuizzesController < ApplicationController
 
         begin
           quiz.transaction do
-            ids = {
-              questions: [],
-              answers: [],
-              tags: [],
-            }
-            quiz.name = quiz_params["name"] unless quiz_params["name"].nil?
-            quiz_params["questions"]&.each do |q|
-              question = Question.find_by(quiz_id: quiz.id, id: q["id"])
-              raise ActiveRecord::RecordNotFound if question.nil? && !q["meta"].eql?("new")
-              if q["meta"].eql?("new")
-                if (question.nil?)
-                  question = quiz.questions.create(content: q["content"])
-                  ids[:questions] << {id: question.id, prev_id: q["id"] }
-                else
-                  question.restore
-                end
-              elsif q["meta"].eql?("delete")
-                question&.soft_destroy
-              else
-                question.update(content: q["content"]) unless q["content"].nil?
-              end
-              # answers
-              q["answers"]&.each do |a|
-                answer = Answer.find_by(question_id: question.id, id: a["id"])
-                raise ActiveRecord::RecordNotFound if answer.nil? && !a["meta"].eql?("new")
-                if a["meta"].eql?("new")
-                  if (answer.nil?)
-                    answer = question.answers.create(content: a["content"])
-                    ids[:answers] << {question_id: question.id, id: answer.id, prev_id: a["id"]}
-                  else
-                    answer.restore
-                  end
-                elsif a["meta"].eql?("delete")
-                  answer&.soft_destroy
-                else
-                  answer.update(content: a["content"]) unless a["content"].nil?
-                end
-              end
-              # tags
-              q["tags"]&.each do |t|
-                t_id = ids[:tags].find { |e| e[:prev_id].eql?(t["id"]) }
-                t_id = t_id.nil? ? t["id"] : t_id[:id]
-                tag = Tag.find_by(id: t_id)
-                raise ActiveRecord::RecordNotFound.new if tag.nil? && !t["meta"].eql?("new")
-                if t["meta"].eql?("new") || t["meta"].eql?("add")
-                  if tag.nil?
-                    tag = question.tags.create(content: t["content"])
-                    ids[:tags] << { question_id: question.id, id: tag.id, prev_id: t["id"] }
-                  else
-                    question.tags << tag
-                  end
-                elsif t["meta"].eql?("delete") || t["meta"].eql?("remove")
-                  question.tags.delete(tag) unless tag.nil?
-                end
-              end
-              # meta: new, delete
-            end
-            # relations
-            quiz_params["questions"]&.each do |q|
-              q_id = ids[:questions].find { |e| e[:prev_id].eql?(q["id"]) }
-              q_id = q_id.nil? ? q["id"] : q_id[:id]
-              question = Question.find_by(quiz_id: quiz.id, id: q_id)
-              q["relations"]&.each do |r|
-                r_id = ids[:questions].find { |e| e[:prev_id].eql?(r["id"]) }
-                r_id = r_id.nil? ? r["id"] : r_id[:id]
-                relation = Question.find_by(quiz_id: quiz.id, id: r_id)
-                if r["meta"].eql?("new") || r["meta"].eql?("add")
-                  question.relations << relation unless relation.nil?
-                elsif r["meta"].eql?("delete") || r["meta"].eql?("remove")
-                  question.relations.delete(relation) unless relation.nil?
-                end
-              end
-            end
+            ids = update_quiz(quiz, quiz_params)
             quiz.save
             result_quiz = current_user
               .quizzes
@@ -177,6 +105,100 @@ class QuizzesController < ApplicationController
           }
         ]
       )
+  end
+
+  def update_quiz(quiz, quiz_params)
+    ids = {
+      questions: [],
+      answers: [],
+      tags: [],
+    }
+    quiz.name = quiz_params["name"] unless quiz_params["name"].nil?
+    quiz_params["questions"]&.each do |q|
+      question = update_question(quiz, q, ids)
+      # answers
+      q["answers"]&.each do |a|
+        update_answer(question, a, ids)
+      end
+      # tags
+      q["tags"]&.each do |t|
+        update_tag(question, t, ids)
+      end
+      # meta: new, delete
+    end
+    # relations
+    quiz_params["questions"]&.each do |q|
+      q_id = ids[:questions].find { |e| e[:prev_id].eql?(q["id"]) }
+      q_id = q_id.nil? ? q["id"] : q_id[:id]
+      question = Question.find_by(quiz_id: quiz.id, id: q_id)
+      q["relations"]&.each do |r|
+        update_relation(quiz, question, r, ids)
+      end
+    end
+    return ids
+  end
+
+  def update_question(quiz, q, ids)
+    question = Question.find_by(quiz_id: quiz.id, id: q["id"])
+    raise ActiveRecord::RecordNotFound if question.nil? && !q["meta"].eql?("new")
+    if q["meta"].eql?("new")
+      if (question.nil?)
+        question = quiz.questions.create(content: q["content"])
+        ids[:questions] << {id: question.id, prev_id: q["id"] }
+      else
+        question.restore
+      end
+    elsif q["meta"].eql?("delete")
+      question&.soft_destroy
+    else
+      question.update(content: q["content"]) unless q["content"].nil?
+    end
+    return question
+  end
+
+  def update_answer(question, a, ids)
+    answer = Answer.find_by(question_id: question.id, id: a["id"])
+    raise ActiveRecord::RecordNotFound if answer.nil? && !a["meta"].eql?("new")
+    if a["meta"].eql?("new")
+      if (answer.nil?)
+        answer = question.answers.create(content: a["content"])
+        ids[:answers] << {question_id: question.id, id: answer.id, prev_id: a["id"]}
+      else
+        answer.restore
+      end
+    elsif a["meta"].eql?("delete")
+      answer&.soft_destroy
+    else
+      answer.update(content: a["content"]) unless a["content"].nil?
+    end
+  end
+
+  def update_tag(question, t, ids)
+    t_id = ids[:tags].find { |e| e[:prev_id].eql?(t["id"]) }
+    t_id = t_id.nil? ? t["id"] : t_id[:id]
+    tag = Tag.find_by(id: t_id)
+    raise ActiveRecord::RecordNotFound.new if tag.nil? && !t["meta"].eql?("new")
+    if t["meta"].eql?("new") || t["meta"].eql?("add")
+      if tag.nil?
+        tag = question.tags.create(content: t["content"])
+        ids[:tags] << { question_id: question.id, id: tag.id, prev_id: t["id"] }
+      else
+        question.tags << tag
+      end
+    elsif t["meta"].eql?("delete") || t["meta"].eql?("remove")
+      question.tags.delete(tag) unless tag.nil?
+    end
+  end
+
+  def update_relation(quiz, question, r, ids)
+    r_id = ids[:questions].find { |e| e[:prev_id].eql?(r["id"]) }
+    r_id = r_id.nil? ? r["id"] : r_id[:id]
+    relation = Question.find_by(quiz_id: quiz.id, id: r_id)
+    if r["meta"].eql?("new") || r["meta"].eql?("add")
+      question.relations << relation unless relation.nil?
+    elsif r["meta"].eql?("delete") || r["meta"].eql?("remove")
+      question.relations.delete(relation) unless relation.nil?
+    end
   end
 
   def inject_id_conversion(quiz, id_conversions)
