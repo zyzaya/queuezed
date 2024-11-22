@@ -108,7 +108,7 @@ class QuizzesController < ApplicationController
                 t_id = t_id.nil? ? t["id"] : t_id[:id]
                 tag = Tag.find_by(id: t_id)
                 raise ActiveRecord::RecordNotFound.new if tag.nil? && !t["meta"].eql?("new")
-                if t["meta"].eql?("new")
+                if t["meta"].eql?("new") || t["meta"].eql?("add")
                   if tag.nil?
                     tag = question.tags.create(content: t["content"])
                     ids[:tags] << { question_id: question.id, id: tag.id, prev_id: t["id"] }
