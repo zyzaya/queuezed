@@ -8,14 +8,14 @@ module SoftDestroyable
 
   def soft_destroy(time = nil)
     raise_error_not_destroyed("Record already destroyed") unless deleted_at.nil?
-
-    update_column(:deleted_at, time.nil? ? Time.now : time)
     
     associations = self.class.reflect_on_all_associations.select do |a|
       a.options[:dependent] == :destroy && a.klass.include?(SoftDestroyable)
     end
 
     result = transaction do
+      update_column(:deleted_at, time.nil? ? Time.now : time)
+
       associations.each do |a|
         public_send(a.name).unscope(where: :deleted_at).each do |m|
           m.soft_destroy(time)
