@@ -3,8 +3,8 @@ class QuizzesController < ApplicationController
 
   def index
     @quizzes = current_user.quizzes.includes(:questions).order(:created_at)
-    @difficult_counts = Question.where(quiz_id: @quizzes, difficult: true).group(:quiz_id).count
-    @review_counts = Question.where(quiz_id: @quizzes, review: true).group(:quiz_id).count
+    @difficult_counts = Question.where(quiz_id: @quizzes, difficult: true, deleted_at: nil).group(:quiz_id).count
+    @review_counts = Question.where(quiz_id: @quizzes, review: true, deleted_at: nil).group(:quiz_id).count
   end
 
   def create
