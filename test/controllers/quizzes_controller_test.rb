@@ -312,22 +312,17 @@ class QuizzesControllerTest < ActionDispatch::IntegrationTest
           id: question.id,
           content: modified_content,
           answers: [
-            id: answer.id,
-            content: modified_content
-          ],
-          tags: [
             id: "invalid",
-            meta: "add",
-            content: "invalid tag"
+            content: modified_content
           ]
         ]
       }
     }
     update(quiz.id, body)
     assert_response :not_found
-    assert_equal quiz.to_json, Quiz.find(quiz.id).to_json
-    assert_equal question.to_json, Question.find(question.id).to_json
-    assert_equal answer.to_json, Answer.find(answer.id).to_json
+    assert_equal Quiz.find(quiz.id).to_json, quiz.to_json
+    assert_equal Question.find(question.id).to_json, question.to_json
+    assert_equal Answer.find(answer.id).to_json, answer.to_json
   end
   # response
   test "responds with json of the quiz, including tags and answers" do
