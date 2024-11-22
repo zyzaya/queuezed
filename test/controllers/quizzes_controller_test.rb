@@ -572,4 +572,23 @@ class QuizzesControllerTest < ActionDispatch::IntegrationTest
     q_ids = questions.map { |q| q["id"] }
     assert_equal q_ids, Tag.find(tag_id).questions.pluck(:id)
   end
+
+  test "soft destroy" do
+    quiz = quizzes(:johns)
+    question = questions(:john_one)
+    body = {
+      quiz: {
+        questions: [
+          {
+            id: question.id,
+            meta: 'delete'
+          }
+        ]
+      }
+    }
+    update(quiz.id, body)
+    assert_response :ok
+    result = Question.find(question.id)
+    assert_not_nil result.deleted_at
+  end
 end
