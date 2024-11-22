@@ -84,8 +84,9 @@ class QuizzesController < ApplicationController
                 end
               elsif q["meta"].eql?("delete")
                 question&.soft_destroy
+              else
+                question.update(content: q["content"]) unless q["content"].nil?
               end
-              question.content = q["content"] unless q["content"].nil?
               # answers
               q["answers"]&.each do |a|
                 answer = Answer.find_by(question_id: question.id, id: a["id"])
