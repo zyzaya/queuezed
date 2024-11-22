@@ -321,27 +321,23 @@ export default class Change {
 
     for (const [temp, real] of Object.entries(idConversion.questions)) {
       this.#changes.questions.forEach((q) => {
-        if (q.id == temp) q.id = real;
+        if (q.id == temp) q.id = this.#parseId(real);
       });
     }
 
     for (const [temp, real] of Object.entries(idConversion.answers)) {
       this.#changes.questions.forEach((q) => {
-        if (q.answers != null) {
-          q.answers.forEach((a) => {
-            if (a.id == temp) a.id = real;
-          });
-        }
+        q.answers?.forEach((a) => {
+          if (a.id == temp) a.id = this.#parseId(real);
+        });
       });
     }
 
     for (const [temp, real] of Object.entries(idConversion.tags)) {
       this.#changes.questions.forEach((q) => {
-        if (q.tags != null) {
-          q.tags.forEach((t) => {
-            if (t.id == temp) t.id = real;
-          });
-        }
+        q.tags?.forEach((t) => {
+          if (t.id == temp) t.id = this.#parseId(real);
+        });
       });
     }
 
