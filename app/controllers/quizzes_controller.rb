@@ -135,7 +135,7 @@ class QuizzesController < ApplicationController
     quiz_params["questions"]&.each do |q|
       q_id = ids[:questions].find { |e| e[:prev_id].eql?(q["id"]) }
       q_id = q_id.nil? ? q["id"] : q_id[:id]
-      question = Question.find_by(quiz_id: quiz.id, id: q_id)
+      question = quiz.questions.find { |e| e.id == q_id }
       q["relations"]&.each do |r|
         update_relation(quiz, question, r, ids)
       end
