@@ -43,7 +43,7 @@ class QuizzesController < ApplicationController
     # ]
     quiz = current_user
       .quizzes
-      .includes(questions: [:answers, :tags])
+      .includes(questions: [:answers])
       .find_by(id: params[:id])
     if (quiz.nil?)
       head :not_found
