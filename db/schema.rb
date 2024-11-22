@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2024_11_21_230531) do
+ActiveRecord::Schema[7.2].define(version: 2024_11_22_024050) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -57,6 +57,7 @@ ActiveRecord::Schema[7.2].define(version: 2024_11_21_230531) do
     t.datetime "updated_at", null: false
     t.boolean "correct"
     t.bigint "practice_session_id", null: false
+    t.datetime "deleted_at"
     t.index ["practice_session_id"], name: "index_question_histories_on_practice_session_id"
     t.index ["question_id"], name: "index_question_histories_on_question_id"
   end
