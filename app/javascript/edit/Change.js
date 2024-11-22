@@ -301,7 +301,22 @@ export default class Change {
     }
   }
 
+  static #parseId(id) {
+    let parsed = parseInt(id);
+    return parsed === NaN ? id : parsed;
+  }
+
+  static #parseIds() {
+    this.#changes.questions?.forEach((q) => {
+      q.id = this.#parseId(q.id);
+      q.answers?.forEach((a) => (a.id = this.#parseId(a.id)));
+      q.tags?.forEach((t) => (t.id = this.#parseId(t.id)));
+      q.relations?.forEach((r) => (r.id = this.#parseId(r.id)));
+    });
+  }
+
   static GetChanges(idConversion = null) {
+    this.#parseIds();
     if (idConversion === null) return this.#changes;
 
     for (const [temp, real] of Object.entries(idConversion.questions)) {
