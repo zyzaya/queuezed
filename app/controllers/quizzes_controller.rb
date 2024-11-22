@@ -151,13 +151,16 @@ class QuizzesController < ApplicationController
     return ids if params["questions"].nil?
     
     params["questions"].each do |q|
-      next unless q["meta"].eql?("new")
-
-      question = Question.find_or_create_by(quiz_id: quiz.id, id: q["id"])
-      if (q["id"] == question.id)
+      question = Question.find_or_create_by(quiz_id: quiz.id, id: q["id"]) do |obj|
+        obj.content = q["content"]
+      end
+      if (q["id"] == question.id && q["meta"].eql?("new"))
         question.restore  
       else
-        ids[:questions] << { id: question.id, prev_id: q["id"]}
+        if (q["id"] != question.id)
+          ids[:questions] << { id: question.id, prev_id: q["id"]}
+          question.content = q["content"]
+        end
         unless q["answers"].nil?
           q["answers"].each do |a|
             if (a["meta"].eql?("new"))

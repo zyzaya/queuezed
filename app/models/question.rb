@@ -13,6 +13,14 @@ class Question < ApplicationRecord
   accepts_nested_attributes_for :tags, allow_destroy: true
   accepts_nested_attributes_for :relations, allow_destroy: true
 
+  def answers_attributes=(attributes)
+    attributes.keep_if do |a|
+      soft_destroy = a["_soft_destroy"].eql?(1)
+      Answer.find_by(id: a["id"])&.soft_destroy if soft_destroy
+      !soft_destroy
+    end
+  end
+
   def tags_attributes=(attributes)
     attributes.each do |a|
       tag = Tag.find_by(id: a["id"])

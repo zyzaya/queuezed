@@ -394,8 +394,8 @@ class QuizzesControllerTest < ActionDispatch::IntegrationTest
     assert_response :ok
     result = JSON.parse(response.body)
     question = result["questions"].find { |q| q["prev_id"].eql?(initial_id) }
-    assert_equal question["content"], initial_content
-    assert_equal question["content"], Question.find(question["id"]).content
+    assert_equal initial_content, question["content"]
+    assert_equal Question.find(question["id"]).content, question["content"]
   end
 
   test "converts temp answer id into real id" do
