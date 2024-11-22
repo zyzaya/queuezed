@@ -57,13 +57,90 @@ class QuizzesController < ApplicationController
 
         begin
           quiz.transaction do
-            id_conversions = create_new_records(quiz, quiz_params)
-            remove_new(quiz_params)
-            convert_to_new_ids(quiz_params, id_conversions)
-            convert_to_attributes(quiz_params)
-            quiz.update!(quiz_params)
-            quiz = current_user.quizzes.includes(questions: [:answers, :tags]).find_by(id: params[:id])
-            result = inject_id_conversion(quiz, id_conversions)
+            # id_conversions = create_new_records(quiz, quiz_params)
+            # remove_new(quiz_params)
+            # convert_to_new_ids(quiz_params, id_conversions)
+            # convert_to_attributes(quiz_params)
+            # quiz.update!(quiz_params)
+            # quiz = current_user.quizzes.includes(questions: [:answers, :tags]).find_by(id: params[:id])
+            # result = inject_id_conversion(quiz, id_conversions)
+            # render(json: result)
+            ids = {
+              questions: [],
+              answers: [],
+              tags: [],
+            }
+            quiz.name = quiz_params["name"] unless quiz_params["name"].nil?
+            puts quiz_params
+            quiz_params["questions"]&.each do |q|
+              question = Question.find_by(quiz_id: quiz.id, id: q["id"])
+              raise ActiveRecord::RecordNotFound if question.nil? && !q["meta"].eql?("new")
+              if q["meta"].eql?("new")
+                if (question.nil?)
+                  question = quiz.questions.create(content: q["content"])
+                  ids[:questions] << {id: question.id, prev_id: q["id"] }
+                else
+                  question.restore
+                end
+              elsif q["meta"].eql?("delete")
+                question&.soft_destroy
+              end
+              question.content = q["content"] unless q["content"].nil?
+              # answers
+              q["answers"]&.each do |a|
+                answer = Answer.find_by(question_id: question.id, id: a["id"])
+                raise ActiveRecord::RecordNotFound if answer.nil? && !a["meta"].eql?("new")
+                if a["meta"].eql?("new")
+                  if (answer.nil?)
+                    answer = question.answers.create
+                    ids[:answers] << {question_id: question.id, id: answer.id, prev_id: a["id"]}
+                  else
+                    answer.restore
+                  end
+                elsif a["meta"].eql?("delete")
+                  answer&.soft_destroy
+                end
+                answer.content = a["content"] unless a["content"].nil?
+              end
+              # tags
+              q["tags"]&.each do |t|
+                t_id = ids[:tags].find { |e| e[:prev_id].eql?(t["id"]) }
+                t_id = t_id.nil? ? t["id"] : t_id[:id]
+                tag = Tag.find_by(id: t_id)
+                raise ActiveRecord::RecordNotFound.new if tag.nil? && !t["meta"].eql?("new")
+                if t["meta"].eql?("new")
+                  if tag.nil?
+                    tag = question.tags.create(content: t["content"])
+                    ids[:tags] << { question_id: question.id, id: tag.id, prev_id: t["id"] }
+                  else
+                    question.tags << tag
+                  end
+                elsif t["meta"].eql?("delete") || t["meta"].eql?("remove")
+                  question.tags.delete(tag) unless tag.nil?
+                end
+              end
+              # meta: new, delete
+            end
+            # relations
+            quiz_params["questions"]&.each do |q|
+              q_id = ids[:questions].find { |e| e[:prev_id].eql?(q["id"]) }
+              q_id = q_id.nil? ? q["id"] : q_id[:id]
+              question = Question.find_by(quiz_id: quiz.id, id: q_id)
+              q["relations"]&.each do |r|
+                r_id = ids[:questions].find { |e| e[:prev_id].eql?(r["id"]) }
+                r_id = r_id.nil? ? r["id"] : r_id[:id]
+                relation = Question.find_by(quiz_id: quiz.id, id: r_id)
+                if r["meta"].eql?("new") || r["meta"].eql?("add")
+                  question.relations << relation unless relation.nil?
+                elsif r["meta"].eql?("delete") || r["meta"].eql?("remove")
+                  question.relations.delete(relation) unless relation.nil?
+                end
+              end
+            end
+
+            puts ids
+            quiz.save
+            result = inject_id_conversion(quiz, ids)
             render(json: result)
           end
         rescue ActiveRecord::StatementInvalid
