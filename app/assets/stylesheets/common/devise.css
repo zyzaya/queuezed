@@ -4,6 +4,10 @@
   font-size: 64px;
 }
 
+.devise_forgot > h2 {
+  text-align: center;
+}
+
 .devise_info {
   display: grid;
   grid-template-rows: min-content 1fr min-content;
@@ -41,7 +45,6 @@
   border: 2px solid black;
   padding: 0 4px;
   height: 32px;
-  border-radius: 10px;
 }
 
 .devise_label {
@@ -49,11 +52,15 @@
   margin-left: 2px;
 }
 
+.devise_actions {
+  margin: auto;
+}
+
 .devise_submit {
   font-size: 18px;
   margin: 7px 0;
-  width: 100%;
   height: 32px;
+  width: 100%;
 }
 
 .devise_links {
@@ -66,13 +73,27 @@
   grid-template-columns: 1fr;
 }
 
-.devise_forgot {
+.devise_forgot, .devise_log_in {
   color: var(--secondary-text-color);
 }
 
-.devise_sign_up, .devise_log_in {
+.devise_sign_up {
   color: black;
   border-bottom: 1px solid var(--secondary-text-color);
   text-decoration: none;
+}
+
+.devise_forgot > .devise_links {
+  width: min-content;
+  column-gap: 4px;
+  justify-self: center;
+  grid-template-columns: 1fr 1fr;
+
+}
+
+.devise_forgot > .devise_links > .devise_sign_up {
+  border-bottom: none;
+  color: var(--secondary-text-color);
+  text-decoration: underline;
 }
 
