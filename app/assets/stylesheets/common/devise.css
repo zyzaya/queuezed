@@ -10,7 +10,7 @@
 
 .devise_info {
   display: grid;
-  grid-template-rows: min-content 1fr min-content;
+  grid-template-rows: min-content min-content min-content;
   justify-items: center;
 }
 
@@ -85,4 +85,23 @@
 .passwords_new .devise_links, .passwords_edit .devise_links {
   flex-direction: row;
   width: min-content;
+}
+
+.registrations_edit hr {
+  margin: 10px 0;
+}
+
+.devise_delete {
+  width: 100%;
+  margin-bottom: 5px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+}
+
+.devise_delete .button {
+  width: 100%;
+}
+
+.devise_delete > hr {
+  color: red;
 }
