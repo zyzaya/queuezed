@@ -1,4 +1,4 @@
-<div class="devise_info">
+<div class="devise_info registrations_new">
   <h1 class="devise_title">queuezed</h1>
   <div class="devise_form">
     <%= form_for(resource, as: resource_name, url: registration_path(resource_name), data: { turbo:false }) do |f| %>
@@ -24,8 +24,6 @@
         <%= f.submit "Sign up", class: 'devise_submit button' %>
       </div>
     <% end %>
-    <div class="devise_links">
-      <%= link_to "Log in", new_session_path(resource_name), data: { turbo:false }, class: 'devise_log_in' %>
-    </div>
+    <%= render "devise/shared/links" %>
   </div>
 </div>

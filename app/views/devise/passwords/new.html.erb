@@ -1,4 +1,4 @@
-<div class="devise_info">
+<div class="devise_info passwords_new">
   <h1 class="devise_title">queuezed</h1>
   <div class="devise_form devise_forgot">
     <h2>Forgot your password?</h2>
@@ -14,11 +14,7 @@
         <%= f.submit "Send me reset password instructions", class: "devise_submit button" %>
       </div>
     <% end %>
-
-    <div class="devise_links ">
-      <%= link_to "Log in", new_session_path(resource_name), data: { turbo:false }, class: 'devise_log_in' %>
-      <%= link_to "Sign Up", new_registration_path(resource_name), data: { turbo: false}, class: 'devise_sign_up' %>
-    </div>
+    <%= render "devise/shared/links" %>
   </div>
 </div>
 

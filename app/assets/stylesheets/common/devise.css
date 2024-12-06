@@ -4,7 +4,7 @@
   font-size: 64px;
 }
 
-.devise_forgot > h2 {
+.devise_info h2 {
   text-align: center;
 }
 
@@ -64,36 +64,25 @@
 }
 
 .devise_links {
-  display: grid;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
   justify-items: stretch;
+  justify-self: center;
   text-align: center;
   white-space: nowrap;
-  grid-template-rows: min-content min-content;
-  row-gap: 10px;
-  grid-template-columns: 1fr;
-}
-
-.devise_forgot, .devise_log_in {
+  gap: 5px;
   color: var(--secondary-text-color);
+  text-decoration: none;
 }
 
-.devise_sign_up {
+.sessions_new .devise_sign_up {
   color: black;
   border-bottom: 1px solid var(--secondary-text-color);
   text-decoration: none;
 }
 
-.devise_forgot > .devise_links {
+.passwords_new .devise_links, .passwords_edit .devise_links {
+  flex-direction: row;
   width: min-content;
-  column-gap: 4px;
-  justify-self: center;
-  grid-template-columns: 1fr 1fr;
-
 }
-
-.devise_forgot > .devise_links > .devise_sign_up {
-  border-bottom: none;
-  color: var(--secondary-text-color);
-  text-decoration: underline;
-}
-
