@@ -3,7 +3,7 @@
     <div></div>
     <%= link_to "queuezed", quizzes_path, class: "header_title" %>
     <div class="header_buttons">
-      <button class="header_settings button">Settings</button>
+      <%= link_to "Settings", edit_user_registration_path, class: "button"%>
       <%= button_to "Sign Out", destroy_user_session_path, method: :delete, class: 'button' %>
     </div>
   </div>

@@ -13,12 +13,7 @@
   grid-template-columns: min-content min-content;
   align-items: center;
   justify-content: right;
-}
-
-.header_buttons button, .header_buttons form {
-  white-space: nowrap;
-  margin: 0 3px;
-  font-size: 16px;
+  gap: 3px;
 }
 
 .header_title {
