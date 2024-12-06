@@ -6,7 +6,7 @@ class Quiz < ApplicationRecord
   has_many :practice_sessions, dependent: :destroy
 
   after_initialize :init
-  before_destroy :destroy_associated_records
+  before_destroy :delete_associated_records, prepend: true
 
   accepts_nested_attributes_for :questions, allow_destroy: true
 
@@ -130,14 +130,18 @@ class Quiz < ApplicationRecord
     (filter - question.tags.pluck(:id)).length == 0
   end
 
-  def destroy_associated_records
-    # go through every tag (including soft destroyed)
-    # go through every practice session
-    #   question history
-    #   answer history
-    # questions
-    #   answers
-    # go through every question (including soft destroyed)
-    # 
+  def delete_associated_records
+    transaction do
+      Tag.where(id: tags.unscope(where: :deleted_at).pluck(:id)).destroy_all
+      q_ids = questions.unscope(where: :deleted_at).pluck(:id)
+      q_history_ids = QuestionHistory.where(question_id: q_ids)
+      AnswerHistory.where(question_history_id: q_history_ids)
+      
+      QuestionHistory.where(question_id: q_ids).delete_all
+      Answer.where(question_id: q_ids).delete_all
+      QuestionRelation.where(question_id: q_ids).delete_all
+      Question.where(id: q_ids).delete_all
+      practice_sessions.delete_all
+    end
   end
 end
