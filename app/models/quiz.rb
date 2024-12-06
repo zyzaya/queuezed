@@ -132,11 +132,12 @@ class Quiz < ApplicationRecord
 
   def delete_associated_records
     transaction do
-      Tag.where(id: tags.unscope(where: :deleted_at).pluck(:id)).destroy_all
       q_ids = questions.unscope(where: :deleted_at).pluck(:id)
       q_history_ids = QuestionHistory.where(question_id: q_ids)
-      AnswerHistory.where(question_history_id: q_history_ids)
       
+      QuestionsTag.where(question_id: q_ids).delete_all
+      Tag.where(id: tags.unscope(where: :deleted_at).pluck(:id)).delete_all
+      AnswerHistory.where(question_history_id: q_history_ids).delete_all
       QuestionHistory.where(question_id: q_ids).delete_all
       Answer.where(question_id: q_ids).delete_all
       QuestionRelation.where(question_id: q_ids).delete_all
