@@ -1,5 +1,5 @@
 class PracticeSession < ApplicationRecord
-  has_many :question_histories
+  has_many :question_histories, dependent: :destroy
   belongs_to :quiz
 
   after_initialize :init

@@ -6,6 +6,7 @@ class Quiz < ApplicationRecord
   has_many :practice_sessions, dependent: :destroy
 
   after_initialize :init
+  before_destroy :destroy_associated_records
 
   accepts_nested_attributes_for :questions, allow_destroy: true
 
@@ -127,5 +128,16 @@ class Quiz < ApplicationRecord
 
   def has_tags(question, filter)
     (filter - question.tags.pluck(:id)).length == 0
+  end
+
+  def destroy_associated_records
+    # go through every tag (including soft destroyed)
+    # go through every practice session
+    #   question history
+    #   answer history
+    # questions
+    #   answers
+    # go through every question (including soft destroyed)
+    # 
   end
 end

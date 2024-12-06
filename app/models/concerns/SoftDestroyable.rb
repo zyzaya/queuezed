@@ -7,6 +7,7 @@ module SoftDestroyable
   end
 
   def soft_destroy(time = nil)
+    return self if !time.nil? && time.eql?(deleted_at)
     raise_error_not_destroyed("Record already destroyed") unless deleted_at.nil?
     
     associations = self.class.reflect_on_all_associations.select do |a|
@@ -14,7 +15,8 @@ module SoftDestroyable
     end
 
     result = transaction do
-      update_column(:deleted_at, time.nil? ? Time.now : time)
+      time = time.nil? ? Time.zone.now.round(6) : time
+      update_column(:deleted_at, time)
 
       associations.each do |a|
         public_send(a.name).unscope(where: :deleted_at).each do |m|
@@ -30,6 +32,7 @@ module SoftDestroyable
     
     
     if time.nil? || time.eql?(deleted_at)
+      time = time.nil? ? deleted_at : time
       update_column(:deleted_at, nil)
       
       associations = self.class.reflect_on_all_associations.select do |a|
