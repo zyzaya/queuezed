@@ -1,0 +1,2 @@
+class QuestionsTag < ApplicationRecord
+end
