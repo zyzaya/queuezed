@@ -1,9 +1,9 @@
 class Quiz < ApplicationRecord
   MAX_RANK = 5
   belongs_to :user
-  has_many :questions, -> { Question.active }, dependent: :destroy
+  has_many :questions, -> { Question.active }
   has_many :tags, -> { distinct }, through: :questions
-  has_many :practice_sessions, dependent: :destroy
+  has_many :practice_sessions
 
   after_initialize :init
   before_destroy :delete_associated_records, prepend: true
@@ -134,15 +134,16 @@ class Quiz < ApplicationRecord
     transaction do
       q_ids = questions.unscope(where: :deleted_at).pluck(:id)
       q_history_ids = QuestionHistory.where(question_id: q_ids)
-      
+      tag_ids = tags.unscope(where: :delete_at).pluck(:id)
+
       QuestionsTag.where(question_id: q_ids).delete_all
-      Tag.where(id: tags.unscope(where: :deleted_at).pluck(:id)).delete_all
+      Tag.where(id: tag_ids).delete_all
       AnswerHistory.where(question_history_id: q_history_ids).delete_all
       QuestionHistory.where(question_id: q_ids).delete_all
       Answer.where(question_id: q_ids).delete_all
       QuestionRelation.where(question_id: q_ids).delete_all
       Question.where(id: q_ids).delete_all
-      practice_sessions.delete_all
+      PracticeSession.where(quiz_id: id).delete_all
     end
   end
 end
