@@ -119,7 +119,12 @@ class QuizzesController < ApplicationController
     q_ids = quiz_params["questions"]&.map { |q| q["id"] }
     questions = []
     Answer.unscoped do
-      questions = quiz.questions.includes(:answers).unscope(where: :deleted_at).where(id: q_ids)
+      questions = quiz
+        .questions
+        .unscope(where: :deleted_at)
+        .includes(:answers)
+        .where(id: q_ids)
+        .all
     end
     all_tags = quiz.tags.unscope(where: :deleted_at)
     new_tags = []
@@ -130,7 +135,6 @@ class QuizzesController < ApplicationController
       # delete question
       if q["meta"].eql?("delete")
         question.soft_destroy
-        questions.delete(question)
       # create new question
       elsif q["meta"].eql?("new") && question.nil?
         question = quiz.questions.create(content: q["content"])
@@ -153,25 +157,25 @@ class QuizzesController < ApplicationController
     return ids
   end
 
-  def update_question(new_questions, quiz, q, ids)
-    question = quiz.questions.find { |e| e.id == q["id"] }
-    raise ActiveRecord::RecordNotFound if question.nil? && !q["meta"].eql?("new")
-    if q["meta"].eql?("new")
-      question = Question.find_by(quiz_id: quiz.id, id: q["id"])  
-      if (question.nil?)
-        question = quiz.questions.create(content: q["content"])
-        ids[:questions] << {id: question.id, prev_id: q["id"] }
-      else
-        question.restore
-      end
-      new_questions << question
-    elsif q["meta"].eql?("delete")
-      question&.soft_destroy
-    else
-      question.update(content: q["content"]) unless q["content"].nil?
-    end
-    return question
-  end
+  # def update_question(new_questions, quiz, q, ids)
+  #   question = quiz.questions.find { |e| e.id == q["id"] }
+  #   raise ActiveRecord::RecordNotFound if question.nil? && !q["meta"].eql?("new")
+  #   if q["meta"].eql?("new")
+  #     question = Question.find_by(quiz_id: quiz.id, id: q["id"])  
+  #     if (question.nil?)
+  #       question = quiz.questions.create(content: q["content"])
+  #       ids[:questions] << {id: question.id, prev_id: q["id"] }
+  #     else
+  #       question.restore
+  #     end
+  #     new_questions << question
+  #   elsif q["meta"].eql?("delete")
+  #     question&.soft_destroy
+  #   else
+  #     question.update(content: q["content"]) unless q["content"].nil?
+  #   end
+  #   return question
+  # end
 
   def update_answer(question, a, ids)
     answer = question.answers.find { |e| e.id == a["id"] }
@@ -189,7 +193,7 @@ class QuizzesController < ApplicationController
     end
   end
 
-  def update_tag(all_tags, new_tags, quiz, question, t, ids)
+  def update_tag(all_tags, new_tags, question, t, ids)
     t_id = ids[:tags].find { |e| e[:prev_id].eql?(t["id"]) }
     t_id = t_id.nil? ? t["id"] : t_id[:id]
     tag = all_tags.find { |e| e.id == t_id }
