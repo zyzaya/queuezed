@@ -9,34 +9,6 @@ class Question < ApplicationRecord
   has_many :question_relations
   has_many :relations, -> { Question.active }, through: :question_relations, class_name: 'Question'
 
-  accepts_nested_attributes_for :answers, allow_destroy: true
-  accepts_nested_attributes_for :tags, allow_destroy: true
-  accepts_nested_attributes_for :relations, allow_destroy: true
-
-  def answers_attributes=(attributes)
-    attributes.keep_if do |a|
-      soft_destroy = a["_soft_destroy"].eql?(1)
-      Answer.find_by(id: a["id"])&.soft_destroy if soft_destroy
-      !soft_destroy
-    end
-  end
-
-  def tags_attributes=(attributes)
-    attributes.each do |a|
-      tag = Tag.find_by(id: a["id"])
-      self.tags << tag unless tag.nil? || self.tags.include?(tag)
-    end
-    super(attributes)
-  end
-
-  def relations_attributes=(attributes)
-    attributes.each do |a|
-      relation = Question.find_by(id: a["id"])
-      self.relations << relation unless relation.nil? || self.relations.include?(relation)
-    end
-    super(attributes)
-  end
-
   def submit_answer(practice_session, given)
     history = self.histories.new(practice_session_id: practice_session.id)
     answers = self.answers
