@@ -119,8 +119,9 @@ class QuizzesController < ApplicationController
     quiz.name = quiz_params["name"] unless quiz_params["name"].nil?
     all_tags = quiz.tags.unscope(where: :deleted_at)
     new_tags = []
+    new_questions = []
     quiz_params["questions"]&.each do |q|
-      question = update_question(quiz, q, ids)
+      question = update_question(new_questions, quiz, q, ids)
       # answers
       q["answers"]&.each do |a|
         update_answer(question, a, ids)
@@ -136,6 +137,7 @@ class QuizzesController < ApplicationController
       q_id = ids[:questions].find { |e| e[:prev_id].eql?(q["id"]) }
       q_id = q_id.nil? ? q["id"] : q_id[:id]
       question = quiz.questions.find { |e| e.id == q_id }
+      question = new_questions.find { |e| e.id == q_id } if question.nil?
       q["relations"]&.each do |r|
         update_relation(quiz, question, r, ids)
       end
@@ -143,7 +145,7 @@ class QuizzesController < ApplicationController
     return ids
   end
 
-  def update_question(quiz, q, ids)
+  def update_question(new_questions, quiz, q, ids)
     question = quiz.questions.find { |e| e.id == q["id"] }
     raise ActiveRecord::RecordNotFound if question.nil? && !q["meta"].eql?("new")
     if q["meta"].eql?("new")
@@ -154,6 +156,7 @@ class QuizzesController < ApplicationController
       else
         question.restore
       end
+      new_questions << question
     elsif q["meta"].eql?("delete")
       question&.soft_destroy
     else
