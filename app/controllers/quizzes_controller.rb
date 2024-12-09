@@ -157,26 +157,6 @@ class QuizzesController < ApplicationController
     return ids
   end
 
-  # def update_question(new_questions, quiz, q, ids)
-  #   question = quiz.questions.find { |e| e.id == q["id"] }
-  #   raise ActiveRecord::RecordNotFound if question.nil? && !q["meta"].eql?("new")
-  #   if q["meta"].eql?("new")
-  #     question = Question.find_by(quiz_id: quiz.id, id: q["id"])  
-  #     if (question.nil?)
-  #       question = quiz.questions.create(content: q["content"])
-  #       ids[:questions] << {id: question.id, prev_id: q["id"] }
-  #     else
-  #       question.restore
-  #     end
-  #     new_questions << question
-  #   elsif q["meta"].eql?("delete")
-  #     question&.soft_destroy
-  #   else
-  #     question.update(content: q["content"]) unless q["content"].nil?
-  #   end
-  #   return question
-  # end
-
   def update_answer(question, a, ids)
     answer = question.answers.find { |e| e.id == a["id"] }
     raise ActiveRecord::RecordNotFound if answer.nil? && !a["meta"].eql?("new")
