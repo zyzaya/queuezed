@@ -139,6 +139,7 @@ class QuizzesController < ApplicationController
       elsif q["meta"].eql?("new") && question.nil?
         question = quiz.questions.create(content: q["content"])
         ids[:questions] << {id: question.id, prev_id: q["id"] }
+        questions << question
         q["answers"]&.each { |a| update_answer(question, a, ids) }
         q["tags"]&.each { |t| update_tag(all_tags, new_tags, question, t, ids) }
       # restore question
@@ -152,6 +153,15 @@ class QuizzesController < ApplicationController
         question.update(content: q["content"]) unless q["content"].nil?
         q["answers"]&.each { |a| update_answer(question, a, ids) }
         q["tags"]&.each { |t| update_tag(all_tags, new_tags, question, t, ids) }
+      end
+    end
+    # relations
+    quiz_params["questions"]&.each do |q|
+      q_id = ids[:questions].find { |e| e[:prev_id].eql?(q["id"]) }
+      q_id = q_id.nil? ? q["id"] : q_id[:id]
+      question = questions.find { |e| e.id == q_id }
+      q["relations"]&.each do |r|
+        update_relation(questions, question, r, ids)
       end
     end
     return ids
@@ -189,6 +199,17 @@ class QuizzesController < ApplicationController
       end
     elsif t["meta"].eql?("delete") || t["meta"].eql?("remove")
       question.tags.delete(tag) unless tag.nil?
+    end
+  end
+
+  def update_relation(questions, question, r, ids)
+    r_id = ids[:questions].find { |e| e[:prev_id].eql?(r["id"]) }
+    r_id = r_id.nil? ? r["id"] : r_id[:id]
+    relation = questions.find { |e| e.id == r_id }
+    if r["meta"].eql?("new") || r["meta"].eql?("add")
+      question.relations << relation unless relation.nil?
+    elsif r["meta"].eql?("delete") || r["meta"].eql?("remove")
+      question.relations.delete(relation) unless relation.nil?
     end
   end
 
