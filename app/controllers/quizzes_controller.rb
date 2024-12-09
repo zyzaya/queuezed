@@ -116,52 +116,59 @@ class QuizzesController < ApplicationController
       tags: [],
     }
     quiz.name = quiz_params["name"] unless quiz_params["name"].nil?
-    q_ids = quiz_params["questions"]&.map { |q| q["id"] }
-    questions = []
-    Answer.unscoped do
-      questions = quiz
-        .questions
-        .unscope(where: :deleted_at)
-        .includes(:answers)
-        .where(id: q_ids)
-        .to_ary
-    end
-    all_tags = quiz.tags.unscope(where: :deleted_at)
-    new_tags = []
-
-    quiz_params["questions"]&.each do |q|
-      question = questions.find { |e| e.id == q["id"] }
-      raise ActiveRecord::RecordNotFound if question.nil? && !q["meta"].eql?("new")
-      # delete question
-      if q["meta"].eql?("delete")
-        question.soft_destroy
-      # create new question
-      elsif q["meta"].eql?("new") && question.nil?
-        question = quiz.questions.create(content: q["content"])
-        ids[:questions] << {id: question.id, prev_id: q["id"] }
-        questions << question
-        q["answers"]&.each { |a| update_answer(question, a, ids) }
-        q["tags"]&.each { |t| update_tag(all_tags, new_tags, question, t, ids) }
-      # restore question
-      elsif q["meta"].eql?("new") && !question.nil?
-        question.restore
-        question.update(content: q["content"]) unless q["content"].nil?
-        q["answers"]&.each { |a| update_answer(question, a, ids) }
-        q["tags"]&.each { |t| update_tag(all_tags, new_tags, question, t, ids) }
-      # update question
-      else
-        question.update(content: q["content"]) unless q["content"].nil?
-        q["answers"]&.each { |a| update_answer(question, a, ids) }
-        q["tags"]&.each { |t| update_tag(all_tags, new_tags, question, t, ids) }
+    unless quiz_params["questions"].nil?
+      q_ids = quiz_params["questions"]&.map do |q| 
+        ret = [q["id"]]
+        q["relations"]&.each { |r| ret << r["id"] }
+        ret
       end
-    end
-    # relations
-    quiz_params["questions"]&.each do |q|
-      q_id = ids[:questions].find { |e| e[:prev_id].eql?(q["id"]) }
-      q_id = q_id.nil? ? q["id"] : q_id[:id]
-      question = questions.find { |e| e.id == q_id }
-      q["relations"]&.each do |r|
-        update_relation(questions, question, r, ids)
+      q_ids = q_ids.flatten.compact.uniq
+      questions = []
+      Answer.unscoped do
+        questions = quiz
+          .questions
+          .unscope(where: :deleted_at)
+          .includes(:answers)
+          .where(id: q_ids)
+          .to_ary
+      end
+      all_tags = quiz.tags.unscope(where: :deleted_at)
+      new_tags = []
+  
+      quiz_params["questions"]&.each do |q|
+        question = questions.find { |e| e.id == q["id"] }
+        raise ActiveRecord::RecordNotFound if question.nil? && !q["meta"].eql?("new")
+        # delete question
+        if q["meta"].eql?("delete")
+          question.soft_destroy
+        # create new question
+        elsif q["meta"].eql?("new") && question.nil?
+          question = quiz.questions.create(content: q["content"])
+          ids[:questions] << {id: question.id, prev_id: q["id"] }
+          questions << question
+          q["answers"]&.each { |a| update_answer(question, a, ids) }
+          q["tags"]&.each { |t| update_tag(all_tags, new_tags, question, t, ids) }
+        # restore question
+        elsif q["meta"].eql?("new") && !question.nil?
+          question.restore
+          question.update(content: q["content"]) unless q["content"].nil?
+          q["answers"]&.each { |a| update_answer(question, a, ids) }
+          q["tags"]&.each { |t| update_tag(all_tags, new_tags, question, t, ids) }
+        # update question
+        else
+          question.update(content: q["content"]) unless q["content"].nil?
+          q["answers"]&.each { |a| update_answer(question, a, ids) }
+          q["tags"]&.each { |t| update_tag(all_tags, new_tags, question, t, ids) }
+        end
+      end
+      # relations
+      quiz_params["questions"]&.each do |q|
+        q_id = ids[:questions].find { |e| e[:prev_id].eql?(q["id"]) }
+        q_id = q_id.nil? ? q["id"] : q_id[:id]
+        question = questions.find { |e| e.id == q_id }
+        q["relations"]&.each do |r|
+          update_relation(questions, question, r, ids)
+        end
       end
     end
     return ids
