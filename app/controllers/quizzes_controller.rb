@@ -124,7 +124,7 @@ class QuizzesController < ApplicationController
         .unscope(where: :deleted_at)
         .includes(:answers)
         .where(id: q_ids)
-        .all
+        .to_ary
     end
     all_tags = quiz.tags.unscope(where: :deleted_at)
     new_tags = []
