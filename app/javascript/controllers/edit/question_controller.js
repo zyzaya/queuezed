@@ -167,6 +167,9 @@ export default class extends Controller {
     );
     if (this.filtered_question_list === undefined)
       this.filtered_question_list = event.detail.data;
+    if (!this.limitRelatedTarget.checked) {
+      this.setAddRelatedOptions(this.question_list);
+    }
   }
 
   updateFilteredQuestionList(event) {

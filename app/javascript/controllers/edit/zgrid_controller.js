@@ -146,9 +146,6 @@ export default class extends Controller {
     let detail = { ...question };
     detail.relations = relations;
     this.dispatch('setQuestion', { detail });
-    this.dispatch('updateFilteredQuestionList', {
-      detail: { data: this.zgrid.getData() },
-    });
   }
 
   setSelectedToSibling() {
@@ -241,11 +238,20 @@ export default class extends Controller {
     this.dispatch('updateQuestionList', {
       detail: { data: this.zgrid.getRawData() },
     });
+    this.dispatch('updateFilteredQuestionList', {
+      detail: { data: this.zgrid.getData() },
+    });
   }
 
   deleteQuestion(event) {
     this.zgrid.removeRow(event.detail.id);
     this.updateQuestionCount();
+    this.dispatch('updateQuestionList', {
+      detail: { data: this.zgrid.getRawData() },
+    });
+    this.dispatch('updateFilteredQuestionList', {
+      detail: { data: this.zgrid.getData() },
+    });
   }
 
   questionContentChange(event) {
