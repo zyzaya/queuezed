@@ -8,17 +8,6 @@ class Quiz < ApplicationRecord
   after_initialize :init
   before_destroy :delete_associated_records, prepend: true
 
-  accepts_nested_attributes_for :questions, allow_destroy: true
-
-  def questions_attributes=(attributes)
-    attributes.keep_if do |a|
-      soft_destroy = a["_soft_destroy"].eql?(1)
-      Question.find_by(id: a["id"])&.soft_destroy if soft_destroy
-      !soft_destroy
-    end
-    super(attributes)
-  end
-
   def init
     self.rank_1_interval = 1.days.to_i
     self.rank_2_interval = 3.days.to_i
@@ -102,15 +91,6 @@ class Quiz < ApplicationRecord
   end
 
   def filter_review_and_difficult(review, difficult, limit)
-    # if review && difficult
-    #   return self.questions.where(review: true, difficult: true)
-    # elsif review && !difficult
-    #   return self.questions.where(review: true)
-    # elsif difficult && !review
-    #   return self.questions.where(difficult: true)
-    # else
-    #   return self.questions
-    # end
     ret = self.questions
     ret = ret.where(review: true) if review
     ret = ret.where(difficult: true) if difficult
