@@ -18,6 +18,8 @@ export default class extends Controller {
   static targets = [
     'title',
     'subtitle',
+    'difficult',
+    'review',
     'questionContent',
     'answerContent',
     'singleQuestionContainer',
@@ -514,5 +516,7 @@ export default class extends Controller {
 
   setQuestionCount(event) {
     this.subtitleTarget.innerText = `${event.detail.total} questions`;
+    this.difficultTarget.innerText = `Difficult (${event.detail.difficult})`;
+    this.reviewTarget.innerText = `Review (${event.detail.review})`;
   }
 }

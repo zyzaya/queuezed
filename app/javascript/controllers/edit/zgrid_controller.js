@@ -266,10 +266,14 @@ export default class extends Controller {
 
   updateQuestionCount() {
     let displayed = this.zgrid.getData().length;
-    let total = this.zgrid.getRawData().length;
+    let raw = this.zgrid.getRawData();
+    let total = raw.length;
+    let review = raw.filter((e) => e['review']).length;
+    let difficult = raw.filter((e) => e['difficult']).length;
+
     this.questionCountTarget.innerText = `${displayed} / ${total} questions`;
     this.dispatch('updateQuestionCount', {
-      detail: { displayed, total },
+      detail: { displayed, total, review, difficult },
     });
   }
 
