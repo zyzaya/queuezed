@@ -6,8 +6,8 @@ class Question < ApplicationRecord
   has_and_belongs_to_many :tags
   has_many :answers, -> { Answer.active }, dependent: :destroy
   has_many :histories, -> { QuestionHistory.active }, dependent: :destroy, class_name: 'QuestionHistory'
-  has_many :question_relations, -> { QuestionRelation.active }
-  has_many :relations, through: :question_relations, class_name: 'Question'
+  has_many :question_relations
+  has_many :relations, -> { Question.active }, through: :question_relations, class_name: 'Question'
 
   accepts_nested_attributes_for :answers, allow_destroy: true
   accepts_nested_attributes_for :tags, allow_destroy: true
