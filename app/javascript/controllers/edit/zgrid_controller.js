@@ -145,8 +145,9 @@ export default class extends Controller {
     });
     let detail = { ...question };
     detail.relations = relations;
-    this.dispatch('setQuestion', {
-      detail,
+    this.dispatch('setQuestion', { detail });
+    this.dispatch('updateFilteredQuestionList', {
+      detail: { data: this.zgrid.getData() },
     });
   }
 
@@ -237,6 +238,9 @@ export default class extends Controller {
     }
     this.zgrid.page = this.zgrid.totalPages;
     this.updateQuestionCount();
+    this.dispatch('updateQuestionList', {
+      detail: { data: this.zgrid.getRawData() },
+    });
   }
 
   deleteQuestion(event) {
