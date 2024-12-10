@@ -28,7 +28,7 @@ module PracticeActions
       given[q_id] << {input: input, correct: answer}
       e.send_keys(input)
     end
-    click_button('Next')
+    page.find('.practice_form_next').click
     return given
   end
 end

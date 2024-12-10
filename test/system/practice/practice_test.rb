@@ -64,7 +64,7 @@ class PracticeTest < ApplicationSystemTestCase
     given = []
     1.upto(length) do |_|
       given << submit_answers(true)
-      page.find(".practice_form_next").click
+      page.find(".immediate_feedback_next").click
       # wait for page / turbo to fully load
       sleep(0.5)
     end
