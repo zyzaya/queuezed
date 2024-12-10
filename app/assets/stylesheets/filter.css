@@ -17,3 +17,13 @@
   padding: 4px;
   gap: 4px;
 }
+
+.filter_tag {
+  border-radius: 0px;
+  font-size: small;
+  padding: 2px;
+}
+
+.filter_tag:hover {
+  text-decoration: line-through;
+}

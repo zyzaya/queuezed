@@ -190,7 +190,7 @@ export default class extends Controller {
 
   deleteTagDisplay(id) {
     let tag = document.querySelector(
-      `.button.tag[data-edit--question-tag-id-value="${id}"]`
+      `.quiz_edit_tag[data-edit--question-tag-id-value="${id}"]`
     );
     if (tag !== null) tag.remove();
   }
@@ -231,11 +231,13 @@ export default class extends Controller {
 
   deleteTagOption(id) {
     // remove from question display
-    let option = document.querySelector(`.add_tag > option[value="${id}"`);
+    let option = document.querySelector(
+      `.question_edit_add_tag > option[value="${id}"`
+    );
     if (option !== null) option.remove();
     // remove from filter display
     let filter = document.querySelector(
-      `.add_tag_filter > option[value="${id}"]`
+      `.edit_add_tag_filter > option[value="${id}"]`
     );
     if (filter !== null) filter.remove();
   }
@@ -423,7 +425,7 @@ export default class extends Controller {
 
   findAnswerContainer(id) {
     return document.querySelector(
-      `.answer_container[data-edit--answer-id-value="${id}"]`
+      `.question_edit_answer_container[data-edit--answer-id-value="${id}"]`
     );
   }
 
@@ -438,7 +440,7 @@ export default class extends Controller {
     let parent = this.findQuestionContainer(question_id);
     let answer_container = this.findAnswerContainer(answer_id);
     let index = Array.from(
-      parent.querySelectorAll('.answer_container')
+      parent.querySelectorAll('.question_edit_answer_container')
     ).indexOf(answer_container);
     let action = () => {
       Change.DeleteAnswer(question_id, answer_id);

@@ -13,7 +13,7 @@ export default function SingleQuestionDisplay(
   container.dataset['controller'] = 'edit--single-question';
   container.dataset['editTarget'] = 'singleQuestionContainer';
   container.dataset['edit-QuestionTarget'] = 'singleQuestionContainer';
-  container.dataset['edit-SingleQuestionEdit-ZgridOutlet'] = '.edit_list';
+  container.dataset['edit-SingleQuestionEdit-ZgridOutlet'] = '.quiz_edit_list';
   container.dataset['edit-SingleQuestionIdValue'] = id;
   let header = document.createElement('div');
   header.classList.add('question_edit_single_header');

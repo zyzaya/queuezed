@@ -38,7 +38,7 @@ export default class extends Controller {
 
   removeTag(event) {
     let id = event.currentTarget.dataset.id;
-    let option = document.querySelector(`.button.tagFilter[data-id="${id}"]`);
+    let option = document.querySelector(`.filter_tag[data-id="${id}"]`);
     if (option !== null) option.remove();
     this.updateFilter();
   }

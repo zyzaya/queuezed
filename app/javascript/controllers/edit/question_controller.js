@@ -132,7 +132,7 @@ export default class extends Controller {
         event.detail.answers
       );
       this.singleStartTarget.after(single);
-      single.getElementsByClassName('question_content')[0].focus();
+      single.getElementsByClassName('question_edit_single_content')[0].focus();
 
       event.detail.relations.forEach((r) => {
         let relation = SingleQuestionDisplay(r.id, r.content, r.answers, true);

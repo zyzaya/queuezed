@@ -7,7 +7,7 @@ export default function AnswerDisplay(
 ) {
   let obj = {};
 
-  let add_answer = parent.querySelector(`.add_answer`);
+  let add_answer = parent.querySelector(`.question_edit_single_add_answer`);
 
   let answer_container = document.createElement('div');
   answer_container.classList.add('question_edit_answer_container');
@@ -16,7 +16,7 @@ export default function AnswerDisplay(
   answer_container.dataset['edit-AnswerIdValue'] = answer_id;
   answer_container.dataset[
     'edit-AnswerSingleQuestionOutlet'
-  ] = `.single_question_edit[data-edit--single-question-id-value="${question_id}"]`;
+  ] = `.question_edit_single[data-edit--single-question-id-value="${question_id}"]`;
   answer_container.dataset.action = 'keydown.alt+shift+a->edit--answer#delete';
 
   let answer_content = document.createElement('textarea');
