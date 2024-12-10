@@ -7,7 +7,7 @@ export default function SingleQuestionDisplay(
   related = false
 ) {
   let container = document.createElement('div');
-  container.classList.add('single_question_edit');
+  container.classList.add('question_edit_single');
   container.dataset.action = `edit:questionContentChange@window->edit--single-question#setContent
     keydown.alt+a->edit--single-question#addAnswer`;
   container.dataset['controller'] = 'edit--single-question';
@@ -16,20 +16,20 @@ export default function SingleQuestionDisplay(
   container.dataset['edit-SingleQuestionEdit-ZgridOutlet'] = '.edit_list';
   container.dataset['edit-SingleQuestionIdValue'] = id;
   let header = document.createElement('div');
-  header.classList.add('question_header');
+  header.classList.add('question_edit_single_header');
   header.innerHTML = 'Question.';
   container.appendChild(header);
   if (related) {
     let remove_as_related = document.createElement('button');
     remove_as_related.classList.add('button');
-    remove_as_related.classList.add('remove_as_related');
+    remove_as_related.classList.add('question_edit_single_remove_as_related');
     remove_as_related.innerText = 'Remove from related';
     remove_as_related.dataset['action'] =
       'edit--single-question#removeAsRelation';
     header.appendChild(remove_as_related);
   }
   let question_content = document.createElement('textarea');
-  question_content.classList.add('question_content');
+  question_content.classList.add('question_edit_single_content');
   question_content.id = `question_content#${id}`;
   question_content.dataset['editTarget'] = 'questionContent';
   question_content.dataset['edit-SingleQuestionIdValue'] = id;
@@ -43,7 +43,7 @@ export default function SingleQuestionDisplay(
   container.appendChild(answers_header);
   let add_answer = document.createElement('a');
   add_answer.classList.add('button');
-  add_answer.classList.add('add_answer');
+  add_answer.classList.add('question_edit_single_add_answer');
   add_answer.dataset['action'] = 'edit--single-question#addAnswer';
   add_answer.innerHTML = 'Add Answer';
   container.appendChild(add_answer);

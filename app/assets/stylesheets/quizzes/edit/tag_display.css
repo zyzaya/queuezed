@@ -1,0 +1,9 @@
+.quiz_edit_tag {
+  border-radius: 0px;
+  font-size: small;
+  padding: 2px;
+}
+
+.quiz_edit_tag:hover {
+  text-decoration: line-through;
+}

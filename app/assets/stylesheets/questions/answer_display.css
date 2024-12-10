@@ -1,0 +1,22 @@
+.question_edit_answer_container {
+  display: grid;
+  grid-template-columns: 1fr min-content;
+}
+
+.question_edit_answer_content {
+  resize: none;
+  text-align: center;
+}
+
+.question_edit_answer_content {
+  padding: 4px;
+  border: 3px solid var(--secondary-bg-color-dark);
+  background-color: var(--main-bg-color);
+  opacity: 0.75;
+  border-radius: 8px;
+  margin-left: 4px;
+}
+
+.question_edit_answer_content:focus-visible {
+  outline: none;
+}

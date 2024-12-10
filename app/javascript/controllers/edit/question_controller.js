@@ -111,9 +111,9 @@ export default class extends Controller {
 
   set(event) {
     if (event.detail.id === '' || event.detail.id === null) {
-      this.element.classList.add('question_hidden');
+      this.element.classList.add('question_edit_hidden');
     } else {
-      this.element.classList.remove('question_hidden');
+      this.element.classList.remove('question_edit_hidden');
       this.idValue = event.detail.id;
       // tags
       this.tagTargets.forEach((t) => t.remove());

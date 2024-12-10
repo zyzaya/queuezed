@@ -1,8 +1,5 @@
-<turbo-frame id="edit_detail">
-  <% tags = @question.nil? ? [] : @question.tags.order(:content) %>
-  <% relations = @question.nil? ? [] : @question.relations %>
-  <% id = @question.nil? ? "" : @question.id%>
-  <div class="<%= @question.nil? ? "question_detail question_hidden" : "question_detail" %>"
+<turbo-frame id="question_edit" class="question_edit">
+  <div class="question_edit_detail question_edit_hidden"
     data-controller="edit--question" 
     data-action = 
       "edit--zgrid:setQuestion@window->edit--question#set
@@ -10,12 +7,12 @@
       edit--zgrid:updateQuestionList@window->edit--question#updateQuestionList
       keydown.alt+shift+q->edit--question#delete
       keydown.alt+t@window->edit--question#focusCreateTag"
-    data-edit--question-id-value = <%= id %>>
-    <a class="button delete_question" 
+    data-edit--question-id-value = "">
+    <a class="button question_edit_delete" 
         id="delete_question" 
         data-action="edit--question#delete">Delete</a>
     <hr>
-    <div class="question_statistics">
+    <div class="question_edit_statistics">
       <div>Times Correct:</div>
       <div data-edit--question-target="correct">0 / 0</div>
       <div>Longest Streak:</div>
@@ -29,9 +26,9 @@
       <div>Difficult?</div>
       <div data-edit--question-target="difficult">no</div>
     </div>
-    <div class="question_tags">
+    <div class="question_edit_tags">
       <hr>
-      <div class="question_tag_toolbar" >
+      <div class="question_edit_tag_toolbar" >
         <label for="add_tag">Add Tag</label>
         <select class='add_tag' id='add_tag' name='Add Tag' 
           data-action="edit--question#addTag" 
@@ -46,21 +43,15 @@
         <input type="text" name="Create Tag" id="create_tag" data-action="change->edit--question#createTag" data-edit--question-target="createTag">
       </div>
       <hr>
-      <div class="tag_list" 
+      <div class="question_edit_tag_list" 
         data-edit-target="tagList"
         data-edit--question-target="tagList">
-        <% tags.each do |t| %>
-          <a class="button tag" 
-            data-action="edit--question#removeTag"
-            data-edit--question-tag-id-value=<%= t.id %> 
-            data-edit--question-target="tag"><%= t.content %></a>
-        <% end %>
       </div>
     </div>
     <hr data-edit--question-target="singleStart">
     <hr>
-    <div class="related_questions_header">Related Questions</div>
-    <div class="related_toolbar">
+    <div class="question_edit_relations_header">Related Questions</div>
+    <div class="question_edit_relations_toolbar">
       <label for="add_related">Add Relation</label>
       <select name="add_related" id="add_related" 
         data-edit--question-target="addRelatedList"
@@ -77,7 +68,7 @@
       </div>
     </div>
     <hr>
-    <div class="relationContainer" data-edit--question-target="relationContainer" data-edit-target="relationContainer">
+    <div class="question_edit_relations_container" data-edit--question-target="relationContainer" data-edit-target="relationContainer">
     </div>
   </div>
 </turbo-frame>

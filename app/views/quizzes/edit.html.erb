@@ -1,6 +1,6 @@
-<div class="quizzes_edit" id="quizzes_edit" data-quiz_id= <%= @quiz.id %>>
+<div class="quiz_edit" id="quizzes_edit" data-quiz_id= <%= @quiz.id %>>
   <%= render 'shared/header' %>
-  <div class="edit" 
+  <div class="quiz_edit_container" 
     data-controller="edit" 
     data-edit-quiz-id-value = <%= @quiz.id %>
     data-edit-question-count-value = <%= @quiz.questions.count %>
@@ -23,26 +23,26 @@
       keydown.ctrl+z@window->edit#undo
       keydown.ctrl+shift+z@window->edit#redo
       keydown.alt+q@window->edit#newQuestion">
-    <div class="quiz_info">
-      <%= text_field "", "quiz_title", class: "quiz_title", value:"#{@quiz.name}", data: { action:'edit#quizTitleChange', 'edit-target': 'title' }%>
-      <div class="question_count" data-edit-target="subtitle"></div>
-      <div class="practice_toolbar">
-        <%= link_to 'Practice', new_quiz_practice_path(@quiz.id), class: 'quiz_practice button' %>
-        <%= button_to "Difficult (#{@difficult_count})", quiz_practice_index_path(@quiz), class: 'quiz_difficult button', params: { difficult_filter: 'true' }, disabled: (@difficult_count == 0), data: { "edit-target": "difficult" }%>
-        <%= button_to "Review (#{@review_count})", quiz_practice_index_path(@quiz), class: 'quiz_review button', params: { review_filter: 'true' }, disabled: (@review_count == 0), data: {"edit-target": "review"} %>
+    <div class="quiz_edit_info">
+      <%= text_field "", "quiz_title", class: "quiz_edit_title", value:"#{@quiz.name}", data: { action:'edit#quizTitleChange', 'edit-target': 'title' }%>
+      <div data-edit-target="subtitle"></div>
+      <div class="quiz_edit_practice_toolbar">
+        <%= link_to 'Practice', new_quiz_practice_path(@quiz.id), class: 'button' %>
+        <%= button_to "Difficult (#{@difficult_count})", quiz_practice_index_path(@quiz), class: 'button', params: { difficult_filter: 'true' }, disabled: (@difficult_count == 0), data: { "edit-target": "difficult" }%>
+        <%= button_to "Review (#{@review_count})", quiz_practice_index_path(@quiz), class: 'button', params: { review_filter: 'true' }, disabled: (@review_count == 0), data: {"edit-target": "review"} %>
       </div>
     </div>
-    <div class="toolbar">
+    <div class="quiz_edit_toolbar">
       <a class="button" id="undo" data-action="edit#undo">undo</a>
       <a class="button" id="redo" data-action="edit#redo">redo</a>
       <a class="button" id="new_question" data-action="edit#newQuestion">new q</a>
       <a class="button" id="save" data-action="edit#save" data-edit-target="saveButton">save</a>
     </div>
-    <div class="edit_frame">
-      <div class="edit_list" 
+    <div class="quiz_edit_frame">
+      <div class="quiz_edit_list" 
           data-controller="edit--zgrid" 
           data-edit--zgrid-quiz-id-value=<%= @quiz.id %> 
-          data-edit--zgrid-edit-outlet='.edit[data-controller=edit]'
+          data-edit--zgrid-edit-outlet='.quiz_edit_container[data-controller=edit]'
           data-action=
             "edit:selectQuestion@window->edit--zgrid#select
             edit:selectSibling@window->edit--zgrid#setSelectedToSibling
@@ -56,8 +56,8 @@
             keydown.alt+shift+n@window->edit--zgrid#previousQuestion
             resize@window->edit--zgrid#updateVisibleColumns">
         <%= render 'shared/filter', quiz: @quiz %>
-        <div class="edit_displayed_count" data-edit--zgrid-target="questionCount"></div>
-        <div class="edit_zgrid" data-edit--zgrid-target="zgridContainer"></div>
+        <div class="quiz_edit_displayed_count" data-edit--zgrid-target="questionCount"></div>
+        <div class="quiz_edit_zgrid" data-edit--zgrid-target="zgridContainer"></div>
       </div>
       <%= render template: "questions/edit" %>
     </div>
