@@ -1,18 +1,19 @@
 module QuestionAssertions
   def assert_add_question(initial)
-    assert_equal initial + [""], get_questions_content
+    assert_equal initial + [""], get_questions_content, "assert_add_question:"
   end
 
   def assert_delete_question(initial, content)
-    assert_equal (initial - [content]).sort, get_questions_content.sort
+    assert_equal (initial - [content]).sort, get_questions_content.sort, "assert_delete_question:"
   end
 
   def assert_no_change_to_questions(initial)
-    assert_equal initial.sort, get_questions_content.sort
+    assert_equal initial.sort, get_questions_content.sort, "assert_no_change_to_questions:"
   end
 
   def assert_question_content(id, content)
-    assert_equal content, get_single_question_content(id)
-    assert_includes get_questions_content, content
+    name = "assert_question_content"
+    assert_equal content, get_single_question_content(id), "#{name}: content not equal to initial"
+    assert_includes get_questions_content, content, "#{name}: cannot find content"
   end
 end
