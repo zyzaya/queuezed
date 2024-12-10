@@ -24,8 +24,6 @@ class TagTest < ApplicationSystemTestCase
     @initial_tag_options = quizzes(:johns).tags.sort.pluck(:content)
   end  
 
-
-
   test "add tag -> undo -> redo" do
     # add tag
     add_tag(@not_has_tag.content)
