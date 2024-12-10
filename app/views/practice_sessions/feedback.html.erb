@@ -1,15 +1,15 @@
 <%= turbo_page_requires_reload %>
-<div class="practice">
+<div class="practice_feedback">
  <%= render 'shared/header' %>
- <div class="feedback">
-  <div class="quiz_info">
-    <div class="quiz_title"><%= @quiz.name %></div>
-    <div class="feedback_correct">
+ <div class="practice_feedback_header">
+  <div class="practice_feedback_info">
+    <div class="practice_feedback_title"><%= @quiz.name %></div>
+    <div class="practice_feedback_correct">
       <%= "#{@correct} / #{@total} or #{((@correct.to_f / @total.to_f) * 100).round(2)}%"%>
     </div>
   </div>
-  <div class="feedback_info"> 
-    <div class="feedback_toolbar">
+  <div> 
+    <div class="practice_feedback_toolbar">
       <%= button_to "Retry", 
         quiz_practice_index_path(@quiz.id), 
         params: {
@@ -23,7 +23,7 @@
       <%= link_to "Home", "/", class: "button" %>
       <%= link_to "Edit", edit_quiz_path(@quiz.id), class: "button" %>
     </div>
-    <div class="feedback_questions">
+    <div class="practice_feedback_questions">
       <% @question_histories.each do |h| %>
         <%= render 'question_histories/single_question_feedback', question_history: h %>
       <% end %>

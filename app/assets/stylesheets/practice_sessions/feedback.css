@@ -1,9 +1,9 @@
-.practice {
+.practice_feedback {
   display: grid;
   grid-template-rows: min-content 1fr;
 }
 
-.feedback {
+.practice_feedback_header {
   justify-self: center;
   background-color: var(--secondary-bg-color);
   display: grid;
@@ -12,7 +12,7 @@
   margin: 8px;
 }
 
-.quiz_info {
+.practice_feedback_info {
   color: var(--main-text-color);
   text-align: center;
   display: grid;
@@ -20,11 +20,11 @@
   border-bottom: 3px solid var(--secondary-bg-color-dark);
 }
 
-.quiz_title {
+.practice_feedback_title {
   font-size: xx-large;
 }
 
-.feedback_toolbar {
+.practice_feedback_toolbar {
   display: grid;
   grid-template-columns: repeat(3, min-content);
   color: var(--main-text-color);
@@ -37,7 +37,7 @@
 }
 
 @media (max-width: 800px) {
-  .feedback_questions {
+  .practice_feedback_questions {
     display: grid;
     grid-template-columns: 1fr;
     width: 100%;
@@ -46,84 +46,10 @@
 }
 
 @media (min-width: 1000px) {
-  .feedback_questions {
+  .practice_feedback_questions {
     display: grid;
     grid-template-columns: 1fr 1fr;
     width: 100%;
     margin: auto;
   }
-}
-
-.single_question_feedback {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  column-gap: 4px;
-  padding: 5px 10px;
-  border-bottom: 1px solid var(--tertiary-bg-color);
-}
-
-.question_content {
-  text-align: center;
-  color: var(--main-text-color);
-  font-size: large;
-  justify-self: start;
-}
-
-.answer_feedback {
-  justify-self: start;
-  display: flex;
-  flex-direction: column;
-  row-gap: 5px;
-}
-
-.feedback_container {
-  display: flex;
-  flex-wrap: wrap;
-  row-gap: 5px;
-}
-
-.feedback_container > * {
-  flex-grow: 1;
-}
-
-.answer_given {
-  display: grid;
-  grid-template-columns: 1fr min-content;
-}
-
-.answer_expected {
-  display: grid;
-  grid-template-columns: min-content 1fr;
-}
-
-.answer_input {
-  height: 24px;
-  text-align: center;
-  color: var(--main-text-color);
-  background-color: var(--tertiary-bg-color);
-}
-
-.answer_symbol {
-  font-size: 18px;
-  width: 16px;
-  height: 100%;
-  text-align: center;
-  color: var(--main-text-color);
-  align-self: center;
-}
-
-.feedback_container.correct input:disabled {
-  border: 1px solid var(--valid-color);
-}
-
-.feedback_container.correct .answer_symbol {
-  background-color: var(--valid-color);
-}
-
-.feedback_container.incorrect input:disabled {
-  border: 1px solid var(--invalid-color);
-}
-
-.feedback_container.incorrect .answer_symbol {
-  background-color: var(--invalid-color);
 }

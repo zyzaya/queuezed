@@ -22,11 +22,11 @@
 }
 
 .question_feedback_container.correct input:disabled {
-  border: 1px solid green;
+  border: 1px solid var(--valid-color);
 }
 
 .question_feedback_container.correct .question_feedback_answer_symbol {
-  background-color: green;
+  background-color: var(--valid-color);
   border-radius:  0 10px 10px 0;
 }
 
