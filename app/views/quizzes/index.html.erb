@@ -1,7 +1,7 @@
-<div class="quizzes_index">
+<div class="quiz_index">
   <%= render 'shared/header' %>
-  <%= button_to "New Quiz", quizzes_path(), form_class: "quiz_new", class: "button", data:{ turbo: false } %>
-  <div class="quizzes_container">
+  <%= button_to "New Quiz", quizzes_path(), form_class: "quiz_index_new", class: "button", data:{ turbo: false } %>
+  <div class="quiz_index_container">
     <% @quizzes.each do |q| %>
       <%= render 'quizzes/quiz', 
         quiz: q, 

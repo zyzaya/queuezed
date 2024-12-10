@@ -1,6 +1,6 @@
-<div class="quiz">
-  <div>
-    <h2 class="title"><%= quiz.name %></h2>
+<div class="quiz_show">
+  <div class="quiz_show_header">
+    <h2 class="quiz_show_title"><%= quiz.name %></h2>
     <%= link_to 'Delete', quiz, 
       class: 'quiz_delete',
       data: { 
@@ -11,9 +11,9 @@
     <%= link_to 'Edit 🖉', edit_quiz_path(quiz), class: 'quiz_edit button' %>
   </div>
   <div>
-    <h3 class="subtitle"><%= quiz.questions_count %> questions</h2>
+    <h3 class="quiz_show_subtitle"><%= quiz.questions_count %> questions</h2>
   </div>
-  <div>
+  <div class="quiz_show_footer">
     <%= link_to 'Practice', new_quiz_practice_path(quiz), class: 'quiz_practice button' %>
     <%= button_to "Difficult (#{difficult_count})", quiz_practice_index_path(quiz), class: 'quiz_difficult button', params: { difficult_filter: 'true' }, disabled: (difficult_count == 0) %>
     <%= button_to "Review (#{review_count})", quiz_practice_index_path(quiz), class: 'quiz_review button', params: { review_filter: 'true' }, disabled: (review_count == 0) %>
