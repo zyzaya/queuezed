@@ -1,15 +1,17 @@
 module RelationAssertions
   def assert_add_relation(q_id, related_id, initial)
+    expected = (initial + [related_id.to_s]).sort
     assert_equal(
-      initial + [related_id.to_s],
+      expected,
       get_relations(q_id),
       "assert_add_relation:"
     )
   end
 
   def assert_remove_relation(q_id, related_id, initial)
+    expected = (initial - [related_id.to_s]).sort
     assert_equal(
-      initial - [related_id.to_s],
+      expected,
       get_relations(q_id), 
       "assert_remove_relation:"
     )

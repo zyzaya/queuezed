@@ -68,6 +68,6 @@ module EditGet
       e['data-edit--single-question-id-value'].to_s != q_id.to_s
     end
     
-    return related.map { |e| e['data-edit--single-question-id-value']}
+    return related.map { |e| e['data-edit--single-question-id-value']}.sort
   end
 end
