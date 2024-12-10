@@ -41,13 +41,13 @@ module EditActions
 
   def add_answer(q_id) 
     container = single_question_edit_container(q_id)
-    button = container.find(".add_answer")
+    button = container.find(".question_edit_single_add_answer")
     button.click
   end
 
   def delete_answer(id)
     container = answer_container(id)
-    button = container.find(".delete_answer")
+    button = container.find(".question_edit_answer_delete")
     button.click
   end
 
@@ -62,7 +62,7 @@ module EditActions
 
   def remove_tag(q_id, content)
     container = question_edit_container(q_id)
-    button = container.find(".tag_list > a") { |e| e.text.eql?(content) }
+    button = container.find(".question_edit_tag_list > a") { |e| e.text.eql?(content) }
     button.click
   end
 
@@ -85,6 +85,6 @@ module EditActions
 
   def remove_relation(id)
     container = single_question_edit_container(id)
-    container.find(".remove_as_related").click
+    container.find(".question_edit_single_remove_as_related").click
   end
 end

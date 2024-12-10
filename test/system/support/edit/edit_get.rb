@@ -1,18 +1,18 @@
 module EditGet
   def question_edit_container(id)
-    page.find(".question_detail[data-edit--question-id-value=\"#{id}\"]")
+    page.find(".question_edit_detail[data-edit--question-id-value=\"#{id}\"]")
   end
 
   def single_question_edit_container(id)
-    page.find(".single_question_edit[data-edit--single-question-id-value=\"#{id}\"]")
+    page.find(".question_edit_single[data-edit--single-question-id-value=\"#{id}\"]")
   end
 
   def single_question_textarea(id)
-    page.find(".question_content[data-edit--single-question-id-value=\"#{id}\"]")
+    page.find(".question_edit_single_content[data-edit--single-question-id-value=\"#{id}\"]")
   end
 
   def answer_container(id)
-    page.find(".answer_container[data-edit--answer-id-value=\"#{id}\"]")
+    page.find(".question_edit_answer_container[data-edit--answer-id-value=\"#{id}\"]")
   end
   
   def get_questions_content
@@ -28,14 +28,14 @@ module EditGet
 
   def get_answers_content(q_id)
     container = single_question_edit_container(q_id)
-    container.find_all(".answer_content").map do |e|
+    container.find_all(".question_edit_answer_content").map do |e|
       e.value
     end
   end
 
   def get_tags_content(q_id)
     container = question_edit_container(q_id)
-    container.find_all(".tag_list > a").map do |e|
+    container.find_all(".question_edit_tag_list > a").map do |e|
       e.text
     end
   end
@@ -64,7 +64,7 @@ module EditGet
 
   def get_relations(q_id)
     count = 0
-    related = page.find_all(".single_question_edit") do |e|
+    related = page.find_all(".question_edit_single") do |e|
       e['data-edit--single-question-id-value'].to_s != q_id.to_s
     end
     

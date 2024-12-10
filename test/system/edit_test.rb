@@ -45,7 +45,7 @@ class QuizEditTest < ApplicationSystemTestCase
     expected_tags = @question.tags.pluck(:content)
     assert_equal expected_tags, get_tags_content(@question.id)
     # question content
-    textarea = single_question_edit_container(@question.id).find(".question_content")
+    textarea = single_question_textarea(@question.id)
     assert_equal @question.content, textarea.value
     # answers
     expected_answers = @question.answers.pluck(:content)
