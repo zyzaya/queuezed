@@ -16,7 +16,7 @@ module PracticeActions
   def submit_answers(correct)
     remaining = {}
     given = {}
-    page.find_all("input.answer_input").each do |e|
+    page.find_all("input.practice_question_answer_input").each do |e|
       q_id = e["id"].match(/given\[(\d+)\]\[\]/)[1].to_i
       if remaining[q_id].nil?
         remaining[q_id] = Question.find(q_id).answers.pluck(:content)
