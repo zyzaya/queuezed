@@ -9,7 +9,7 @@
       <% questions.each do |q| %>
         <%= render 'question_histories/single_question', form: form, question: q %>
       <% end %>
-      <%= form.submit "Next", class: "answer_next button" %>
+      <%= form.submit "Next", class: "practice_form_next button" %>
     <% end %>
   </div>
 </turbo-frame>

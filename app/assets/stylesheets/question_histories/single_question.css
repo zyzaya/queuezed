@@ -1,0 +1,22 @@
+.practice_question_content {
+  text-align: center;
+  color: var(--secondary-bg-color);
+}
+
+.practice_question_answer_container {
+  display: grid;
+  grid-template-rows: min-content min-content;
+  row-gap: 5px;
+}
+
+.practice_answer_content {
+  font-size: 20px;
+  text-align: center;
+}
+
+.practice_question_answer_input {
+  font-size: large;
+  padding: 0 4px;
+  height: 32px;
+  text-align: center;
+}

@@ -1,0 +1,11 @@
+.immediate_feedback {
+  display: grid;
+  row-gap: 15px;
+  margin: auto;
+}
+
+.immediate_feedback_next {
+  font-size: 32px;
+  width: min-content;
+  margin: auto;
+}

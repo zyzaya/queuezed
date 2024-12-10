@@ -1,0 +1,27 @@
+.practice_progress_bar {
+  background-color: var(--tertiary-bg-color);
+  color: var(--main-text-color);
+  text-align: center;
+  font-size: x-large;
+  height: 32px;
+  margin: 16px;
+  border-radius: 10px;
+}
+
+.practice_form {
+  display: grid;
+  justify-items: stretch;
+  padding: 16px;
+}
+
+.practice_form form {
+  display: flex;
+  flex-direction: column;
+  row-gap: 15px;
+}
+
+.practice_form_next {
+  font-size: 32px;
+  width: min-content;
+  margin: auto;
+}

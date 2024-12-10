@@ -1,4 +1,4 @@
-.practice {
+.practice_new {
   width: 100%;
   background-color: var(--secondary-bg-color);
   margin: 32px auto;
@@ -9,76 +9,64 @@
   align-items: center;
 }
 
-.practice_new {
-  background-color: var(--secondary-bg-color);
-  width: 100%;
-}
-
-.practice_header {
+.practice_new_header {
   display: flex;
   flex-direction: column;
   align-items: center;
   margin-bottom: 4px;
 }
 
-.practice_title {
+.practice_new_title {
   font-size: x-large;
   text-align: center;
 }
 
-.pracice_header > hr {
+.pracice_new_header > hr {
   width: 100%;
 }
 
-.practice_form {
+.practice_new_form {
   width: min-content;
   margin: auto;
 }
 
-.practice_buttons > form {
+.practice_new_buttons > form {
   padding: 4px;
   margin: auto;
   white-space: nowrap;
-}
-
-.practice_buttons > form {
   display: flex;
   flex-direction: column;
   align-items: center;
   gap: 8px;
 }
 
-.practice_limit_container {
+.practice_new_buttons .button {
+  width: min-content;
+  font-size: larger;
+}
+
+.practice_new_limit {
   width: 100%;
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 4px;
 }
 
-.practice_buttons .button {
-  width: min-content;
-  font-size: larger;
-}
-
-.practice_start {
+.practice_new_start {
   justify-self: end;
 }
 
-.practice_cancel {
-  justify-self: start;
-}
-
-.practice_continue {
+.practice_new_continue {
   min-width: 100%;
 }
 
-.continue_info {
+.practice_new_continue_info {
   background-color: var(--secondary-bg-color-dark);
   padding: 8px 0;
   text-align: center;
 }
 
-.practice_unfinished_container {
+.practice_new_unfinished_container {
   display: flex;
   justify-content: center;
 }

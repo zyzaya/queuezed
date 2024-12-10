@@ -1,25 +1,25 @@
 <div>
   <%= render "shared/header"%>
-  <div class="practice" 
+  <div class="practice_new" 
     data-controller="practice--start"
     data-action="filter:updateFilter@window->practice--start#updateFilter">
      <div class="practice_new">
-      <div class="practice_header">
-        <div class="practice_title"><%= @quiz.name %></div>
-        <div class="practice_subtitle">
+      <div class="practice_new_header">
+        <div class="practice_new_title"><%= @quiz.name %></div>
+        <div class="practice_new_subtitle">
           <%= @quiz.questions_count %> questions
           <%= link_to 'Edit 🖉', edit_quiz_path(@quiz), class: 'quiz_edit button' %>
         </div>
       </div>
-      <div class="practice_form">
+      <div class="practice_new_form">
         <%= render "shared/filter", quiz: @quiz %>
-        <div class="practice_buttons">
-          <%= form_with(url: quiz_practice_index_path, class: 'practice_start', data: {turbo: false}) do |form| %>
+        <div class="practice_new_buttons">
+          <%= form_with(url: quiz_practice_index_path, class: 'practice_new_start', data: {turbo: false}) do |form| %>
             <%= form.hidden_field :text_filter, value: '', data: {'practice--start-target': 'textFilter'} %>
             <%= form.hidden_field :tag_filter, value: '', data: {'practice--start-target': 'tagFilter'} %>
             <%= form.hidden_field :review_filter, value: false, data: {'practice--start-target': 'reviewFilter'} %>
             <%= form.hidden_field :difficult_filter, value: false, data: {'practice--start-target': 'difficultFilter'} %>
-            <div class = "practice_limit_container">
+            <div class = "practice_new_limit">
               <%= form.label :limit, "Limit" %>
               <%= form.number_field :limit, min: 1, step: 1 %>
             </div>
@@ -30,9 +30,9 @@
         </div>
       </div>
     </div>
-    <div class="practice_continue">
-      <div class="continue_info">In progress practice:</div>  
-      <div class="practice_unfinished_container">
+    <div class="practice_new_continue">
+      <div class="practice_new_continue_info">In progress practice:</div>  
+      <div class="practice_new_unfinished_container">
         <% @unfinished.each do |session| %>
           <%= render "unfinished", session: session %>
         <% end %>

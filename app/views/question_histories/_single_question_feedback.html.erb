@@ -1,18 +1,18 @@
-<div class="single_question_feedback">
-  <h1 class="question_content">Q. <%= question_history.question.content %></h1>
-  <div class="answer_feedback">
+<div class="question_feedback">
+  <h1 class="question_feedback_content">Q. <%= question_history.question.content %></h1>
+  <div class="question_feedback_answer">
     <% question_history.answer_histories.each do |history| %>
-      <div class="feedback_container <%= history.correct ? "correct" : "incorrect" %>">
-        <div class="answer_given">
-          <input class="answer_input" id=<%= "given##{history.id}"%> type="text" value="<%= history.given %>" disabled>
+      <div class="question_feedback_container <%= history.correct ? "correct" : "incorrect" %>">
+        <div class="question_feedback_answer_given">
+          <input class="question_feedback_answer_input" id=<%= "given##{history.id}"%> type="text" value="<%= history.given %>" disabled>
           <% if history.correct %>
-            <div class="answer_symbol">✓</div>
+            <div class="question_feedback_answer_symbol">✓</div>
           <% end %>
         </div>
-        <div class="answer_expected">
+        <div class="question_feedback_answer_expected">
           <% unless history.correct %>
-            <div class="answer_symbol">x</div>
-            <input class="answer_input" id=<%= "expected##{history.id}"%> type="text" value="<%= history.expected %>" disabled>
+            <div class="question_feedback_answer_symbol">x</div>
+            <input class="question_feedback_answer_input" id=<%= "expected##{history.id}"%> type="text" value="<%= history.expected %>" disabled>
           <% end %>
         </div>
       </div>  
