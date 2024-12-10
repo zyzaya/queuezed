@@ -19,7 +19,7 @@
             <%= form.hidden_field :tag_filter, value: '', data: {'practice--start-target': 'tagFilter'} %>
             <%= form.hidden_field :review_filter, value: false, data: {'practice--start-target': 'reviewFilter'} %>
             <%= form.hidden_field :difficult_filter, value: false, data: {'practice--start-target': 'difficultFilter'} %>
-            <div class = "limit_container">
+            <div class = "practice_limit_container">
               <%= form.label :limit, "Limit" %>
               <%= form.number_field :limit, min: 1, step: 1 %>
             </div>
@@ -32,7 +32,7 @@
     </div>
     <div class="practice_continue">
       <div class="continue_info">In progress practice:</div>  
-      <div class="practice_unfinished">
+      <div class="practice_unfinished_container">
         <% @unfinished.each do |session| %>
           <%= render "unfinished", session: session %>
         <% end %>
