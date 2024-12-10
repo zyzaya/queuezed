@@ -58,7 +58,6 @@
       </div>
     </div>
     <hr data-edit--question-target="singleStart">
-    <%= render 'questions/single_question_edit', question: @question %>
     <hr>
     <div class="related_questions_header">Related Questions</div>
     <div class="related_toolbar">
@@ -79,10 +78,6 @@
     </div>
     <hr>
     <div class="relationContainer" data-edit--question-target="relationContainer" data-edit-target="relationContainer">
-      <% relations.each do |q| %>
-        <%= render 'questions/single_question_edit', question: q %>
-      <% end %>
     </div>
-    
   </div>
 </turbo-frame>
