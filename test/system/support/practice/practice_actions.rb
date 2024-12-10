@@ -4,7 +4,7 @@ module PracticeActions
   end
 
   def add_practice_tag_filter(content)
-    select content, from: "edit_add_tag_filter"
+    select content, from: "add_tag_filter"
   end
 
   def add_practice_text_filter(text)

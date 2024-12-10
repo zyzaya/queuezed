@@ -237,7 +237,7 @@ export default class extends Controller {
     if (option !== null) option.remove();
     // remove from filter display
     let filter = document.querySelector(
-      `.edit_add_tag_filter > option[value="${id}"]`
+      `.add_tag_filter > option[value="${id}"]`
     );
     if (filter !== null) filter.remove();
   }
