@@ -25,7 +25,7 @@
   border: 1px solid green;
 }
 
-.question_feedback_container.correct .answer_symbol {
+.question_feedback_container.correct .question_feedback_answer_symbol {
   background-color: green;
   border-radius:  0 10px 10px 0;
 }
@@ -36,7 +36,7 @@
   color: black;
 }
 
-.question_feedback_container.incorrect .answer_symbol {
+.question_feedback_container.incorrect .question_feedback_answer_symbol {
   background-color: var(--invalid-color);
 }
 
