@@ -65,7 +65,7 @@ Rails.application.configure do
   # "info" includes generic and useful information about system operation, but avoids logging too much
   # information to avoid inadvertent exposure of personally identifiable information (PII). If you
   # want to log everything, set the level to "debug".
-  config.log_level = ENV.fetch("RAILS_LOG_LEVEL", "info")
+  config.log_level = :warn
 
   # Use a different cache store in production.
   # config.cache_store = :mem_cache_store
@@ -99,4 +99,22 @@ Rails.application.configure do
   # ]
   # Skip DNS rebinding protection for the default health check endpoint.
   # config.host_authorization = { exclude: ->(request) { request.path == "/up" } }
+
+  #Email Settings
+  config.action_mailer.perform_deliveries = true
+  config.action_mailer.raise_delivery_errors = true
+  
+  config.action_mailer.delivery_method = :smtp
+  host = "queuezed.ca"
+  config.action_mailer.default_url_options = { host: host, }
+
+  config.action_mailer.smtp_settings = {
+    address: "mailroot8.namespro.ca",
+    port: 587,
+    user_name: Rails.application.credentials.mail.user_name,
+    password: Rails.application.credentials.mail.password,
+    authentication: :plain,
+    tls: true,
+    enable_starttls_auto: true,
+  }
 end
