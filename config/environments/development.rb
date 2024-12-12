@@ -87,11 +87,12 @@ Rails.application.configure do
   }
 
   config.action_mailer.smtp_settings = {
-    address: "smtp.gmail.com",
+    address: "mailroot8.namespro.ca",
     port: 587,
-    user_name: Rails.application.credentials.gmail.user_name,
-    password: Rails.application.credentials.gmail.password,
-    authentication: "plain",
+    user_name: Rails.application.credentials.mail.user_name,
+    password: Rails.application.credentials.mail.password,
+    authentication: :plain,
+    tls: true,
     enable_starttls_auto: true,
   }
 end
