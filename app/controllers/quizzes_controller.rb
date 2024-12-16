@@ -4,7 +4,7 @@ class QuizzesController < ApplicationController
   def index
     @quizzes = current_user.quizzes.includes(:questions).order(:created_at)
     @difficult_counts = Question.where(quiz_id: @quizzes, difficult: true, deleted_at: nil).group(:quiz_id).count
-    @review_counts = Question.where(quiz_id: @quizzes, review: true, deleted_at: nil).group(:quiz_id).count
+    @review_counts = Question.review.where(quiz_id: @quizzes, deleted_at: nil).group(:quiz_id).count
   end
 
   def create
@@ -17,9 +17,8 @@ class QuizzesController < ApplicationController
     if (@quiz.nil?)
       head :not_found
     else
-      questions = @quiz.questions.all
-      @difficult_count = questions.count { |q| q.difficult }
-      @review_count = questions.count { |q| q.review }
+      @difficult_count = @quiz.questions.where(difficult: true).count
+      @review_count = @quiz.questions.review.count
     end
   end
 
