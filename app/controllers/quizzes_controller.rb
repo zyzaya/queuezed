@@ -17,8 +17,9 @@ class QuizzesController < ApplicationController
     if (@quiz.nil?)
       head :not_found
     else
-      @difficult_count = @quiz.questions.where(difficult: true).count
-      @review_count = @quiz.questions.where(review: true).count
+      questions = @quiz.questions.all
+      @difficult_count = questions.count { |q| q.difficult }
+      @review_count = questions.count { |q| q.review }
     end
   end
 
