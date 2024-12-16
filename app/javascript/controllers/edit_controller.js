@@ -519,6 +519,8 @@ export default class extends Controller {
   setQuestionCount(event) {
     this.subtitleTarget.innerText = `${event.detail.total} questions`;
     this.difficultTarget.innerText = `Difficult (${event.detail.difficult})`;
+    this.difficultTarget.disabled = event.detail.difficult <= 0;
     this.reviewTarget.innerText = `Review (${event.detail.review})`;
+    this.reviewTarget.disabled = event.detail.review <= 0;
   }
 }
