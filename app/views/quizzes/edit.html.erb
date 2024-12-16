@@ -24,7 +24,7 @@
       keydown.ctrl+shift+z@window->edit#redo
       keydown.alt+q@window->edit#newQuestion">
     <div class="quiz_edit_info">
-      <%= text_field "", "quiz_title", class: "quiz_edit_title", value:"#{@quiz.name}", data: { action:'edit#quizTitleChange', 'edit-target': 'title' }%>
+      <%= text_field "", "quiz_title", class: "quiz_edit_title", value:"#{@quiz.name}", data: { action:'edit#quizTitleChange', 'edit-target': 'title' }, autocomplete: "off" %>
       <div data-edit-target="subtitle"></div>
       <div class="quiz_edit_practice_toolbar">
         <%= link_to 'Practice', new_quiz_practice_path(@quiz.id), class: 'button' %>
