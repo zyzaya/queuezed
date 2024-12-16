@@ -79,7 +79,6 @@ class Question < ApplicationRecord
   def update_srs(correct)
     if !self.mastered && self.review
       new_rank = correct ? self.rank + 1 : self.rank - 1 
-      self.rank = new_rank
       if new_rank > Quiz::MAX_RANK
         self.mastered = true
         self.next_review = nil
@@ -87,6 +86,7 @@ class Question < ApplicationRecord
         new_rank = new_rank.clamp(1..Quiz::MAX_RANK)
         self.next_review = DateTime.now + self.quiz.interval_duration(new_rank)
       end
+      self.rank = new_rank
     end
   end
 
