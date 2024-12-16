@@ -29,7 +29,7 @@
 }
 
 .devise_errors {
-  background-color: red;
+  background-color: var(--invalid-color);
   color: var(--main-text-color);
   padding: 5px 5px;
   border-radius: 0 0 10px 10px;
