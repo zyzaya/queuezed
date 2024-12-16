@@ -1,7 +1,7 @@
 # TODO Features
 - #3 - improve question list table:
-- #5 - add ability to choose which columns are visible
-- #53 - redo how columns are divided, make it more intelligent for content
+  - #5 - add ability to choose which columns are visible
+  - #53 - redo how columns are divided, make it more intelligent for content
 - #12 - add ability to minimize related questions in question edit
 - #17 - advanced filter (see qz and advanced filter mockup)
 - #27 - add ability to change what proportion of the page the question list and question edit take up

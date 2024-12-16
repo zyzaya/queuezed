@@ -1,9 +1,6 @@
 # TODO Issues
 - #27 - inconsistently when transitioning from homepage to quiz edit page using Edit button, the layout of the edit page is incorrect: the width of the question is 100% instead of 50% 
-- #54 - selecting an question as soon as it loods causing js error: 
 - #55 - deleting a question, then undoing that deletion causes the question to be readded at the end of the list instead of where it previously was
-- #72 - look into improving performance / reducing database calls when saving a quiz, specifically when creating new records
-- #78 - look into improving performance when loading questions into zgrid
 ---
 - #112 - 
 
@@ -149,3 +146,6 @@ Error: Missing "data-controller=edit" attribute on outlet element for "zgrid" co
 - #109 - refine practice/new view
 - #110 - the following causes a console error (Cannot read properties of undefined): select a question -> set tag filter (such that the selected question is still displayed) -> delete question
 - #111 - review button isn't enabled properly. There's an issue with how review is updated - it only updates when an ActiveRecord object is instantiated. This means that SQL queries (such as .where) don't update the review/next_review columns.
+- #72 - look into improving performance / reducing database calls when saving a quiz, specifically when creating new records
+- #78 - look into improving performance when loading questions into zgrid
+- #54 - selecting an question as soon as it loods causing js error: 
