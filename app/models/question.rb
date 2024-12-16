@@ -2,6 +2,8 @@ class Question < ApplicationRecord
   include SoftDestroyable
   after_initialize :init
 
+  scope :review, -> { where(mastered: false).where("next_review < ?", DateTime.now) }
+
   belongs_to :quiz, counter_cache: true
   has_and_belongs_to_many :tags
   has_many :answers, -> { Answer.active }, dependent: :destroy
