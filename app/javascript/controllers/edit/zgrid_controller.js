@@ -166,10 +166,11 @@ export default class extends Controller {
 
   updateFilter(event) {
     let { tag, text, review, difficult } = event.detail;
-
     this.zgrid.reconfigure({
       filter: (row) => {
         let q = Change.GetQuestion(row.id);
+        if (q === undefined) return false;
+
         let answer_content = '';
         if (q.answers !== undefined) {
           answer_content = q.answers.reduce((a, c) => (a += c.content), '');
