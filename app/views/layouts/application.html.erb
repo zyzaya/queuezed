@@ -9,7 +9,7 @@
     <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
     <%= javascript_importmap_tags %>
     <%= yield :header %>
-    <script src="https://unpkg.com/gridjs/plugins/selection/dist/selection.umd.js"></script>
+    <%= favicon_link_tag asset_path("favicon.png") %>
   </head>
 
   <body>
