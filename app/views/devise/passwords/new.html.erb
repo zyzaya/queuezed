@@ -3,11 +3,10 @@
   <div class="devise_form devise_forgot">
     <h2>Forgot your password?</h2>
     <%= form_for(resource, as: resource_name, url: password_path(resource_name), html: { method: :post }, data: { turbo:false }) do |f| %>
-      <%= render "devise/shared/error_messages", resource: resource %>
-
       <div class="devise_field">
         <%= f.label :email, class: "devise_label" %>
         <%= f.email_field :email, autofocus: true, autocomplete: "email", class: "devise_text_input" %>
+        <%= render 'shared/error', resource: resource, attribute: :email%>
       </div>
 
       <div class="actions">
