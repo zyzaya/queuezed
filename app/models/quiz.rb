@@ -92,7 +92,7 @@ class Quiz < ApplicationRecord
 
   def filter_review_and_difficult(review, difficult, limit)
     ret = self.questions
-    ret = ret.where(review: true) if review
+    ret = ret.review if review
     ret = ret.where(difficult: true) if difficult
     ret = ret.limit(limit) if limit != false
     return ret
