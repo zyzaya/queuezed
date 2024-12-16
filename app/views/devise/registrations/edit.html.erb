@@ -2,16 +2,16 @@
   <%= render 'shared/header' %>
   <div class="devise_form">
     <%= form_for(resource, as: resource_name, url: registration_path(resource_name), html: { method: :put }, data: { turbo:false }) do |f| %>
-      <%= render "devise/shared/error_messages", resource: resource %>
-
       <div class="devise_field">
         <%= f.label :current_password, class: "devise_label" %> <i>(we need your current password to apply your changes)</i>
         <%= f.password_field :current_password, autocomplete: "current-password", class: "devise_text_input" %>
+        <%= render 'shared/error', resource: resource, attribute: :current_password%>
       </div>
 
       <div class="devise_field">
         <%= f.label :email, "New Email", class: "devise_label" %>
         <%= f.email_field :email, autofocus: true, autocomplete: "email", class: "devise_text_input" %>
+        <%= render 'shared/error', resource: resource, attribute: :email %>
       </div>
 
       <% if devise_mapping.confirmable? && resource.pending_reconfirmation? %>
@@ -24,11 +24,13 @@
         <% if @minimum_password_length %>
           <em><%= @minimum_password_length %> characters minimum</em>
         <% end %>
+        <%= render 'shared/error', resource: resource, attribute: :password %>
       </div>
 
       <div class="devise_field">
         <%= f.label :password_confirmation, "New Password Confirmation", class: "devise_label" %>
         <%= f.password_field :password_confirmation, autocomplete: "new-password", class: "devise_text_input" %>
+        <%= render 'shared/error', resource: resource, attribute: :password_confirmation %>
       </div>
 
       <div class="devise_actions">
