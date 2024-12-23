@@ -6,7 +6,7 @@ databases:
 
 services:
   - type: web
-    name: railtest
+    name: queuezed
     runtime: ruby
     plan: starter
     buildCommand: "./bin/render-build.sh"
