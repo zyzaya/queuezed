@@ -1,7 +1,7 @@
 import { Controller } from '@hotwired/stimulus';
-import TagDisplay from '../../display/TagDisplay';
-import SingleQuestionDisplay from '../../display/SingleQuestionDisplay';
-import RelatedOptionDisplay from '../../display/RelatedOptionDisplay';
+import TagDisplay from 'display/TagDisplay';
+import SingleQuestionDisplay from 'display/SingleQuestionDisplay';
+import RelatedOptionDisplay from 'display/RelatedOptionDisplay';
 
 export default class extends Controller {
   static values = {

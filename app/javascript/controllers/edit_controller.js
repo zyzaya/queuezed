@@ -3,10 +3,10 @@ import Undo from 'edit/Undo';
 import Change from 'edit/Change';
 import Data from 'edit/Data';
 import ID from 'edit/ID';
-import AnswerDisplay from '../display/AnswerDisplay';
-import TagDisplay from '../display/TagDisplay';
-import TagOptionDisplay from '../display/TagOptionDisplay';
-import SingleQuestionDisplay from '../display/SingleQuestionDisplay';
+import AnswerDisplay from 'display/AnswerDisplay';
+import TagDisplay from 'display/TagDisplay';
+import TagOptionDisplay from 'display/TagOptionDisplay';
+import SingleQuestionDisplay from 'display/SingleQuestionDisplay';
 
 export default class extends Controller {
   static values = {

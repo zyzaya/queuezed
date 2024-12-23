@@ -1,4 +1,4 @@
-import AnswerDisplay from './AnswerDisplay';
+import AnswerDisplay from 'display/AnswerDisplay';
 
 export default function SingleQuestionDisplay(
   id,

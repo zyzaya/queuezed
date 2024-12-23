@@ -6,6 +6,7 @@ pin "@hotwired/stimulus", to: "stimulus.min.js", preload: true
 pin "@hotwired/stimulus-loading", to: "stimulus-loading.js", preload: true
 pin_all_from "app/javascript/controllers", under: "controllers"
 pin_all_from "app/javascript/edit/", under: "edit"
+pin_all_from "app/javascript/display", under: "display"
 
 pin "zGrid", to: "zGrid.js"
 pin "selection", to: "https://unpkg.com/gridjs/plugins/selection/dist/selection.umd.js"
