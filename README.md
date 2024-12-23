@@ -32,6 +32,15 @@
 
 # build
 ```how to build or deploy```
+setup
+- deployed on render.com: https://render.com/docs/deploy-rails
+- build script is bin/render-build.sh
+- render.yaml defines render webservice properties
+- render.yaml reference: https://render.com/docs/blueprint-spec
+- in render dashboard: blueprint -> new blueprint instance -> select repository
+
+deploy
+- render automatically deploys commits on branch *main*
 
 
 # database

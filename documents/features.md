@@ -6,8 +6,14 @@
 - #17 - advanced filter (see qz and advanced filter mockup)
 - #27 - add ability to change what proportion of the page the question list and question edit take up
 - #35 - when transition directly from edit to practice, maintain filters.
+- #56 - Add automatic tooling. (new projects in Rails 7 have these by default - look to new app for examples)
+  - dependabot: a github tool that automatically detects and alerts for vulnerabilities, security updates, and version updates.
+  - brakemen: an analysis tool the checks rails for security vulnerabilities
+  - rubocop: lints ruby code
+  - importmap/audit: scan for security vulnerabilities in javascript dependencies
+  - automatic testing: rewrite tests (especially system tests) to not be occasionally inconsistent
 ---
-- #56 - 
+- #57 - 
 
 # Completed Features
 - #3 - improve question list table:
