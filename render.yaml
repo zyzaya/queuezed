@@ -2,13 +2,13 @@ databases:
   - name: queuezed
     databaseName: queuezed
     user: queuezed
-    plan: free
+    plan: basic-256mb
 
 services:
   - type: web
     name: railtest
     runtime: ruby
-    plan: basic-256mb
+    plan: starter
     buildCommand: "./bin/render-build.sh"
     preDeployCommand: "bundle exec rails db:migrate" # preDeployCommand only available on paid instance types
     startCommand: "bundle exec rails server"
