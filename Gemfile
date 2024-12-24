@@ -5,8 +5,6 @@ ruby "3.1.2"
 
 gem 'devise'
 gem 'faker'
-# there is an issue with rack 3 breaking csrf tokens
-gem 'rack', '~> 2.2.8'
 
 # Bundle edge Rails instead: gem "rails", github: "rails/rails", branch: "main"
 gem "rails", "~> 7.2.1"
