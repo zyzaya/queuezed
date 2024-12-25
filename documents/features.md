@@ -13,7 +13,13 @@
   - importmap/audit: scan for security vulnerabilities in javascript dependencies
   - automatic testing: rewrite tests (especially system tests) to not be occasionally inconsistent
 ---
-- #57 - 
+- #57 - consider lowering the storage of the database from 15gb to either 1gb or 5gb.
+  to do so:
+  1. backup current db
+  2. create new db (with lower disk size)
+  3. load backup into new db
+- #58 - complete redo of ui design
+- #59 -
 
 # Completed Features
 - #3 - improve question list table:
