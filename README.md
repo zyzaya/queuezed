@@ -39,6 +39,11 @@ setup
 - render.yaml reference: https://render.com/docs/blueprint-spec
 - in render dashboard: blueprint -> new blueprint instance -> select repository
 
+custom domain https://render.com/docs/custom-domains
+- add custom domain to render webservice: https://render.com/docs/custom-domains
+- configure DNS with provider: https://www.namespro.ca/KB-how-do-i-create-a-cname,-mx-or-txt-record.asp?sID=1E27D6F4198D4A188110891AD3B88358
+- this takes a bit of time to propagate
+
 deploy
 - render automatically deploys commits on branch *main*
 
