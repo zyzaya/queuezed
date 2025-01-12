@@ -2,8 +2,12 @@
 - #27 - inconsistently when transitioning from homepage to quiz edit page using Edit button, the layout of the edit page is incorrect: the width of the question is 100% instead of 50% 
 - #55 - deleting a question, then undoing that deletion causes the question to be readded at the end of the list instead of where it previously was
 ---
-- #112 - make fonts consistent across browsers
-- #113 - 
+- #112 - make fonts consistent across browsers 
+- #113 - mobile ui on small screens overflows width when zGrid page info is long enough
+- #114 - unsaved changes popup doesn't appear when changes pages with buttons in edit mode
+- #115 - unsaved changes popup doesn't appear on mobile
+- #116 - when the save buttons text has an asterisk (there are unsaved changes), it is not capitalized
+- #117 -
 
 # Fixed Issues
 - #1 - deleting an answer of a related question (of the focused question), and then undoing the deletion causes the answer to be added to the focused question - instead of the related question.

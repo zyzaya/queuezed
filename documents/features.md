@@ -19,7 +19,10 @@
   2. create new db (with lower disk size)
   3. load backup into new db
 - #58 - complete redo of ui design
-- #59 -
+- #59 - add ability dropdown/selections to zGrid to show/hide columns
+- #60 - refine zGrid (and other) margins/padding such that there is less white space
+- #61 - rewrite client side modifications of quiz to be stored in a proper file format (JSON, probably), and to automatically store locally when changes are made
+- #62
 
 # Completed Features
 - #3 - improve question list table:
