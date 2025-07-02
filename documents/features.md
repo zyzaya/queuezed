@@ -13,11 +13,6 @@
   - importmap/audit: scan for security vulnerabilities in javascript dependencies
   - automatic testing: rewrite tests (especially system tests) to not be occasionally inconsistent
 ---
-- #57 - consider lowering the storage of the database from 15gb to either 1gb or 5gb.
-  to do so:
-  1. backup current db
-  2. create new db (with lower disk size)
-  3. load backup into new db
 - #58 - complete redo of ui design
 - #59 - add ability dropdown/selections to zGrid to show/hide columns
 - #60 - refine zGrid (and other) margins/padding such that there is less white space
@@ -25,6 +20,11 @@
 - #62
 
 # Completed Features
+- #57 - consider lowering the storage of the database from 15gb to either 1gb or 5gb.
+  to do so:
+  1. backup current db
+  2. create new db (with lower disk size)
+  3. load backup into new db
 - #3 - improve question list table:
 - #4 - add ability to filter visible questions by text
 - #6 - add ability to sort ascending/descending by column

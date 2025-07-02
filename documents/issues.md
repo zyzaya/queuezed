@@ -7,7 +7,8 @@
 - #114 - unsaved changes popup doesn't appear when changes pages with buttons in edit mode
 - #115 - unsaved changes popup doesn't appear on mobile
 - #116 - when the save buttons text has an asterisk (there are unsaved changes), it is not capitalized
-- #117 -
+- #117 - Mastered questions are considered as review when on Edit page, but not on home page or when creating a practice quiz.
+- #118 - 
 
 # Fixed Issues
 - #1 - deleting an answer of a related question (of the focused question), and then undoing the deletion causes the answer to be added to the focused question - instead of the related question.
