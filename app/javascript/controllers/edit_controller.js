@@ -45,7 +45,7 @@ export default class extends Controller {
   }
 
   updateChanges() {
-    this.saveButtonTarget.innerText = Undo.has_changes() ? 'save*' : 'save';
+    this.saveButtonTarget.innerText = Undo.has_changes() ? 'Save*' : 'Save';
   }
 
   questionCountValueChanged() {
