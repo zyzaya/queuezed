@@ -51,15 +51,11 @@ class Question < ApplicationRecord
   private
   def init
     update_review
-
-    if !self.mastered && self.next_review.nil?
-      self.next_review = DateTime.now 
-      self.review = true
-    end
   end
 
   def update_review
-    unless self.next_review.nil?
+    if !self.mastered
+      self.next_review = DateTime.now if self.next_review.nil?
       self.review = self.next_review < DateTime.now
     end
   end
@@ -84,6 +80,7 @@ class Question < ApplicationRecord
       if new_rank > Quiz::MAX_RANK
         self.mastered = true
         self.next_review = nil
+        self.review = false
       else
         new_rank = new_rank.clamp(1..Quiz::MAX_RANK)
         self.next_review = DateTime.now + self.quiz.interval_duration(new_rank)
