@@ -12,8 +12,6 @@
   - remove label for 'delete my account'
 - #114 - unsaved changes popup doesn't appear when changes pages with buttons in edit mode
 - #115 - unsaved changes popup doesn't appear on mobile
-- #116 - when the save buttons text has an asterisk (there are unsaved changes), it is not capitalized
-- #117 - Mastered questions are considered as review when on Edit page, but not on home page or when creating a practice quiz.
 - #118 - 
 
 # Fixed Issues
@@ -161,3 +159,5 @@ Error: Missing "data-controller=edit" attribute on outlet element for "zgrid" co
 - #72 - look into improving performance / reducing database calls when saving a quiz, specifically when creating new records
 - #78 - look into improving performance when loading questions into zgrid
 - #54 - selecting an question as soon as it loods causing js error: 
+- #116 - when the save buttons text has an asterisk (there are unsaved changes), it is not capitalized
+- #117 - Mastered questions are considered as review when on Edit page, but not on home page or when creating a practice quiz.
