@@ -194,4 +194,15 @@ class QuestionTest < ActiveSupport::TestCase
       assert_nil question.next_review
     end
   end
+
+  test "mastered questions do not get marked to review" do
+    question = questions(:john_one)
+    now = DateTime.now
+    question.update(next_review: now, rank: 5)
+    DateTime.stub :now, now do
+      question.submit_answer(practice_sessions(:johns), correct_answers(question))
+      assert_not question.review
+      assert_nil question.next_review
+    end
+  end
 end
