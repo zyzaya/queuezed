@@ -28,6 +28,7 @@ export default class extends Controller {
         tbody: 'zg_body',
         tr: 'zg_row',
         td: 'zg_td',
+        paginationInfo: 'zg_page_info',
         paginationButton: 'zg_page',
         paginationCurrent: 'zg_current',
         selected: 'active_question',

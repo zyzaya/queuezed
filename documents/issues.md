@@ -3,7 +3,13 @@
 - #55 - deleting a question, then undoing that deletion causes the question to be readded at the end of the list instead of where it previously was
 ---
 - #112 - make fonts consistent across browsers 
-- #113 - mobile ui on small screens overflows width when zGrid page info is long enough
+- #113 - mobile ui on small screens overflows width when zGrid page info is long enough.
+  - swap Settings, Sign Out, buttons for icons
+  - swap Previous, Next text to icons
+  - swap New Question, Undo, Reod, Save to icons
+  - add margins to settings page
+  - allow settings page textboxes to be smaller
+  - remove label for 'delete my account'
 - #114 - unsaved changes popup doesn't appear when changes pages with buttons in edit mode
 - #115 - unsaved changes popup doesn't appear on mobile
 - #116 - when the save buttons text has an asterisk (there are unsaved changes), it is not capitalized

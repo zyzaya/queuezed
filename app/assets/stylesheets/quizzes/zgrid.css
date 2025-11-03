@@ -47,6 +47,13 @@
   border-bottom: 2px solid var(--secondary-bg-color-dark);
 }
 
+@media (max-width: 800px) {
+  .zg_page_info {
+    display: none;
+  }
+}
+
+
 .zg_page {
   background-color: var(--interact-color);
   color: var(--main-text-color);
