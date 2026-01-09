@@ -17,7 +17,11 @@
 - #59 - add ability dropdown/selections to zGrid to show/hide columns
 - #60 - refine zGrid (and other) margins/padding such that there is less white space
 - #61 - rewrite client side modifications of quiz to be stored in a proper file format (JSON, probably), and to automatically store locally when changes are made
-- #62
+- #62 - add anonymous users - allowing a user to temporarily create, edit, and practice quizzes
+- #63 - add settings page - changing fonts, styles, how quizzes are presented
+- #64 - add statistics page to display detailed information about how well the user does when answering questions and practicing quizzes
+- #65 - update rails
+- #66 - 
 
 # Completed Features
 - #57 - consider lowering the storage of the database from 15gb to either 1gb or 5gb.

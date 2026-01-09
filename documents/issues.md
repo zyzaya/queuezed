@@ -12,7 +12,8 @@
   - remove label for 'delete my account'
 - #114 - unsaved changes popup doesn't appear when changes pages with buttons in edit mode
 - #115 - unsaved changes popup doesn't appear on mobile
-- #118 - 
+- #118 - on sign in page, the feedback for an incorrect email doesn't appear when a value is entered into the email field but the value is not a valid email address. Instead the sign in fails, but there is no indication
+- #119
 
 # Fixed Issues
 - #1 - deleting an answer of a related question (of the focused question), and then undoing the deletion causes the answer to be added to the focused question - instead of the related question.
