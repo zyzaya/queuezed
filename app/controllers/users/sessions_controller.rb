@@ -4,7 +4,6 @@ class Users::SessionsController < Devise::SessionsController
 
     def create
         if is_guest
-            puts params[:email]
         end
         super
     end 
@@ -12,7 +11,6 @@ class Users::SessionsController < Devise::SessionsController
     private
 
     def authenticate_guest
-        puts "guest: #{is_guest}"
         require_no_authentication unless is_guest
     end
 end
