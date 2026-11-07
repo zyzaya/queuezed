@@ -10,7 +10,7 @@
   - dependabot: a github tool that automatically detects and alerts for vulnerabilities, security updates, and version updates.
   - brakemen: an analysis tool the checks rails for security vulnerabilities
   - rubocop: lints ruby code
-  - importmap/audit: scan for security vulnerabilities in javascript dependencies
+  - ~~importmap/audit: scan for security vulnerabilities in javascript dependencies~~ - already installed
   - automatic testing: rewrite tests (especially system tests) to not be occasionally inconsistent
 ---
 - #58 - complete redo of ui design
