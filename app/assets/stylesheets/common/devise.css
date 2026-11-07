@@ -10,7 +10,7 @@
 
 .devise_info {
   display: grid;
-  grid-template-rows: min-content min-content min-content;
+  grid-template-rows: repeat(2, min-content);
   justify-items: center;
 }
 
@@ -104,4 +104,12 @@
 
 .devise_delete > hr {
   color: red;
+}
+
+.devise_try {
+  display: block;
+  width: 100%;
+  margin: 7px auto;
+  text-align: center;
+  box-sizing: border-box;
 }
