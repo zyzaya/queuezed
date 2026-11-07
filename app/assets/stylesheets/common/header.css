@@ -1,19 +1,18 @@
 .header {
   background-color: var(--secondary-bg-color);
   width: 100%;
-}
-
-.header_info {
   display: grid;
+  grid-template-rows: min-content min-content;
   grid-template-columns: 1fr 2fr 1fr;
 }
 
-.header_buttons {
-  display: grid;
-  grid-template-columns: min-content min-content;
-  align-items: center;
-  justify-content: right;
-  gap: 3px;
+.header_guest {
+  background-color: var(--invalid-color);
+  width: 100%;
+  color: var(--main-text-color);
+  padding: 5px 5px;
+  text-align: center;
+  grid-column: 1 / -1;
 }
 
 .header_title {
@@ -24,4 +23,14 @@
   font-weight: bold;
   text-align: center;
   margin-bottom: 5px;
+  grid-column: 2 / 3;
+}
+
+.header_buttons {
+  display: grid;
+  grid-template-columns: min-content min-content;
+  align-items: center;
+  justify-content: right;
+  gap: 3px;
+  grid-column: 3 / -1;
 }

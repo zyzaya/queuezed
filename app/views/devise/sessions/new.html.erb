@@ -1,7 +1,7 @@
 <div class="devise_info sessions_new">
   <h1 class="devise_title">queuezed</h1>
   <div class="devise_form">
-    <%= link_to 'Try Me', quizzes_path, class: 'devise_try button' %>
+    <%= link_to 'Try Me!', quizzes_path, class: 'devise_try button' %>
     <% if flash[:alert] %>
       <p class="alert"><%= alert %></p>
     <% end %>
@@ -26,7 +26,6 @@
       <div class="devise_actions">
         <%= f.submit "Log In", class: 'devise_submit button' %>
       </div>
-      
     <% end %>
     <%= render "devise/shared/links" %>
   </div>

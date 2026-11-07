@@ -1,19 +1,16 @@
 <div class="header">
-  <div class="header_info">
-    <div>
-      <% if is_guest %>
-        You are currently not signed in. You're changes may not be saved.
-      <% end %>
+  <% if is_guest %>
+    <div class="header_guest">
+        You are currently not signed in, please sign in to save your changes.  
     </div>
-    <%= link_to "queuezed", quizzes_path, class: "header_title" %>
-    <div class="header_buttons">
-      <% if is_guest %>
-        <%= link_to "Sign In", new_user_session_path, class: "button" %>
-      <% else %>
-        <%= link_to "Settings", edit_user_registration_path, class: "button"%>
-        <%= button_to "Sign Out", destroy_user_session_path, method: :delete, class: 'button' %>
-      <% end %>
-    </div>
-  </div>
-  
+  <% end %>
+  <%= link_to "queuezed", quizzes_path, class: "header_title" %>
+  <div class="header_buttons">
+    <% if is_guest %>
+      <%= link_to "Sign In", new_user_session_path, class: "button" %>
+    <% else %>
+      <%= link_to "Settings", edit_user_registration_path, class: "button"%>
+      <%= button_to "Sign Out", destroy_user_session_path, method: :delete, class: 'button' %>
+    <% end %>
+  </div>  
 </div>
