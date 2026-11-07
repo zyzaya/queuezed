@@ -6,12 +6,6 @@
 - #17 - advanced filter (see qz and advanced filter mockup)
 - #27 - add ability to change what proportion of the page the question list and question edit take up
 - #35 - when transition directly from edit to practice, maintain filters.
-- #56 - Add automatic tooling. (new projects in Rails 7 have these by default - look to new app for examples)
-  - dependabot: a github tool that automatically detects and alerts for vulnerabilities, security updates, and version updates.
-  - brakemen: an analysis tool the checks rails for security vulnerabilities
-  - rubocop: lints ruby code
-  - importmap/audit: scan for security vulnerabilities in javascript dependencies
-  - automatic testing: rewrite tests (especially system tests) to not be occasionally inconsistent
 ---
 - #58 - complete redo of ui design
 - #59 - add ability dropdown/selections to zGrid to show/hide columns
@@ -20,9 +14,15 @@
 - #63 - add settings page - changing fonts, styles, how quizzes are presented
 - #64 - add statistics page to display detailed information about how well the user does when answering questions and practicing quizzes
 - #65 - update rails
-- #66 - 
+- #66 - add rubocop
+- #67 - setup dependabot
+- #68
 
 # Completed Features
+- #56 - Add automatic tooling. (new projects in Rails 7 have these by default - look to new app for examples)
+  - brakemen: an analysis tool the checks rails for security vulnerabilities
+  - importmap/audit: scan for security vulnerabilities in javascript dependencies
+  - automatic testing: rewrite tests (especially system tests) to not be occasionally inconsistent
 - #62 - add anonymous users - allowing a user to temporarily create, edit, and practice quizzes. To allow a user to experiment with functionality without having to sign up.
  Full Functional guest user: technically more difficult (especially since it wasn't built with this in mind from the beginning), increasing db complexity and storage size.
  Limited functionality: easy to do with edit (no saving, practicing)
