@@ -6,6 +6,12 @@
 - #17 - advanced filter (see qz and advanced filter mockup)
 - #27 - add ability to change what proportion of the page the question list and question edit take up
 - #35 - when transition directly from edit to practice, maintain filters.
+- #56 - Add automatic tooling. (new projects in Rails 7 have these by default - look to new app for examples)
+  - dependabot: a github tool that automatically detects and alerts for vulnerabilities, security updates, and version updates.
+  - brakemen: an analysis tool the checks rails for security vulnerabilities
+  - rubocop: lints ruby code
+  - ~~importmap/audit: scan for security vulnerabilities in javascript dependencies~~ - already installed
+  - automatic testing: rewrite tests (especially system tests) to not be occasionally inconsistent
 ---
 - #58 - complete redo of ui design
 - #59 - add ability dropdown/selections to zGrid to show/hide columns
@@ -13,16 +19,10 @@
 - #61 - rewrite client side modifications of quiz to be stored in a proper file format (JSON, probably), and to automatically store locally when changes are made
 - #63 - add settings page - changing fonts, styles, how quizzes are presented
 - #64 - add statistics page to display detailed information about how well the user does when answering questions and practicing quizzes
-- #66 - add rubo cop (default in new rails 7 projects)
-- #67 - setup dependabot
-- #68
+- #65 - update rails
+- #66 - 
 
 # Completed Features
-- #65 - update rails to 7.2.4
-- #56 - Add automatic tooling. (new projects in Rails 7 have these by default - look to new app for examples)vulnerabilities, security updates, and version updates.
-  - brakemen: an analysis tool the checks rails for security vulnerabilities
-  - rubocop: lints ruby code
-  - ~~importmap/audit: scan for security vulnerabilities in javascript dependencies~~ - already installed
 - #62 - add anonymous users - allowing a user to temporarily create, edit, and practice quizzes. To allow a user to experiment with functionality without having to sign up.
  Full Functional guest user: technically more difficult (especially since it wasn't built with this in mind from the beginning), increasing db complexity and storage size.
  Limited functionality: easy to do with edit (no saving, practicing)
