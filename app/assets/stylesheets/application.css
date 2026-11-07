@@ -40,6 +40,11 @@ body {
   grid-template-rows: min-content 1fr 16px;
 }
 
+.flash {
+  width: 100%;
+  text-align: center;
+}
+
 .alert {
   background-color: var(--invalid-color);
   color: var(--main-text-color);
