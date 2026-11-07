@@ -6,8 +6,6 @@ ruby "3.1.2"
 gem 'devise'
 gem 'faker'
 
-gem "nokogiri", force_ruby_platform: true
-
 # Bundle edge Rails instead: gem "rails", github: "rails/rails", branch: "main"
 gem "rails", "~> 7.2.4"
 
