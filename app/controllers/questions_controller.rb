@@ -2,7 +2,7 @@ class QuestionsController < ApplicationController
   before_action :authenticate_user!
   
   def index
-    @quiz = current_user.quizzes.find_by(id: params[:quiz_id])
+    @quiz = current_or_guest_user.quizzes.find_by(id: params[:quiz_id])
     if @quiz.nil?
       head :not_found
     else
@@ -33,7 +33,7 @@ class QuestionsController < ApplicationController
   end
   
   def edit
-    @question = Question.find_by(id: params[:id], quiz_id: current_user.quizzes.ids)
+    @question = Question.find_by(id: params[:id], quiz_id: current_or_guest_user.quizzes.ids)
     if (@question.nil?)
       head :not_found
     else
@@ -42,7 +42,7 @@ class QuestionsController < ApplicationController
   end
 
   def new
-    @quiz = current_user.quizzes.find_by(id: params[:quiz_id])
+    @quiz = current_or_guest_user.quizzes.find_by(id: params[:quiz_id])
     if (@quiz.nil?)
       head :not_found
     else
@@ -52,7 +52,7 @@ class QuestionsController < ApplicationController
   end
 
   def destroy
-    @question = Question.find_by(id: params[:id], quiz_id: current_user.quizzes.ids)
+    @question = Question.find_by(id: params[:id], quiz_id: current_or_guest_user.quizzes.ids)
     if (@question.nil?)
       head :not_found
     else

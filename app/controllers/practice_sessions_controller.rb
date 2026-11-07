@@ -2,7 +2,7 @@ class PracticeSessionsController < ApplicationController
   before_action :authenticate_user!
   
   def new
-    @quiz = current_user.quizzes.find_by(id: params[:quiz_id])
+    @quiz = current_or_guest_user.quizzes.find_by(id: params[:quiz_id])
     if (@quiz.nil?)
       head :not_found
     else
@@ -12,7 +12,7 @@ class PracticeSessionsController < ApplicationController
 
   def create
     practice_params = practice_session_create_params(params)
-    @quiz = current_user.quizzes.find_by(id: practice_params[:quiz_id])
+    @quiz = current_or_guest_user.quizzes.find_by(id: practice_params[:quiz_id])
     if (@quiz.nil?)
       head :not_found
     else
@@ -43,7 +43,7 @@ class PracticeSessionsController < ApplicationController
   end
 
   def show
-    @practice_session = PracticeSession.find_by(id: params[:id], quiz_id: current_user.quizzes.ids)
+    @practice_session = PracticeSession.find_by(id: params[:id], quiz_id: current_or_guest_user.quizzes.ids)
     if @practice_session.nil?
       head :not_found
     else
@@ -59,7 +59,7 @@ class PracticeSessionsController < ApplicationController
   end
 
   def finish
-    @practice_session = PracticeSession.find_by(id: params[:id], quiz_id: current_user.quizzes.ids)
+    @practice_session = PracticeSession.find_by(id: params[:id], quiz_id: current_or_guest_user.quizzes.ids)
     if (@practice_session.nil?)
       head :not_found
     else

@@ -2,18 +2,18 @@ class QuizzesController < ApplicationController
   before_action :authenticate_user!
 
   def index
-    @quizzes = current_user.quizzes.includes(:questions).order(:created_at)
+    @quizzes = current_or_guest_user.quizzes.includes(:questions).order(:created_at)
     @difficult_counts = Question.where(quiz_id: @quizzes, difficult: true, deleted_at: nil).group(:quiz_id).count
     @review_counts = Question.review.where(quiz_id: @quizzes, deleted_at: nil).group(:quiz_id).count
   end
 
   def create
-    @quiz = current_user.quizzes.create(name: "New Quiz")
+    @quiz = current_or_guest_user.quizzes.create(name: "New Quiz")
     render "quizzes/edit"
   end
 
   def edit
-    @quiz = current_user.quizzes.find_by(id: params[:id])
+    @quiz = current_or_guest_user.quizzes.find_by(id: params[:id])
     if (@quiz.nil?)
       head :not_found
     else
@@ -23,7 +23,7 @@ class QuizzesController < ApplicationController
   end
 
   def destroy
-    quiz = current_user.quizzes.find_by(id: params[:id])
+    quiz = current_or_guest_user.quizzes.find_by(id: params[:id])
     if (quiz.nil?)
       head :not_found
     else
@@ -41,7 +41,7 @@ class QuizzesController < ApplicationController
     #   prev_id: 
     #   answers: 
     # ]
-    quiz = current_user
+    quiz = current_or_guest_user
       .quizzes
       .includes(questions: [:answers])
       .find_by(id: params[:id])
@@ -61,7 +61,7 @@ class QuizzesController < ApplicationController
           quiz.transaction do
             ids = update_quiz(quiz, quiz_params)
             quiz.save
-            result_quiz = current_user
+            result_quiz = current_or_guest_user
               .quizzes
               .includes(questions: [:answers, :tags])
               .find_by(id: quiz.id)

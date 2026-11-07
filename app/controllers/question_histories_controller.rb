@@ -2,7 +2,7 @@ class QuestionHistoriesController < ApplicationController
   before_action :authenticate_user!
   
   def new
-    @practice_session = PracticeSession.find_by(id: params[:practice_id], quiz_id: current_user.quizzes.ids)
+    @practice_session = PracticeSession.find_by(id: params[:practice_id], quiz_id: current_or_guest_user.quizzes.ids)
     if @practice_session.nil?
       head :not_found
     else
@@ -16,7 +16,7 @@ class QuestionHistoriesController < ApplicationController
   end
 
   def create
-    @practice_session = PracticeSession.find_by(id: params[:practice_id], quiz_id: current_user.quizzes.ids)
+    @practice_session = PracticeSession.find_by(id: params[:practice_id], quiz_id: current_or_guest_user.quizzes.ids)
     # given[q_id][a_id] = value
     # given = {
     #   q_id: ["given1", "given2"]
