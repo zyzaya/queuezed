@@ -1,5 +1,5 @@
 class QuizzesController < ApplicationController
-  before_action :authenticate_user!
+  # before_action :authenticate_user!
 
   def index
     @quizzes = current_or_guest_user.quizzes.includes(:questions).order(:created_at)

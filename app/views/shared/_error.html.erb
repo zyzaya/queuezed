@@ -1,7 +1,7 @@
 <% if resource.errors[attribute].any? %>
   <div class="devise_errors">
     <% resource.errors.where(attribute).each do |error| %>
-      <%= "#{error.full_message}"%>
+      <%= "#{error.name}"%>
     <% end %>
   </div>
 <% end %>

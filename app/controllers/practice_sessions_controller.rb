@@ -1,6 +1,4 @@
 class PracticeSessionsController < ApplicationController
-  before_action :authenticate_user!
-  
   def new
     @quiz = current_or_guest_user.quizzes.find_by(id: params[:quiz_id])
     if (@quiz.nil?)

@@ -1,6 +1,4 @@
 class QuestionsController < ApplicationController
-  before_action :authenticate_user!
-  
   def index
     @quiz = current_or_guest_user.quizzes.find_by(id: params[:quiz_id])
     if @quiz.nil?

@@ -1,6 +1,4 @@
 class QuestionHistoriesController < ApplicationController
-  before_action :authenticate_user!
-  
   def new
     @practice_session = PracticeSession.find_by(id: params[:practice_id], quiz_id: current_or_guest_user.quizzes.ids)
     if @practice_session.nil?
