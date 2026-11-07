@@ -38,6 +38,7 @@ class ApplicationController < ActionController::Base
   private
 
   def logging_in
+    guest_user.quizzes.update_all(user_id: current_user.id)
     puts "logging in"
   end
 
