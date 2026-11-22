@@ -1,3 +1,6 @@
+# v1.1.1 - November 22, 2026
+- Update ruby to 3.4.13
+
 # v1.1.0 - November 07, 2026
 - Feature #62. Added guest users.
 
